@@ -1,10 +1,10 @@
 import SwiftUI
+import WebKit
 
 struct TestNaverLoginView: View {
     var body: some View {
-        NaverVCRepresentable { email in
-            let snsAccount = email
-            print("결과 \(email)")
+        NaverVCRepresentable { userData in
+            print("결과 \(userData)")
         }
     }
 }

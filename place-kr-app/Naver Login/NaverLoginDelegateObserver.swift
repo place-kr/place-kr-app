@@ -1,14 +1,15 @@
 import Combine
 import Foundation
-import NaverThirdPartyLogin
 import SwiftUI
+
+import NaverThirdPartyLogin
 
 struct NaverVCRepresentable: UIViewControllerRepresentable {
     static var loginInstance: NaverThirdPartyLoginConnection? = nil
     
     // 로그아웃시도 사용되어서 static으로 선언
     let vc = NaverViewController()
-    var callback: (String) -> Void
+    var callback: (NaverLoginResponse) -> Void
     
     func makeUIViewController(context: Context) -> UIViewController {
         return vc
@@ -22,9 +23,9 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, NaverThirdPartyLoginConnectionDelegate {
         @Published var cancellable: AnyCancellable?
-        var callback: (String) -> Void
+        var callback: (NaverLoginResponse) -> Void
         
-        init(vc: NaverViewController, callback: @escaping (String) -> Void) {
+        init(vc: NaverViewController, callback: @escaping (NaverLoginResponse) -> Void) {
             self.callback = callback
             super.init()
             vc.delegate = self
@@ -57,7 +58,10 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
         }
         
         func getInfo() {
-            guard let isValidAccessToken = NaverVCRepresentable.loginInstance?.isValidAccessTokenExpireTimeNow() else { return }
+            guard let isValidAccessToken = NaverVCRepresentable.loginInstance?.isValidAccessTokenExpireTimeNow() else {
+                print("Naver login token expired")
+                return
+            }
             
             if !isValidAccessToken { return }
             
@@ -75,7 +79,7 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
                     }
                 }, receiveValue: { response_naver_login in
                     print("네이버 로그인 이메일 \(response_naver_login.response)")
-                    self.callback(response_naver_login.response.email)
+                    self.callback(response_naver_login.response)
                 })
         }
     }

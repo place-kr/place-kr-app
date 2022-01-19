@@ -27,7 +27,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
+        guard let scheme = url.scheme else { return true }
+
+        if scheme.contains("naverlogin") {
+            let result = NaverThirdPartyLoginConnection.getSharedInstance().receiveAccessToken(url)
+            if result == CANCELBYUSER {
+                print("result: \(result)")
+            }
+            return true
+        }
+        print("Naver login: Failed by unexpected reason")
         return true
     }
     
