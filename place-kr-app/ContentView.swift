@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var showNaverLogin = false
     var body: some View {
-        Text("Temporary")
+        VStack {
+            Text("Temporary")
+            Button(action: { showNaverLogin = true }) {
+                Text("Naver로 로그인")
+            }
+            if showNaverLogin {
+                TestNaverLoginView()
+            }
+        }
     }
 }
 
