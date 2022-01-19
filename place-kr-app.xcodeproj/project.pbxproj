@@ -15,6 +15,14 @@
 		9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */; };
 		9B84668227981E5200066F04 /* NaverLoginDelegateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegateObserver.swift */; };
 		9B84668627982E7800066F04 /* TestNaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* TestNaverLoginView.swift */; };
+		9B846689279852DA00066F04 /* SignWithAppleDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B846688279852DA00066F04 /* SignWithAppleDelegates.swift */; };
+		9B84668E279854A700066F04 /* AppleLogInButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668D279854A700066F04 /* AppleLogInButtonView.swift */; };
+		9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668F279856C200066F04 /* EnvironmentKeys.swift */; };
+		9B8466962798574F00066F04 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8466922798574E00066F04 /* UserData.swift */; };
+		9B8466972798574F00066F04 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8466932798574E00066F04 /* Keychain.swift */; };
+		9B8466982798574F00066F04 /* SharedWebCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8466942798574F00066F04 /* SharedWebCredential.swift */; };
+		9B8466992798574F00066F04 /* UserDataKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8466952798574F00066F04 /* UserDataKeychain.swift */; };
+		9B84669B2798576300066F04 /* WebApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84669A2798576300066F04 /* WebApi.swift */; };
 		C1E57CCEE0673CDEBD22B5D4 /* Pods_place_kr_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1A347437C52C1C27B681B8F /* Pods_place_kr_app.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +37,15 @@
 		9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
 		9B84668127981E5200066F04 /* NaverLoginDelegateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegateObserver.swift; sourceTree = "<group>"; };
 		9B84668527982E7800066F04 /* TestNaverLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNaverLoginView.swift; sourceTree = "<group>"; };
+		9B846688279852DA00066F04 /* SignWithAppleDelegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignWithAppleDelegates.swift; sourceTree = "<group>"; };
+		9B84668B2798543F00066F04 /* place-kr-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "place-kr-app.entitlements"; sourceTree = SOURCE_ROOT; };
+		9B84668D279854A700066F04 /* AppleLogInButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogInButtonView.swift; sourceTree = "<group>"; };
+		9B84668F279856C200066F04 /* EnvironmentKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentKeys.swift; sourceTree = "<group>"; };
+		9B8466922798574E00066F04 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		9B8466932798574E00066F04 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		9B8466942798574F00066F04 /* SharedWebCredential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedWebCredential.swift; sourceTree = "<group>"; };
+		9B8466952798574F00066F04 /* UserDataKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataKeychain.swift; sourceTree = "<group>"; };
+		9B84669A2798576300066F04 /* WebApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebApi.swift; sourceTree = "<group>"; };
 		AA35C7AE8C712DACC6E4842A /* Pods-place-kr-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-place-kr-app.debug.xcconfig"; path = "Target Support Files/Pods-place-kr-app/Pods-place-kr-app.debug.xcconfig"; sourceTree = "<group>"; };
 		E2112456F33453C2A4353562 /* Pods-place-kr-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-place-kr-app.release.xcconfig"; path = "Target Support Files/Pods-place-kr-app/Pods-place-kr-app.release.xcconfig"; sourceTree = "<group>"; };
 		F1A347437C52C1C27B681B8F /* Pods_place_kr_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_place_kr_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +93,8 @@
 		9B20A65A2796F42A0029CA0E /* place-kr-app */ = {
 			isa = PBXGroup;
 			children = (
+				9B84668B2798543F00066F04 /* place-kr-app.entitlements */,
+				9B846687279852C300066F04 /* Apple Login */,
 				9B84668327982E5D00066F04 /* Naver Login */,
 				9B20A65B2796F42A0029CA0E /* AppDelegate.swift */,
 				9B20A65D2796F42A0029CA0E /* SceneDelegate.swift */,
@@ -83,6 +102,7 @@
 				9B20A6642796F42B0029CA0E /* Assets.xcassets */,
 				9B20A6662796F42B0029CA0E /* LaunchScreen.storyboard */,
 				9B20A6692796F42B0029CA0E /* Info.plist */,
+				9B84668F279856C200066F04 /* EnvironmentKeys.swift */,
 			);
 			path = "place-kr-app";
 			sourceTree = "<group>";
@@ -103,6 +123,36 @@
 				9B84668527982E7800066F04 /* TestNaverLoginView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		9B846687279852C300066F04 /* Apple Login */ = {
+			isa = PBXGroup;
+			children = (
+				9B84669A2798576300066F04 /* WebApi.swift */,
+				9B8466912798572E00066F04 /* Credential Storage */,
+				9B84668C2798549A00066F04 /* View */,
+				9B846688279852DA00066F04 /* SignWithAppleDelegates.swift */,
+			);
+			name = "Apple Login";
+			sourceTree = "<group>";
+		};
+		9B84668C2798549A00066F04 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9B84668D279854A700066F04 /* AppleLogInButtonView.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		9B8466912798572E00066F04 /* Credential Storage */ = {
+			isa = PBXGroup;
+			children = (
+				9B8466932798574E00066F04 /* Keychain.swift */,
+				9B8466942798574F00066F04 /* SharedWebCredential.swift */,
+				9B8466922798574E00066F04 /* UserData.swift */,
+				9B8466952798574F00066F04 /* UserDataKeychain.swift */,
+			);
+			name = "Credential Storage";
 			sourceTree = "<group>";
 		};
 		E79B3834E65BF6C6E80DF196 /* Frameworks */ = {
@@ -227,11 +277,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B84668E279854A700066F04 /* AppleLogInButtonView.swift in Sources */,
 				9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */,
 				9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */,
+				9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */,
 				9B20A6702796F4D80029CA0E /* ContentView.swift in Sources */,
+				9B8466992798574F00066F04 /* UserDataKeychain.swift in Sources */,
+				9B8466972798574F00066F04 /* Keychain.swift in Sources */,
+				9B846689279852DA00066F04 /* SignWithAppleDelegates.swift in Sources */,
 				9B84668627982E7800066F04 /* TestNaverLoginView.swift in Sources */,
+				9B8466982798574F00066F04 /* SharedWebCredential.swift in Sources */,
 				9B84668227981E5200066F04 /* NaverLoginDelegateObserver.swift in Sources */,
+				9B84669B2798576300066F04 /* WebApi.swift in Sources */,
+				9B8466962798574F00066F04 /* UserData.swift in Sources */,
 				9B20A65E2796F42A0029CA0E /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -372,6 +430,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "place-kr-app/place-kr-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W6QHM4Y43Z;
@@ -386,7 +445,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.enebin.place-kr-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.enebin.placekrapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -400,6 +459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "place-kr-app/place-kr-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W6QHM4Y43Z;
@@ -414,7 +474,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.enebin.place-kr-app";
+				PRODUCT_BUNDLE_IDENTIFIER = com.enebin.placekrapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

@@ -15,8 +15,11 @@ struct ContentView: View {
             Button(action: { showNaverLogin = true }) {
                 Text("Naver로 로그인")
             }
+            AppleLogInButtonView()
+            
             if showNaverLogin {
                 TestNaverLoginView()
+                    .frame(width: 0, height: 0)
             }
         }
     }
