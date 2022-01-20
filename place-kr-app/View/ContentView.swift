@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct ContentView: View {
     @State var showNaverLogin = false
+    @Environment(\.window) var window: UIWindow?
+    @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
+
     var body: some View {
         VStack {
             Text("Temporary")
@@ -16,6 +20,8 @@ struct ContentView: View {
                 Text("Naver로 로그인")
             }
             AppleLogInButtonView()
+                .environment(\.window, window)
+                .environment(\.managedObjectContext, viewContext)
             
             if showNaverLogin {
                 NaverLoginView()

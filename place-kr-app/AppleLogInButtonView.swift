@@ -27,10 +27,10 @@ struct AppleLogInButtonView: View {
             .onTapGesture(perform: showAppleLogin)
     }
     
-    // Generate the delegate and assign it to the class’ property.
-    // Generate the ASAuthorizationController as before, but this time, tell it to use your custom delegate class.
-    // By calling performRequests(), you’re asking iOS to display the Sign In with Apple modal view.
+    // MARK: Generate the delegate and assign it to the class’ property.
     private func showAppleLogin() {
+        // Generate the ASAuthorizationController as before, but this time, tell it to use your custom delegate class.
+        // By calling performRequests(), you’re asking iOS to display the Sign In with Apple modal view.
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = [.fullName, .email]
         
@@ -38,9 +38,9 @@ struct AppleLogInButtonView: View {
     }
     
     private func performSignIn(using requests: [ASAuthorizationRequest]) {
-        appleSignInDelegates = SignInWithAppleDelegates(window: window) { success in
+        appleSignInDelegates = SignInWithAppleDelegates(window: window) { userData, success in
             if success {
-                print("Success!!")
+                print("Success!")
             } else {
                 print("Error while preparing Apple login")
                 fatalError()
@@ -56,12 +56,10 @@ struct AppleLogInButtonView: View {
     
     private func performExistingAccountSetupFlows() {
     #if !targetEnvironment(simulator)
-        
         let requests = [
             ASAuthorizationAppleIDProvider().createRequest()
             //      ASAuthorizationPasswordRequest.createRequest()
         ]
-        
         performSignIn(using: requests)
     #endif
     }

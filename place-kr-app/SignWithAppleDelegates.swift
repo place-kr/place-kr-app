@@ -2,12 +2,12 @@ import UIKit
 import AuthenticationServices
 
 class SignInWithAppleDelegates: NSObject {
-    private let signInSucceeded: (Bool) -> Void
+    private let completionHandler: (AppleUserData, Bool) -> Void
     private weak var window: UIWindow!
     
-    init(window: UIWindow?, onSignedIn: @escaping (Bool) -> Void) {
+    init(window: UIWindow?, completion: @escaping (AppleUserData, Bool) -> Void) {
         self.window = window
-        self.signInSucceeded = onSignedIn
+        self.completionHandler = completion
     }
 }
 
@@ -42,26 +42,24 @@ extension SignInWithAppleDelegates: ASAuthorizationControllerDelegate {
     // Make a call to your service and signify to the caller whether registration succeeded or not.
     private func registerNewAccount(credential: ASAuthorizationAppleIDCredential) {
         let userData = AppleUserData(email: credential.email!, name: credential.fullName!, identifier: credential.user)
-        
-        print(userData)
+        self.completionHandler(userData, true)
         
         // MARK: Store in CoreData way
         
-        
         // MARK: Store in KeyChain way
-        let keychain = UserDataKeychain()
-        do {
-            try keychain.store(userData)
-        } catch {
-            self.signInSucceeded(false)
-        }
+//        let keychain = UserDataKeychain()
+//        do {
+//            try keychain.store(userData)
+//        } catch {
+//            self.signInSucceeded(false)
+//        }
         
-        do { // If you got web API, do stuffs in here
-            let success = try WebApi.Register(user: userData, identityToken: credential.identityToken, authorizationCode: credential.authorizationCode)
-            self.signInSucceeded(success)
-        } catch {
-            self.signInSucceeded(false)
-        }
+//        do { // If you got web API, do stuffs in here
+//            let success = try WebApi.Register(user: userData, identityToken: credential.identityToken, authorizationCode: credential.authorizationCode)
+//            self.signInSucceeded(success)
+//        } catch {
+//            self.signInSucceeded(false)
+//        }
     }
     
     private func signInWithExistingAccount(credential: ASAuthorizationAppleIDCredential) {
@@ -73,14 +71,17 @@ extension SignInWithAppleDelegates: ASAuthorizationControllerDelegate {
         //                  credential.authorizationCode)) {
         //   ...
         // }
-        self.signInSucceeded(true)
+        let userData = AppleUserData(email: nil, name: nil, identifier: credential.user)
+        self.completionHandler(userData, true)
     }
     
     private func signInWithUserAndPassword(credential: ASPasswordCredential) {
         // if (WebAPI.login(credential.user, credential.password)) {
         //   ...
         // }
-        self.signInSucceeded(true)
+        // TODO: To be corrected
+        let userData = AppleUserData(email: nil, name: nil, identifier: credential.user)
+        self.completionHandler(userData, true)
     }
     
     
