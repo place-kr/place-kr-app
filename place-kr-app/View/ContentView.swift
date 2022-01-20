@@ -18,7 +18,7 @@ struct ContentView: View {
             AppleLogInButtonView()
             
             if showNaverLogin {
-                TestNaverLoginView()
+                NaverLoginView()
                     .frame(width: 0, height: 0)
             }
         }

@@ -2,7 +2,7 @@
 import Foundation
 
 /// Represents the details about the user which were provided during initial registration.
-struct UserData: Codable {
+struct AppleUserData: Codable {
   /// The email address to use for user communications.  Remember it might be a relay!
   let email: String
 
