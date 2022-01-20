@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AuthenticationServices
+import CoreData
 
 final class SignInWithApple: UIViewRepresentable {
   func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
@@ -19,7 +20,10 @@ final class SignInWithApple: UIViewRepresentable {
 
 struct AppleLogInButtonView: View {
     @Environment(\.window) var window: UIWindow?
+    @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
     @State var appleSignInDelegates: SignInWithAppleDelegates! = nil
+
+    @FetchRequest(entity: UserProfile.entity(), sortDescriptors: []) var request: FetchedResults<UserProfile>
 
     var body: some View {
         SignInWithApple()
@@ -40,7 +44,13 @@ struct AppleLogInButtonView: View {
     private func performSignIn(using requests: [ASAuthorizationRequest]) {
         appleSignInDelegates = SignInWithAppleDelegates(window: window) { userData, success in
             if success {
-                print("Success!")
+                if let email = userData.email, let name = userData.name {
+                    UserProfile.create(userId: userData.identifier, name: name.displayName(), email: email, using: viewContext)
+                    print(userData)
+                } else {
+                    print("Already registered")
+                    print(userData)
+                }
             } else {
                 print("Error while preparing Apple login")
                 fatalError()
@@ -52,7 +62,6 @@ struct AppleLogInButtonView: View {
         controller.presentationContextProvider = appleSignInDelegates
         controller.performRequests()
     }
-    
     
     private func performExistingAccountSetupFlows() {
     #if !targetEnvironment(simulator)

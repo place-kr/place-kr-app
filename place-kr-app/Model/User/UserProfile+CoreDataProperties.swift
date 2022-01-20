@@ -32,6 +32,7 @@ extension UserProfile {
         userProfile.name = name
         userProfile.email = email
         userProfile.nickName = nickName
+        userProfile.dateCreated = Date()
         userProfile.gender = gender
         userProfile.age = age
         

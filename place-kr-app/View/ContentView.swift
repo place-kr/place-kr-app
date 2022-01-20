@@ -7,11 +7,14 @@
 
 import SwiftUI
 import CoreData
+import Combine
+
 
 struct ContentView: View {
     @State var showNaverLogin = false
     @Environment(\.window) var window: UIWindow?
     @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
+    @FetchRequest(entity: UserProfile.entity(), sortDescriptors: []) var userProfile: FetchedResults<UserProfile>
 
     var body: some View {
         VStack {
@@ -23,11 +26,20 @@ struct ContentView: View {
                 .environment(\.window, window)
                 .environment(\.managedObjectContext, viewContext)
             
+            TempView(txt: userProfile.first!)
+            
             if showNaverLogin {
                 NaverLoginView()
                     .frame(width: 0, height: 0)
             }
         }
+    }
+}
+
+struct TempView: View {
+    @ObservedObject var txt: UserProfile
+    var body: some View {
+        Text(txt.name ?? "Nothing")
     }
 }
 
