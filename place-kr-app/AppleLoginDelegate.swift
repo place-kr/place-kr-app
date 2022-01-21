@@ -1,7 +1,7 @@
 import UIKit
 import AuthenticationServices
 
-class SignInWithAppleDelegates: NSObject {
+class AppleLoginDelegate: NSObject {
     private let completionHandler: (AppleUserData, Bool) -> Void
     private weak var window: UIWindow!
     
@@ -11,13 +11,13 @@ class SignInWithAppleDelegates: NSObject {
     }
 }
 
-extension SignInWithAppleDelegates: ASAuthorizationControllerPresentationContextProviding {
+extension AppleLoginDelegate: ASAuthorizationControllerPresentationContextProviding {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return self.window
     }
 }
 
-extension SignInWithAppleDelegates: ASAuthorizationControllerDelegate {
+extension AppleLoginDelegate: ASAuthorizationControllerDelegate {
     // If you receive details, you know it’s a new registration.
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
