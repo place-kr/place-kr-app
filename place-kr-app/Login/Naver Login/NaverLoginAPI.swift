@@ -35,7 +35,6 @@ enum NaverLoginRouter {
         
         // 헤더 설정
         request.addValue(result.header["Authorization"]!, forHTTPHeaderField: "Authorization")
-        
         return request
     }
 }

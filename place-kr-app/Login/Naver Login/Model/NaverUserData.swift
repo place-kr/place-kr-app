@@ -1,6 +1,11 @@
 import SwiftUI
 
 struct NaverUserData: Codable {
+    enum userType {
+        case registered
+        case new
+    }
+    
     let id: String          /// 동일인 식별 정보 - 동일인 식별 정보는 네이버 아이디마다 고유하게 발급되는 값
     let name: String        /// 사용자 이름
     let email: String       /// 사용자 메일 주소

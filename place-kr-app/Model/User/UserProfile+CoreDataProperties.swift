@@ -18,15 +18,22 @@ extension UserProfile {
     }
 
     @NSManaged public var userId: String
+    @NSManaged public var name: String
+    @NSManaged public var email: String
     @NSManaged public var nickName: String?
     @NSManaged public var gender: String?
     @NSManaged public var age: Int16
     @NSManaged public var dateCreated: Date
     @NSManaged public var dateModified: Date?
-    @NSManaged public var name: String
-    @NSManaged public var email: String?
     
-    static func create(userId: String, name: String, email: String, nickName: String? = nil, gender: String? = nil, age: Int16 = 0, using context: NSManagedObjectContext) {
+    static func create(userId: String,
+                       name: String,
+                       email: String,
+                       nickName: String? = nil,
+                       gender: String? = nil,
+                       age: Int16 = 0,
+                       using context: NSManagedObjectContext) {
+        
         let userProfile = UserProfile(context: context)
         userProfile.userId = userId
         userProfile.name = name
@@ -47,6 +54,10 @@ extension UserProfile {
     static func fetchUserById(_ userID: String) -> FetchRequest<UserProfile> {
         let userIDPredicate = NSPredicate(format: "%K == %@", "userId", userID)
         return FetchRequest(entity: UserProfile.entity(), sortDescriptors: [], predicate: userIDPredicate)
+    }
+    
+    static func clearAllForDebug(in context: NSManagedObjectContext) {
+        context.reset()
     }
 }
 

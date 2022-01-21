@@ -9,7 +9,7 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
     
     // 로그아웃시도 사용되어서 static으로 선언
     let vc = NaverViewController()
-    var callback: (NaverUserData?, Bool) -> Void
+    var callback: (NaverUserData) -> Void
     
     func makeUIViewController(context: Context) -> UIViewController {
         return vc
@@ -23,9 +23,9 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, NaverThirdPartyLoginConnectionDelegate {
         @Published var cancellable: AnyCancellable?
-        var callback: (NaverUserData?, Bool) -> Void
+        var callback: (NaverUserData) -> Void
         
-        init(vc: NaverViewController, callback: @escaping (NaverUserData?, Bool) -> Void) {
+        init(vc: NaverViewController, callback: @escaping (NaverUserData) -> Void) {
             self.callback = callback
             super.init()
             vc.delegate = self
@@ -57,7 +57,7 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
             print("error = \(error.localizedDescription)")
         }
         
-        func getInfo() {
+        private func getInfo() {
             guard
                 let isValidAccessToken = NaverVCRepresentable.loginInstance?.isValidAccessTokenExpireTimeNow()
             else {
@@ -75,14 +75,12 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
                     switch completion {
                     case let .failure(error):
                         print("Naver login failed")
-                        self.callback(nil, false)
-                        print(error)
+                        fatalError("\(error)")
                     case .finished:
                         print("Naver login successed")
                     }
                 }, receiveValue: { response_naver_login in
-                    print("네이버 로그인 이메일 \(response_naver_login.response)")
-                    self.callback(response_naver_login.response, true)
+                    self.callback(response_naver_login.response)
                 })
         }
     }

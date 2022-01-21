@@ -16,6 +16,9 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
     @FetchRequest(entity: UserProfile.entity(), sortDescriptors: []) var userProfile: FetchedResults<UserProfile>
 
+    // MARK: DEBUG vars
+    @State var showingAlert = false
+    
     var body: some View {
         VStack {
             Text("Temporary")
@@ -27,6 +30,11 @@ struct ContentView: View {
                 .environment(\.managedObjectContext, viewContext)
             
             TempView(txt: userProfile.first!)
+                .contentShape(Rectangle())
+                .onTapGesture(perform: {
+                    UserProfile.clearAllForDebug(in: viewContext)
+                    print("Tapped") // TODO: FIx here
+                })
             
             if showNaverLogin {
                 NaverLoginView()
@@ -40,7 +48,7 @@ struct ContentView: View {
 struct TempView: View {
     @ObservedObject var txt: UserProfile
     var body: some View {
-        Text(txt.name ?? "Nothing")
+        Text(txt.name)
     }
 }
 
