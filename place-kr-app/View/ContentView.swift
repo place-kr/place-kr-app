@@ -31,6 +31,7 @@ struct ContentView: View {
             if showNaverLogin {
                 NaverLoginView()
                     .frame(width: 0, height: 0)
+                    .environment(\.managedObjectContext, viewContext)
             }
         }
     }
