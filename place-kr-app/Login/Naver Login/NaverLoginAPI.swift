@@ -20,14 +20,12 @@ enum NaverLoginRouter {
         }()
         
         guard var urlComponent = URLComponents(string: "https://openapi.naver.com/v1/nid/me" + result.path) else {
-            //            APIError.invalidEndpoint
             fatalError("APIError.invalidEndpoint") // handle error
         }
         urlComponent.queryItems = result.parameter.map {
             URLQueryItem(name: $0.key, value: $0.value)
         }
         guard let url = urlComponent.url else {
-            //            APIError.invalidEndpoint
             fatalError("APIError.invalidEndpoint")
         }
         var request = URLRequest(url: url)

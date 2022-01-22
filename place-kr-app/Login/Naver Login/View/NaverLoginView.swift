@@ -49,12 +49,12 @@ struct NaverLoginButtonView: View {
             let results = try viewContext.fetch(request)
             print(results.count)
             if results.isEmpty {
-                return .notRegistered    // Not registered
+                return .notRegistered
             } else {
-                return .registered     // Registered
+                return .registered
             }
         } catch {
-            fatalError("Error fetching user profile")
+            fatalError("Error while fetching user's profile")
         }
     }
 }
