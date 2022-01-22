@@ -5,9 +5,12 @@ struct NaverLoginView: View {
     @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
     @FetchRequest(entity: UserProfile.entity(), sortDescriptors: []) var userProfile: FetchedResults<UserProfile>
     
+    @Binding var success: Bool
+    
     var body: some View {
         NaverVCRepresentable { userData in
-            if isUserRegistered(userData) == NaverUserData.userType.new {
+            
+            if isUserRegistered(userData) == NaverUserData.userType.notRegistered {
                 UserProfile.create(userId: userData.id,
                                    name: userData.name,
                                    email: userData.email,
@@ -16,6 +19,8 @@ struct NaverLoginView: View {
                 print("Already Registered")
                 print(userData.name)
             }
+            
+            success = true
         }
     }
     
@@ -32,7 +37,7 @@ struct NaverLoginView: View {
             let results = try viewContext.fetch(request)
             print(results.count)
             if results.isEmpty {
-                return .new    // Not registered
+                return .notRegistered    // Not registered
             } else {
                 return .registered     // Registered
             }
@@ -44,6 +49,6 @@ struct NaverLoginView: View {
 
 struct TestNaverLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        NaverLoginView()
+        NaverLoginView(success: .constant(false))
     }
 }

@@ -21,7 +21,9 @@ struct AppleLogInButtonView: View {
     @Environment(\.window) var window: UIWindow?
     @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
     @FetchRequest(entity: UserProfile.entity(), sortDescriptors: []) var userProfile: FetchedResults<UserProfile>
+    
     @State var appleSignInDelegates: AppleLoginDelegate! = nil
+    @Binding var success: Bool
 
     var body: some View {
         SignInWithApple()
@@ -43,8 +45,10 @@ struct AppleLogInButtonView: View {
                     print("Already registered.")
                     print(userProfile.first?.name ?? "Error: No name")
                 }
+                self.success = true
             } else {
                 print("Error while preparing Apple login")
+                self.success = false
                 fatalError()
             }
         }
@@ -61,6 +65,6 @@ struct AppleLogInButtonView: View {
 // Call your existing setup code.
 struct AppleLogInButton_Previews: PreviewProvider {
     static var previews: some View {
-        AppleLogInButtonView()
+        AppleLogInButtonView(success: .constant(false))
     }
 }

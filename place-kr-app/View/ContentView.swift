@@ -13,20 +13,19 @@ import Combine
 struct ContentView: View {
     @Environment(\.window) var window: UIWindow?
     @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
+    @State var isLoginSuccessed = false
     
     var body: some View {
-            LogInView()
+        if !isLoginSuccessed {
+            LogInView(success: $isLoginSuccessed)
                 .environment(\.window, window)
                 .environment(\.managedObjectContext, viewContext)
+        } else {
+            Text("Login Successed!")
+        }
     }
 }
 
-struct TempView: View {
-    @ObservedObject var txt: UserProfile
-    var body: some View {
-        Text(txt.name)
-    }
-}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
