@@ -1,26 +1,38 @@
 import SwiftUI
 import CoreData
 
-struct NaverLoginView: View {
+struct NaverLoginButtonView: View {
     @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
     @FetchRequest(entity: UserProfile.entity(), sortDescriptors: []) var userProfile: FetchedResults<UserProfile>
     
     @Binding var success: Bool
-    
+    @State var showNaverLogin = false
+
     var body: some View {
-        NaverVCRepresentable { userData in
-            
-            if isUserRegistered(userData) == NaverUserData.userType.notRegistered {
-                UserProfile.create(userId: userData.id,
-                                   name: userData.name,
-                                   email: userData.email,
-                                   using: viewContext)
-            } else {
-                print("Already Registered")
-                print(userData.name)
+        
+        Button(action: { showNaverLogin = true }) {
+            Text("Naver로 로그인")
+                .font(.system(size: 20))
+        }
+        .foregroundColor(.white)
+        .onTapGesture {
+            showNaverLogin = true
+        }
+        
+        if showNaverLogin {
+            NaverVCRepresentable { userData in
+                if isUserRegistered(userData) == NaverUserData.userType.notRegistered {
+                    UserProfile.create(userId: userData.id,
+                                       name: userData.name,
+                                       email: userData.email,
+                                       using: viewContext)
+                } else {
+                    print("Already Registered")
+                    print(userData.name)
+                }
+                
+                success = true
             }
-            
-            success = true
         }
     }
     
@@ -47,8 +59,8 @@ struct NaverLoginView: View {
     }
 }
 
-struct TestNaverLoginView_Previews: PreviewProvider {
+struct NaverLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        NaverLoginView(success: .constant(false))
+        NaverLoginButtonView(success: .constant(false))
     }
 }
