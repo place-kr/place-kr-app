@@ -10,34 +10,50 @@ import CoreData
 import Combine
 
 struct LogInView: View {
-    
     @Environment(\.window) var window: UIWindow?
     @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
     @FetchRequest(entity: UserProfile.entity(), sortDescriptors: []) var userProfile: FetchedResults<UserProfile>
     
     @Binding var success: Bool
     
-
+    
     var body: some View {
-            VStack {
-                Image(systemName: "shareplay")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 150, height: 150, alignment: .center)
-                    .padding(.bottom)
-                
-                NaverLoginButtonView(success: $success)
-                    .frame(width: 280, height: 60)
-                    .background(
-                        RoundedRectangle(cornerRadius: 5)
-                            .fill(Color.black))
-                 
-                AppleLogInButtonView(success: $success)
-                    .frame(width: 280, height: 60)
-                    .environment(\.window, window)
-                    .environment(\.managedObjectContext, viewContext)
-                
+        VStack(spacing: 0) {
+            Spacer()
+            RoundedRectangle(cornerRadius: 21)
+                .fill(.gray.opacity(0.5))
+                .frame(width: 125, height: 125)
+                .padding(.bottom, 22)
+            
+            Text("MYPLACE")
+                .font(.system(size: 27))
+                .padding(.bottom, 12)
+            
+            Text("나만의 플레이스 만들기")
+                .font(.system(size: 12))
+                .padding(.bottom, 95)
+            
+            NaverLoginButtonView(success: $success)
+                .frame(width: 320, height: 54)
+                .background(
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.black))
+                .padding(.bottom, 14)
+            
+            AppleLogInButtonView(success: $success)
+                .frame(width: 320, height: 54)
+                .environment(\.window, window)
+                .environment(\.managedObjectContext, viewContext)
+            
+            Spacer()
+            HStack {
+                Text("개인정보처리방침")
+                    .font(.system(size: 12))
+                Text("이용약관")
+                    .font(.system(size: 12))
             }
+
+        }
     }
     
 }
