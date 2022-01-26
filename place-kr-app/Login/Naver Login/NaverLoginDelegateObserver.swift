@@ -19,13 +19,25 @@ enum NaverLoginError: Error, CustomStringConvertible {
     }
 }
 
+struct NaverUserInfo: Codable {
+    let identifier: String
+    let email: String
+    let accessToken: String
+    
+    enum CodingKeys : String, CodingKey{
+        case identifier
+        case email
+        case accessToken = "access_token"
+    }
+}
+
 struct NaverVCRepresentable: UIViewControllerRepresentable {
     static var loginInstance: NaverThirdPartyLoginConnection? = nil
     
     // 로그아웃시도 사용되어서 static으로 선언
     let vc = NaverViewController()
-//    var callback: (NaverUserData) -> Void
-    var callback: (Result<(String, String), NaverLoginError>) -> Void
+    //    var callback: (NaverUserData) -> Void
+    var callback: (Result<NaverUserInfo, NaverLoginError>) -> Void
     
     func makeUIViewController(context: Context) -> UIViewController {
         return vc
@@ -39,10 +51,11 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, NaverThirdPartyLoginConnectionDelegate {
         @Published var cancellable: AnyCancellable?
-//        var callback: (NaverUserData) -> Void
-        var callback: (Result<(String, String), NaverLoginError>) -> Void
+        //        var callback: (NaverUserData) -> Void
+        //        var callback: (Result<(String, String), NaverLoginError>) -> Void
+        var callback : (Result<NaverUserInfo, NaverLoginError>) -> Void
         
-        init(vc: NaverViewController, callback: @escaping (Result<(String, String), NaverLoginError>) -> Void) {
+        init(vc: NaverViewController, callback: @escaping (Result<NaverUserInfo, NaverLoginError>) -> Void) {
             self.callback = callback
             super.init()
             vc.delegate = self
@@ -55,15 +68,15 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
         // 로그인에 성공한 경우 호출
         func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
             print("Success login")
-//            getInfo()
-            self.callback(getAcessToken())
+            getInfo()
+            //            self.callback(getAcessToken())
         }
         
         //  로그인된 상태(로그아웃이나 연동해제 하지않은 상태)에서 로그인 재시도
         func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
             //      loginInstance?.accessToken
-//            getInfo()
-            self.callback(getAcessToken())
+            getInfo()
+            //            self.callback(getAcessToken())
         }
         
         // 로그아웃
@@ -74,6 +87,45 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
         // 모든 error
         func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
             print("error = \(error.localizedDescription)")
+        }
+        
+        
+        private func getInfo() {
+            guard
+                let isValidAccessToken = NaverVCRepresentable.loginInstance?.isValidAccessTokenExpireTimeNow()
+            else {
+                // TODO: Handle error
+                self.callback(.failure(.invalidResponse))
+                return
+            }
+            
+            if !isValidAccessToken { self.callback(.failure(.expiredToken)) }
+            
+            guard let tokenType = NaverVCRepresentable.loginInstance?.tokenType else {
+                self.callback(.failure(.invalidResponse))
+                return
+            }
+            guard let accessToken = NaverVCRepresentable.loginInstance?.accessToken else {
+                self.callback(.failure(.invalidResponse))
+                return
+            }
+            
+            cancellable = try? NaverLogin(tokenType: tokenType, accessToken: accessToken)?
+                .sink(receiveCompletion: { completion in
+                    switch completion {
+                    case let .failure(error):
+                        print("Naver login failed")
+                        self.callback(.failure(.invalidResponse))
+                    case .finished:
+                        print("Naver login successed")
+                    }
+                }, receiveValue: {
+                    let userID = $0.response.id
+                    let email = $0.response.email
+                    let userInfo = NaverUserInfo(identifier: userID, email: email, accessToken: accessToken)
+                    
+                    self.callback(.success(userInfo))
+                })
         }
         
         private func getAcessToken() -> Result<(String, String), NaverLoginError> {
@@ -95,33 +147,34 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
             
             return .success((tokenType, accessToken))
         }
+
         
-//        private func getInfo() {
-//            guard
-//                let isValidAccessToken = NaverVCRepresentable.loginInstance?.isValidAccessTokenExpireTimeNow()
-//            else {
-//                print("Naver login token expired")
-//                return
-//            }
-//
-//            if !isValidAccessToken { return }
-//
-//            guard let tokenType = NaverVCRepresentable.loginInstance?.tokenType else { return }
-//            guard let accessToken = NaverVCRepresentable.loginInstance?.accessToken else { return }
-//
-//            cancellable = try? NaverLogin(tokenType: tokenType, accessToken: accessToken)?
-//                .sink(receiveCompletion: { completion in
-//                    switch completion {
-//                    case let .failure(error):
-//                        print("Naver login failed")
-//                        fatalError("\(error)")
-//                    case .finished:
-//                        print("Naver login successed")
-//                    }
-//                }, receiveValue: { response_naver_login in
-//                    self.callback(response_naver_login.response)
-//                })
-//        }
+        //        private func getInfo() {
+        //            guard
+        //                let isValidAccessToken = NaverVCRepresentable.loginInstance?.isValidAccessTokenExpireTimeNow()
+        //            else {
+        //                print("Naver login token expired")
+        //                return
+        //            }
+        //
+        //            if !isValidAccessToken { return }
+        //
+        //            guard let tokenType = NaverVCRepresentable.loginInstance?.tokenType else { return }
+        //            guard let accessToken = NaverVCRepresentable.loginInstance?.accessToken else { return }
+        //
+        //            cancellable = try? NaverLogin(tokenType: tokenType, accessToken: accessToken)?
+        //                .sink(receiveCompletion: { completion in
+        //                    switch completion {
+        //                    case let .failure(error):
+        //                        print("Naver login failed")
+        //                        fatalError("\(error)")
+        //                    case .finished:
+        //                        print("Naver login successed")
+        //                    }
+        //                }, receiveValue: { response_naver_login in
+        //                    self.callback(response_naver_login.response)
+        //                })
+        //        }
     }
     
     typealias UIViewControllerType = UIViewController

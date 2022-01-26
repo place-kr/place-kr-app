@@ -13,8 +13,8 @@ import SwiftUI
 
 struct OnboardingView: View {
     var body: some View {
-        VStack {
-            List {
+        ScrollView {
+            VStack {
                 ForEach(0..<10, id: \.self) { _ in
                     HStack {
                         ForEach(0..<3, id: \.self) { _ in

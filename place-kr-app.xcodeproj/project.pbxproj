@@ -107,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				9B22944B27990018000805F0 /* Login */,
+				9BF582C8279B8AF90068805E /* LogInView.swift */,
 				9B2294452798FF04000805F0 /* Model */,
 				9B20A65B2796F42A0029CA0E /* AppDelegate.swift */,
 				9B20A65D2796F42A0029CA0E /* SceneDelegate.swift */,
@@ -152,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				9B20A66F2796F4D80029CA0E /* ContentView.swift */,
-				9BF582C8279B8AF90068805E /* LogInView.swift */,
 				9B2AB36C27A015B700B30242 /* OnboardingView.swift */,
 			);
 			path = View;
