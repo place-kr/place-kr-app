@@ -17,7 +17,7 @@
 		9B22944A2798FF4B000805F0 /* UserProfile+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2294482798FF4B000805F0 /* UserProfile+CoreDataProperties.swift */; };
 		9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2AB36C27A015B700B30242 /* OnboardingView.swift */; };
 		9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */; };
-		9B84668227981E5200066F04 /* NaverLoginDelegateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegateObserver.swift */; };
+		9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegate.swift */; };
 		9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* NaverLoginView.swift */; };
 		9B846689279852DA00066F04 /* AppleLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B846688279852DA00066F04 /* AppleLoginDelegate.swift */; };
 		9B84668E279854A700066F04 /* AppleLogInButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668D279854A700066F04 /* AppleLogInButtonView.swift */; };
@@ -27,6 +27,7 @@
 		9B8466982798574F00066F04 /* SharedWebCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8466942798574F00066F04 /* SharedWebCredential.swift */; };
 		9B8466992798574F00066F04 /* UserDataKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8466952798574F00066F04 /* UserDataKeychain.swift */; };
 		9B84669B2798576300066F04 /* WebApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84669A2798576300066F04 /* WebApi.swift */; };
+		9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */; };
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
 		9BF582C9279B8AF90068805E /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C8279B8AF90068805E /* LogInView.swift */; };
 		C1E57CCEE0673CDEBD22B5D4 /* Pods_place_kr_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1A347437C52C1C27B681B8F /* Pods_place_kr_app.framework */; };
@@ -46,7 +47,7 @@
 		9B2AB36C27A015B700B30242 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		9B7ADA6B279D99C700700826 /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Playground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
-		9B84668127981E5200066F04 /* NaverLoginDelegateObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegateObserver.swift; sourceTree = "<group>"; };
+		9B84668127981E5200066F04 /* NaverLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegate.swift; sourceTree = "<group>"; };
 		9B84668527982E7800066F04 /* NaverLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginView.swift; sourceTree = "<group>"; };
 		9B846688279852DA00066F04 /* AppleLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginDelegate.swift; sourceTree = "<group>"; };
 		9B84668B2798543F00066F04 /* place-kr-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "place-kr-app.entitlements"; sourceTree = SOURCE_ROOT; };
@@ -57,6 +58,7 @@
 		9B8466942798574F00066F04 /* SharedWebCredential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedWebCredential.swift; sourceTree = "<group>"; };
 		9B8466952798574F00066F04 /* UserDataKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataKeychain.swift; sourceTree = "<group>"; };
 		9B84669A2798576300066F04 /* WebApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebApi.swift; sourceTree = "<group>"; };
+		9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginViewModel.swift; sourceTree = "<group>"; };
 		9BF582C6279ADDEB0068805E /* NaverUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverUserData.swift; sourceTree = "<group>"; };
 		9BF582C8279B8AF90068805E /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		AA35C7AE8C712DACC6E4842A /* Pods-place-kr-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-place-kr-app.debug.xcconfig"; path = "Target Support Files/Pods-place-kr-app/Pods-place-kr-app.debug.xcconfig"; sourceTree = "<group>"; };
@@ -161,20 +163,13 @@
 		9B84668327982E5D00066F04 /* Naver Login */ = {
 			isa = PBXGroup;
 			children = (
-				9B84668427982E6800066F04 /* View */,
 				9BF582C5279ADDDB0068805E /* Model */,
+				9B84668527982E7800066F04 /* NaverLoginView.swift */,
+				9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */,
 				9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */,
-				9B84668127981E5200066F04 /* NaverLoginDelegateObserver.swift */,
+				9B84668127981E5200066F04 /* NaverLoginDelegate.swift */,
 			);
 			path = "Naver Login";
-			sourceTree = "<group>";
-		};
-		9B84668427982E6800066F04 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				9B84668527982E7800066F04 /* NaverLoginView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		9B846687279852C300066F04 /* Apple Login */ = {
@@ -350,10 +345,11 @@
 				9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */,
 				9BF582C9279B8AF90068805E /* LogInView.swift in Sources */,
 				9B846689279852DA00066F04 /* AppleLoginDelegate.swift in Sources */,
+				9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */,
 				9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */,
 				9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */,
 				9B8466982798574F00066F04 /* SharedWebCredential.swift in Sources */,
-				9B84668227981E5200066F04 /* NaverLoginDelegateObserver.swift in Sources */,
+				9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */,
 				9B84669B2798576300066F04 /* WebApi.swift in Sources */,
 				9B8466962798574F00066F04 /* AppleUserData.swift in Sources */,
 				9B2294492798FF4B000805F0 /* UserProfile+CoreDataClass.swift in Sources */,
