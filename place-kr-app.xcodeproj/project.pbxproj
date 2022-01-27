@@ -28,6 +28,7 @@
 		9B8466992798574F00066F04 /* UserDataKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8466952798574F00066F04 /* UserDataKeychain.swift */; };
 		9B84669B2798576300066F04 /* WebApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84669A2798576300066F04 /* WebApi.swift */; };
 		9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */; };
+		9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */; };
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
 		9BF582C9279B8AF90068805E /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C8279B8AF90068805E /* LogInView.swift */; };
 		C1E57CCEE0673CDEBD22B5D4 /* Pods_place_kr_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1A347437C52C1C27B681B8F /* Pods_place_kr_app.framework */; };
@@ -59,6 +60,7 @@
 		9B8466952798574F00066F04 /* UserDataKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataKeychain.swift; sourceTree = "<group>"; };
 		9B84669A2798576300066F04 /* WebApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebApi.swift; sourceTree = "<group>"; };
 		9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginViewModel.swift; sourceTree = "<group>"; };
+		9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extensions.swift"; sourceTree = "<group>"; };
 		9BF582C6279ADDEB0068805E /* NaverUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverUserData.swift; sourceTree = "<group>"; };
 		9BF582C8279B8AF90068805E /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		AA35C7AE8C712DACC6E4842A /* Pods-place-kr-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-place-kr-app.debug.xcconfig"; path = "Target Support Files/Pods-place-kr-app/Pods-place-kr-app.debug.xcconfig"; sourceTree = "<group>"; };
@@ -108,8 +110,8 @@
 		9B20A65A2796F42A0029CA0E /* place-kr-app */ = {
 			isa = PBXGroup;
 			children = (
+				9BEDED2927A26B7400EE560C /* Util */,
 				9B22944B27990018000805F0 /* Login */,
-				9BF582C8279B8AF90068805E /* LogInView.swift */,
 				9B2294452798FF04000805F0 /* Model */,
 				9B20A65B2796F42A0029CA0E /* AppDelegate.swift */,
 				9B20A65D2796F42A0029CA0E /* SceneDelegate.swift */,
@@ -145,6 +147,7 @@
 		9B22944B27990018000805F0 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				9BF582C8279B8AF90068805E /* LogInView.swift */,
 				9B84668327982E5D00066F04 /* Naver Login */,
 				9B846687279852C300066F04 /* Apple Login */,
 			);
@@ -201,6 +204,14 @@
 				9B8466952798574F00066F04 /* UserDataKeychain.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		9BEDED2927A26B7400EE560C /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		9BF582C5279ADDDB0068805E /* Model */ = {
@@ -337,6 +348,7 @@
 				9B2294442798FDA2000805F0 /* Users.xcdatamodeld in Sources */,
 				9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */,
 				9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */,
+				9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */,
 				9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */,
 				9B20A6702796F4D80029CA0E /* ContentView.swift in Sources */,
 				9B8466992798574F00066F04 /* UserDataKeychain.swift in Sources */,
