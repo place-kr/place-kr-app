@@ -10,7 +10,6 @@ struct NaverLoginButtonView: View {
     @ObservedObject var viewModel = NaverLoginButtonViewModel()
 
     var body: some View {
-        
         Button(action: { showNaverLogin = true }) {
             Text("Naver로 로그인")
                 .font(.system(size: 20))

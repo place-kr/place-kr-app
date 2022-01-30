@@ -1,11 +1,17 @@
 import UIKit
 import CoreData
 import NaverThirdPartyLogin
+import NMapsMap
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        // MARK: -네이버맵 SDK 인스턴스 생성
+        NMFAuthManager.shared().clientId = "gutse7wfn1"
+        
+        
+        // MARK: -네이버로그인 SDK 인스턴스 호출
         guard let instance = NaverThirdPartyLoginConnection.getSharedInstance() else {
             fatalError("Error occured while preparing NAVER login")
         }

@@ -7,5 +7,6 @@ target 'place-kr-app' do
 
   # Pods for place-kr-app
   pod 'naveridlogin-sdk-ios'
+  pod 'NMapsMap'
 	
 end

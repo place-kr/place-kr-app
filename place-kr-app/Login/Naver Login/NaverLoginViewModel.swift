@@ -56,7 +56,7 @@ class NaverLoginButtonViewModel: ObservableObject {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Peek into request body
-//        print(String(data: body, encoding: String.Encoding.utf8))
+        //        print(String(data: body, encoding: String.Encoding.utf8))
         let task = session.uploadTask(with: request, from: body) { data, response, error in
             if let error = error {
                 print("Error while uploading")
@@ -64,10 +64,10 @@ class NaverLoginButtonViewModel: ObservableObject {
                 return
             }
 
-            // Peek into response
-            print(response as Any)
-            if let response = response {
-                print(response)
+            if let response = response as? HTTPURLResponse, !((200...300).contains(response.statusCode)) {
+                completionHandler(.failure(URLError.self as! Error))
+                // Peek into response if error occurs
+                print(response as Any)
             }
 
             guard let data = data else {
@@ -76,12 +76,12 @@ class NaverLoginButtonViewModel: ObservableObject {
                 return
             }
 
-            print(String(data: data, encoding: String.Encoding.utf8) as Any)
             let decoder = JSONDecoder()
             guard let jsonData = try? decoder.decode(NaverLoginRequestResponse.self, from: data) else {
-                print("Error in parsing")
+                print("Error while parsing")
                 return
             }
+            
             print(jsonData.getDescription())
         }
         task.resume()

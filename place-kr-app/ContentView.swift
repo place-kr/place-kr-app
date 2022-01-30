@@ -21,7 +21,7 @@ struct ContentView: View {
                 .environment(\.window, window)
                 .environment(\.managedObjectContext, viewContext)
         } else {
-            Text("Login Successed!")
+            OnboardingView()
         }
     }
 }
