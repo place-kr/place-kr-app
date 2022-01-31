@@ -17,6 +17,7 @@
 		9B22944A2798FF4B000805F0 /* UserProfile+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2294482798FF4B000805F0 /* UserProfile+CoreDataProperties.swift */; };
 		9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2AB36C27A015B700B30242 /* OnboardingView.swift */; };
 		9B4A02D827A6B8240037D05F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02D727A6B8240037D05F /* MapView.swift */; };
+		9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02DB27A6BD170037D05F /* UIMapView.swift */; };
 		9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */; };
 		9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegate.swift */; };
 		9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* NaverLoginView.swift */; };
@@ -48,6 +49,7 @@
 		9B2294482798FF4B000805F0 /* UserProfile+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserProfile+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9B2AB36C27A015B700B30242 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		9B4A02D727A6B8240037D05F /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		9B4A02DB27A6BD170037D05F /* UIMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIMapView.swift; sourceTree = "<group>"; };
 		9B7ADA6B279D99C700700826 /* Playground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Playground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
 		9B84668127981E5200066F04 /* NaverLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegate.swift; sourceTree = "<group>"; };
@@ -149,9 +151,9 @@
 		9B22944B27990018000805F0 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				9BF582C8279B8AF90068805E /* LogInView.swift */,
 				9B84668327982E5D00066F04 /* Naver Login */,
 				9B846687279852C300066F04 /* Apple Login */,
+				9BF582C8279B8AF90068805E /* LogInView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
+				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -197,21 +200,13 @@
 		9B846687279852C300066F04 /* Apple Login */ = {
 			isa = PBXGroup;
 			children = (
-				9B84668C2798549A00066F04 /* View */,
 				9B8466912798572E00066F04 /* Model */,
+				9B84668D279854A700066F04 /* AppleLogInButtonView.swift */,
 				9B84669A2798576300066F04 /* WebApi.swift */,
 				9B846688279852DA00066F04 /* AppleLoginDelegate.swift */,
 			);
 			name = "Apple Login";
 			path = ..;
-			sourceTree = "<group>";
-		};
-		9B84668C2798549A00066F04 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				9B84668D279854A700066F04 /* AppleLogInButtonView.swift */,
-			);
-			name = View;
 			sourceTree = "<group>";
 		};
 		9B8466912798572E00066F04 /* Model */ = {
@@ -372,6 +367,7 @@
 				9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */,
 				9B20A6702796F4D80029CA0E /* ContentView.swift in Sources */,
 				9B8466992798574F00066F04 /* UserDataKeychain.swift in Sources */,
+				9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */,
 				9B22944A2798FF4B000805F0 /* UserProfile+CoreDataProperties.swift in Sources */,
 				9B8466972798574F00066F04 /* Keychain.swift in Sources */,
 				9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */,
