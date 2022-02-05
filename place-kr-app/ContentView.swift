@@ -17,10 +17,10 @@ struct ContentView: View {
     
     var body: some View {
         if !isLoginSuccessed {
-            MapView()
-//            LogInView(success: $isLoginSuccessed)
-//                .environment(\.window, window)
-//                .environment(\.managedObjectContext, viewContext)
+//            MapView()
+            LogInView(success: $isLoginSuccessed)
+                .environment(\.window, window)
+                .environment(\.managedObjectContext, viewContext)
         } else {
             OnboardingView()
         }
