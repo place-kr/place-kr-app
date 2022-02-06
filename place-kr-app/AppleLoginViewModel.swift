@@ -13,7 +13,6 @@ import AuthenticationServices
 
 class AppleLoginViewModel: ObservableObject {
     @Published var appleSignInDelegates: AppleLoginDelegate! = nil
-    typealias Body = AuthAPIManager.PostBody.Apple
     
     var window: UIWindow?
     
@@ -41,9 +40,11 @@ class AppleLoginViewModel: ObservableObject {
                     
                     // Post request
                     let url = URL(string: "https://dev.place.tk/api/v1/auth/apple")!
-                    let body = Body(identifier: userInfo.id,
-                                    email: userInfo.email,
-                                    idToken: userInfo.idToken)
+                    let body = AuthAPIManager.AppleBody(
+                        identifier: userInfo.id,
+                        email: userInfo.email,
+                        idToken: userInfo.idToken
+                    )
 
                     AuthAPIManager.sendPostRequest(to: url, body: body) { result in
                         switch result {
