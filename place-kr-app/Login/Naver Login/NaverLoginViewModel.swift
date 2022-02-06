@@ -8,10 +8,6 @@
 import Foundation
 
 class NaverLoginButtonViewModel: ObservableObject {
-    init() {
-        
-    }
-    
     private struct NaverLoginRequestResponse: Codable {
         let token: String
         

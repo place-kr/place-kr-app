@@ -11,8 +11,6 @@ import Combine
 
 struct LogInView: View {
     @Environment(\.window) var window: UIWindow?
-    @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
-    @FetchRequest(entity: UserProfile.entity(), sortDescriptors: []) var userProfile: FetchedResults<UserProfile>
     
     @Binding var success: Bool
     
@@ -40,10 +38,9 @@ struct LogInView: View {
                         .fill(Color.black))
                 .padding(.bottom, 14)
             
-            AppleLogInButtonView(viewModel: AppleLoginViewModel(window: window, viewContext: viewContext), success: $success)
+            AppleLogInButtonView(viewModel: AppleLoginViewModel(window: window), success: $success)
                 .frame(width: 320, height: 54)
                 .environment(\.window, window)
-                .environment(\.managedObjectContext, viewContext)
             
             Spacer()
             HStack {

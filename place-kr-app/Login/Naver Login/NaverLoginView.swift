@@ -2,9 +2,6 @@ import SwiftUI
 import CoreData
 
 struct NaverLoginButtonView: View {
-    @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
-    @FetchRequest(entity: UserProfile.entity(), sortDescriptors: []) var userProfile: FetchedResults<UserProfile>
-    
     @Binding var success: Bool
     @State var showNaverLogin = false
     @ObservedObject var viewModel = NaverLoginButtonViewModel()

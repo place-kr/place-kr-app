@@ -1,11 +1,26 @@
 import UIKit
 import AuthenticationServices
 
+
+enum AppleLoginError: Error, CustomStringConvertible {
+    case expiredToken
+    case invalidResponse
+    
+    var description: String {
+        switch self {
+        case .expiredToken:
+            return "Token is invalid. It could be expired."
+        case .invalidResponse:
+            return "Invalid network response."
+        }
+    }
+}
+
 class AppleLoginDelegate: NSObject {
-    private let completionHandler: (AppleUserData, Bool) -> Void
+    private let completionHandler: (Result<AppleUserData, AppleLoginError>) -> Void
     private weak var window: UIWindow!
     
-    init(window: UIWindow?, completion: @escaping (AppleUserData, Bool) -> Void) {
+    init(window: UIWindow?, completion: @escaping (Result<AppleUserData, AppleLoginError>) -> Void) {
         self.window = window
         self.completionHandler = completion
     }
@@ -41,11 +56,10 @@ extension AppleLoginDelegate: ASAuthorizationControllerDelegate {
     // Store the details into the iCloud keychain for later use.
     // Make a call to your service and signify to the caller whether registration succeeded or not.
     private func registerNewAccount(credential: ASAuthorizationAppleIDCredential) {
-        let userData = AppleUserData(email: credential.email!, name: credential.fullName!, identifier: credential.user)
-        self.completionHandler(userData, true)
+        let userData = AppleUserData(email: credential.email!, name: credential.fullName!, identifier: credential.user, identityToken: String(decoding: credential.identityToken!, as: UTF8.self), authCode: String(decoding: credential.authorizationCode!, as: UTF8.self))
         
-        // MARK: Store in CoreData way
-        
+        self.completionHandler(.success(userData))
+                
         // MARK: Store in KeyChain way
 //        let keychain = UserDataKeychain()
 //        do {
@@ -63,16 +77,9 @@ extension AppleLoginDelegate: ASAuthorizationControllerDelegate {
     }
     
     private func signInWithExistingAccount(credential: ASAuthorizationAppleIDCredential) {
-        // You *should* have a fully registered account here.  If you get back an error
-        // from your server that the account doesn't exist, you can look in the keychain
-        // for the credentials and rerun setup
-        // if (WebAPI.login(credential.user,
-        //                  credential.identityToken,
-        //                  credential.authorizationCode)) {
-        //   ...
-        // }
-        let userData = AppleUserData(email: nil, name: nil, identifier: credential.user)
-        self.completionHandler(userData, true)
+        let userData = AppleUserData(email: credential.email, name: credential.fullName, identifier: credential.user, identityToken: String(decoding: credential.identityToken!, as: UTF8.self), authCode: String(decoding: credential.authorizationCode!, as: UTF8.self))
+        self.completionHandler(.success(userData))
+
     }
     
     private func signInWithUserAndPassword(credential: ASPasswordCredential) {
@@ -80,8 +87,8 @@ extension AppleLoginDelegate: ASAuthorizationControllerDelegate {
         //   ...
         // }
         // TODO: To be corrected
-        let userData = AppleUserData(email: nil, name: nil, identifier: credential.user)
-        self.completionHandler(userData, true)
+//        let userData = AppleUserData(email: nil, name: nil, identifier: credential.user)
+//        self.completionHandler(.success(userData))
     }
     
     
