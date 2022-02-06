@@ -38,7 +38,7 @@ struct LogInView: View {
                         .fill(Color.black))
                 .padding(.bottom, 14)
             
-            AppleLogInButtonView(viewModel: AppleLoginViewModel(window: window), success: $success)
+            AppleLogInView(viewModel: AppleLoginViewModel(window: window), success: $success)
                 .frame(width: 320, height: 54)
                 .environment(\.window, window)
             

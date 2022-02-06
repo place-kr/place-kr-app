@@ -19,7 +19,7 @@
 		9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegate.swift */; };
 		9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* NaverLoginView.swift */; };
 		9B846689279852DA00066F04 /* AppleLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B846688279852DA00066F04 /* AppleLoginDelegate.swift */; };
-		9B84668E279854A700066F04 /* AppleLogInButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668D279854A700066F04 /* AppleLogInButtonView.swift */; };
+		9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668D279854A700066F04 /* AppleLogInView.swift */; };
 		9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668F279856C200066F04 /* EnvironmentKeys.swift */; };
 		9B8466962798574F00066F04 /* AppleUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B8466922798574E00066F04 /* AppleUserData.swift */; };
 		9B91641627AE6065005FAC4A /* AppleLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641527AE6065005FAC4A /* AppleLoginViewModel.swift */; };
@@ -49,7 +49,7 @@
 		9B84668527982E7800066F04 /* NaverLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginView.swift; sourceTree = "<group>"; };
 		9B846688279852DA00066F04 /* AppleLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginDelegate.swift; sourceTree = "<group>"; };
 		9B84668B2798543F00066F04 /* place-kr-app.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "place-kr-app.entitlements"; sourceTree = SOURCE_ROOT; };
-		9B84668D279854A700066F04 /* AppleLogInButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogInButtonView.swift; sourceTree = "<group>"; };
+		9B84668D279854A700066F04 /* AppleLogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogInView.swift; sourceTree = "<group>"; };
 		9B84668F279856C200066F04 /* EnvironmentKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentKeys.swift; sourceTree = "<group>"; };
 		9B8466922798574E00066F04 /* AppleUserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleUserData.swift; sourceTree = "<group>"; };
 		9B91641527AE6065005FAC4A /* AppleLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewModel.swift; sourceTree = "<group>"; };
@@ -173,7 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				9B8466912798572E00066F04 /* Model */,
-				9B84668D279854A700066F04 /* AppleLogInButtonView.swift */,
+				9B84668D279854A700066F04 /* AppleLogInView.swift */,
 				9B91641527AE6065005FAC4A /* AppleLoginViewModel.swift */,
 			);
 			name = "Apple Login";
@@ -330,7 +330,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B84668E279854A700066F04 /* AppleLogInButtonView.swift in Sources */,
+				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
 				9B4A02D827A6B8240037D05F /* MapView.swift in Sources */,
 				9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */,
 				9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */,

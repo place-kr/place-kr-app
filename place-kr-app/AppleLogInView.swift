@@ -9,7 +9,7 @@ import SwiftUI
 import AuthenticationServices
 
 
-struct AppleLogInButtonView: View {
+struct AppleLogInView: View {
     @ObservedObject var viewModel: AppleLoginViewModel
     @Binding var success: Bool
 
@@ -28,7 +28,7 @@ struct AppleLogInButtonView: View {
     }
 }
 
-extension AppleLogInButtonView {
+extension AppleLogInView {
     final class SignInWithApple: UIViewRepresentable {
       func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
         return ASAuthorizationAppleIDButton()
