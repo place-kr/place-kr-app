@@ -8,7 +8,7 @@
 import Foundation
 
 class AuthAPIManager {
-    static func sendPostRequest(to url: URL, body: ApplePostBody, then handler: @escaping (Result<Data, Error>) -> Void) {
+    static func sendPostRequest(to url: URL, body: PostBody.Apple, then handler: @escaping (Result<Data, Error>) -> Void) {
         let completionHandler = handler
         let session = URLSession.shared
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData)
@@ -26,7 +26,7 @@ class AuthAPIManager {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Peek into request body
-//        print(String(data: encodedBody, encoding: String.Encoding.utf8))
+        print(String(data: encodedBody, encoding: String.Encoding.utf8))
         let task = session.uploadTask(with: request, from: encodedBody) { data, response, error in
             if let error = error {
                 print("Error while uploading")
@@ -77,38 +77,42 @@ extension AuthAPIManager {
         }
     }
     
-    struct NaverPostBody: Codable {
-        let identifier: String
-        let email: String
-        let accessToken: String
-        
-        enum CodingKeys : String, CodingKey{
-            case identifier
-            case email
-            case accessToken = "access_token"
+    struct PostBody {
+        struct Naver: Codable {
+            let identifier: String
+            let email: String
+            let accessToken: String
+            
+            enum CodingKeys : String, CodingKey{
+                case identifier
+                case email
+                case accessToken = "access_token"
+            }
         }
-    }
-    
-    struct ApplePostBody: Codable {
-        let identifier: String
-        let email: String
-        let idToken: String
-        let authCode: String
         
-        enum CodingKeys : String, CodingKey{
-            case identifier
-            case email
-            case idToken = "identity_token"
-            case authCode = "authorization_code"
+        struct Apple: Codable {
+            let identifier: String
+            let email: String
+            let idToken: String
+            
+            enum CodingKeys : String, CodingKey{
+                case identifier
+                case email
+                case idToken = "identity_token"
+            }
         }
     }
     
     struct PostReponse: Codable {
         let success: Bool
-        let token: String
+        let result: Response
+        
+        struct Response: Codable {
+            let token: String
+        }
         
         func getDescription() {
-            print("Token: \(self.token)")
+            print("Token: \(self.result.token)")
         }
     }
 }

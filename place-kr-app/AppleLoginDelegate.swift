@@ -44,9 +44,6 @@ extension AppleLoginDelegate: ASAuthorizationControllerDelegate {
                 signInWithExistingAccount(credential: appleIdCredential)
             }
             break
-        case let passwordCredential as ASPasswordCredential:
-            // Using password credential
-            break
         default:
             break
         }
@@ -59,21 +56,6 @@ extension AppleLoginDelegate: ASAuthorizationControllerDelegate {
         let userData = AppleUserData(email: credential.email!, name: credential.fullName!, identifier: credential.user, identityToken: String(decoding: credential.identityToken!, as: UTF8.self), authCode: String(decoding: credential.authorizationCode!, as: UTF8.self))
         
         self.completionHandler(.success(userData))
-                
-        // MARK: Store in KeyChain way
-//        let keychain = UserDataKeychain()
-//        do {
-//            try keychain.store(userData)
-//        } catch {
-//            self.signInSucceeded(false)
-//        }
-        
-//        do { // If you got web API, do stuffs in here
-//            let success = try WebApi.Register(user: userData, identityToken: credential.identityToken, authorizationCode: credential.authorizationCode)
-//            self.signInSucceeded(success)
-//        } catch {
-//            self.signInSucceeded(false)
-//        }
     }
     
     private func signInWithExistingAccount(credential: ASAuthorizationAppleIDCredential) {
@@ -81,17 +63,6 @@ extension AppleLoginDelegate: ASAuthorizationControllerDelegate {
         self.completionHandler(.success(userData))
 
     }
-    
-    private func signInWithUserAndPassword(credential: ASPasswordCredential) {
-        // if (WebAPI.login(credential.user, credential.password)) {
-        //   ...
-        // }
-        // TODO: To be corrected
-//        let userData = AppleUserData(email: nil, name: nil, identifier: credential.user)
-//        self.completionHandler(.success(userData))
-    }
-    
-    
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.

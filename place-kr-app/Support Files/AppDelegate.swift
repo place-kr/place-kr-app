@@ -1,5 +1,4 @@
 import UIKit
-import CoreData
 import NaverThirdPartyLogin
 import NMapsMap
 
@@ -52,15 +51,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-    
-    // MARK: Core Data Stack
-    lazy var persistentContainer: NSPersistentContainer = {
-      let container = NSPersistentContainer(name: "Users")
-      container.loadPersistentStores { (storeDescription, error) in
-        if let error = error as NSError? {
-          fatalError("Unresolved error \(error), \(error.userInfo)")
-        }
-      }
-      return container
-    }()
 }

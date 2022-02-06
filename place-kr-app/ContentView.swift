@@ -12,7 +12,6 @@ import Combine
 
 struct ContentView: View {
     @Environment(\.window) var window: UIWindow?
-    @Environment(\.managedObjectContext) var viewContext: NSManagedObjectContext
     @State var isLoginSuccessed = false
     
     var body: some View {
@@ -20,7 +19,6 @@ struct ContentView: View {
 //            MapView()
             LogInView(success: $isLoginSuccessed)
                 .environment(\.window, window)
-                .environment(\.managedObjectContext, viewContext)
         } else {
             OnboardingView()
         }
