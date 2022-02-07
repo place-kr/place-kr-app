@@ -7,6 +7,9 @@
 
 import Foundation
 
+/// User 데이터를 관리하는 클래스.
+/// 관련된 정보는 UserDefault에 저장됨.
+// TODO: Add Naver user register routine
 class UserInfoManager {
     static let userInfoKey = "user"
     static func saveAppleUserInfo(_ info: AppleUserData) {
@@ -33,16 +36,6 @@ class UserInfoManager {
             fatalError()
         }
     }
-    
-//    static func saveUserInfo(_ profile: NaverUserData) {
-//        let encoder = PropertyListEncoder()
-//        do {
-//            let data = try encoder.encode(profile)
-//            UserDefaults.standard.set(data, forKey: userInfoKey)
-//        } catch {
-//            print(error)
-//        }
-//    }
     
     static func loadUserInfo() -> AppleUserInfo? {
         let decoder = PropertyListDecoder()

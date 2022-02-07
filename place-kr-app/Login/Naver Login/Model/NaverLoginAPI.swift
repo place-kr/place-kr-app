@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-struct response_naver_login: Codable {
+struct NaverLoginResponse: Codable {
     let resultcode: String
     let message: String
     let response: NaverUserData
@@ -43,10 +43,10 @@ private func naverLoginSession(tokenType: String, accessToken: String, session: 
     return session.dataTaskPublisher(for: request)
 }
 
-func NaverLogin(tokenType: String, accessToken: String) throws -> AnyPublisher<response_naver_login, Error>? {
+func NaverLogin(tokenType: String, accessToken: String) throws -> AnyPublisher<NaverLoginResponse, Error>? {
     return try? naverLoginSession(tokenType: tokenType, accessToken: accessToken)
         .map(\.data)
-        .decode(type: response_naver_login.self, decoder: JSONDecoder())
+        .decode(type: NaverLoginResponse.self, decoder: JSONDecoder())
         .eraseToAnyPublisher()
 }
 

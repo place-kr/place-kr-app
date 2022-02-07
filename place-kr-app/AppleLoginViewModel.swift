@@ -31,7 +31,7 @@ class AppleLoginViewModel: ObservableObject {
                 if let _ = userInfo.email, let _ = userInfo.name {
                     print("Newbie")
                     UserInfoManager.saveAppleUserInfo(userInfo)
-                    // TODO: 서버 등록 루틴
+                    // TODO: 서버에 뉴비 등록
                 } else {
                     print("Already registered.") // TODO: 중복 등록?
                     guard let userInfo = UserInfoManager.loadUserInfo() else {
