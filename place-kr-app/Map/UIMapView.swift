@@ -9,16 +9,14 @@ import SwiftUI
 import NMapsMap
 
 struct UIMapView: UIViewRepresentable {
-//    @ObservedObject var place: SearchFieldViewModel
+    @ObservedObject var place: SearchFieldViewModel
     
-    let view = NMFNaverMapView()
-    let coord: (Double, Double)
-
     func makeCoordinator() -> Coordinator {
-        return Coordinator(coord: coord)
+        Coordinator(place: place)
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
+        let view = NMFNaverMapView()
         view.showZoomControls = false
         view.mapView.positionMode = .direction
         view.mapView.zoomLevel = 17
@@ -29,50 +27,31 @@ struct UIMapView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
-//        guard let place = place.places.first else {
-//            print("It's returned")
-//            return
-//        }
+        guard let place = place.places.first else {
+            return
+        }
         
-//        print("Being called \(place.coord.1) \(place.coord.0)")
-//        let coord = NMGLatLng(lat: place.coord.1, lng: place.coord.0)
-        let c = NMGLatLng(lat: coord.1, lng: coord.0)
-        print("Coord set to \(c.lat) \(c.lng)")
-        moveTo(c)
+        let coord = NMGLatLng(lat: place.coord.1, lng: place.coord.0)
+        let cameraUpdate = NMFCameraUpdate(scrollTo: coord)
+        cameraUpdate.animation = .fly   // TODO: 애니메이션 종류 결정
+        cameraUpdate.animationDuration = 1
+        uiView.mapView.moveCamera(cameraUpdate)
     }
     
-    func moveTo(_ coord: NMGLatLng) {
-        let cameraUpdate = NMFCameraUpdate(scrollTo: coord)
-//        cameraUpdate.animation = .easeIn
-//        cameraUpdate.animationDuration = 2
-        view.mapView.moveCamera(cameraUpdate) { isCancelled in
-            if isCancelled {
-                print("카메라 이동 취소")
-            } else {
-                print("카메라 이동 완료")
-            }
-        }
-    }
     
     class Coordinator: NSObject, NMFMapViewCameraDelegate {
-//        @ObservedObject var place: SearchFieldViewModel
+        @ObservedObject var place: SearchFieldViewModel
 
-//        init(place: SearchFieldViewModel) {
-//            self.place = place
-//        }
-        
-        let coord: (Double, Double)
-        
-        init(coord: (Double, Double)) {
-            self.coord = coord
+        init(place: SearchFieldViewModel) {
+            self.place = place
         }
 
         func mapView(_ mapView: NMFMapView, cameraWillChangeByReason reason: Int, animated: Bool) {
-            print("카메라 변경 - reason: \(reason)")
+//            print("카메라 변경 - reason: \(reason)")
         }
 
         func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
-            print("카메라 변경 - reason: \(reason)")
+//            print("카메라 변경 - reason: \(reason)")
         }
     }
 
