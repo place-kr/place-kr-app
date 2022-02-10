@@ -19,7 +19,6 @@ struct SearchFieldView: View {
             .padding(.horizontal)
             .background(Color.white)
             .cornerRadius(7)
-            .padding(.vertical)
     }
     
     init(viewModel: SearchFieldViewModel) {
