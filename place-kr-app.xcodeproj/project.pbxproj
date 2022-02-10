@@ -20,6 +20,7 @@
 		9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8BE27B0EB2700F3B76C /* Place.swift */; };
 		9B51C8C127B0F15200F3B76C /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */; };
 		9B51C8C427B0F21300F3B76C /* SearchFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C327B0F21300F3B76C /* SearchFieldViewModel.swift */; };
+		9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */; };
 		9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */; };
 		9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegate.swift */; };
 		9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* NaverLoginView.swift */; };
@@ -50,10 +51,10 @@
 		9B4A02DB27A6BD170037D05F /* UIMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIMapView.swift; sourceTree = "<group>"; };
 		9B51C8B627B0D91C00F3B76C /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		9B51C8B827B0D98700F3B76C /* PlaceApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceApiManager.swift; sourceTree = "<group>"; };
-		9B51C8BA27B0E53700F3B76C /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		9B51C8BE27B0EB2700F3B76C /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
 		9B51C8C327B0F21300F3B76C /* SearchFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldViewModel.swift; sourceTree = "<group>"; };
+		9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
 		9B84668127981E5200066F04 /* NaverLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegate.swift; sourceTree = "<group>"; };
 		9B84668527982E7800066F04 /* NaverLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginView.swift; sourceTree = "<group>"; };
@@ -98,7 +99,6 @@
 		9B20A64F2796F42A0029CA0E = {
 			isa = PBXGroup;
 			children = (
-				9B51C8BA27B0E53700F3B76C /* MyPlayground.playground */,
 				9B51C8B627B0D91C00F3B76C /* ApiKeys.plist */,
 				9B20A65A2796F42A0029CA0E /* place-kr-app */,
 				9B20A6592796F42A0029CA0E /* Products */,
@@ -154,6 +154,7 @@
 		9B4A02D527A6AC1E0037D05F /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
 				9B51C8BD27B0EB1600F3B76C /* Place */,
 				9B51C8C227B0F1FE00F3B76C /* SearchField */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
@@ -364,6 +365,7 @@
 			files = (
 				9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */,
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
+				9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */,
 				9B4A02D827A6B8240037D05F /* MapView.swift in Sources */,
 				9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */,
 				9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */,
