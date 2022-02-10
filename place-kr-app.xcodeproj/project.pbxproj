@@ -31,6 +31,7 @@
 		9B91641627AE6065005FAC4A /* AppleLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641527AE6065005FAC4A /* AppleLoginViewModel.swift */; };
 		9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641927AF82C3005FAC4A /* UserInfoManager.swift */; };
 		9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */; };
+		9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */; };
 		9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */; };
 		9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */; };
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
@@ -66,6 +67,7 @@
 		9B91641527AE6065005FAC4A /* AppleLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewModel.swift; sourceTree = "<group>"; };
 		9B91641927AF82C3005FAC4A /* UserInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoManager.swift; sourceTree = "<group>"; };
 		9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPIManager.swift; sourceTree = "<group>"; };
+		9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginViewModel.swift; sourceTree = "<group>"; };
 		9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extensions.swift"; sourceTree = "<group>"; };
 		9BF582C6279ADDEB0068805E /* NaverUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverUserData.swift; sourceTree = "<group>"; };
@@ -121,8 +123,8 @@
 				9BEDED2927A26B7400EE560C /* Util */,
 				9B4A02D627A6AC2D0037D05F /* Support Files */,
 				9B22944B27990018000805F0 /* Login */,
+				9B22944C27990023000805F0 /* Onboarding */,
 				9B4A02D527A6AC1E0037D05F /* Map */,
-				9B22944C27990023000805F0 /* View */,
 				9B20A66F2796F4D80029CA0E /* ContentView.swift */,
 				9B20A6692796F42B0029CA0E /* Info.plist */,
 				9B84668B2798543F00066F04 /* place-kr-app.entitlements */,
@@ -143,12 +145,12 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
-		9B22944C27990023000805F0 /* View */ = {
+		9B22944C27990023000805F0 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
 				9B2AB36C27A015B700B30242 /* OnboardingView.swift */,
 			);
-			path = View;
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		9B4A02D527A6AC1E0037D05F /* Map */ = {
@@ -156,6 +158,7 @@
 			children = (
 				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
 				9B51C8BD27B0EB1600F3B76C /* Place */,
+				9B9FCE4927B4C7E000DCCF9D /* Notification */,
 				9B51C8C227B0F1FE00F3B76C /* SearchField */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
 				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
@@ -219,6 +222,14 @@
 				9B8466922798574E00066F04 /* AppleUserData.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		9B9FCE4927B4C7E000DCCF9D /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 		9BEDED2927A26B7400EE560C /* Util */ = {
@@ -366,6 +377,7 @@
 				9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */,
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
 				9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */,
+				9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */,
 				9B4A02D827A6B8240037D05F /* MapView.swift in Sources */,
 				9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */,
 				9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */,

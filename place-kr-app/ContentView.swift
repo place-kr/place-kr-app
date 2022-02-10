@@ -15,14 +15,13 @@ struct ContentView: View {
     @State var isLoginSuccessed = false
     
     var body: some View {
-        MapView()
-//        if !isLoginSuccessed {
-////            MapView()
-//            LogInView(success: $isLoginSuccessed)
-//                .environment(\.window, window)
-//        } else {
-//            OnboardingView()
-//        }
+        if !isLoginSuccessed {
+//            MapView()
+            LogInView(success: $isLoginSuccessed)
+                .environment(\.window, window)
+        } else {
+            OnboardingView()
+        }
     }
 }
 

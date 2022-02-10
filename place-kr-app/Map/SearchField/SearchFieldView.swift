@@ -15,11 +15,10 @@ struct SearchFieldView: View {
         TextField("현위치: {자동 입력}", text: $text)
             .modifier(TextFieldSearchButton(viewModel: viewModel, text: $text))
             .multilineTextAlignment(.leading)
-            .frame(width: 280, height: 50)
+            .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
             .padding(.horizontal)
             .background(Color.white)
             .cornerRadius(7)
-            .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 2)
             .padding(.vertical)
     }
     

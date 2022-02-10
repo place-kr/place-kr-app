@@ -12,7 +12,15 @@ struct MapView: View {
     var body: some View {
         ZStack {
             VStack {
-                SearchFieldView(viewModel: place)
+                HStack(spacing: 11) {
+                    SearchFieldView(viewModel: place)
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                        .padding(.leading, 15)
+
+                    NotificationView()
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                        .padding(.trailing, 15)
+                }
                 Spacer()
             }
             .zIndex(1)

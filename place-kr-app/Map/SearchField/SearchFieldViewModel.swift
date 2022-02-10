@@ -35,6 +35,7 @@ class SearchFieldViewModel: ObservableObject {
     }
     
     init() {
+        // 현위치를 초기 상태로 설정합니다. 
         LocationManager.shared.$currentCoord
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { coord in
@@ -48,7 +49,6 @@ class SearchFieldViewModel: ObservableObject {
                     x: String(coord.longitude),
                     y: String(coord.latitude)))
                 self.places.append(defaultPlace)
-                print("HEREERERER \(self.places)")
         })
             .store(in: &subscriptions)
     }
