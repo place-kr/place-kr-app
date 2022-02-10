@@ -14,7 +14,6 @@ struct LogInView: View {
     
     @Binding var success: Bool
     
-    
     var body: some View {
         VStack(spacing: 0) {
             Spacer()

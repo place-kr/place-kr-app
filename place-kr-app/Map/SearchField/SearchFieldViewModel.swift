@@ -15,7 +15,7 @@ class SearchFieldViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     func fetchPlaces(_ input: String) {
-        PlaceApiManager.getPlacesByName(name: input)
+        PlaceSearchManager.getPlacesByName(name: input)
             .map({ $0.documents.map(PlaceInfo.init) })
             .sink(receiveCompletion: { response in
                 switch response {
@@ -35,7 +35,7 @@ class SearchFieldViewModel: ObservableObject {
     }
     
     init() {
-        // 현위치를 초기 상태로 설정합니다. 
+        // 현위치를 초기 상태로 설정합니다.
         LocationManager.shared.$currentCoord
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { coord in

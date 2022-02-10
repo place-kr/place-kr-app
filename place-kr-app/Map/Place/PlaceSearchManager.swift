@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class PlaceApiManager {
+class PlaceSearchManager {
     /// Place 이름을 기반으로 주변 정보를 받아옵니다.
     static func getPlacesByName(name: String) -> AnyPublisher<PlaceResponse, Error> {
         // Get path of APIKeys.plist
@@ -82,7 +82,7 @@ class PlaceApiManager {
 //    }
 }
 
-extension PlaceApiManager {
+extension PlaceSearchManager {
     enum PlaceApiError: Error, CustomStringConvertible {
         case keyLoad
         case url

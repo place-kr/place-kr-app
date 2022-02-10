@@ -13,14 +13,18 @@ import Combine
 struct ContentView: View {
     @Environment(\.window) var window: UIWindow?
     @State var isLoginSuccessed = false
+    @State var isFirstRegistered = true // TODO: 언젠가 바꾸기
     
     var body: some View {
         if !isLoginSuccessed {
-//            MapView()
             LogInView(success: $isLoginSuccessed)
                 .environment(\.window, window)
         } else {
-            OnboardingView()
+            if isFirstRegistered {
+                OnboardingView(isClicked: $isFirstRegistered)
+            } else {
+                MapView()
+            }
         }
     }
 }
