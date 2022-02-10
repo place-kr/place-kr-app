@@ -9,7 +9,8 @@ import SwiftUI
 import Combine
 
 class PlaceApiManager {
-    static func getPlace(_ place: String) -> AnyPublisher<PlaceResponse, Error> {
+    /// Place 이름을 기반으로 주변 정보를 받아옵니다.
+    static func getPlacesByName(name: String) -> AnyPublisher<PlaceResponse, Error> {
         // Get path of APIKeys.plist
         guard let path = Bundle.main.path(forResource: "ApiKeys", ofType: "plist") else {
             return Fail(error: PlaceApiError.keyLoad as Error).eraseToAnyPublisher()
@@ -28,7 +29,7 @@ class PlaceApiManager {
         
         // Make URLSession.datapublisher which requests informations from the server
         let session = URLSession.shared
-        guard let parsedPlace = place.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+        guard let parsedPlace = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: "https://dapi.kakao.com/v2/local/search/keyword.json?query=\(parsedPlace)")
         else {
                return Fail(error: PlaceApiError.url).eraseToAnyPublisher()
@@ -43,6 +44,42 @@ class PlaceApiManager {
             .decode(type: PlaceResponse.self, decoder: decoder)
             .eraseToAnyPublisher()
     }
+    
+    /// Place 좌표를 기반으로 주변 정보를 받아옵니다.
+//    static func getPlacesByCoordinates(lat: Double, lon: Double) -> AnyPublisher<PlaceResponse, Error> {
+//        // Get path of APIKeys.plist
+//        guard let path = Bundle.main.path(forResource: "ApiKeys", ofType: "plist") else {
+//            return Fail(error: PlaceApiError.keyLoad as Error).eraseToAnyPublisher()
+//        }
+//
+//        // Fetch my api key from APIKeys.plist
+//        var apiKey: String?
+//        do {
+//            let keyDictUrl = URL(fileURLWithPath: path)
+//            let data = try Data(contentsOf: keyDictUrl)
+//            let keyDict = try PropertyListDecoder().decode([String: String].self, from: data)
+//            apiKey = keyDict["KakaoApiKey"]
+//        } catch  {
+//            return Fail(error: error).eraseToAnyPublisher()
+//        }
+//
+//        // Make URLSession.datapublisher which requests informations from the server
+//        let session = URLSession.shared
+//        guard let parsedPlace = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+//              let url = URL(string: "https://dapi.kakao.com/v2/local/search/keyword.json?query=\(parsedPlace)")
+//        else {
+//               return Fail(error: PlaceApiError.url).eraseToAnyPublisher()
+//        }
+//
+//        var request = URLRequest(url: url)
+//        request.setValue("KakaoAK \(apiKey!)", forHTTPHeaderField: "Authorization")
+//
+//        let decoder = JSONDecoder()
+//        return session.dataTaskPublisher(for: request)
+//            .map(\.data)
+//            .decode(type: PlaceResponse.self, decoder: decoder)
+//            .eraseToAnyPublisher()
+//    }
 }
 
 extension PlaceApiManager {

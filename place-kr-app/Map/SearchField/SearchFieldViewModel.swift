@@ -8,13 +8,14 @@
 import SwiftUI
 import Combine
 
+/// 검색창에서 리턴한 정보를 바탕으로 관련 장소 정보를 Kakao api에서 받아 오는 역할을 합니다.
+/// 현위치를 기반으로 최초 설정됩니다.
 class SearchFieldViewModel: ObservableObject {
     @Published var places = [PlaceInfo]()
-    
     private var subscriptions = Set<AnyCancellable>()
     
-    func fetchWrittenPlaces(_ input: String) {
-        PlaceApiManager.getPlace(input)
+    func fetchPlaces(_ input: String) {
+        PlaceApiManager.getPlacesByName(name: input)
             .map({ $0.documents.map(PlaceInfo.init) })
             .sink(receiveCompletion: { response in
                 switch response {
@@ -30,6 +31,25 @@ class SearchFieldViewModel: ObservableObject {
                     print(self.places)
                 }
             })
+            .store(in: &subscriptions)
+    }
+    
+    init() {
+        LocationManager.shared.$currentCoord
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { coord in
+                guard let coord = coord else { return }
+                let defaultPlace = PlaceInfo(document: PlaceResponse.Document(
+                    id: UUID().uuidString,
+                    textAddress: "Dump",
+                    roadAddress: "Dump",
+                    name: "Dump",
+                    url: "Dump",
+                    x: String(coord.longitude),
+                    y: String(coord.latitude)))
+                self.places.append(defaultPlace)
+                print("HEREERERER \(self.places)")
+        })
             .store(in: &subscriptions)
     }
 }

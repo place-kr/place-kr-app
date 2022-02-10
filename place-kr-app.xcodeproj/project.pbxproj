@@ -15,12 +15,12 @@
 		9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2AB36C27A015B700B30242 /* OnboardingView.swift */; };
 		9B4A02D827A6B8240037D05F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02D727A6B8240037D05F /* MapView.swift */; };
 		9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02DB27A6BD170037D05F /* UIMapView.swift */; };
-		9B51C8B727B0D91C00F3B76C /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B51C8B627B0D91C00F3B76C /* ApiKeys.plist */; };
 		9B51C8B927B0D98700F3B76C /* PlaceApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8B827B0D98700F3B76C /* PlaceApiManager.swift */; };
 		9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8BE27B0EB2700F3B76C /* Place.swift */; };
 		9B51C8C127B0F15200F3B76C /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */; };
 		9B51C8C427B0F21300F3B76C /* SearchFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C327B0F21300F3B76C /* SearchFieldViewModel.swift */; };
 		9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */; };
+		9B6A1F6327B4B6C200D160DC /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */; };
 		9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */; };
 		9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegate.swift */; };
 		9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* NaverLoginView.swift */; };
@@ -49,12 +49,12 @@
 		9B2AB36C27A015B700B30242 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		9B4A02D727A6B8240037D05F /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		9B4A02DB27A6BD170037D05F /* UIMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIMapView.swift; sourceTree = "<group>"; };
-		9B51C8B627B0D91C00F3B76C /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		9B51C8B827B0D98700F3B76C /* PlaceApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceApiManager.swift; sourceTree = "<group>"; };
 		9B51C8BE27B0EB2700F3B76C /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
 		9B51C8C327B0F21300F3B76C /* SearchFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldViewModel.swift; sourceTree = "<group>"; };
 		9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
 		9B84668127981E5200066F04 /* NaverLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegate.swift; sourceTree = "<group>"; };
 		9B84668527982E7800066F04 /* NaverLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginView.swift; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 		9B20A64F2796F42A0029CA0E = {
 			isa = PBXGroup;
 			children = (
-				9B51C8B627B0D91C00F3B76C /* ApiKeys.plist */,
+				9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */,
 				9B20A65A2796F42A0029CA0E /* place-kr-app */,
 				9B20A6592796F42A0029CA0E /* Products */,
 				28C84BCB79E644595219EAD7 /* Pods */,
@@ -308,9 +308,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B6A1F6327B4B6C200D160DC /* ApiKeys.plist in Resources */,
 				9B20A6682796F42B0029CA0E /* LaunchScreen.storyboard in Resources */,
 				9B20A6652796F42B0029CA0E /* Assets.xcassets in Resources */,
-				9B51C8B727B0D91C00F3B76C /* ApiKeys.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,6 +533,8 @@
 				DEVELOPMENT_TEAM = W6QHM4Y43Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "place-kr-app/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "해당 앱은 플레이스 정보 조회를 위해 사용자의 현위치를 필요로합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "해당 앱은 플레이스 정보 조회를 위해 사용자의 현위치를 필요로합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -562,6 +564,8 @@
 				DEVELOPMENT_TEAM = W6QHM4Y43Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "place-kr-app/Info.plist";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "해당 앱은 플레이스 정보 조회를 위해 사용자의 현위치를 필요로합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "해당 앱은 플레이스 정보 조회를 위해 사용자의 현위치를 필요로합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

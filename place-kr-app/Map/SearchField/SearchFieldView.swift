@@ -38,7 +38,7 @@ extension SearchFieldView {
             HStack {
                 Button(
                     action: {
-                        viewModel.fetchWrittenPlaces(text)
+                        viewModel.fetchPlaces(text)
                     },
                     label: {
                         Image(systemName: "magnifyingglass")

@@ -26,8 +26,6 @@ class LocationManager: NSObject, ObservableObject {
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             self.locationManager.requestWhenInUseAuthorization()
             self.locationManager.requestLocation()
-
-//            self.locationManager.startUpdatingLocation()
         }
     }
     
@@ -37,6 +35,7 @@ class LocationManager: NSObject, ObservableObject {
     
     var statusString: String {
         guard let status = locationStatus else {
+            print("Location auth is not recieved")
             return "unknown"
         }
         
@@ -53,6 +52,7 @@ class LocationManager: NSObject, ObservableObject {
 
 extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        // TODO: 권한 설정 후 위치 재설정
         print(error)
     }
     
@@ -64,6 +64,6 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        self.coord = location.coordinate
+        self.currentCoord = location.coordinate
     }
 }
