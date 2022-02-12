@@ -9,8 +9,9 @@ import Foundation
 import CoreLocation
 import Combine
 
-// TODO: Auth handling
+// TODO: Permission handling
 
+/// 현위치를 계산 및 저장하는 클래스입니다. shared 싱글톤 객체를 이용해서 접근할 수 있습니다. 
 class LocationManager: NSObject, ObservableObject {
     private let locationManager = CLLocationManager()
     static let shared = LocationManager()
@@ -29,6 +30,7 @@ class LocationManager: NSObject, ObservableObject {
         }
     }
     
+    /// 현위치로 상태를 변경합니다. 모종의 이유로 현위치가 변했을 때 수동으로 조정합니다.
     func setCurrentLocation() {
         locationManager.requestLocation()
     }

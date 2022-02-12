@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+// MARK: 자체 서버 콜로 대체 될 예정입니다.
 class PlaceSearchManager {
     /// Place 이름을 기반으로 주변 정보를 받아옵니다.
     static func getPlacesByName(name: String) -> AnyPublisher<PlaceResponse, Error> {

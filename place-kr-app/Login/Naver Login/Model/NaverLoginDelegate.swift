@@ -114,7 +114,7 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
                 .sink(receiveCompletion: { completion in
                     switch completion {
                     case let .failure(error):
-                        print("Naver login failed")
+                        print("Naver login failed: \(error)")
                         self.callback(.failure(.invalidResponse))
                     case .finished:
                         print("Naver login successed")
