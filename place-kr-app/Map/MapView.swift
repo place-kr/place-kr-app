@@ -11,6 +11,9 @@ import PartialSheet
 struct MapView: View {
     @ObservedObject var place = SearchFieldViewModel()
     @EnvironmentObject var partialSheetManager : PartialSheetManager
+    
+    @State var showEntireSheet = false
+    @State var showMySheet = false
         
     let sheetStyle = PartialSheetStyle(background: .solid(.white),
                                        accentColor: Color(UIColor.systemGray2),
@@ -24,6 +27,7 @@ struct MapView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 10) {
+                /// 검색창
                 HStack(spacing: 11) {
                     SearchFieldView(viewModel: place)
                         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
@@ -34,13 +38,12 @@ struct MapView: View {
                         .padding(.trailing, 15)
                 }
                 
+                /// 검색창 및 Sheet view 버튼
                 HStack {
                     EntirePlaceButton
-                        .buttonStyle(CapsuledButtonStyle())
                         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
 
                     MyPlaceButton
-                        .buttonStyle(CapsuledButtonStyle())
                         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
 
                     Spacer()
@@ -51,6 +54,7 @@ struct MapView: View {
             }
             .zIndex(1)
             
+            /// 네이버 맵
             UIMapView(place: place)
                 .edgesIgnoringSafeArea(.vertical)
         }
@@ -65,32 +69,37 @@ extension MapView {
                 .foregroundColor(Color.black)
                 .font(.system(size: 14))
                 .frame(width: 52, height: 34)
-                .background(Capsule().fill(.white))
         }
     }
     
     var EntirePlaceButton: some View {
         func showSheet() {
-            partialSheetManager.showPartialSheet {
-                Text("전체")
-            }
+            showEntireSheet.toggle()
         }
         
         return Button(action: { showSheet() }) {
             Text("전체")
         }
+        .partialSheet(isPresented: $showEntireSheet) {
+            Text("전체")
+        }
+        .buttonStyle(CapsuledButtonStyle())
+        .background(Capsule().fill(showEntireSheet ? .gray : .white))
     }
     
     var MyPlaceButton: some View {
         func showSheet() {
-            partialSheetManager.showPartialSheet {
-                Text("My")
-            }
+            showMySheet.toggle()
         }
         
         return Button(action: { showSheet() }) {
             Text("My")
         }
+        .partialSheet(isPresented: $showMySheet) {
+            Text("My")
+        }
+        .buttonStyle(CapsuledButtonStyle())
+        .background(Capsule().fill(showMySheet ? .gray : .white))
     }
 }
 
