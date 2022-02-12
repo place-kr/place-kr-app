@@ -14,8 +14,8 @@ struct MapView: View {
         
     let sheetStyle = PartialSheetStyle(background: .solid(.white),
                                        accentColor: Color(UIColor.systemGray2),
-                                       enableCover: false,
-                                       coverColor: Color.white.opacity(0),
+                                       enableCover: true,
+                                       coverColor: Color.white.opacity(0.01),
                                        blurEffectStyle: nil,
                                        cornerRadius: 20,
                                        minTopDistance: 350
@@ -35,21 +35,13 @@ struct MapView: View {
                 }
                 
                 HStack {
-                    Button(action: { partialSheetManager.showPartialSheet {
-                        Text("전체")
-                    }}) {
-                        Text("전체")
-                    }
-                    .buttonStyle(CapsuledButtonStyle())
-                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                    EntirePlaceButton
+                        .buttonStyle(CapsuledButtonStyle())
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
 
-                    Button(action: { partialSheetManager.showPartialSheet {
-                        Text("My")
-                    }}) {
-                        Text("My")
-                    }
-                    .buttonStyle(CapsuledButtonStyle())
-                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                    MyPlaceButton
+                        .buttonStyle(CapsuledButtonStyle())
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
 
                     Spacer()
                 }
@@ -74,6 +66,30 @@ extension MapView {
                 .font(.system(size: 14))
                 .frame(width: 52, height: 34)
                 .background(Capsule().fill(.white))
+        }
+    }
+    
+    var EntirePlaceButton: some View {
+        func showSheet() {
+            partialSheetManager.showPartialSheet {
+                Text("전체")
+            }
+        }
+        
+        return Button(action: { showSheet() }) {
+            Text("전체")
+        }
+    }
+    
+    var MyPlaceButton: some View {
+        func showSheet() {
+            partialSheetManager.showPartialSheet {
+                Text("My")
+            }
+        }
+        
+        return Button(action: { showSheet() }) {
+            Text("My")
         }
     }
 }
