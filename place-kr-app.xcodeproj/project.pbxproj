@@ -34,6 +34,7 @@
 		9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */; };
 		9B9FCE4F27B4EB0F00DCCF9D /* PartialSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 9B9FCE4E27B4EB0F00DCCF9D /* PartialSheet */; };
 		9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */; };
+		9BD226F327B7505700E5BB2E /* MyPlaceSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD226F227B7505700E5BB2E /* MyPlaceSheetView.swift */; };
 		9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */; };
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
 		9BF582C9279B8AF90068805E /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C8279B8AF90068805E /* LogInView.swift */; };
@@ -70,6 +71,7 @@
 		9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPIManager.swift; sourceTree = "<group>"; };
 		9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginViewModel.swift; sourceTree = "<group>"; };
+		9BD226F227B7505700E5BB2E /* MyPlaceSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceSheetView.swift; sourceTree = "<group>"; };
 		9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extensions.swift"; sourceTree = "<group>"; };
 		9BF582C6279ADDEB0068805E /* NaverUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverUserData.swift; sourceTree = "<group>"; };
 		9BF582C8279B8AF90068805E /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
@@ -159,11 +161,12 @@
 			isa = PBXGroup;
 			children = (
 				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
+				9B4A02D727A6B8240037D05F /* MapView.swift */,
+				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
 				9B51C8BD27B0EB1600F3B76C /* Place */,
 				9B9FCE4927B4C7E000DCCF9D /* Notification */,
 				9B51C8C227B0F1FE00F3B76C /* SearchField */,
-				9B4A02D727A6B8240037D05F /* MapView.swift */,
-				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
+				9BD226F127B7501300E5BB2E /* Sheet */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -232,6 +235,14 @@
 				9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */,
 			);
 			path = Notification;
+			sourceTree = "<group>";
+		};
+		9BD226F127B7501300E5BB2E /* Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				9BD226F227B7505700E5BB2E /* MyPlaceSheetView.swift */,
+			);
+			path = Sheet;
 			sourceTree = "<group>";
 		};
 		9BEDED2927A26B7400EE560C /* Util */ = {
@@ -393,6 +404,7 @@
 				9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */,
 				9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */,
 				9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */,
+				9BD226F327B7505700E5BB2E /* MyPlaceSheetView.swift in Sources */,
 				9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */,
 				9B20A6702796F4D80029CA0E /* ContentView.swift in Sources */,
 				9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */,

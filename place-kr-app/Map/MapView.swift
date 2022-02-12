@@ -63,15 +63,6 @@ struct MapView: View {
 }
 
 extension MapView {
-    struct CapsuledButtonStyle: ButtonStyle {
-        func makeBody(configuration: Self.Configuration) -> some View {
-            configuration.label
-                .foregroundColor(Color.black)
-                .font(.system(size: 14))
-                .frame(width: 52, height: 34)
-        }
-    }
-    
     var EntirePlaceButton: some View {
         func showSheet() {
             showEntireSheet.toggle()
@@ -96,7 +87,9 @@ extension MapView {
             Text("My")
         }
         .partialSheet(isPresented: $showMySheet) {
-            Text("My")
+            MyPlaceSheetView()
+                .frame(maxWidth: .infinity, maxHeight: 155)
+                .padding(.horizontal, 15)
         }
         .buttonStyle(CapsuledButtonStyle())
         .background(Capsule().fill(showMySheet ? .gray : .white))
