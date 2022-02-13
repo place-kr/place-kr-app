@@ -18,8 +18,29 @@ struct ContentView: View {
     
     var body: some View {
         // For debug - jump to map view
-        MapView()
-//        if !isLoginSuccessed {
+        TabView {
+            MapView()
+                .tabItem {
+                    Image(systemName: "map")
+                }
+                .tag(0)
+            
+            ZStack {
+                Color.black
+                    .edgesIgnoringSafeArea(.all)
+                
+                Text("Dummy")
+            }
+            .tabItem {
+                Image(systemName: "star")
+            }
+            .tag(1)
+        }
+        .accentColor(.black)
+        .onAppear() {
+            UITabBar.appearance().backgroundColor = .white
+        }
+        //        if !isLoginSuccessed {
 //            LogInView(success: $isLoginSuccessed)
 //                .environment(\.window, window)
 //        } else {
@@ -31,7 +52,6 @@ struct ContentView: View {
 //        }
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
