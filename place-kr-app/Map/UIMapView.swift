@@ -8,6 +8,7 @@
 import SwiftUI
 import NMapsMap
 
+/// Naver map SDK에 관한 모든 것을 관리합니다
 struct UIMapView: UIViewRepresentable {
     @ObservedObject var place: SearchFieldViewModel
     
@@ -26,12 +27,27 @@ struct UIMapView: UIViewRepresentable {
         return view
     }
     
+    /// 뷰에 업데이트가 있을 때마다 실행됩니다
     func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
-        guard let place = place.places.first else {
+        // 장소정보 비어있으면 리턴
+        let places = place.places
+        guard let place = places.first else {
             return
         }
         
+        // Place(SearchFieldViewModel)에서 받은 좌표 토대로 카메라를 전환함
+        // TODO: 현재는 첫번째 요소를 토대로 전환함. 여러개 들어올 때의 정보 처리 고민해보기
         let coord = NMGLatLng(lat: place.coord.1, lng: place.coord.0)
+        
+        // TODO: 장소 정보 리스트 토대로 마커 찍기
+        // 현재는 더미 데이터 사용
+        let data = DummyDataModel().spots
+        for datum in data {
+            let marker = NMFMarker()
+            marker.position = NMGLatLng(lat: datum.x, lng: datum.y)
+            marker.mapView = uiView.mapView
+        }
+        
         let cameraUpdate = NMFCameraUpdate(scrollTo: coord)
         cameraUpdate.animation = .fly   // TODO: 애니메이션 종류 결정
         cameraUpdate.animationDuration = 1
@@ -55,4 +71,24 @@ struct UIMapView: UIViewRepresentable {
         }
     }
 
+}
+
+
+fileprivate class DummyDataModel: ObservableObject {
+    struct Spot: Codable {
+        let x: Double
+        let y: Double
+        let name: String
+    }
+    
+    @Published var spots = [Spot]()
+    
+    init() {
+        for i in (0..<20) {
+            let spot = Spot(x: 37.5666805 + Double(i) / 10000.0,
+                            y: 126.9784147 + Double(i) / 10000.0,
+                            name: "서울시청")
+            self.spots.append(spot)
+        }
+    }
 }

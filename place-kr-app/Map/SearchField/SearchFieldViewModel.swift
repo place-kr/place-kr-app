@@ -14,7 +14,7 @@ class SearchFieldViewModel: ObservableObject {
     @Published var places = [PlaceInfo]()   /// 장소 정보 저장된 리스트
     private var subscriptions = Set<AnyCancellable>()
     
-    /// API 서버에 장소 키워드 전달 후 관련 정보를 받아옵니다.
+    /// API 서버에 장소 키워드 전달 후 관련 정보를 받아옵니다.(현재는 카카오 api로 임시 연결해 둔 상태)
     func fetchPlaces(_ input: String) {
         PlaceSearchManager.getPlacesByName(name: input)
             .map({ $0.documents.map(PlaceInfo.init) })
