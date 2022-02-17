@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PartialSheet
 
 fileprivate struct EncapsulateModifier: ViewModifier {
     func body(content: Content) -> some View {
@@ -54,3 +55,13 @@ extension View {
         modifier(EncapsulateModifier())
     }
 }
+
+
+let sheetStyle = PartialSheetStyle(background: .solid(.white),
+                               accentColor: Color(UIColor.systemGray2),
+                               enableCover: true,
+                               coverColor: Color.white.opacity(0.01),
+                               blurEffectStyle: nil,
+                               cornerRadius: 20,
+                               minTopDistance: 350
+)

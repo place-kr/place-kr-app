@@ -8,8 +8,8 @@
 import SwiftUI
 import CoreData
 import Combine
-import PartialSheet
 
+// TODO: 위치 권한 핸들링
 
 struct ContentView: View {
     @Environment(\.window) var window: UIWindow?
@@ -21,20 +21,21 @@ struct ContentView: View {
         TabView {
             MapView()
                 .tabItem {
-                    Image(systemName: "map")
+                    VStack {
+                        Image(systemName: "magnifyingglass")
+                        Text("Home")
+                    }
                 }
-                .tag(0)
             
             ZStack {
-                Color.black
-                    .edgesIgnoringSafeArea(.all)
-                
-                Text("Dummy")
+                MyPlaceView()
             }
             .tabItem {
-                Image(systemName: "star")
+                    VStack {
+                        Image(systemName: "star")
+                        Text("My place")
+                    }
             }
-            .tag(1)
         }
         .accentColor(.black)
         .onAppear() {

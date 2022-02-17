@@ -14,15 +14,6 @@ struct MapView: View {
     
     @State var showEntireSheet = false
     @State var showMySheet = false
-        
-    let sheetStyle = PartialSheetStyle(background: .solid(.white),
-                                       accentColor: Color(UIColor.systemGray2),
-                                       enableCover: true,
-                                       coverColor: Color.white.opacity(0.01),
-                                       blurEffectStyle: nil,
-                                       cornerRadius: 20,
-                                       minTopDistance: 350
-    )
     
     var body: some View {
         ZStack {
@@ -58,7 +49,7 @@ struct MapView: View {
             UIMapView(place: place)
                 .edgesIgnoringSafeArea(.vertical)
         }
-        .addPartialSheet(style: self.sheetStyle)
+        .addPartialSheet(style: sheetStyle)
     }
 }
 
