@@ -9,6 +9,7 @@ import SwiftUI
 import NMapsMap
 
 /// Naver map SDK에 관한 모든 것을 관리합니다
+/// Document: https://navermaps.github.io/ios-map-sdk/guide-ko/3-1.html
 struct UIMapView: UIViewRepresentable {
     @ObservedObject var place: SearchFieldViewModel
     
@@ -35,11 +36,11 @@ struct UIMapView: UIViewRepresentable {
             return
         }
         
-        // Place(SearchFieldViewModel)에서 받은 좌표 토대로 카메라를 전환함
+        // Place(SearchFieldViewModel)에서 받은 좌표 토대로 카메라를 전환합니다
         // TODO: 현재는 첫번째 요소를 토대로 전환함. 여러개 들어올 때의 정보 처리 고민해보기
         let coord = NMGLatLng(lat: place.coord.1, lng: place.coord.0)
         
-        // TODO: 장소 정보 리스트 토대로 마커 찍기
+        // TODO: 장소 정보 리스트 토대로 마커 찍기, zoom level 이용할 것
         // 현재는 더미 데이터 사용
         let data = DummyDataModel().spots
         for datum in data {
