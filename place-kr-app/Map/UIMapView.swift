@@ -19,7 +19,8 @@ struct UIMapView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> NMFNaverMapView {
         let view = NMFNaverMapView()
-        view.showZoomControls = false
+        view.showZoomControls = true
+        view.mapView.minZoomLevel = 5
         view.mapView.positionMode = .direction
         view.mapView.zoomLevel = 17
         
@@ -45,7 +46,21 @@ struct UIMapView: UIViewRepresentable {
         let data = DummyDataModel().spots
         for datum in data {
             let marker = NMFMarker()
+            let circle = NMFCircleOverlay()
+
             marker.position = NMGLatLng(lat: datum.x, lng: datum.y)
+            circle.center = NMGLatLng(lat: datum.x, lng: datum.y)
+//            guard let image = UIImage(systemName: "person") else { return }
+            circle.radius = 100
+            circle.fillColor = .blue.withAlphaComponent(0.3)
+            circle.maxZoom = 15
+            circle.mapView = uiView.mapView
+            
+//            marker.iconImage = NMFOverlayImage(image: image)
+            marker.width = 1
+            marker.height = 1
+            marker.captionText = "Hola!"
+            marker.captionTextSize = 15
             marker.mapView = uiView.mapView
         }
         
