@@ -11,18 +11,23 @@ struct SearchFieldView: View {
     @State var text = ""
     @ObservedObject var viewModel: SearchFieldViewModel
     
+    private let backgroundColor: Color
+    private let placeholder: String
+    
     var body: some View {
-        TextField("현위치: {자동 입력}", text: $text)
+        TextField(placeholder, text: $text)
             .modifier(TextFieldSearchButton(viewModel: viewModel, text: $text))
             .multilineTextAlignment(.leading)
             .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
             .padding(.horizontal)
-            .background(Color.white)
+            .background(backgroundColor)
             .cornerRadius(7)
     }
     
-    init(viewModel: SearchFieldViewModel) {
+    init(viewModel: SearchFieldViewModel, color: Color = .white, placeholder: String = "현위치") {
         self.viewModel = viewModel
+        self.backgroundColor = color
+        self.placeholder = placeholder
     }
 }
 
@@ -36,7 +41,9 @@ extension SearchFieldView {
             HStack {
                 Button(
                     action: {
-                        viewModel.fetchPlaces(text)
+                        if !text.isEmpty {
+                            viewModel.fetchPlaces(text)
+                        }
                     },
                     label: {
                         Image(systemName: "magnifyingglass")

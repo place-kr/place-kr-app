@@ -13,6 +13,7 @@ struct AddTabView: View {
                         color: Color(red: 243/255, green: 243/255, blue: 243/255),
                         placeholder: "검색 장소를 입력하세요"
         )
+            .padding(.horizontal, 15)
     }
 }
 
