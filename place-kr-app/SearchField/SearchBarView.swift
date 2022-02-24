@@ -9,13 +9,16 @@ import SwiftUI
 
 struct SearchBarView: View {
     @Binding var inputText: String
+    @Binding var isFocused: Bool
     
     private let action: (() -> Void)
     private let backgroundColor: Color
     private let placeholder: String
     
     var body: some View {
-        TextField(placeholder, text: $inputText)
+        TextField(placeholder, text: $inputText, onEditingChanged: { isFocused in
+            self.isFocused = isFocused
+        })
             .modifier(TextFieldSearchButton(text: $inputText, action: action))
             .multilineTextAlignment(.leading)
             .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
@@ -24,9 +27,10 @@ struct SearchBarView: View {
             .cornerRadius(7)
     }
     
-    init(_ inputText: Binding<String>, _ bgColor: Color = .white,
+    init(_ inputText: Binding<String>, isFocused: Binding<Bool>? = nil, _ bgColor: Color = .white,
          _ placeholder: String = "현위치", action: @escaping () -> Void) {
         self._inputText = inputText
+        self._isFocused = isFocused ?? Binding.constant(false)
         self.backgroundColor = bgColor
         self.placeholder = placeholder
         self.action = action

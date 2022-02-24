@@ -13,95 +13,53 @@ struct AddTabView: View {
     @ObservedObject var searchManager = SearchManager()
     // TODO: 더미 데이터 고치기
     var categoriesData = ["일식", "중식", "한식", "일식", "중식", "한식", "일식", "중식", "한식"]
-    @State var text: String = ""
+    @State var keyword: String = ""
+    @State var doNavigate = false
     
     var body: some View {
-        VStack {
-            searchField
-                .padding(.bottom, 30)
-            
-            /// 플레이스 검색 결과가 비어있을 때 나타나는 뷰
-            if searchManager.places.isEmpty && searchManager.searchText.isEmpty {
-                searchHistory
-                    .padding(.bottom, 40)
-                
-                categories
-                Spacer()
-            } else if searchManager.places.isEmpty && !searchManager.searchText.isEmpty {
-                noResultView
-                    .padding(.bottom, 20)
-            } else {
-                HStack {
-                    searchResultHolder
-                    Spacer()
+        NavigationView {
+            VStack {
+                NavigationLink(destination: SearchResultsView(viewModel:                                                                 SearchResultsViewModel(places: searchManager.places, keyword: keyword))
+                                .environmentObject(searchManager),
+                               isActive: $doNavigate) {
+                    EmptyView()
                 }
                 
-                ScrollView {
-                    ForEach(searchManager.places, id: \.id) { place in
-                        PlaceCardView(
-                            bgColor: Color(red: 246/255, green: 246/255, blue: 246/255),
-                            placeInfo: place
-                        )
-                            .frame(height: 100)
-                    }
+                /// Navgation용 빈 뷰. 검색 결과 뷰로 navigate.
+                searchField
+                    .padding(.bottom, 30)
+                
+                
+                /// 플레이스 텍스트가 비어있을 때 나타나는 뷰
+                if keyword.isEmpty {
+                    searchHistory
+                        .padding(.bottom, 40)
+                    
+                    categories
                 }
+                
                 Spacer()
             }
-            
+            .onAppear {
+                self.keyword = ""
+                searchManager.reset()
+            }
+            .padding(.horizontal, 20)
+            .navigationBarHidden(true)
         }
-        .padding(.horizontal, 20)
     }
 }
 
 extension AddTabView {
     var searchField: some View {
-        SearchBarView($text, Color(red: 243/255, green: 243/255, blue: 243/255),
+        SearchBarView($keyword, Color(red: 243/255, green: 243/255, blue: 243/255),
                       "검색 장소를 입력하세요") {
-            searchManager.fetchPlaces(text)
+            doNavigate = true
+            searchManager.fetchPlaces(keyword)
         }
     }
     
-    var noResultView: some View {
-        Group {
-            Spacer()
-            Image(systemName: "magnifyingglass")
-                .resizable()
-                .foregroundColor(.gray.opacity(0.3))
-                .frame(width: 40, height: 40)
-            Spacer()
-            
-            Text("찾으시는 플레이스가 없습니다")
-                .font(.system(size: 17, weight: .bold))
-                .padding(.bottom, 15)
-            Text("'\(text)'에 대한 검색 결과가 없습니다.\n아래 버튼을 통해 직접 플레이스를 등록하시거나.\n저희에게 플레이스 등록 요청을 해주세요.")
-                .multilineTextAlignment(.center)
-                .font(.system(size: 14))
-            
-            Spacer()
-            
-            Button(action: {}) {
-                HStack {
-                    Spacer()
-                    Text("플레이스 직접 등록하기")
-                        .font(.system(size: 14))
-                    Spacer()
-                }
-            }
-            .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 50))
-
-            Button(action: {}) {
-                HStack {
-                    Spacer()
-                    Text("플레이스 등록 요청하기")
-                        .font(.system(size: 14))
-                    Spacer()
-                }
-            }
-            .buttonStyle(RoundedButtonStyle(bgColor: .white, textColor: .black, isStroked: true, height: 50))
-        }
-    }
-    
-    var searchHistory: some View {
+    public var searchHistory: some View {
         VStack(alignment: .leading) {
             HStack {
                 Text("내가 찾은 검색어")
@@ -128,12 +86,6 @@ extension AddTabView {
         }
     }
     
-    var searchResultHolder: some View {
-        Text("'\(searchManager.searchText)'에 대한 검색결과입니다")
-            .font(.system(size: 14))
-    }
-    
-    // TODO: 여기 대체 왜 에러?
     var categories: some View {
         VStack(alignment: .leading) {
             Text("카테고리별 플레이스 찾기")

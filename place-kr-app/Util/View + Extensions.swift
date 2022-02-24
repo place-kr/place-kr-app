@@ -22,6 +22,20 @@ fileprivate struct EncapsulateModifier: ViewModifier {
     }
 }
 
+struct ProgressView: UIViewRepresentable {
+
+    let isAnimating = true
+    let style: UIActivityIndicatorView.Style
+
+    func makeUIView(context: UIViewRepresentableContext<ProgressView>) -> UIActivityIndicatorView {
+        return UIActivityIndicatorView(style: style)
+    }
+
+    func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ProgressView>) {
+        isAnimating ? uiView.startAnimating() : uiView.stopAnimating()
+    }
+}
+
 struct UIGrid<Content: View, T: Hashable>: View {
     private let columns: Int
     

@@ -45,6 +45,7 @@
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
 		9BF582C9279B8AF90068805E /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C8279B8AF90068805E /* LogInView.swift */; };
 		9BFBB99F27C743DD002C5F10 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBB99E27C743DD002C5F10 /* SearchResultsView.swift */; };
+		9BFBB9A127C76361002C5F10 /* SearchResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBB9A027C76361002C5F10 /* SearchResultsViewModel.swift */; };
 		C1E57CCEE0673CDEBD22B5D4 /* Pods_place_kr_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1A347437C52C1C27B681B8F /* Pods_place_kr_app.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +90,7 @@
 		9BF582C6279ADDEB0068805E /* NaverUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverUserData.swift; sourceTree = "<group>"; };
 		9BF582C8279B8AF90068805E /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		9BFBB99E27C743DD002C5F10 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
+		9BFBB9A027C76361002C5F10 /* SearchResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewModel.swift; sourceTree = "<group>"; };
 		AA35C7AE8C712DACC6E4842A /* Pods-place-kr-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-place-kr-app.debug.xcconfig"; path = "Target Support Files/Pods-place-kr-app/Pods-place-kr-app.debug.xcconfig"; sourceTree = "<group>"; };
 		E2112456F33453C2A4353562 /* Pods-place-kr-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-place-kr-app.release.xcconfig"; path = "Target Support Files/Pods-place-kr-app/Pods-place-kr-app.release.xcconfig"; sourceTree = "<group>"; };
 		F1A347437C52C1C27B681B8F /* Pods_place_kr_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_place_kr_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -239,6 +241,7 @@
 			children = (
 				9B5FD61427C519ED004B60E6 /* AddTabView.swift */,
 				9BFBB99E27C743DD002C5F10 /* SearchResultsView.swift */,
+				9BFBB9A027C76361002C5F10 /* SearchResultsViewModel.swift */,
 			);
 			path = AddTab;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
 				9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */,
 				9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */,
+				9BFBB9A127C76361002C5F10 /* SearchResultsViewModel.swift in Sources */,
 				9B4A02D827A6B8240037D05F /* MapView.swift in Sources */,
 				9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */,
 				9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */,
