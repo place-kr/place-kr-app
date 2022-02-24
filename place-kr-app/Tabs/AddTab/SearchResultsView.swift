@@ -16,16 +16,19 @@ struct SearchResultsView: View {
 
     @State var isFocused = false
     @State var doNavigate = false
+    @State var submitted: String = ""   // TODO: 개선할 수 있으면 하자
+
     
-    init(keyword: String) {
+    init(keyword: String, _ viewModel: SearchManager = SearchManager()) {
+        print("SSS \(keyword.isEmpty)")
         self.keyword = keyword
-        self.viewModel = SearchManager()
+        self.viewModel = viewModel
         self.viewModel.fetchPlaces(keyword)
     }
     
     var body: some View {
         VStack {
-            NavigationLink(destination: LazyView { SearchResultsView(keyword: viewModel.searchKeyword) },
+            NavigationLink(destination: LazyView { SearchResultsView(keyword: submitted) },
                            isActive: $doNavigate) {
                 EmptyView()
             }
@@ -84,9 +87,9 @@ extension SearchResultsView {
                 Image(systemName: "chevron.left") // TODO: Root 로 pop 할지 이대로 할지 결정
             }
             
-            SearchBarView($viewModel.searchKeyword, isFocused: $isFocused,
-                          Color(red: 243/255, green: 243/255, blue: 243/255), "검색 장소를 입력하세요") {
-                            doNavigate = true
+            SearchBarView($viewModel.searchKeyword, isFocused: $isFocused, Color(red: 243/255, green: 243/255, blue: 243/255), "검색 장소를 입력하세요") {
+                submitted = viewModel.searchKeyword
+                doNavigate = true
             }
         }
     }
