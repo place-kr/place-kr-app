@@ -15,7 +15,6 @@ struct AddTabView: View {
     var categoriesData = ["일식", "중식", "한식", "일식", "중식", "한식", "일식", "중식", "한식"]
     
     @ObservedObject var searchManager = SearchManager()
-    @State var submitted: String = "131"   // TODO: 개선할 수 있으면 하자
     @State var keyword: String = ""
     @State var doNavigate = false
     
@@ -23,7 +22,7 @@ struct AddTabView: View {
         NavigationView {
             VStack {
                 /// Navgation용 빈 뷰. 검색 결과 뷰로 navigate.
-                NavigationLink(destination: LazyView { SearchResultsView(keyword: submitted) },
+                NavigationLink(destination: LazyView { SearchResultsView(keyword: searchManager.searchKeyword) },
                                isActive: $doNavigate) {
                     EmptyView()
                 }
@@ -53,9 +52,8 @@ struct AddTabView: View {
 
 extension AddTabView {
     var searchField: some View {
-        SearchBarView($keyword, Color(red: 243/255, green: 243/255, blue: 243/255),
+        SearchBarView($searchManager.searchKeyword, Color(red: 243/255, green: 243/255, blue: 243/255),
                       "검색 장소를 입력하세요") {
-            self.submitted = keyword
             doNavigate = true
         }
     }
