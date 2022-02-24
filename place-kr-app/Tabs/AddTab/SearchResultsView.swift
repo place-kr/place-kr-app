@@ -10,20 +10,26 @@ import SwiftUI
 struct SearchResultsView: View {
     // 모델을 받을지 리스트만 받을지 안에서 뷰모델을 따로 만들지 생각해보기
     @Environment(\.presentationMode) var presentation
-    @ObservedObject var viewModel: SearchResultsViewModel
-    @ObservedObject var searchManager = SearchManager()
+    @ObservedObject var viewModel: SearchManager
+
+    let keyword: String
 
     @State var isFocused = false
     @State var doNavigate = false
     
+    init(keyword: String) {
+        self.keyword = keyword
+        self.viewModel = SearchManager()
+        self.viewModel.fetchPlaces(keyword)
+    }
+    
     var body: some View {
-//        NavigationLink(destination: SearchResultsView(viewModel:                                                                 SearchResultsViewModel(places: searchManager.places, keyword: keyword))
-//                        .environmentObject(searchManager),
-//                       isActive: $doNavigate) {
-//            EmptyView()
-//        }
-        
         VStack {
+            NavigationLink(destination: SearchResultsView(keyword: viewModel.searchKeyword),
+                           isActive: $doNavigate) {
+                EmptyView()
+            }
+            
             searchField
             
             // Bad network 경고 붙이기
@@ -57,21 +63,30 @@ struct SearchResultsView: View {
             
             Spacer()
         }
+        .onAppear {
+            self.viewModel.searchKeyword = keyword
+        }
         .padding(.horizontal, 15)
         .navigationBarHidden(true)
     }
 }
 
 extension SearchResultsView {
+    var searchResultHolder: some View {
+        Text("'\(keyword)'에 대한 검색결과입니다")
+            .font(.system(size: 14))
+    }
+    
     var searchField: some View {
         HStack {
+            /// 이전 뷰로 pop
             Button(action: { self.presentation.wrappedValue.dismiss() }) {
-                Image(systemName: "chevron.left")
+                Image(systemName: "chevron.left") // TODO: Root 로 pop 할지 이대로 할지 결정
             }
-            SearchBarView($viewModel.texts, isFocused: $isFocused,
+            
+            SearchBarView($viewModel.searchKeyword, isFocused: $isFocused,
                           Color(red: 243/255, green: 243/255, blue: 243/255), "검색 장소를 입력하세요") {
-                //            doNavigate = true
-                //            searchManager.fetchPlaces(text)
+                            doNavigate = true
             }
         }
     }
@@ -88,7 +103,7 @@ extension SearchResultsView {
             Text("찾으시는 플레이스가 없습니다")
                 .font(.system(size: 17, weight: .bold))
                 .padding(.bottom, 15)
-            Text("'\(viewModel.keyword)'에 대한 검색 결과가 없습니다.\n아래 버튼을 통해 직접 플레이스를 등록하시거나.\n저희에게 플레이스 등록 요청을 해주세요.")
+            Text("'\(keyword)'에 대한 검색 결과가 없습니다.\n아래 버튼을 통해 직접 플레이스를 등록하시거나.\n저희에게 플레이스 등록 요청을 해주세요.")
                 .multilineTextAlignment(.center)
                 .font(.system(size: 14))
             
@@ -116,15 +131,11 @@ extension SearchResultsView {
         }
     }
     
-    var searchResultHolder: some View {
-        Text("'\(viewModel.keyword)'에 대한 검색결과입니다")
-            .font(.system(size: 14))
-    }
 }
 
 struct SearchResultsView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchResultsView(viewModel: SearchResultsViewModel(places: [], keyword: ""))
+        SearchResultsView(keyword: "")
     }
 }
 

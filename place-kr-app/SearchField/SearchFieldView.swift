@@ -14,8 +14,8 @@ struct SearchFieldView: View {
     private let placeholder: String
     
     var body: some View {
-        TextField(placeholder, text: $viewModel.searchText)
-            .modifier(TextFieldSearchButton(viewModel: viewModel, text: $viewModel.searchText))
+        TextField(placeholder, text: $viewModel.searchKeyword)
+            .modifier(TextFieldSearchButton(viewModel: viewModel, text: $viewModel.searchKeyword))
             .multilineTextAlignment(.leading)
             .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
             .padding(.horizontal)
@@ -40,8 +40,8 @@ extension SearchFieldView {
             HStack {
                 Button(
                     action: {
-                        if !viewModel.searchText.isEmpty {
-                            viewModel.fetchPlaces(viewModel.searchText)
+                        if !viewModel.searchKeyword.isEmpty {
+                            viewModel.fetchPlaces(viewModel.searchKeyword)
                         }
                     },
                     label: {

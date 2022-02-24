@@ -10,7 +10,7 @@ import SwiftUI
 // 검색 완료시 네비게이션 뷰로 전환하는 모델 생각해볼 것
 
 struct AddTabView: View {
-    @ObservedObject var searchManager = SearchManager()
+//    @ObservedObject var searchManager = SearchManager()
     // TODO: 더미 데이터 고치기
     var categoriesData = ["일식", "중식", "한식", "일식", "중식", "한식", "일식", "중식", "한식"]
     @State var keyword: String = ""
@@ -19,13 +19,12 @@ struct AddTabView: View {
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: SearchResultsView(viewModel:                                                                 SearchResultsViewModel(places: searchManager.places, keyword: keyword))
-                                .environmentObject(searchManager),
+                /// Navgation용 빈 뷰. 검색 결과 뷰로 navigate.
+                NavigationLink(destination: SearchResultsView(keyword: keyword),
                                isActive: $doNavigate) {
                     EmptyView()
                 }
                 
-                /// Navgation용 빈 뷰. 검색 결과 뷰로 navigate.
                 searchField
                     .padding(.bottom, 30)
                 
@@ -42,7 +41,6 @@ struct AddTabView: View {
             }
             .onAppear {
                 self.keyword = ""
-                searchManager.reset()
             }
             .padding(.horizontal, 20)
             .navigationBarHidden(true)
@@ -55,7 +53,6 @@ extension AddTabView {
         SearchBarView($keyword, Color(red: 243/255, green: 243/255, blue: 243/255),
                       "검색 장소를 입력하세요") {
             doNavigate = true
-            searchManager.fetchPlaces(keyword)
         }
     }
     

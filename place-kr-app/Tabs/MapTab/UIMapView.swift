@@ -27,7 +27,7 @@ struct UIMapView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
-        guard let place = place.places.first else {
+        guard let place = place.places?.first else {
             return
         }
         
