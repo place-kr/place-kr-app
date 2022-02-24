@@ -15,12 +15,15 @@
 		9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2AB36C27A015B700B30242 /* OnboardingView.swift */; };
 		9B3DE9A227BE2FAE00DAD9CC /* MyPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */; };
 		9B3DE9A427BE337D00DAD9CC /* Font + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */; };
+		9B44BEF627C5E7D600755AD5 /* LargePlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */; };
+		9B44BEF827C5E98E00755AD5 /* PlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */; };
+		9B44BEFA27C6217300755AD5 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF927C6217300755AD5 /* SearchBarView.swift */; };
 		9B4A02D827A6B8240037D05F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02D727A6B8240037D05F /* MapView.swift */; };
 		9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02DB27A6BD170037D05F /* UIMapView.swift */; };
 		9B51C8B927B0D98700F3B76C /* PlaceSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8B827B0D98700F3B76C /* PlaceSearchManager.swift */; };
 		9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8BE27B0EB2700F3B76C /* Place.swift */; };
 		9B51C8C127B0F15200F3B76C /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */; };
-		9B51C8C427B0F21300F3B76C /* SearchFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C327B0F21300F3B76C /* SearchFieldViewModel.swift */; };
+		9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C327B0F21300F3B76C /* SearchManager.swift */; };
 		9B5FD61527C519ED004B60E6 /* AddTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD61427C519ED004B60E6 /* AddTabView.swift */; };
 		9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */; };
 		9B6A1F6327B4B6C200D160DC /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */; };
@@ -41,6 +44,7 @@
 		9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */; };
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
 		9BF582C9279B8AF90068805E /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C8279B8AF90068805E /* LogInView.swift */; };
+		9BFBB99F27C743DD002C5F10 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBB99E27C743DD002C5F10 /* SearchResultsView.swift */; };
 		C1E57CCEE0673CDEBD22B5D4 /* Pods_place_kr_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1A347437C52C1C27B681B8F /* Pods_place_kr_app.framework */; };
 /* End PBXBuildFile section */
 
@@ -55,12 +59,15 @@
 		9B2AB36C27A015B700B30242 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceView.swift; sourceTree = "<group>"; };
 		9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font + Extensions.swift"; sourceTree = "<group>"; };
+		9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargePlaceCardView.swift; sourceTree = "<group>"; };
+		9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCardView.swift; sourceTree = "<group>"; };
+		9B44BEF927C6217300755AD5 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		9B4A02D727A6B8240037D05F /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		9B4A02DB27A6BD170037D05F /* UIMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIMapView.swift; sourceTree = "<group>"; };
 		9B51C8B827B0D98700F3B76C /* PlaceSearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchManager.swift; sourceTree = "<group>"; };
 		9B51C8BE27B0EB2700F3B76C /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
-		9B51C8C327B0F21300F3B76C /* SearchFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldViewModel.swift; sourceTree = "<group>"; };
+		9B51C8C327B0F21300F3B76C /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		9B5FD61427C519ED004B60E6 /* AddTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTabView.swift; sourceTree = "<group>"; };
 		9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
@@ -81,6 +88,7 @@
 		9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extensions.swift"; sourceTree = "<group>"; };
 		9BF582C6279ADDEB0068805E /* NaverUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverUserData.swift; sourceTree = "<group>"; };
 		9BF582C8279B8AF90068805E /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
+		9BFBB99E27C743DD002C5F10 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		AA35C7AE8C712DACC6E4842A /* Pods-place-kr-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-place-kr-app.debug.xcconfig"; path = "Target Support Files/Pods-place-kr-app/Pods-place-kr-app.debug.xcconfig"; sourceTree = "<group>"; };
 		E2112456F33453C2A4353562 /* Pods-place-kr-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-place-kr-app.release.xcconfig"; path = "Target Support Files/Pods-place-kr-app/Pods-place-kr-app.release.xcconfig"; sourceTree = "<group>"; };
 		F1A347437C52C1C27B681B8F /* Pods_place_kr_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_place_kr_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,10 +143,8 @@
 				9B22944B27990018000805F0 /* Login */,
 				9B22944C27990023000805F0 /* Onboarding */,
 				9B51C8C227B0F1FE00F3B76C /* SearchField */,
-				9B4A02D527A6AC1E0037D05F /* Map */,
-				9B3DE9A027BE2E3000DAD9CC /* MyPlace */,
+				9B44BEF427C5D77900755AD5 /* Tabs */,
 				9B20A66F2796F4D80029CA0E /* ContentView.swift */,
-				9B5FD61327C519DE004B60E6 /* AddTab */,
 				9B20A6692796F42B0029CA0E /* Info.plist */,
 				9B84668B2798543F00066F04 /* place-kr-app.entitlements */,
 				9B20A6642796F42B0029CA0E /* Assets.xcassets */,
@@ -166,15 +172,27 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		9B3DE9A027BE2E3000DAD9CC /* MyPlace */ = {
+		9B3DE9A027BE2E3000DAD9CC /* MyPlaceTab */ = {
 			isa = PBXGroup;
 			children = (
 				9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */,
 			);
-			path = MyPlace;
+			path = MyPlaceTab;
 			sourceTree = "<group>";
 		};
-		9B4A02D527A6AC1E0037D05F /* Map */ = {
+		9B44BEF427C5D77900755AD5 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */,
+				9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */,
+				9B4A02D527A6AC1E0037D05F /* MapTab */,
+				9B3DE9A027BE2E3000DAD9CC /* MyPlaceTab */,
+				9B5FD61327C519DE004B60E6 /* AddTab */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		9B4A02D527A6AC1E0037D05F /* MapTab */ = {
 			isa = PBXGroup;
 			children = (
 				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
@@ -182,9 +200,9 @@
 				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
 				9B51C8BD27B0EB1600F3B76C /* Place */,
 				9B9FCE4927B4C7E000DCCF9D /* Notification */,
-				9BD226F127B7501300E5BB2E /* Sheet */,
+				9BD226F127B7501300E5BB2E /* Sheets */,
 			);
-			path = Map;
+			path = MapTab;
 			sourceTree = "<group>";
 		};
 		9B4A02D627A6AC2D0037D05F /* Support Files */ = {
@@ -210,7 +228,8 @@
 			isa = PBXGroup;
 			children = (
 				9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */,
-				9B51C8C327B0F21300F3B76C /* SearchFieldViewModel.swift */,
+				9B51C8C327B0F21300F3B76C /* SearchManager.swift */,
+				9B44BEF927C6217300755AD5 /* SearchBarView.swift */,
 			);
 			path = SearchField;
 			sourceTree = "<group>";
@@ -219,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				9B5FD61427C519ED004B60E6 /* AddTabView.swift */,
+				9BFBB99E27C743DD002C5F10 /* SearchResultsView.swift */,
 			);
 			path = AddTab;
 			sourceTree = "<group>";
@@ -261,12 +281,12 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
-		9BD226F127B7501300E5BB2E /* Sheet */ = {
+		9BD226F127B7501300E5BB2E /* Sheets */ = {
 			isa = PBXGroup;
 			children = (
 				9BD226F227B7505700E5BB2E /* MyPlaceSheetView.swift */,
 			);
-			path = Sheet;
+			path = Sheets;
 			sourceTree = "<group>";
 		};
 		9BEDED2927A26B7400EE560C /* Util */ = {
@@ -425,11 +445,15 @@
 				9B4A02D827A6B8240037D05F /* MapView.swift in Sources */,
 				9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */,
 				9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */,
+				9B44BEFA27C6217300755AD5 /* SearchBarView.swift in Sources */,
 				9B51C8C127B0F15200F3B76C /* SearchFieldView.swift in Sources */,
+				9B44BEF827C5E98E00755AD5 /* PlaceCardView.swift in Sources */,
 				9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */,
 				9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */,
 				9B3DE9A227BE2FAE00DAD9CC /* MyPlaceView.swift in Sources */,
+				9BFBB99F27C743DD002C5F10 /* SearchResultsView.swift in Sources */,
 				9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */,
+				9B44BEF627C5E7D600755AD5 /* LargePlaceCardView.swift in Sources */,
 				9BD226F327B7505700E5BB2E /* MyPlaceSheetView.swift in Sources */,
 				9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */,
 				9B20A6702796F4D80029CA0E /* ContentView.swift in Sources */,
@@ -437,7 +461,7 @@
 				9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */,
 				9BF582C9279B8AF90068805E /* LogInView.swift in Sources */,
 				9B846689279852DA00066F04 /* AppleLoginDelegate.swift in Sources */,
-				9B51C8C427B0F21300F3B76C /* SearchFieldViewModel.swift in Sources */,
+				9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */,
 				9B5FD61527C519ED004B60E6 /* AddTabView.swift in Sources */,
 				9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */,
 				9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */,

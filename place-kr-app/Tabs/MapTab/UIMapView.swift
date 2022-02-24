@@ -9,7 +9,7 @@ import SwiftUI
 import NMapsMap
 
 struct UIMapView: UIViewRepresentable {
-    @ObservedObject var place: SearchFieldViewModel
+    @ObservedObject var place: SearchManager
     
     func makeCoordinator() -> Coordinator {
         Coordinator(place: place)
@@ -40,9 +40,9 @@ struct UIMapView: UIViewRepresentable {
     
     
     class Coordinator: NSObject, NMFMapViewCameraDelegate {
-        @ObservedObject var place: SearchFieldViewModel
+        @ObservedObject var place: SearchManager
 
-        init(place: SearchFieldViewModel) {
+        init(place: SearchManager) {
             self.place = place
         }
 

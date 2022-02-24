@@ -9,7 +9,7 @@ import SwiftUI
 import PartialSheet
 
 struct MapView: View {
-    @ObservedObject var place = SearchFieldViewModel()
+    @ObservedObject var place = SearchManager()
     @EnvironmentObject var partialSheetManager : PartialSheetManager
     
     @State var showEntireSheet = false

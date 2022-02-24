@@ -7,15 +7,16 @@
 
 import SwiftUI
 
-struct SearchFieldView: View {
-    @ObservedObject var viewModel: SearchManager
+struct SearchBarView: View {
+    @Binding var inputText: String
     
+    private let action: (() -> Void)
     private let backgroundColor: Color
     private let placeholder: String
     
     var body: some View {
-        TextField(placeholder, text: $viewModel.searchText)
-            .modifier(TextFieldSearchButton(viewModel: viewModel, text: $viewModel.searchText))
+        TextField(placeholder, text: $inputText)
+            .modifier(TextFieldSearchButton(text: $inputText, action: action))
             .multilineTextAlignment(.leading)
             .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
             .padding(.horizontal)
@@ -23,25 +24,27 @@ struct SearchFieldView: View {
             .cornerRadius(7)
     }
     
-    init(viewModel: SearchManager, bgColor: Color = .white, placeholder: String = "현위치") {
-        self.viewModel = viewModel
+    init(_ inputText: Binding<String>, _ bgColor: Color = .white,
+         _ placeholder: String = "현위치", action: @escaping () -> Void) {
+        self._inputText = inputText
         self.backgroundColor = bgColor
         self.placeholder = placeholder
+        self.action = action
     }
 }
 
-extension SearchFieldView {
+extension SearchBarView {
     /// Add button at search field
     private struct TextFieldSearchButton: ViewModifier {
-        @ObservedObject var viewModel: SearchManager
         @Binding var text: String
+        let action: () -> Void
         
         func body(content: Content) -> some View {
             HStack {
                 Button(
                     action: {
-                        if !viewModel.searchText.isEmpty {
-                            viewModel.fetchPlaces(viewModel.searchText)
+                        if !text.isEmpty {
+                            action()
                         }
                     },
                     label: {
@@ -56,7 +59,7 @@ extension SearchFieldView {
     }
 }
 
-struct SearchFieldView_Previews: PreviewProvider {
+struct SearchBarView_Previews: PreviewProvider {
     static var previews: some View {
         SearchFieldView(viewModel: SearchManager())
     }

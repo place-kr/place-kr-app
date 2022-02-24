@@ -62,7 +62,7 @@ struct MyPlaceView: View {
 extension MyPlaceView {
     struct CardView: View {
         @EnvironmentObject var partialSheetManager : PartialSheetManager
-
+        
         let image: Image? = nil
         let title: String
         let subtitle: String
@@ -90,11 +90,12 @@ extension MyPlaceView {
                         Text("Edit")
                             .font(.system(size: 10))
                     }
-                    .foregroundColor(.black)
-                    .frame(width: 50, height: 24)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(.gray.opacity(0.5))
+                    .buttonStyle(RoundedButtonStyle(
+                        bgColor: .gray.opacity(0.5),
+                        textColor: .black,
+                        isStroked: false,
+                        width: 50,
+                        height: 24)
                     )
             }
             .padding(.horizontal, 12)
