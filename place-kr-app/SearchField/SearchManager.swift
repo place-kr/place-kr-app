@@ -36,6 +36,7 @@ class SearchManager: ObservableObject {
                 DispatchQueue.main.async {
                     self.searchKeyword = input
                     self.places = result
+                    print(self.searchKeyword)
                     print(self.places as Any)
                 }
             })

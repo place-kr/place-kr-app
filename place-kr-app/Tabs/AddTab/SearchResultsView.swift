@@ -25,7 +25,7 @@ struct SearchResultsView: View {
     
     var body: some View {
         VStack {
-            NavigationLink(destination: SearchResultsView(keyword: viewModel.searchKeyword),
+            NavigationLink(destination: LazyView { SearchResultsView(keyword: viewModel.searchKeyword) },
                            isActive: $doNavigate) {
                 EmptyView()
             }

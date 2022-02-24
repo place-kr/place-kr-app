@@ -22,6 +22,18 @@ fileprivate struct EncapsulateModifier: ViewModifier {
     }
 }
 
+struct LazyView<Content: View>: View {
+    let content: () -> Content
+
+    init(@ViewBuilder _ content: @escaping () -> Content) {
+        self.content = content
+    }
+    var body: some View {
+        content()          // << everything is created here
+    }
+}
+
+
 struct ProgressView: UIViewRepresentable {
 
     let isAnimating = true
@@ -105,6 +117,7 @@ struct RoundedButtonStyle: ButtonStyle {
             .overlay(
                 shape.stroke(.black.opacity(isStroked ? 1 : 0), lineWidth: 1)
             )
+            .opacity(configuration.isPressed ? 0.5 : 1)
     }
 }
 
