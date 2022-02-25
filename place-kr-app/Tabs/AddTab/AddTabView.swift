@@ -46,8 +46,7 @@ struct AddTabView: View {
 
 extension AddTabView {
     var searchField: some View {
-        SearchBarView($viewModel.searchKeyword, Color(red: 243/255, green: 243/255, blue: 243/255),
-                      "검색 장소를 입력하세요") {
+        SearchBarView($viewModel.searchKeyword, "검색 장소를 입력하세요", bgColor: Color(red: 243/255,  green: 243/255, blue: 243/255)) {
             doNavigate = true
         }
     }
