@@ -12,18 +12,17 @@ struct SearchResultsView: View {
     @Environment(\.presentationMode) var presentation
     @ObservedObject var viewModel: SearchManager
 
-    let keyword: String
+    let originalKeyword: String // 변하지 않는 검색 결과를 잡고 있음
 
     @State var isFocused = false
     @State var navigateToResult = false
     @State var navigateToRequest = false
     @State var navigateToRegister = false
-
-    @State var submitted: String = ""   // TODO: 개선할 수 있으면 하자
+    @State var submitted: String = ""   // TODO: 개선할 수 있으면 하자, 변하는 결과를 잡고있다가 넘겨줌
 
     
     init(keyword: String, _ viewModel: SearchManager = SearchManager()) {
-        self.keyword = keyword
+        self.originalKeyword = keyword
         self.viewModel = viewModel
         self.viewModel.fetchPlaces(keyword)
     }
@@ -82,12 +81,10 @@ struct SearchResultsView: View {
                 ProgressView(style: .large)
             }
             
-            
-            
             Spacer()
         }
         .onAppear {
-            self.viewModel.searchKeyword = keyword
+            self.viewModel.searchKeyword = originalKeyword
         }
         .padding(.horizontal, 15)
         .navigationBarHidden(true)
@@ -96,7 +93,7 @@ struct SearchResultsView: View {
 
 extension SearchResultsView {
     var searchResultHolder: some View {
-        Text("'\(keyword)'에 대한 검색결과입니다")
+        Text("'\(originalKeyword)'에 대한 검색결과입니다")
             .font(.system(size: 14))
     }
     
@@ -109,9 +106,16 @@ extension SearchResultsView {
             
             SearchBarView($viewModel.searchKeyword, "검색 장소를 입력하세요",
                           isFocused: $isFocused,
-                          bgColor: Color(red: 243/255, green: 243/255, blue: 243/255)) {
-                submitted = viewModel.searchKeyword
-                navigateToResult = true
+                          bgColor: Color(red: 243/255, green: 243/255, blue: 243/255))
+            {
+                if viewModel.searchKeyword == self.originalKeyword {
+                    withAnimation(.easeInOut) {
+                        isFocused = false
+                    }
+                } else {
+                    submitted = viewModel.searchKeyword
+                    navigateToResult = true
+                }
             }
         }
     }
@@ -128,7 +132,7 @@ extension SearchResultsView {
             Text("찾으시는 플레이스가 없습니다")
                 .font(.system(size: 17, weight: .bold))
                 .padding(.bottom, 15)
-            Text("'\(keyword)'에 대한 검색 결과가 없습니다.\n아래 버튼을 통해 직접 플레이스를 등록하시거나.\n저희에게 플레이스 등록 요청을 해주세요.")
+            Text("'\(originalKeyword)'에 대한 검색 결과가 없습니다.\n아래 버튼을 통해 직접 플레이스를 등록하시거나.\n저희에게 플레이스 등록 요청을 해주세요.")
                 .multilineTextAlignment(.center)
                 .font(.system(size: 14))
         }
