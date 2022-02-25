@@ -20,7 +20,6 @@ struct SearchResultsView: View {
 
     
     init(keyword: String, _ viewModel: SearchManager = SearchManager()) {
-        print("SSS \(keyword.isEmpty)")
         self.keyword = keyword
         self.viewModel = viewModel
         self.viewModel.fetchPlaces(keyword)

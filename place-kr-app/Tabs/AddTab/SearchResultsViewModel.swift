@@ -19,13 +19,5 @@ class SearchResultsViewModel: ObservableObject {
         self.places = places
         self.keyword = keyword
         self.texts = keyword
-        
-//        self.$texts
-//            .receive(on: DispatchQueue.main)
-//            .sink { _ in
-//                print("@@@@")
-//                self.presentation.wrappedValue.dismiss()
-//            }
-//            .store(in: &subsriptions)
     }
 }

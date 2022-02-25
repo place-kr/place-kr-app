@@ -10,20 +10,14 @@ import SwiftUI
 // 검색 완료시 네비게이션 뷰로 전환하는 모델 생각해볼 것
 
 struct AddTabView: View {
-//    @ObservedObject var searchManager = SearchManager()
-    // TODO: 더미 데이터 고치기
-    var categoriesData = ["일식", "중식", "한식", "일식", "중식", "한식", "일식", "중식", "한식"]
-    
-    @ObservedObject var searchManager = SearchManager()
-    @State var keyword: String = ""
+    @ObservedObject var viewModel = AddTabViewModel()
     @State var doNavigate = false
     
     var body: some View {
         NavigationView {
             VStack {
                 /// Navgation용 빈 뷰. 검색 결과 뷰로 navigate.
-                NavigationLink(destination: LazyView { SearchResultsView(keyword: searchManager.searchKeyword) },
-                               isActive: $doNavigate) {
+                NavigationLink(destination: LazyView { SearchResultsView(keyword: viewModel.searchKeyword) }, isActive: $doNavigate) {
                     EmptyView()
                 }
                 
@@ -32,7 +26,7 @@ struct AddTabView: View {
                 
                 
                 /// 플레이스 텍스트가 비어있을 때 나타나는 뷰
-                if keyword.isEmpty {
+                if viewModel.searchKeyword.isEmpty {
                     searchHistory
                         .padding(.bottom, 40)
                     
@@ -42,7 +36,7 @@ struct AddTabView: View {
                 Spacer()
             }
             .onAppear {
-                self.keyword = ""
+                viewModel.searchKeyword = ""
             }
             .padding(.horizontal, 20)
             .navigationBarHidden(true)
@@ -52,7 +46,7 @@ struct AddTabView: View {
 
 extension AddTabView {
     var searchField: some View {
-        SearchBarView($searchManager.searchKeyword, Color(red: 243/255, green: 243/255, blue: 243/255),
+        SearchBarView($viewModel.searchKeyword, Color(red: 243/255, green: 243/255, blue: 243/255),
                       "검색 장소를 입력하세요") {
             doNavigate = true
         }
@@ -90,7 +84,7 @@ extension AddTabView {
             Text("카테고리별 플레이스 찾기")
                 .font(.system(size: 14))
             
-            UIGrid(columns: 2, list: categoriesData) { category in
+            UIGrid(columns: 2, list: viewModel.categoriesData) { category in
                 Button(action: {}) {
                     HStack {
                         Spacer()
