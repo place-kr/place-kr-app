@@ -52,7 +52,7 @@ struct SearchResultsView: View {
             
             // Bad network 경고 붙이기
             if let places = viewModel.places {
-                if !isFocused {
+                if !isFocused && navigateToResult == false {
                     if places.isEmpty {
                         noResultDescription
                         Spacer()
