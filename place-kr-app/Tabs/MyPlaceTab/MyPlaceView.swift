@@ -102,12 +102,18 @@ extension MyPlaceView {
         }
         
         var managePlaceList: some View {
-            List {
-                Text("TExt")
-                Text("TExt")
-                Text("TExt")
+            NavigationView {
+                List {
+                    Text("공유하기")
+                    Text("리스트명 변경하기")
+                    Text("플레이스 편집하기")
+                    Text("삭제하기")
+                }
+                .listStyle(PlainListStyle())
+                .environment(\.defaultMinListRowHeight, 50)
+                .navigationBarItems(trailing: Button(action: {}) { Image(systemName: "xmark") })
+                .navigationBarTitle("플레이스 리스트 관리")
             }
-            .listStyle(PlainListStyle())
         }
     }
 }
