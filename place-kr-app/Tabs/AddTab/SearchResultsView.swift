@@ -15,7 +15,10 @@ struct SearchResultsView: View {
     let keyword: String
 
     @State var isFocused = false
-    @State var doNavigate = false
+    @State var navigateToResult = false
+    @State var navigateToRequest = false
+    @State var navigateToRegister = false
+
     @State var submitted: String = ""   // TODO: 개선할 수 있으면 하자
 
     
@@ -27,8 +30,22 @@ struct SearchResultsView: View {
     
     var body: some View {
         VStack {
+            /// Navigate용 빈 뷰
+            // 검색 결과로 go(result)
             NavigationLink(destination: LazyView { SearchResultsView(keyword: submitted) },
-                           isActive: $doNavigate) {
+                           isActive: $navigateToResult) {
+                EmptyView()
+            }
+            
+            // 플레이스 요청으로 go(request)
+            NavigationLink(destination: LazyView { RequestPlaceView() },
+                           isActive: $navigateToRequest) {
+                EmptyView()
+            }
+            
+            // 플레이스 등록으로 go(register)
+            NavigationLink(destination: LazyView { RegisterPlaceView() },
+                           isActive: $navigateToRegister) {
                 EmptyView()
             }
             
@@ -38,7 +55,11 @@ struct SearchResultsView: View {
             if let places = viewModel.places {
                 if !isFocused {
                     if places.isEmpty {
-                        noResultView
+                        noResultDescription
+                        Spacer()
+                        
+                        registerPlaceButton
+                        requstPlaceButton
                     } else {
                         HStack {
                             searchResultHolder
@@ -86,14 +107,16 @@ extension SearchResultsView {
                 Image(systemName: "chevron.left") // TODO: Root 로 pop 할지 이대로 할지 결정
             }
             
-            SearchBarView($viewModel.searchKeyword, isFocused: $isFocused, Color(red: 243/255, green: 243/255, blue: 243/255), "검색 장소를 입력하세요") {
+            SearchBarView($viewModel.searchKeyword, "검색 장소를 입력하세요",
+                          isFocused: $isFocused,
+                          bgColor: Color(red: 243/255, green: 243/255, blue: 243/255)) {
                 submitted = viewModel.searchKeyword
-                doNavigate = true
+                navigateToResult = true
             }
         }
     }
     
-    var noResultView: some View {
+    var noResultDescription: some View {
         Group {
             Spacer()
             Image(systemName: "magnifyingglass")
@@ -108,29 +131,31 @@ extension SearchResultsView {
             Text("'\(keyword)'에 대한 검색 결과가 없습니다.\n아래 버튼을 통해 직접 플레이스를 등록하시거나.\n저희에게 플레이스 등록 요청을 해주세요.")
                 .multilineTextAlignment(.center)
                 .font(.system(size: 14))
-            
-            Spacer()
-            
-            Button(action: {}) {
-                HStack {
-                    Spacer()
-                    Text("플레이스 직접 등록하기")
-                        .font(.system(size: 14))
-                    Spacer()
-                }
-            }
-            .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 50))
-
-            Button(action: {}) {
-                HStack {
-                    Spacer()
-                    Text("플레이스 등록 요청하기")
-                        .font(.system(size: 14))
-                    Spacer()
-                }
-            }
-            .buttonStyle(RoundedButtonStyle(bgColor: .white, textColor: .black, isStroked: true, height: 50))
         }
+    }
+    
+    var requstPlaceButton: some View {
+        Button(action: { navigateToRequest = true }) {
+            HStack {
+                Spacer()
+                Text("플레이스 직접 등록하기")
+                    .font(.system(size: 14))
+                Spacer()
+            }
+        }
+        .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 50))
+    }
+    
+    var registerPlaceButton: some View {
+        Button(action: { navigateToRegister = true }) {
+              HStack {
+                  Spacer()
+                  Text("플레이스 등록 요청하기")
+                      .font(.system(size: 14))
+                  Spacer()
+              }
+          }
+          .buttonStyle(RoundedButtonStyle(bgColor: .white, textColor: .black, isStroked: true, height: 50))
     }
     
 }
