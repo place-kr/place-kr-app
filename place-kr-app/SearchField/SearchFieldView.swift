@@ -8,35 +8,41 @@
 import SwiftUI
 
 struct SearchFieldView: View {
-    @State var text = ""
-    @ObservedObject var viewModel: SearchFieldViewModel
+    @ObservedObject var viewModel: SearchManager
+    
+    private let backgroundColor: Color
+    private let placeholder: String
     
     var body: some View {
-        TextField("현위치: {자동 입력}", text: $text)
-            .modifier(TextFieldSearchButton(viewModel: viewModel, text: $text))
+        TextField(placeholder, text: $viewModel.searchKeyword)
+            .modifier(TextFieldSearchButton(viewModel: viewModel, text: $viewModel.searchKeyword))
             .multilineTextAlignment(.leading)
             .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
             .padding(.horizontal)
-            .background(Color.white)
+            .background(backgroundColor)
             .cornerRadius(7)
     }
     
-    init(viewModel: SearchFieldViewModel) {
+    init(viewModel: SearchManager, bgColor: Color = .white, placeholder: String = "현위치") {
         self.viewModel = viewModel
+        self.backgroundColor = bgColor
+        self.placeholder = placeholder
     }
 }
 
 extension SearchFieldView {
     /// Add button at search field
     private struct TextFieldSearchButton: ViewModifier {
-        @ObservedObject var viewModel: SearchFieldViewModel
+        @ObservedObject var viewModel: SearchManager
         @Binding var text: String
         
         func body(content: Content) -> some View {
             HStack {
                 Button(
                     action: {
-                        viewModel.fetchPlaces(text)
+                        if !viewModel.searchKeyword.isEmpty {
+                            viewModel.fetchPlaces(viewModel.searchKeyword)
+                        }
                     },
                     label: {
                         Image(systemName: "magnifyingglass")
@@ -52,6 +58,6 @@ extension SearchFieldView {
 
 struct SearchFieldView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchFieldView(viewModel: SearchFieldViewModel())
+        SearchFieldView(viewModel: SearchManager())
     }
 }

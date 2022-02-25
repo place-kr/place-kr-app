@@ -36,6 +36,14 @@ struct ContentView: View {
                         Text("My place")
                     }
             }
+            
+            AddTabView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "plus.circle")
+                        Text("Add")
+                    }
+                }
         }
         .accentColor(.black)
         .onAppear() {
