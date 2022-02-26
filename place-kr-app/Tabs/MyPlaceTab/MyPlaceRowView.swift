@@ -8,45 +8,26 @@
 import SwiftUI
 import PartialSheet
 
+
+class MyPlaceRowViewModel: ObservableObject {
+    @Published var listName: String
+    @Published var places: [PlaceInfo]
+    
+    init(name: String) {
+        self.listName = name
+        self.places = Array(repeating: dummyPlaceInfo, count: 5)
+    }
+}
+
 struct MyPlaceRowView: View {
     @EnvironmentObject var partialSheetManager : PartialSheetManager
-    
-    let image: Image? = nil
-    let title: String
-    let subtitle: String
+    @ObservedObject var viewModel: MyPlaceRowViewModel
     
     var body: some View {
-        HStack(spacing: 0) {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.gray.opacity(0.5))
-                .frame(width: 50, height: 50)
-            
-            VStack(alignment: .leading) {
-                Text(title)
-                    .font(.system(size: 14, weight: .bold))
-                Text("\(subtitle) places")
-                    .font(.system(size: 12, weight: .medium))
-            }
-            .padding(.leading, 14)
-            
-            Spacer()
-            
-            Button(action: {
-                partialSheetManager.showPartialSheet({}) {
-                    managePlaceList
-                }}) {
-                    Text("Edit")
-                        .font(.system(size: 10))
-                }
-                .buttonStyle(RoundedButtonStyle(
-                    bgColor: .gray.opacity(0.5),
-                    textColor: .black,
-                    isStroked: false,
-                    width: 50,
-                    height: 24)
-                )
-        }
-        .padding(.horizontal, 12)
+        SimplePlaceCardView(viewModel.listName,
+                            subscripts: "\(viewModel.places.count) places",
+                            image: UIImage())
+            .padding(.horizontal, 12)
     }
 }
 
@@ -76,6 +57,6 @@ extension MyPlaceRowView {
 
 struct MyPlaceRowView_Previews: PreviewProvider {
     static var previews: some View {
-        MyPlaceRowView(title: "", subtitle: "")
+        MyPlaceRowView(viewModel: MyPlaceRowViewModel(name: "Hola"))
     }
 }

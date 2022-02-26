@@ -27,30 +27,19 @@ struct ContentView: View {
                     }
                 }
             
-            ZStack {
-                MyPlaceView()
-            }
-            .tabItem {
-                VStack {
-                    Image(systemName: "star")
-                    Text("My place")
+            MyPlaceView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "star")
+                        Text("My place")
+                    }
                 }
-            }
             
-            Text("Add")
+            AddTabView()
                 .tabItem {
                     VStack {
                         Image(systemName: "plus.circle")
                         Text("Add")
-                    }
-                }
-            
-            
-            Text("Profile")
-                .tabItem {
-                    VStack {
-                        Image(systemName: "person")
-                        Text("Profile")
                     }
                 }
         }
@@ -59,15 +48,15 @@ struct ContentView: View {
             UITabBar.appearance().backgroundColor = .white
         }
         //        if !isLoginSuccessed {
-        //            LogInView(success: $isLoginSuccessed)
-        //                .environment(\.window, window)
-        //        } else {
-        //            if isFirstRegistered {
-        //                OnboardingView(isClicked: $isFirstRegistered)
-        //            } else {
-        //                MapView()
-        //            }
-        //        }
+//            LogInView(success: $isLoginSuccessed)
+//                .environment(\.window, window)
+//        } else {
+//            if isFirstRegistered {
+//                OnboardingView(isClicked: $isFirstRegistered)
+//            } else {
+//                MapView()
+//            }
+//        }
     }
 }
 

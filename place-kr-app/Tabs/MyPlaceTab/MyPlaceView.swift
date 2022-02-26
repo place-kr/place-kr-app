@@ -29,7 +29,7 @@ struct MyPlaceView: View {
                     VStack(spacing: 10) {
                         ForEach((0..<count), id: \.self) { _ in
                             NavigationLink(destination: Text("올해 가보고 싶은 곳")) {
-                                MyPlaceRowView(title: "올해 가보고 싶은 곳", subtitle: "3")
+                                MyPlaceRowView(viewModel: MyPlaceRowViewModel(name: "Hola!"))
                                     .environmentObject(partialSheetManager)
                                     .frame(height: 70)
                                     .background(
