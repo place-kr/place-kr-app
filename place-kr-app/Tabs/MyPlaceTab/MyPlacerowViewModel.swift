@@ -7,8 +7,63 @@
 
 import SwiftUI
 
+class MyPlaceRowViewModel: ObservableObject {
+    @Published var listName: String
+    @Published var places = [PlaceInfoWrapper]()
+    @Published var selectionCount = 0
+    @Published var isAllSelected = false
+        
+    private var placeDict = [UUID: PlaceInfoWrapper]()
+    
+    func resetSelection() {
+        isAllSelected = false
+        for index in places.indices {
+            places[index].isSelected = false
+        }
+        selectionCount = 0
+    }
+    
+    func selectAll() {
+        isAllSelected = true
+        for index in places.indices {
+            places[index].isSelected = true
+        }
+        selectionCount = places.count
+    }
+    
+    func toggleAllSelection() {
+        if isAllSelected {
+            resetSelection()
+        } else {
+            selectAll()
+        }
+    }
+    
+    func toggleOneSelection(_ id: UUID) {
+        isAllSelected = false
+        let isSelected = placeDict[id]!.isSelected
+        if isSelected {
+            placeDict[id]?.isSelected = false
+            selectionCount -= 1
+        } else {
+            placeDict[id]?.isSelected = true
+            selectionCount += 1
+        }
+    }
+    
+    init(name: String) {
+        self.listName = name
+        self.places = dummyPlaceInfoArray.map({ place in
+            let placeWrapper = PlaceInfoWrapper(placeInfo: place, isSelected: false)
+            placeDict[placeWrapper.id] = placeWrapper
+            return placeWrapper
+        })
+        self.resetSelection()
+    }
+}
+
 extension MyPlaceRowViewModel {
-    private struct PlaceInfoWrapper: Hashable, Identifiable {
+    class PlaceInfoWrapper: Hashable, Identifiable {
         let id = UUID()
         let placeInfo: PlaceInfo
         var isSelected: Bool
@@ -20,52 +75,10 @@ extension MyPlaceRowViewModel {
         static func == (lhs: PlaceInfoWrapper, rhs: PlaceInfoWrapper) -> Bool {
             return lhs.id == rhs.id && lhs.id == rhs.id
         }
-    }
-}
-
-class MyPlaceRowViewModel: ObservableObject {
-    @Published var listName: String
-    @Published var places: [PlaceInfo]
-    @Published var selectionStateDict = [String: Bool]()
-    @Published var placesToBeDeleted = [PlaceInfo]()
-    @Published var isAllSelected = false
         
-    func resetSelection() {
-        isAllSelected = false
-        _ = self.places.map({ place in
-            self.selectionStateDict[place.id] = false
-        })
-    }
-    
-    func selectAll() {
-        isAllSelected = true
-        _ = self.places.map({ place in
-            self.selectionStateDict[place.id] = true
-        })
-    }
-    
-    func toggleAllSelection() {
-        if isAllSelected {
-            resetSelection()
-        } else {
-            selectAll()
+        init(placeInfo: PlaceInfo, isSelected: Bool) {
+            self.placeInfo = placeInfo
+            self.isSelected = isSelected
         }
-    }
-    
-    func toggleOneSelection(_ placeID: String) {
-        isAllSelected = false
-        let isSelected = self.selectionStateDict[placeID, default: false]
-        if isSelected {
-            self.selectionStateDict[placeID] = false
-        } else {
-            self.selectionStateDict[placeID] = true
-//            self.placesToBeDeleted.append()
-        }
-    }
-    
-    init(name: String) {
-        self.listName = name
-        self.places = dummyPlaceInfoArray
-        self.resetSelection()
     }
 }

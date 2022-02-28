@@ -33,7 +33,7 @@ struct PlaceListDetailView: View {
                 ScrollView {
                     VStack(spacing: 10) {
                         ForEach(viewModel.places, id: \.id) { place in
-                            PlaceCardView(bgColor: .white, placeInfo: place)
+                            PlaceCardView(bgColor: .white, placeInfo: place.placeInfo)
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
@@ -60,7 +60,7 @@ struct PlaceListDetailView: View {
 extension PlaceListDetailView {
     var editableView: some View {
         ZStack {
-            if !viewModel.placesToBeDeleted.isEmpty {
+            if viewModel.selectionCount != 0 {
                 VStack {
                     Spacer()
                     Button(action: {}) {
@@ -100,11 +100,11 @@ extension PlaceListDetailView {
                             let placeID = place.id
                             
                             // 플레이스 정보
-                            PlaceCardView(bgColor: .white, placeInfo: place)
+                            PlaceCardView(bgColor: .white, placeInfo: place.placeInfo)
                                 .padding()
                                 .overlay (
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(.black.opacity(viewModel.selectionStateDict[placeID, default: false] ? 1 : 0))
+                                        .stroke(.black.opacity(place.isSelected ? 1 : 0))
                                 )
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
@@ -115,7 +115,6 @@ extension PlaceListDetailView {
                                 .onTapGesture {
                                     viewModel.toggleOneSelection(placeID)
                                 }
-                            
                         }
                     }
                 }
