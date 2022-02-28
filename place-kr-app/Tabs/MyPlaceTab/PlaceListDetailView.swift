@@ -34,7 +34,7 @@ struct PlaceListDetailView: View {
                     VStack(spacing: 10) {
                         ForEach(viewModel.places, id: \.id) { place in
                             PlaceCardView(bgColor: .white, placeInfo: place)
-                                .padding(.vertical)
+                                .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
                                         .fill(.white)
@@ -45,9 +45,12 @@ struct PlaceListDetailView: View {
                 }
             }
         }
-        .navigationBarItems(trailing: Button(action: { isEditable.toggle() }, label: {
-            Text("Edit")
-                .foregroundColor(.black)
+        .navigationBarItems(trailing: Button(action: {
+            isEditable.toggle()
+            viewModel.resetSelection()
+        }, label: {
+            Text(isEditable ? "취소" : "Edit")
+                .foregroundColor(isEditable ? .red : .black)
         }))
         .navigationBarTitle("\(viewModel.listName)", displayMode: .inline) // TODO: 원본과 다름
         .padding(.horizontal, 15)
@@ -69,8 +72,8 @@ extension PlaceListDetailView {
                 )
             
             HStack {
-                Button(action: {  }) {
-                    Image(systemName: "squreshape")
+                Button(action: { viewModel.toggleSelection() }) {
+                    Image(systemName: !viewModel.isAllSelected ? "square" : "checkmark.square")
                     Text("전체선택")
                 }
                 .font(.basic.subtitle)
@@ -82,8 +85,9 @@ extension PlaceListDetailView {
                     ForEach(viewModel.places, id: \.id) { place in
                         let placeID = place.id
                         
+                        // 플레이스 정보
                         PlaceCardView(bgColor: .white, placeInfo: place)
-                            .padding(.vertical)
+                            .padding()
                             .overlay (
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(.black.opacity(viewModel.selectionStateDict[placeID, default: false] ? 1 : 0))
