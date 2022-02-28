@@ -42,6 +42,14 @@ struct ContentView: View {
                         Text("Add")
                     }
                 }
+            
+            ProfileTabView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "person")
+                        Text("Profile")
+                    }
+                }
         }
         .accentColor(.black)
         .onAppear() {
