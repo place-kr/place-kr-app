@@ -48,7 +48,22 @@ class MyPlaceRowViewModel: ObservableObject {
         } else {
             placeDict[id]?.isSelected = true
             selectionCount += 1
+            if selectionCount == places.count {
+                isAllSelected = true
+            }
         }
+    }
+    
+    func deleteSelected() {
+        self.places = places.filter { wrapper in
+            if wrapper.isSelected {
+                placeDict.removeValue(forKey: wrapper.id)
+                return false
+            } else {
+                return true
+            }
+        }
+        self.selectionCount = 0
     }
     
     init(name: String) {

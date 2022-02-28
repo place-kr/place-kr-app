@@ -63,7 +63,7 @@ extension PlaceListDetailView {
             if viewModel.selectionCount != 0 {
                 VStack {
                     Spacer()
-                    Button(action: {}) {
+                    Button(action: { viewModel.deleteSelected() }) {
                         Text("삭제하기")
                     }
                     .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 50))
@@ -71,6 +71,7 @@ extension PlaceListDetailView {
                 }
                 .zIndex(1)
                 .transition(.move(edge: .bottom))
+                .animation(.spring())
             }
             
             VStack(alignment: .leading) {
@@ -117,6 +118,7 @@ extension PlaceListDetailView {
                                 }
                         }
                     }
+                    .animation(.spring())
                 }
             }
         }
