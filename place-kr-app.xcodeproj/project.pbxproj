@@ -35,6 +35,7 @@
 		9B6C0D2527C895F900376373 /* AddTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C0D2427C895F900376373 /* AddTabViewModel.swift */; };
 		9B6C0D2727C8966600376373 /* RequestPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C0D2627C8966600376373 /* RequestPlaceView.swift */; };
 		9B6C0D2927C89C0400376373 /* RegisterPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C0D2827C89C0400376373 /* RegisterPlaceView.swift */; };
+		9B7D508427CCE8750015ED2C /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7D508327CCE8740015ED2C /* ProfileTabView.swift */; };
 		9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */; };
 		9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegate.swift */; };
 		9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* NaverLoginView.swift */; };
@@ -88,6 +89,7 @@
 		9B6C0D2427C895F900376373 /* AddTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTabViewModel.swift; sourceTree = "<group>"; };
 		9B6C0D2627C8966600376373 /* RequestPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPlaceView.swift; sourceTree = "<group>"; };
 		9B6C0D2827C89C0400376373 /* RegisterPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPlaceView.swift; sourceTree = "<group>"; };
+		9B7D508327CCE8740015ED2C /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
 		9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
 		9B84668127981E5200066F04 /* NaverLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegate.swift; sourceTree = "<group>"; };
 		9B84668527982E7800066F04 /* NaverLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginView.swift; sourceTree = "<group>"; };
@@ -160,7 +162,6 @@
 				9B4A02D627A6AC2D0037D05F /* Support Files */,
 				9B22944B27990018000805F0 /* Login */,
 				9B22944C27990023000805F0 /* Onboarding */,
-				9B51C8C227B0F1FE00F3B76C /* SearchField */,
 				9B44BEF427C5D77900755AD5 /* Tabs */,
 				9B20A66F2796F4D80029CA0E /* ContentView.swift */,
 				9B20A6692796F42B0029CA0E /* Info.plist */,
@@ -204,12 +205,12 @@
 		9B44BEF427C5D77900755AD5 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */,
-				9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */,
-				9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */,
+				9B51C8C227B0F1FE00F3B76C /* SearchField */,
+				9B7D508527CCEA9F0015ED2C /* PlaceCard */,
 				9B4A02D527A6AC1E0037D05F /* MapTab */,
 				9B3DE9A027BE2E3000DAD9CC /* MyPlaceTab */,
 				9B5FD61327C519DE004B60E6 /* AddTab */,
+				9B7D508227CCE8560015ED2C /* ProfileTab */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -267,6 +268,24 @@
 				9B6C0D2827C89C0400376373 /* RegisterPlaceView.swift */,
 			);
 			path = AddTab;
+			sourceTree = "<group>";
+		};
+		9B7D508227CCE8560015ED2C /* ProfileTab */ = {
+			isa = PBXGroup;
+			children = (
+				9B7D508327CCE8740015ED2C /* ProfileTabView.swift */,
+			);
+			path = ProfileTab;
+			sourceTree = "<group>";
+		};
+		9B7D508527CCEA9F0015ED2C /* PlaceCard */ = {
+			isa = PBXGroup;
+			children = (
+				9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */,
+				9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */,
+				9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */,
+			);
+			path = PlaceCard;
 			sourceTree = "<group>";
 		};
 		9B84668327982E5D00066F04 /* Naver Login */ = {
@@ -483,6 +502,7 @@
 				9B43E02A27C9DB0F0042F9C4 /* DummyData.swift in Sources */,
 				9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */,
 				9B3DE9A227BE2FAE00DAD9CC /* MyPlaceView.swift in Sources */,
+				9B7D508427CCE8750015ED2C /* ProfileTabView.swift in Sources */,
 				9B43E02E27C9F97A0042F9C4 /* MyPlacerowViewModel.swift in Sources */,
 				9BFBB99F27C743DD002C5F10 /* SearchResultsView.swift in Sources */,
 				9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */,
