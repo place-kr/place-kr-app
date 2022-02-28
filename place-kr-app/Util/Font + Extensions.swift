@@ -9,7 +9,7 @@ import SwiftUI
 
 extension Font {
     struct Basic {
-        /// size; 14, weight: light
+        /// size: 14, weight: light
         let subtitle = Font.system(size: 14)
         
         /// size: 17, weight: bold

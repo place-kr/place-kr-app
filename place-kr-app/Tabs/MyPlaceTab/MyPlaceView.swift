@@ -28,8 +28,9 @@ struct MyPlaceView: View {
                 ScrollView {
                     VStack(spacing: 10) {
                         ForEach((0..<count), id: \.self) { _ in
-                            NavigationLink(destination: Text("올해 가보고 싶은 곳")) {
-                                MyPlaceRowView(viewModel: MyPlaceRowViewModel(name: "Hola!"))
+                            let viewModel = MyPlaceRowViewModel(name: "Hola!")
+                            NavigationLink(destination: PlaceListDetailView().environmentObject(viewModel)) {
+                                MyPlaceRowView(viewModel: viewModel)
                                     .environmentObject(partialSheetManager)
                                     .frame(height: 70)
                                     .background(

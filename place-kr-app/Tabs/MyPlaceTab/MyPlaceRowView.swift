@@ -8,17 +8,6 @@
 import SwiftUI
 import PartialSheet
 
-
-class MyPlaceRowViewModel: ObservableObject {
-    @Published var listName: String
-    @Published var places: [PlaceInfo]
-    
-    init(name: String) {
-        self.listName = name
-        self.places = Array(repeating: dummyPlaceInfo, count: 5)
-    }
-}
-
 struct MyPlaceRowView: View {
     @EnvironmentObject var partialSheetManager : PartialSheetManager
     @ObservedObject var viewModel: MyPlaceRowViewModel
