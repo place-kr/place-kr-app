@@ -38,6 +38,8 @@ class AppleLoginViewModel: ObservableObject {
                     UserInfoManager.saveAppleUserInfo(userData)
                     
                     guard let userInfo = UserInfoManager.loadUserInfo() else {
+                        print("Error while fetching user data from UserDefault. The problem might have occurred during saving routine")
+                        completionHandler(.failure(.fetch))
                         return
                     }
                     

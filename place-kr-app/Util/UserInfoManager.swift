@@ -12,6 +12,8 @@ import Foundation
 // TODO: Add Naver user register routine
 class UserInfoManager {
     static let userInfoKey = "user"
+    static let tokenKey = "token"
+    
     static func saveAppleUserInfo(_ info: AppleUserData) {
         let encoder = PropertyListEncoder()
         
@@ -50,6 +52,17 @@ class UserInfoManager {
             print(error)
         }
         return userInfo
+    }
+    
+    static func saveUserToken(_ token: String) {
+        UserDefaults.standard.set(token, forKey: tokenKey)
+        print("Token is successfully saved: \(token)")
+    }
+    
+    static func loadUserToken() -> String? {
+        let token = UserDefaults.standard.string(forKey: tokenKey)
+        print("Token is successfully loaded: \(token as Any)")
+        return token 
     }
 }
 

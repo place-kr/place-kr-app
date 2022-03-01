@@ -5,6 +5,7 @@ import AuthenticationServices
 enum AppleLoginError: Error, CustomStringConvertible {
     case expiredToken
     case invalidResponse
+    case fetch
     
     var description: String {
         switch self {
@@ -12,6 +13,8 @@ enum AppleLoginError: Error, CustomStringConvertible {
             return "Token is invalid. It could be expired."
         case .invalidResponse:
             return "Invalid network response."
+        case .fetch:
+            return "User data fetch error"
         }
     }
 }
