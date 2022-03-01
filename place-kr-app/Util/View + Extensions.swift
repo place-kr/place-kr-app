@@ -100,6 +100,8 @@ struct UIGrid<Content: View, T: Hashable>: View {
 }
 
 struct RoundedButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) private var isEnabled: Bool
+
     var bgColor: Color
     var textColor: Color
     var isStroked: Bool
@@ -118,6 +120,7 @@ struct RoundedButtonStyle: ButtonStyle {
                 shape.stroke(.black.opacity(isStroked ? 1 : 0), lineWidth: 1)
             )
             .opacity(configuration.isPressed ? 0.5 : 1)
+            .opacity(!isEnabled ? 0.3 : 1)
     }
 }
 
