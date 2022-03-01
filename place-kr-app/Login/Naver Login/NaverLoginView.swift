@@ -5,6 +5,7 @@ struct NaverLoginButtonView: View {
     @Binding var success: Bool
     @State var showNaverLogin = false
     @ObservedObject var viewModel = NaverLoginButtonViewModel()
+    @EnvironmentObject var loginManager: LoginManager
 
     var body: some View {
         Button(action: { showNaverLogin = true }) {
@@ -30,10 +31,10 @@ struct NaverLoginButtonView: View {
 }
 
 extension NaverLoginButtonView {
-    /// Login pop up
+    /// Login modal view
     var NaverLoginView: some View {
         NaverVCRepresentable { result in
-            self.success = viewModel.completionHandler(result)
+            loginManager.socialAuthResultHandler(result)
         }
     }
 }

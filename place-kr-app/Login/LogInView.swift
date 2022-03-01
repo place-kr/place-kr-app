@@ -9,15 +9,63 @@ import SwiftUI
 import CoreData
 import Combine
 
+class LoginManager: ObservableObject {
+    @Published var status: status
+    
+    func socialAuthResultHandler(_ result: Result<NaverUserInfo, NaverLoginError>) {
+        switch result {
+        case .failure(let error):
+            print(error)
+            self.status = .fail
+        case .success(let userInfo):
+            print("Successfully get token. Email:\(userInfo.email), Token:\(userInfo.accessToken)")
+
+            let url = URL(string: "https://dev.place.tk/api/v1/auth/naver")!
+            let body = AuthAPIManager.NaverBody(
+                identifier: userInfo.identifier,
+                email: userInfo.email,
+                accessToken: userInfo.accessToken
+            )
+            
+            AuthAPIManager.sendPostRequest(to: url, body: body) { result in
+                switch result {
+                case .failure(let error):
+                    self.status = .fail
+                    print(error)
+                case .success(let result):
+                    self.status = .success
+                    
+                    // TODO: result 저장하기
+                    print(result)
+                }
+            }
+        }
+    }
+    
+    init() {
+        self.status = .waiting
+    }
+}
+
+extension LoginManager {
+    enum status {
+        case waiting
+        case fail
+        case success
+        case inProgress
+    }
+}
+
 struct LogInView: View {
     @Environment(\.window) var window: UIWindow?
-    
+    @ObservedObject var loginManger = LoginManager()
     @Binding var success: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Spacer()
             
+            // TODO: 로딩 뷰 문의
             /// 앱 로고 디폴트 이미지
             RoundedRectangle(cornerRadius: 21)
                 .fill(.gray.opacity(0.5))
@@ -34,10 +82,12 @@ struct LogInView: View {
             Spacer()
             
             NaverLoginButtonView(success: $success)
+                .environmentObject(loginManger)
             
             AppleLogInView(viewModel: AppleLoginViewModel(window: window), success: $success)
                 .frame(height: 54)
                 .environment(\.window, window)
+                .environmentObject(loginManger)
                 .padding(.top, 14)
                 .padding(.bottom, 60)
             
