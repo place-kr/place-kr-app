@@ -11,7 +11,56 @@
 
 import SwiftUI
 
+import Combine
+class OnboardingViewModel: ObservableObject {
+    @Published var images = [ImageWrapper]()
+    private var subscription = Set<AnyCancellable>()
+    
+    // TODO: Caching
+    init() {
+        let imageUrls = Array(repeating: URL(string: "https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg")!, count: 12)
+        
+        for url in imageUrls {
+            URLSession.shared.dataTaskPublisher(for: url)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { result in
+                    switch result {
+                    case let .failure(error):
+                        print("Load failed: \(error)")
+                    case .finished:
+                        print("Successed to load image")
+                    }
+                }, receiveValue: { image in
+                    let image = UIImage(data: image.data)!
+                    self.images.append(ImageWrapper(image: image))
+                })
+                .store(in: &subscription)
+        }
+    }
+}
+
+extension OnboardingViewModel {
+    struct ImageWrapper: Hashable, Identifiable {
+        let id = UUID()
+        var isSelected = false
+        var image: UIImage
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
+        static func == (lhs: ImageWrapper, rhs: ImageWrapper) -> Bool {
+            return lhs.id == rhs.id && lhs.id == rhs.id
+        }
+        
+        init(image: UIImage) {
+            self.image = image
+        }
+    }
+}
+
 struct OnboardingView: View {
+    @ObservedObject var viewModel = OnboardingViewModel()
     @Binding var isClicked: Bool
     
     var body: some View {
@@ -28,20 +77,25 @@ struct OnboardingView: View {
             .padding(.horizontal, 13)
             .padding(.bottom, 24)
             
-            VStack {
-                ForEach(0..<4, id: \.self) { _ in
-                    HStack {
-                        ForEach(0..<3, id: \.self) { idx in
-                            if idx == 1 {
-                                Spacer()
-                            }
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(.gray.opacity(0.5))
-                                .frame(width: 100, height: 100)
-                            if idx == 1 {
-                                Spacer()
+            VStack(spacing: 15) {
+                ForEach(0..<4, id: \.self) { col in
+                    HStack(spacing: 15) {
+                        ForEach(0..<3, id: \.self) { row in
+                            let index = col * 3 + row
+                            if index >= viewModel.images.count {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(.gray.opacity(0.3))
+                                    .frame(width: 105, height: 105)
+                            } else {
+                                let image = Image(uiImage: viewModel.images[index].image)
+                                image
+                                    .resizable()
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .frame(width: 105, height: 105)
+                                    .cornerRadius(5)
                             }
                         }
+                        
                     }
                 }
             }
@@ -50,11 +104,8 @@ struct OnboardingView: View {
             Button(action: { isClicked = false }) {
                 Text("시작하기")
                     .foregroundColor(.white)
-                    .expandToMax(height: 52)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.black))
             }
+            .buttonStyle(RoundedButtonStyle(bgColor: .gray, textColor: .white, isStroked: false, height: 52))
         }
         .padding(.horizontal, 16)
     }
