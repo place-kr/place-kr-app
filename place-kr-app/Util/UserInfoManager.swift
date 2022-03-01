@@ -20,7 +20,7 @@ class UserInfoManager {
            let idToken = info.identityToken,
            let authCode = info.authCode {
             let id = info.identifier
-            let userInfo = AppleUserInfo(id: id, email: email, name: name.description, loginWith: .apple, idToken: idToken, authCode: authCode)
+            let userInfo = AppleUserInfo(id: id, email: email, name: name.description, idToken: idToken, authCode: authCode)
             
             do {
                 let data = try encoder.encode(userInfo)
@@ -58,22 +58,7 @@ extension UserInfoManager {
         let id: String
         let email: String
         let name: String
-        let loginWith: Company
         let idToken: String
         let authCode: String
-        
-        enum Company: String, Codable {
-            case naver
-            case apple
-            
-            var description: String {
-                switch self {
-                case .naver:
-                    return "naver"
-                case .apple:
-                    return "apple"
-                }
-            }
-        }
     }
 }

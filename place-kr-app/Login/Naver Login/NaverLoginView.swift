@@ -2,7 +2,6 @@ import SwiftUI
 import CoreData
 
 struct NaverLoginButtonView: View {
-    @Binding var success: Bool
     @State var showNaverLogin = false
     @ObservedObject var viewModel = NaverLoginButtonViewModel()
     @EnvironmentObject var loginManager: LoginManager
@@ -44,6 +43,6 @@ extension NaverLoginButtonView {
 
 struct NaverLoginView_Previews: PreviewProvider {
     static var previews: some View {
-        NaverLoginButtonView(success: .constant(false))
+        NaverLoginButtonView()
     }
 }
