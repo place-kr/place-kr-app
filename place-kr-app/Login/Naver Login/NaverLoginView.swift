@@ -8,7 +8,10 @@ struct NaverLoginButtonView: View {
     @EnvironmentObject var loginManager: LoginManager
 
     var body: some View {
-        Button(action: { showNaverLogin = true }) {
+        Button(action: {
+            showNaverLogin = true
+            loginManager.status = .inProgress
+        }) {
             HStack {
                 Spacer()
                 Image("naver")

@@ -30,10 +30,14 @@ class LoginManager: ObservableObject {
             AuthAPIManager.sendPostRequest(to: url, body: body) { result in
                 switch result {
                 case .failure(let error):
-                    self.status = .fail
+                    DispatchQueue.main.async {
+                        self.status = .fail
+                    }
                     print(error)
                 case .success(let result):
-                    self.status = .success
+                    DispatchQueue.main.async {
+                        self.status = .success
+                    }
                     
                     // TODO: result 저장하기
                     print(result)
@@ -62,44 +66,52 @@ struct LogInView: View {
     @Binding var success: Bool
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Spacer()
-            
-            // TODO: 로딩 뷰 문의
-            /// 앱 로고 디폴트 이미지
-            RoundedRectangle(cornerRadius: 21)
-                .fill(.gray.opacity(0.5))
-                .frame(width: 125, height: 125)
-                .padding(.bottom, 40)
-            
-            Text("MY PLACE")
-                .font(.system(size: 37, weight: .black))
-                .padding(.bottom, 13)
-            
-            Text("나만의 플레이스를 만들어보세요!")
-                .font(.system(size: 17))
-            
-            Spacer()
-            
-            NaverLoginButtonView(success: $success)
-                .environmentObject(loginManger)
-            
-            AppleLogInView(viewModel: AppleLoginViewModel(window: window), success: $success)
-                .frame(height: 54)
-                .environment(\.window, window)
-                .environmentObject(loginManger)
-                .padding(.top, 14)
-                .padding(.bottom, 60)
-            
-            ZStack {
-                Text("소셜 로그인을 통해 로그인함으로써 개인정보처리방침¹과 이용약관²에 따라 계정을 연결하는 것에 동의합니다.")
+        ZStack {
+            VStack(alignment: .leading, spacing: 0) {
+                Spacer()
+                
+                // TODO: 로딩 뷰 문의
+                /// 앱 로고 디폴트 이미지
+                RoundedRectangle(cornerRadius: 21)
+                    .fill(.gray.opacity(0.5))
+                    .frame(width: 125, height: 125)
+                    .padding(.bottom, 40)
+                
+                Text("MY PLACE")
+                    .font(.system(size: 37, weight: .black))
+                    .padding(.bottom, 13)
+                
+                Text("나만의 플레이스를 만들어보세요!")
+                    .font(.system(size: 17))
+                
+                Spacer()
+                
+                NaverLoginButtonView(success: $success)
+                    .environmentObject(loginManger)
+                
+                AppleLogInView(viewModel: AppleLoginViewModel(window: window), success: $success)
+                    .frame(height: 54)
+                    .environment(\.window, window)
+                    .environmentObject(loginManger)
+                    .padding(.top, 14)
+                    .padding(.bottom, 60)
+                
+                ZStack {
+                    Text("소셜 로그인을 통해 로그인함으로써 개인정보처리방침¹과 이용약관²에 따라 계정을 연결하는 것에 동의합니다.")
+                }
+                .onTapGesture {
+                    UIApplication.shared.open(URL(string: "https://www.naver.com")!)
+                }
+                .font(.system(size: 12))
+                .foregroundColor(.gray)
             }
-            .onTapGesture {
-                UIApplication.shared.open(URL(string: "https://www.naver.com")!)
+            .blur(radius: loginManger.status == .inProgress ? 5 : 0)
+            
+            if loginManger.status == .inProgress {
+                ProgressView(style: UIActivityIndicatorView.Style.medium)
             }
-            .font(.system(size: 12))
-            .foregroundColor(.gray)
         }
+        
         .padding(.horizontal, 27)
     }
     

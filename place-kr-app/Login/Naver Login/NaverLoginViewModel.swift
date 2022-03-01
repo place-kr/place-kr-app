@@ -16,7 +16,9 @@ class NaverLoginButtonViewModel: ObservableObject {
         }
     }
     
-    func completionHandler(_ result: Result<NaverUserInfo, NaverLoginError>) -> Bool{
+    /// API 서버에 네아로에서 받은 토큰을 주고 앱에서 쓸 유저 토큰을 받아오는 동작을 하는 루틴입니다.
+    /// 성공 실패 여부를 Bool 타입으로 반환합니다.
+    func completionHandler(_ result: Result<NaverUserInfo, NaverLoginError>) -> Bool {
         switch result {
         case .failure(let error):
             print(error)

@@ -10,7 +10,11 @@ import Foundation
 protocol PostBody: Codable {}
 
 class AuthAPIManager {
-    static func sendPostRequest<T: PostBody>(to url: URL, body: T, then handler: @escaping (Result<Data, Error>) -> Void) {
+    typealias Response = AuthAPIManager.PostReponse
+    
+    /// 바디를 실어서 API서버에 토큰을 요청하는 루틴입니다. Naver, Apple 로그인 상관 없음.
+    /// 리턴은 없고 컴플리션으로 Result 객체를 전달합니다.
+    static func sendPostRequest<T: PostBody>(to url: URL, body: T, then handler: @escaping (Result<Response, Error>) -> Void) {
         let completionHandler = handler
         let session = URLSession.shared
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData)
@@ -28,7 +32,6 @@ class AuthAPIManager {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Peek into request body
-//        print(String(data: encodedBody, encoding: String.Encoding.utf8))
         let task = session.uploadTask(with: request, from: encodedBody) { data, response, error in
             if let error = error {
                 print("Error while uploading")
@@ -37,24 +40,28 @@ class AuthAPIManager {
             }
 
             if let response = response as? HTTPURLResponse, !((200...300).contains(response.statusCode)) {
-//                print(response as Any)
+                print(response as Any)
+                print("Error in response. May be a network error.")
                 completionHandler(.failure(FetchError.invalidResponse))
                 // Peek into response if error occurs
             }
 
             guard let data = data else {
-                completionHandler(.failure(FetchError.invalidData))
                 print("Error in data")
+                completionHandler(.failure(FetchError.invalidData))
                 return
             }
 
             let decoder = JSONDecoder()
-            guard let jsonData = try? decoder.decode(PostReponse.self, from: data) else {
+            guard let decodedResponse = try? decoder.decode(PostReponse.self, from: data) else {
                 print("Error while parsing")
+                print(String(data: data, encoding: String.Encoding.utf8) as Any)
+                completionHandler(.failure(FetchError.parsing))
                 return
             }
             
-            print(jsonData.getDescription())
+            print("Successed to get token from API server: \(decodedResponse.token)")
+            completionHandler(.success(decodedResponse))
         }
         task.resume()
     }
@@ -62,6 +69,7 @@ class AuthAPIManager {
 
 extension AuthAPIManager {
     enum FetchError: Error {
+        case parsing
         case expiredToken
         case invalidData
         case invalidResponse
@@ -74,6 +82,8 @@ extension AuthAPIManager {
                 return "Invalid network response."
             case .invalidData:
                 return "Wrong data"
+            case .parsing:
+                return "Error while parsing"
             }
         }
     }
@@ -103,15 +113,6 @@ extension AuthAPIManager {
     }
     
     struct PostReponse: Codable {
-        let success: Bool
-        let result: Response
-        
-        struct Response: Codable {
-            let token: String
-        }
-        
-        func getDescription() {
-            print("Token: \(self.result.token)")
-        }
+        let token: String
     }
 }
