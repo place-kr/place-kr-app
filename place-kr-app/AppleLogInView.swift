@@ -10,19 +10,19 @@ import AuthenticationServices
 
 
 struct AppleLogInView: View {
+    @EnvironmentObject var loginManger: LoginManager
     @ObservedObject var viewModel: AppleLoginViewModel
-    @Binding var success: Bool
 
-    init(viewModel: AppleLoginViewModel, success: Binding<Bool>) {
+    init(viewModel: AppleLoginViewModel) {
         self.viewModel = viewModel
-        self._success = success
     }
     
     var body: some View {
         SignInWithApple()
             .onTapGesture {
-                viewModel.showAppleLogin { success in
-                    self.success = success
+                loginManger.status = .inProgress
+                viewModel.showAppleLogin { result in
+                    loginManger.socialAuthResultHandler(result)
                 }
             }
     }

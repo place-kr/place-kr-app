@@ -6,50 +6,60 @@
 //
 
 import SwiftUI
-import CoreData
-import Combine
 
 struct LogInView: View {
+    @EnvironmentObject var loginManager: LoginManager
     @Environment(\.window) var window: UIWindow?
-    
     @Binding var success: Bool
     
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            RoundedRectangle(cornerRadius: 21)
-                .fill(.gray.opacity(0.5))
-                .frame(width: 125, height: 125)
-                .padding(.bottom, 22)
-            
-            Text("MYPLACE")
-                .font(.system(size: 27))
-                .padding(.bottom, 12)
-            
-            Text("나만의 플레이스 만들기")
+        ZStack {
+            VStack(alignment: .leading, spacing: 0) {
+                Spacer()
+                
+                // TODO: 로딩 뷰 문의
+                /// 앱 로고 디폴트 이미지
+                RoundedRectangle(cornerRadius: 21)
+                    .fill(.gray.opacity(0.5))
+                    .frame(width: 125, height: 125)
+                    .padding(.bottom, 40)
+                
+                Text("MY PLACE")
+                    .font(.system(size: 37, weight: .black))
+                    .padding(.bottom, 13)
+                
+                Text("나만의 플레이스를 만들어보세요!")
+                    .font(.system(size: 17))
+                
+                Spacer()
+                
+                NaverLoginButtonView()
+                    .environmentObject(loginManager)
+                
+                AppleLogInView(viewModel: AppleLoginViewModel(window: window))
+                    .frame(height: 54)
+                    .environment(\.window, window)
+                    .environmentObject(loginManager)
+                    .padding(.top, 14)
+                    .padding(.bottom, 60)
+                
+                ZStack {
+                    Text("소셜 로그인을 통해 로그인함으로써 개인정보처리방침¹과 이용약관²에 따라 계정을 연결하는 것에 동의합니다.")
+                }
+                .onTapGesture {
+                    UIApplication.shared.open(URL(string: "https://www.naver.com")!)
+                }
                 .font(.system(size: 12))
-                .padding(.bottom, 95)
-            
-            NaverLoginButtonView(success: $success)
-                .frame(width: 320, height: 54)
-                .background(
-                    RoundedRectangle(cornerRadius: 5)
-                        .fill(Color.black))
-                .padding(.bottom, 14)
-            
-            AppleLogInView(viewModel: AppleLoginViewModel(window: window), success: $success)
-                .frame(width: 320, height: 54)
-                .environment(\.window, window)
-            
-            Spacer()
-            HStack {
-                Text("개인정보처리방침")
-                    .font(.system(size: 12))
-                Text("이용약관")
-                    .font(.system(size: 12))
+                .foregroundColor(.gray)
             }
-
+            .blur(radius: loginManager.status == .inProgress ? 5 : 0)
+            
+            if loginManager.status == .inProgress {
+                ProgressView(style: UIActivityIndicatorView.Style.medium)
+            }
         }
+        
+        .padding(.horizontal, 27)
     }
     
 }

@@ -12,6 +12,8 @@ import Foundation
 // TODO: Add Naver user register routine
 class UserInfoManager {
     static let userInfoKey = "user"
+    static let tokenKey = "token"
+    
     static func saveAppleUserInfo(_ info: AppleUserData) {
         let encoder = PropertyListEncoder()
         
@@ -20,7 +22,7 @@ class UserInfoManager {
            let idToken = info.identityToken,
            let authCode = info.authCode {
             let id = info.identifier
-            let userInfo = AppleUserInfo(id: id, email: email, name: name.description, loginWith: .apple, idToken: idToken, authCode: authCode)
+            let userInfo = AppleUserInfo(id: id, email: email, name: name.description, idToken: idToken, authCode: authCode)
             
             do {
                 let data = try encoder.encode(userInfo)
@@ -51,6 +53,17 @@ class UserInfoManager {
         }
         return userInfo
     }
+    
+    static func saveUserToken(_ token: String) {
+        UserDefaults.standard.set(token, forKey: tokenKey)
+        print("Token is successfully saved: \(token)")
+    }
+    
+    static func loadUserToken() -> String? {
+        let token = UserDefaults.standard.string(forKey: tokenKey)
+        print("Token is successfully loaded: \(token as Any)")
+        return token 
+    }
 }
 
 extension UserInfoManager {
@@ -58,22 +71,7 @@ extension UserInfoManager {
         let id: String
         let email: String
         let name: String
-        let loginWith: Company
         let idToken: String
         let authCode: String
-        
-        enum Company: String, Codable {
-            case naver
-            case apple
-            
-            var description: String {
-                switch self {
-                case .naver:
-                    return "naver"
-                case .apple:
-                    return "apple"
-                }
-            }
-        }
     }
 }

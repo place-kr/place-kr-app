@@ -10,61 +10,26 @@ import CoreData
 import Combine
 
 // TODO: 위치 권한 핸들링
-
 struct ContentView: View {
     @Environment(\.window) var window: UIWindow?
+    @ObservedObject var loginManger = LoginManager()
+
     @State var isLoginSuccessed = false
     @State var isFirstRegistered = true // TODO: 언젠가 바꾸기
     
     var body: some View {
         // For debug - jump to map view
-        TabView {
-            MapView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "magnifyingglass")
-                        Text("Home")
-                    }
-                }
-            
-            MyPlaceView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "star")
-                        Text("My place")
-                    }
-                }
-            
-            AddTabView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "plus.circle")
-                        Text("Add")
-                    }
-                }
-            
-            ProfileTabView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "person")
-                        Text("Profile")
-                    }
-                }
+        if loginManger.status != .success {
+            LogInView(success: $isLoginSuccessed)
+                .environment(\.window, window)
+                .environmentObject(loginManger)
+        } else {
+            if isFirstRegistered {
+                OnboardingView(isClicked: $isFirstRegistered)
+            } else {
+                TabsView()
+            }
         }
-        .accentColor(.black)
-        .onAppear() {
-            UITabBar.appearance().backgroundColor = .white
-        }
-        //        if !isLoginSuccessed {
-//            LogInView(success: $isLoginSuccessed)
-//                .environment(\.window, window)
-//        } else {
-//            if isFirstRegistered {
-//                OnboardingView(isClicked: $isFirstRegistered)
-//            } else {
-//                MapView()
-//            }
-//        }
     }
 }
 
