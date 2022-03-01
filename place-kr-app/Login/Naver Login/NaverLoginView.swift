@@ -8,13 +8,23 @@ struct NaverLoginButtonView: View {
 
     var body: some View {
         Button(action: { showNaverLogin = true }) {
-            Text("Naver로 로그인")
-                .font(.system(size: 20))
+            HStack {
+                Spacer()
+                Image("naver")
+                Text("Naver로 로그인")
+                    .font(.system(size: 20))
+                Spacer()
+            }
         }
+        .frame(height: 54)
+        .background(
+            RoundedRectangle(cornerRadius: 5)
+                .fill(Color("naver")))
         .foregroundColor(.white)
         
         if showNaverLogin {
             NaverLoginView
+                .frame(width: 0, height: 0)
         }
     }
 }
