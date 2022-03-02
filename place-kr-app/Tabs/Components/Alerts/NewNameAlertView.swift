@@ -18,11 +18,13 @@ struct NewNameAlertView: View {
             Text("name에서 활동할 이름을 입력해주세요")
                 .font(.basic.subtitle)
                 .padding(.bottom, 15)
-            TextField("이곳에 이름을 입력해주세요", text: $name)
-                .padding(10)
-                .padding(.horizontal, 5)
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(10)
+            ThemedTextField($name, "이곳에 이름을 입력해주세요",
+                            bgColor: .gray.opacity(0.3),
+                            isStroked: false,
+                            position: .trailing,
+                            buttonName: "dice.fill",
+                            buttonColor: .gray.opacity(0.5),
+                            action: {})
             HStack {
                 Spacer()
                 Button(action: {}) {
