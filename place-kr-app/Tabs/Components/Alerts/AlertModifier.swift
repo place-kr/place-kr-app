@@ -22,7 +22,7 @@ struct AlertModifier<V>: ViewModifier where V: View {
         ZStack {
             if show {
                 self.alert
-                    .transition(.scale)
+                    .transition(.opacity)
                     .padding(.horizontal, 16)
                     .zIndex(1)
             }
