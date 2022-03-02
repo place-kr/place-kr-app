@@ -60,6 +60,35 @@ struct SearchBarView: View {
 }
 
 extension SearchBarView {
+    private struct TextFieldButton: ViewModifier {
+        @Binding var text: String
+        let showButton: Bool
+        let action: () -> Void
+        
+        func body(content: Content) -> some View {
+            if showButton {
+                HStack {
+                    Button(
+                        action: {
+                            if !text.isEmpty {
+                                action()
+                            }
+                        },
+                        label: {
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(.black)
+                        }
+                    )
+                    content
+                        .padding(.leading, 5)
+                }
+            } else {
+                content
+            }
+        }
+    }
+
+    
     /// Add button at search field
     private struct TextFieldSearchButton: ViewModifier {
         @Binding var text: String

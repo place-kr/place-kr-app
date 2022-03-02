@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: 자동로그인
 struct LogInView: View {
     @EnvironmentObject var loginManager: LoginManager
     @Environment(\.window) var window: UIWindow?

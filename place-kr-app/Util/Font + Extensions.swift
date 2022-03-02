@@ -15,6 +15,10 @@ extension Font {
         /// size: 17, weight: bold
         let title = Font.system(size: 17, weight: .bold)
         
+        /// size: 17, weight: bold
+        let largetitle = Font.system(size: 21, weight: .bold)
+
+        
         let cardtitle = Font.custom("Arial-BoldMT", size: 15)
         let description = Font.custom("Arial-BoldMT", size: 20)
         let light = Font.custom("ArialHebrew", size: 15)

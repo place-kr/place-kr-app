@@ -38,6 +38,8 @@
 		9B6C0D2727C8966600376373 /* RequestPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C0D2627C8966600376373 /* RequestPlaceView.swift */; };
 		9B6C0D2927C89C0400376373 /* RegisterPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C0D2827C89C0400376373 /* RegisterPlaceView.swift */; };
 		9B7D508427CCE8750015ED2C /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7D508327CCE8740015ED2C /* ProfileTabView.swift */; };
+		9B82F64227CF198E0081A701 /* AlertStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64127CF198E0081A701 /* AlertStyleModifier.swift */; };
+		9B82F64427CF1A8F0081A701 /* NewNameAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */; };
 		9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */; };
 		9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegate.swift */; };
 		9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* NaverLoginView.swift */; };
@@ -94,6 +96,8 @@
 		9B6C0D2627C8966600376373 /* RequestPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPlaceView.swift; sourceTree = "<group>"; };
 		9B6C0D2827C89C0400376373 /* RegisterPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPlaceView.swift; sourceTree = "<group>"; };
 		9B7D508327CCE8740015ED2C /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
+		9B82F64127CF198E0081A701 /* AlertStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStyleModifier.swift; sourceTree = "<group>"; };
+		9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNameAlertView.swift; sourceTree = "<group>"; };
 		9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
 		9B84668127981E5200066F04 /* NaverLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegate.swift; sourceTree = "<group>"; };
 		9B84668527982E7800066F04 /* NaverLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginView.swift; sourceTree = "<group>"; };
@@ -199,6 +203,7 @@
 		9B35BA4D27CDDA570013C1EA /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				9B82F63E27CE5DF20081A701 /* Alerts */,
 				9B51C8C227B0F1FE00F3B76C /* SearchField */,
 				9B7D508527CCEA9F0015ED2C /* PlaceCard */,
 			);
@@ -300,6 +305,15 @@
 				9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */,
 			);
 			path = PlaceCard;
+			sourceTree = "<group>";
+		};
+		9B82F63E27CE5DF20081A701 /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				9B82F64127CF198E0081A701 /* AlertStyleModifier.swift */,
+				9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */,
+			);
+			path = Alerts;
 			sourceTree = "<group>";
 		};
 		9B84668327982E5D00066F04 /* Naver Login */ = {
@@ -525,6 +539,7 @@
 				9B01412627C8FE810030CDC7 /* MyPlaceRowView.swift in Sources */,
 				9B35BA4C27CDDA4B0013C1EA /* TabsView.swift in Sources */,
 				9BD226F327B7505700E5BB2E /* MyPlaceSheetView.swift in Sources */,
+				9B82F64227CF198E0081A701 /* AlertStyleModifier.swift in Sources */,
 				9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */,
 				9B20A6702796F4D80029CA0E /* ContentView.swift in Sources */,
 				9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */,
@@ -544,6 +559,7 @@
 				9B8466962798574F00066F04 /* AppleUserData.swift in Sources */,
 				9B20A65E2796F42A0029CA0E /* SceneDelegate.swift in Sources */,
 				9B51C8B927B0D98700F3B76C /* PlaceSearchManager.swift in Sources */,
+				9B82F64427CF1A8F0081A701 /* NewNameAlertView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

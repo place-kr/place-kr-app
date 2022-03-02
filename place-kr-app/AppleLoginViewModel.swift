@@ -9,6 +9,8 @@ import SwiftUI
 import CoreData
 import AuthenticationServices
 
+
+// TODO: 애플로그인 중간 취소시 화면 전환 안됨. 
 class AppleLoginViewModel: ObservableObject {
     typealias AppleUserInfo = UserInfoManager.AppleUserInfo
     @Published var appleSignInDelegates: AppleLoginDelegate! = nil
