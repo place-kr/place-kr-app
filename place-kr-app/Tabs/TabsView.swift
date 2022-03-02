@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct TabsView: View {
+    // TODO: 나중에 고칠 것 둘
+    @State var showNewNameAlert = false
+    @State var name = ""
+    
     var body: some View {
         TabView {
             MapView()
@@ -43,7 +47,14 @@ struct TabsView: View {
                 }
         }
         .accentColor(.black)
+        .showAlert(alert: NewNameAlertView(name: $name, action: { showNewNameAlert = false }),
+                   show: showNewNameAlert)
         .onAppear() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    self.showNewNameAlert = true
+                }
+            }
             UITabBar.appearance().backgroundColor = .white
         }
     }

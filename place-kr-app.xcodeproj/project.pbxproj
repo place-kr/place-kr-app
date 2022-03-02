@@ -41,6 +41,7 @@
 		9B82F64227CF198E0081A701 /* AlertStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64127CF198E0081A701 /* AlertStyleModifier.swift */; };
 		9B82F64427CF1A8F0081A701 /* NewNameAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */; };
 		9B82F64627CF1FA80081A701 /* ThemedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64527CF1FA80081A701 /* ThemedTextField.swift */; };
+		9B82F64827CF298E0081A701 /* AlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64727CF298E0081A701 /* AlertModifier.swift */; };
 		9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */; };
 		9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegate.swift */; };
 		9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* NaverLoginView.swift */; };
@@ -100,6 +101,7 @@
 		9B82F64127CF198E0081A701 /* AlertStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStyleModifier.swift; sourceTree = "<group>"; };
 		9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNameAlertView.swift; sourceTree = "<group>"; };
 		9B82F64527CF1FA80081A701 /* ThemedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedTextField.swift; sourceTree = "<group>"; };
+		9B82F64727CF298E0081A701 /* AlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModifier.swift; sourceTree = "<group>"; };
 		9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
 		9B84668127981E5200066F04 /* NaverLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegate.swift; sourceTree = "<group>"; };
 		9B84668527982E7800066F04 /* NaverLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginView.swift; sourceTree = "<group>"; };
@@ -313,6 +315,7 @@
 		9B82F63E27CE5DF20081A701 /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
+				9B82F64727CF298E0081A701 /* AlertModifier.swift */,
 				9B82F64127CF198E0081A701 /* AlertStyleModifier.swift */,
 				9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */,
 			);
@@ -544,6 +547,7 @@
 				9B35BA4C27CDDA4B0013C1EA /* TabsView.swift in Sources */,
 				9BD226F327B7505700E5BB2E /* MyPlaceSheetView.swift in Sources */,
 				9B82F64227CF198E0081A701 /* AlertStyleModifier.swift in Sources */,
+				9B82F64827CF298E0081A701 /* AlertModifier.swift in Sources */,
 				9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */,
 				9B20A6702796F4D80029CA0E /* ContentView.swift in Sources */,
 				9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */,

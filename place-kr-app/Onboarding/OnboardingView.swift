@@ -127,6 +127,8 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 52))
                 .disabled(viewModel.selectionCount == 0)
+                .transition(.opacity)
+                .animation(.easeInOut)
             }
             .zIndex(0.5)
         }

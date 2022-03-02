@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NewNameAlertView: View {
     @Binding var name: String
+    let action: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -27,7 +28,7 @@ struct NewNameAlertView: View {
                             action: {})
             HStack {
                 Spacer()
-                Button(action: {}) {
+                Button(action: { action() }) {
                     Text("입력완료")
                 }
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
@@ -44,6 +45,6 @@ struct NewNameAlertView: View {
 
 struct NewNameAlertView_Previews: PreviewProvider {
     static var previews: some View {
-        NewNameAlertView(name: .constant(""))
+        NewNameAlertView(name: .constant(""), action: {})
     }
 }

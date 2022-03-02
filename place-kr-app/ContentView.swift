@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import CoreData
-import Combine
 
 // TODO: 위치 권한 핸들링
 struct ContentView: View {
@@ -18,18 +16,20 @@ struct ContentView: View {
     @State var isFirstRegistered = true // TODO: 언젠가 바꾸기
     
     var body: some View {
-        // For debug - jump to map view
-        if loginManger.status != .success {
-            LogInView(success: $isLoginSuccessed)
-                .environment(\.window, window)
-                .environmentObject(loginManger)
-        } else {
-            if isFirstRegistered {
-                OnboardingView(isClicked: $isFirstRegistered)
-            } else {
-                TabsView()
-            }
-        }
+        TabsView()
+
+//        // For debug - jump to map view
+//        if loginManger.status != .success {
+//            LogInView(success: $isLoginSuccessed)
+//                .environment(\.window, window)
+//                .environmentObject(loginManger)
+//        } else {
+//            if isFirstRegistered {
+//                OnboardingView(isClicked: $isFirstRegistered)
+//            } else {
+//                TabsView()
+//            }
+//        }
     }
 }
 
