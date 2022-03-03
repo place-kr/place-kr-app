@@ -110,15 +110,22 @@ struct PlaceInfo {
 //        return URL(string: response.previous)!
 //    }
 //
-    var coord: (Double, Double) {
+    var lonlat: LonLat {
         let x: Double = Double(document.x) ?? 0
         let y: Double = Double(document.y) ?? 0
         
-        return (x, y)
+        return LonLat(lon: x, lat: y)
     }
     
     init(document: PlaceResponse.PlacePin) {
         self.document = document
+    }
+}
+
+extension PlaceInfo {
+    struct LonLat {
+        let lon: Double
+        let lat: Double
     }
 }
 

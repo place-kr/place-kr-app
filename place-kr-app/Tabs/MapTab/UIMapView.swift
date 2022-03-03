@@ -36,9 +36,13 @@ struct UIMapView: UIViewRepresentable {
         }
         
         let coord = NMGLatLng(lat: place.coord.1, lng: place.coord.0)
+        print("Markers: \(viewModel.places.count)")
+        
         let cameraUpdate = NMFCameraUpdate(scrollTo: coord)
         cameraUpdate.animation = .fly   // TODO: 애니메이션 종류 결정
         cameraUpdate.animationDuration = 1
+        
+        NMFMarker(position: NMGLatLng(lat: 37.56668, lng: 126.978415)).mapView = uiView.mapView
         uiView.mapView.moveCamera(cameraUpdate)
     }
     
@@ -61,6 +65,10 @@ struct UIMapView: UIViewRepresentable {
             // TODO: 시점 변경 후 리로드 물어보기
             viewModel.currentBounds = mapView.contentBounds
             viewModel.fetchPlaces(in: mapView.contentBounds)
+            _ = viewModel.places
+                .map { place in
+                    place.marker.mapView = mapView
+                }
         }
     }
 
