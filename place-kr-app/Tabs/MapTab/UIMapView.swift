@@ -8,38 +8,6 @@
 import SwiftUI
 import NMapsMap
 
-import Combine
-class UIMapViewModel: ObservableObject {
-    typealias bound = PlaceSearchManager.Boundary
-    private var subscriptions = Set<AnyCancellable>()
-    
-    @Published var places: [PlaceInfo]?
-    @Published var currentBounds: NMGLatLngBounds?
-    
-    func fetchPlaces(in bounds: NMGLatLngBounds) {
-        PlaceSearchManager.getPlacesByBoundary(
-            bound(bounds.northEastLat, bounds.northEastLng, bounds.southWestLat, bounds.southWestLng))
-            .map({ $0.results.map(PlaceInfo.init) })
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { result in
-                switch result {
-                case .failure(let error):
-                    print("Error happend: \(error)")
-                case .finished:
-                    print("Places successfully fetched")
-                }
-            }, receiveValue: { result in
-                self.places = result
-                print(result)
-            })
-            .store(in: &subscriptions)
-    }
-    
-    init() {
-        
-    }
-}
-
 struct UIMapView: UIViewRepresentable {
     @ObservedObject var place: SearchManager
     @ObservedObject var viewModel: UIMapViewModel
@@ -51,7 +19,10 @@ struct UIMapView: UIViewRepresentable {
     func makeUIView(context: Context) -> NMFNaverMapView {
         let view = NMFNaverMapView()
         view.showZoomControls = false
+        view.showCompass = false
+        
         view.mapView.positionMode = .direction
+        view.mapView.minZoomLevel = 7
         view.mapView.zoomLevel = 17
         
         view.mapView.addCameraDelegate(delegate: context.coordinator)
@@ -83,10 +54,11 @@ struct UIMapView: UIViewRepresentable {
         }
 
         func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
-            print("카메라 변경 - reason: \(reason)")
+//            print("카메라 변경 - reason: \(reason)")
         }
         
         func mapViewCameraIdle(_ mapView: NMFMapView) {
+            // TODO: 시점 변경 후 리로드 물어보기
             viewModel.currentBounds = mapView.contentBounds
             viewModel.fetchPlaces(in: mapView.contentBounds)
         }

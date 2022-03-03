@@ -67,7 +67,24 @@ class PlaceSearchManager {
         
         let decoder = JSONDecoder()
         return session.dataTaskPublisher(for: request)
-            .map(\.data)
+            .tryMap() { data, response in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("Response error: \(response)")
+                    throw PlaceApiError.response
+                }
+                
+                guard 200..<300 ~= httpResponse.statusCode else {
+                    print("Response error: \(httpResponse)")
+                    throw PlaceApiError.response
+                }
+                
+                guard !data.isEmpty else {
+                    print("Data error: \(data)")
+                    throw PlaceApiError.data
+                }
+                
+                return data
+            }
             .decode(type: PlaceResponse.self, decoder: decoder)
             .eraseToAnyPublisher()
     }
@@ -78,6 +95,8 @@ extension PlaceSearchManager {
         case keyLoad
         case url
         case fetch
+        case response
+        case data
         
         var description: String {
             switch self {
@@ -87,21 +106,30 @@ extension PlaceSearchManager {
                 return "URL Error"
             case .fetch:
                 return "Error while fetching user infos"
+            case .response:
+                return "Error in http responses"
+            case .data:
+                return "Empty data"
             }
         }
     }
     
     struct Boundary {
+        
         let toptrailingX: Double
         let toptrailingY: Double
         let bottomleadingX: Double
         let bottomleadingY: Double
         
         init(_ toptrailingX: Double, _ toptrailingY: Double, _ bottomleadingX: Double, _ bottomleadingY: Double) {
-            self.toptrailingX = toptrailingX
-            self.toptrailingY = toptrailingY
-            self.bottomleadingX = bottomleadingX
-            self.bottomleadingY = bottomleadingY
+            func formatter(_ number: Double) -> Double {
+                return Double(String(format: "%.10f", number))!
+            }
+            
+            self.toptrailingX = formatter(toptrailingX)
+            self.toptrailingY = formatter(toptrailingY)
+            self.bottomleadingX = formatter(bottomleadingX)
+            self.bottomleadingY = formatter(bottomleadingY)
         }
     }
 }

@@ -77,7 +77,7 @@ struct PlaceResponse: Codable {
     let results: [PlacePin]
     
     enum Condingkeys: String, CodingKey {
-        case cound
+        case count
         case next
         case previous
         case results
