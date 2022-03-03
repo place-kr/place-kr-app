@@ -17,8 +17,8 @@ class LocationManager: NSObject, ObservableObject {
     static let shared = LocationManager()
     
     @Published var locationName: String?
-    @Published var currentCoord: CLLocationCoordinate2D?
     @Published var locationStatus: CLAuthorizationStatus?
+    @Published var currentCoord = CLLocationCoordinate2D(latitude: CLLocationDegrees(37.578472), longitude: CLLocationDegrees(126.97727))
 
     override init() {
         super.init()

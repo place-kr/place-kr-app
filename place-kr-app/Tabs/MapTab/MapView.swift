@@ -10,7 +10,7 @@ import PartialSheet
 
 struct MapView: View {
     @ObservedObject var place = SearchManager()
-    @ObservedObject var mapViewModel = UIMapViewModel()
+    @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
     @EnvironmentObject var partialSheetManager : PartialSheetManager
     
     @State var showEntireSheet = false
