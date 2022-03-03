@@ -9,13 +9,13 @@ import SwiftUI
 import Combine
 
 class SearchResultsViewModel: ObservableObject {
-    @Published var places: [PlaceInfo]
+    @Published var places: [KakaoPlaceInfo]
     @Published var texts: String
     
     private var subsriptions = Set<AnyCancellable>()
     let keyword: String
     
-    init(places: [PlaceInfo], keyword: String) {
+    init(places: [KakaoPlaceInfo], keyword: String) {
         self.places = places
         self.keyword = keyword
         self.texts = keyword

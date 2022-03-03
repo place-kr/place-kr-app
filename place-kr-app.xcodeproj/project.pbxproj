@@ -42,6 +42,7 @@
 		9B82F64427CF1A8F0081A701 /* NewNameAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */; };
 		9B82F64627CF1FA80081A701 /* ThemedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64527CF1FA80081A701 /* ThemedTextField.swift */; };
 		9B82F64827CF298E0081A701 /* AlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64727CF298E0081A701 /* AlertModifier.swift */; };
+		9B82F64B27D079150081A701 /* UIMapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B82F64A27D079150081A701 /* UIMapViewModel.swift */; };
 		9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */; };
 		9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668127981E5200066F04 /* NaverLoginDelegate.swift */; };
 		9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B84668527982E7800066F04 /* NaverLoginView.swift */; };
@@ -102,6 +103,8 @@
 		9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNameAlertView.swift; sourceTree = "<group>"; };
 		9B82F64527CF1FA80081A701 /* ThemedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemedTextField.swift; sourceTree = "<group>"; };
 		9B82F64727CF298E0081A701 /* AlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModifier.swift; sourceTree = "<group>"; };
+		9B82F64927D05D3B0081A701 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9B82F64A27D079150081A701 /* UIMapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIMapViewModel.swift; sourceTree = "<group>"; };
 		9B84667F27981E0E00066F04 /* NaverLoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginAPI.swift; sourceTree = "<group>"; };
 		9B84668127981E5200066F04 /* NaverLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginDelegate.swift; sourceTree = "<group>"; };
 		9B84668527982E7800066F04 /* NaverLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginView.swift; sourceTree = "<group>"; };
@@ -180,6 +183,7 @@
 				9B84668B2798543F00066F04 /* place-kr-app.entitlements */,
 				9B20A6642796F42B0029CA0E /* Assets.xcassets */,
 				9B20A6662796F42B0029CA0E /* LaunchScreen.storyboard */,
+				9B82F64927D05D3B0081A701 /* MyPlayground.playground */,
 			);
 			path = "place-kr-app";
 			sourceTree = "<group>";
@@ -207,6 +211,7 @@
 		9B35BA4D27CDDA570013C1EA /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				9B51C8BD27B0EB1600F3B76C /* Place */,
 				9B82F63E27CE5DF20081A701 /* Alerts */,
 				9B51C8C227B0F1FE00F3B76C /* SearchField */,
 				9B7D508527CCEA9F0015ED2C /* PlaceCard */,
@@ -244,7 +249,7 @@
 				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
 				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
-				9B51C8BD27B0EB1600F3B76C /* Place */,
+				9B82F64A27D079150081A701 /* UIMapViewModel.swift */,
 				9B9FCE4927B4C7E000DCCF9D /* Notification */,
 				9BD226F127B7501300E5BB2E /* Sheets */,
 			);
@@ -522,6 +527,7 @@
 				9B6C0D2927C89C0400376373 /* RegisterPlaceView.swift in Sources */,
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
 				9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */,
+				9B82F64B27D079150081A701 /* UIMapViewModel.swift in Sources */,
 				9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */,
 				9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */,
 				9BFBB9A127C76361002C5F10 /* SearchResultsViewModel.swift in Sources */,

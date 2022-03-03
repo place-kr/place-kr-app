@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PlaceResponse: Codable {
+struct KakaoPlaceResponse: Codable {
     let documents: [Document]
     let meta: Meta
     
@@ -34,8 +34,8 @@ struct PlaceResponse: Codable {
     struct Meta: Codable {}
 }
 
-struct PlaceInfo {
-    private let document: PlaceResponse.Document
+struct KakaoPlaceInfo {
+    private let document: KakaoPlaceResponse.Document
     
     var id: String {
         return document.id
@@ -64,7 +64,61 @@ struct PlaceInfo {
         return (x, y)
     }
     
-    init(document: PlaceResponse.Document) {
+    init(document: KakaoPlaceResponse.Document) {
         self.document = document
     }
 }
+
+
+struct PlaceResponse: Codable {
+    let count: Int
+    let next: String?
+    let previous: String?
+    let results: [PlacePin]
+    
+    enum Condingkeys: String, CodingKey {
+        case cound
+        case next
+        case previous
+        case results
+    }
+    
+    struct PlacePin: Codable {
+        let identifier: String
+        let name: String
+        let x: String
+        let y: String
+    }
+}
+
+struct PlaceInfo {
+    private let document: PlaceResponse.PlacePin
+    
+    var id: String {
+        return document.identifier
+    }
+    
+    var name: String {
+        return document.name
+    }
+    
+//    var nextUrl: URL {
+//        return URL(string: response.next)!
+//    }
+//
+//    var previousUrl: URL {
+//        return URL(string: response.previous)!
+//    }
+//
+    var coord: (Double, Double) {
+        let x: Double = Double(document.x) ?? 0
+        let y: Double = Double(document.y) ?? 0
+        
+        return (x, y)
+    }
+    
+    init(document: PlaceResponse.PlacePin) {
+        self.document = document
+    }
+}
+

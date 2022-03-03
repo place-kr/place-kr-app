@@ -9,11 +9,11 @@ import SwiftUI
 
 struct PlaceCardView: View {
     let bgColor: Color
-    var placeInfo: PlaceInfo
+    var placeInfo: KakaoPlaceInfo
     
     // TODO: Fix default data
     init(bgColor: Color,
-         placeInfo: PlaceInfo = PlaceInfo(document: PlaceResponse.Document(
+         placeInfo: KakaoPlaceInfo = KakaoPlaceInfo(document: KakaoPlaceResponse.Document(
             id: UUID().uuidString,
             textAddress: "Dump",
             roadAddress: "Dump",

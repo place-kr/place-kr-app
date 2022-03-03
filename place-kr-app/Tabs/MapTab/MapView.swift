@@ -17,6 +17,10 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
+            /// 네이버 맵
+            UIMapView(place: place, viewModel: UIMapViewModel())
+                .edgesIgnoringSafeArea(.vertical)
+            
             VStack(spacing: 10) {
                 /// 검색창
                 HStack(spacing: 11) {
@@ -44,10 +48,6 @@ struct MapView: View {
                 Spacer()
             }
             .zIndex(1)
-            
-            /// 네이버 맵
-            UIMapView(place: place)
-                .edgesIgnoringSafeArea(.vertical)
         }
         .addPartialSheet(style: sheetStyle)
     }

@@ -8,11 +8,44 @@
 import SwiftUI
 import NMapsMap
 
+import Combine
+class UIMapViewModel: ObservableObject {
+    typealias bound = PlaceSearchManager.Boundary
+    private var subscriptions = Set<AnyCancellable>()
+    
+    @Published var places: [PlaceInfo]?
+    @Published var currentBounds: NMGLatLngBounds?
+    
+    func fetchPlaces(in bounds: NMGLatLngBounds) {
+        PlaceSearchManager.getPlacesByBoundary(
+            bound(bounds.northEastLat, bounds.northEastLng, bounds.southWestLat, bounds.southWestLng))
+            .map({ $0.results.map(PlaceInfo.init) })
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { result in
+                switch result {
+                case .failure(let error):
+                    print("Error happend: \(error)")
+                case .finished:
+                    print("Places successfully fetched")
+                }
+            }, receiveValue: { result in
+                self.places = result
+                print(result)
+            })
+            .store(in: &subscriptions)
+    }
+    
+    init() {
+        
+    }
+}
+
 struct UIMapView: UIViewRepresentable {
     @ObservedObject var place: SearchManager
+    @ObservedObject var viewModel: UIMapViewModel
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(place: place)
+        Coordinator(place: place, viewModel: viewModel)
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
@@ -41,17 +74,21 @@ struct UIMapView: UIViewRepresentable {
     
     class Coordinator: NSObject, NMFMapViewCameraDelegate {
         @ObservedObject var place: SearchManager
+        @ObservedObject var viewModel: UIMapViewModel
 
-        init(place: SearchManager) {
+
+        init(place: SearchManager, viewModel: UIMapViewModel) {
             self.place = place
+            self.viewModel = viewModel
         }
 
-        func mapView(_ mapView: NMFMapView, cameraWillChangeByReason reason: Int, animated: Bool) {
-//            print("카메라 변경 - reason: \(reason)")
+        func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
+            print("카메라 변경 - reason: \(reason)")
         }
-
-        func mapView(_ mapView: NMFMapView, cameraIsChangingByReason reason: Int) {
-//            print("카메라 변경 - reason: \(reason)")
+        
+        func mapViewCameraIdle(_ mapView: NMFMapView) {
+            viewModel.currentBounds = mapView.contentBounds
+            viewModel.fetchPlaces(in: mapView.contentBounds)
         }
     }
 
