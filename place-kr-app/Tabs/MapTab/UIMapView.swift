@@ -9,11 +9,10 @@ import SwiftUI
 import NMapsMap
 
 struct UIMapView: UIViewRepresentable {
-    @ObservedObject var place: SearchManager
     @ObservedObject var viewModel: UIMapViewModel
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(place: place, viewModel: viewModel)
+        Coordinator(viewModel: viewModel)
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
@@ -31,45 +30,50 @@ struct UIMapView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
-        guard let place = place.places?.first else {
-            return
+        let places = viewModel.places
+        
+        if let currentPosition = viewModel.currentPosition,
+                  viewModel.isInCurrentPosition == true {
+            let cameraUpdate = NMFCameraUpdate(scrollTo: currentPosition)
+            uiView.mapView.moveCamera(cameraUpdate)
+        } else if !places.isEmpty, let firstPlace = places.first {
+            let place = firstPlace.placeInfo
+            let coord = NMGLatLng(lat: place.lonlat.lat, lng: place.lonlat.lon)
+
+            let cameraUpdate = NMFCameraUpdate(scrollTo: coord)
+            cameraUpdate.animation = .fly
+            cameraUpdate.animationDuration = 1
+            
+            uiView.mapView.moveCamera(cameraUpdate)
         }
-        
-        let coord = NMGLatLng(lat: place.coord.1, lng: place.coord.0)
-        print("Markers: \(viewModel.places.count)")
-        
-        let cameraUpdate = NMFCameraUpdate(scrollTo: coord)
-        cameraUpdate.animation = .fly   // TODO: 애니메이션 종류 결정
-        cameraUpdate.animationDuration = 1
-        
-        NMFMarker(position: NMGLatLng(lat: 37.56668, lng: 126.978415)).mapView = uiView.mapView
-        uiView.mapView.moveCamera(cameraUpdate)
     }
     
     
     class Coordinator: NSObject, NMFMapViewCameraDelegate {
-        @ObservedObject var place: SearchManager
         @ObservedObject var viewModel: UIMapViewModel
 
 
-        init(place: SearchManager, viewModel: UIMapViewModel) {
-            self.place = place
+        init(viewModel: UIMapViewModel) {
             self.viewModel = viewModel
         }
-
+        
         func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
-//            print("카메라 변경 - reason: \(reason)")
+            //            print("카메라 변경 - reason: \(reason)")
         }
         
         func mapViewCameraIdle(_ mapView: NMFMapView) {
             // TODO: 시점 변경 후 리로드 물어보기
+            //            if viewModel.mapNeedsReload == false {
             viewModel.currentBounds = mapView.contentBounds
             viewModel.fetchPlaces(in: mapView.contentBounds)
             _ = viewModel.places
                 .map { place in
                     place.marker.mapView = mapView
                 }
+            viewModel.isInCurrentPosition = false
+            print(viewModel.places.first as Any, viewModel.isInCurrentPosition)
+            //                viewModel.mapNeedsReload = true
+            //            }
         }
     }
-
 }

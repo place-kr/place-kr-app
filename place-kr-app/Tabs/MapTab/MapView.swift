@@ -10,6 +10,7 @@ import PartialSheet
 
 struct MapView: View {
     @ObservedObject var place = SearchManager()
+    @ObservedObject var mapViewModel = UIMapViewModel()
     @EnvironmentObject var partialSheetManager : PartialSheetManager
     
     @State var showEntireSheet = false
@@ -18,8 +19,22 @@ struct MapView: View {
     var body: some View {
         ZStack {
             /// 네이버 맵
-            UIMapView(place: place, viewModel: UIMapViewModel())
+            UIMapView(viewModel: mapViewModel)
                 .edgesIgnoringSafeArea(.vertical)
+            
+            VStack {
+                Spacer()
+                
+                Button(action: { mapViewModel.mapNeedsReload = false }) {
+                    Image(systemName: "arrow.clockwise.circle.fill")
+                        .resizable()
+                        .frame(width: 35, height: 35)
+                        .foregroundColor(.black)
+                        .shadow(radius: 5)
+                }
+            }
+            .padding(.bottom, 15)
+            .zIndex(1)
             
             VStack(spacing: 10) {
                 /// 검색창
