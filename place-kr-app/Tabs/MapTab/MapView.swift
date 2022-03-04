@@ -9,14 +9,13 @@ import SwiftUI
 import PartialSheet
 
 struct MapView: View {
-    @ObservedObject var place = SearchManager()
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
     @EnvironmentObject var partialSheetManager : PartialSheetManager
     
-    @State var showEntireSheet = false
-    @State var showMySheet = false
     @State var showSheet = false
     @State var activeSheet: ActiveSheet = .placeInfo
+    
+    @State var searchText = ""
     
     var body: some View {
         ZStack {
@@ -29,7 +28,8 @@ struct MapView: View {
             
             VStack {
                 Spacer()
-                
+                 
+                // TODO: 맵 리로드 버튼 - 나중에 수정
                 Button(action: { mapViewModel.mapNeedsReload = false }) {
                     Image(systemName: "arrow.clockwise.circle.fill")
                         .resizable()
@@ -44,7 +44,7 @@ struct MapView: View {
             VStack(spacing: 10) {
                 /// 검색창
                 HStack(spacing: 11) {
-                    SearchFieldView(viewModel: place)
+                    SearchField
                         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
                         .padding(.leading, 15)
                     
@@ -79,9 +79,10 @@ extension MapView {
         case myPlace, entire, placeInfo
     }
     
-    func showSheetRoutine() {
-        self.showSheet = true
-        activeSheet = .myPlace
+    var SearchField: some View {
+        ThemedTextField($searchText, "장소를 입력하세요", bgColor: .white, isStroked: false, position: .leading, buttonName: "magnifyingglass", buttonColor: .black) {
+            print("tapped")
+        }
     }
     
     var sheetView: some View {
@@ -89,14 +90,14 @@ extension MapView {
             .partialSheet(isPresented: $showSheet) {
                 switch activeSheet {
                 case .myPlace:
-                    MyPlaceSheetView()
-                        .frame(maxWidth: .infinity, maxHeight: 155)
-                        .padding(.horizontal, 15)
+                    Text("My place")
                 case .entire:
                     Text("전체")
                 case .placeInfo:
                     if let placeID = mapViewModel.currentPlaceID {
                         LargePlaceCardView(id: placeID)
+                            .padding(.horizontal, 15)
+                            .padding(.bottom, 20)
                     }
                 }
             }
@@ -112,7 +113,7 @@ extension MapView {
             Text("전체")
         }
         .buttonStyle(CapsuledButtonStyle())
-        .background(Capsule().fill(showEntireSheet ? .gray : .white))
+        .background(Capsule().fill(activeSheet == .entire ? .gray : .white))
     }
     
     var MyPlaceButton: some View {
@@ -125,7 +126,7 @@ extension MapView {
             Text("My")
         }
         .buttonStyle(CapsuledButtonStyle())
-        .background(Capsule().fill(showMySheet ? .gray : .white))
+        .background(Capsule().fill(activeSheet == .myPlace ? .gray : .white))
     }
 }
 

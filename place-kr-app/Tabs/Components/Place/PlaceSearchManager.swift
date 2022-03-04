@@ -10,7 +10,7 @@ import Combine
 
 class PlaceSearchManager {
     /// Place 이름을 기반으로 주변 정보를 받아옵니다.(Kakao 기반)
-    static func getPlacesByName(name: String) -> AnyPublisher<KakaoPlaceResponse, Error> {
+    static func getKakaoPlacesByName(name: String) -> AnyPublisher<KakaoPlaceResponse, Error> {
         // Get path of APIKeys.plist
         guard let path = Bundle.main.path(forResource: "ApiKeys", ofType: "plist") else {
             return Fail(error: PlaceApiError.keyLoad as Error).eraseToAnyPublisher()
@@ -45,6 +45,51 @@ class PlaceSearchManager {
             .eraseToAnyPublisher()
     }
     
+    /// Place 이름을 기반으로 주변 정보를 받아옵니다.(자체 서버)
+    static func getPlacesByName(name: String) -> AnyPublisher<PlaceResponse, Error> {
+        // Fetch my user token from UserDefault
+        let token = UserInfoManager.loadUserToken()
+        guard let token = token else {
+            return Fail(error: PlaceApiError.fetch).eraseToAnyPublisher()
+        }
+
+        // TODO: 이거 검색 우선순위 어떻게..?
+        let session = URLSession.shared // TODO: 쿼리부분 수정요청
+        guard let url = URL(string: "")
+        else {
+            return Fail(error: PlaceApiError.url).eraseToAnyPublisher()
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+
+        let decoder = JSONDecoder()
+        return session.dataTaskPublisher(for: request)
+            .tryMap() { data, response in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("Response error: \(response)")
+                    throw PlaceApiError.response
+                }
+                
+                guard 200..<300 ~= httpResponse.statusCode else {
+                    print("Response error: \(httpResponse)")
+                    throw PlaceApiError.response
+                }
+                
+                guard !data.isEmpty else {
+                    print("Data error: \(data)")
+                    throw PlaceApiError.data
+                }
+                
+                return data
+            }
+            .decode(type: PlaceResponse.self, decoder: decoder)
+            .eraseToAnyPublisher()
+    }
+
     /// 맵 바운더리 기준으로 주변 정보를 받아옵니다
     static func getPlacesByBoundary(_ bounds: Boundary) -> AnyPublisher<PlaceResponse, Error> {
         // Fetch my user token from UserDefault

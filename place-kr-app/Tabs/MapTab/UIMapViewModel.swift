@@ -9,10 +9,12 @@ import SwiftUI
 import NMapsMap
 import Combine
 
+/// 맵에 변경사항이 있을 때마다 그에 관련된 작업들을 진행합니다.
+/// ex. 시야 안에 있는 장소 검색, 현위치로 전환
 class UIMapViewModel: ObservableObject {
     typealias bound = PlaceSearchManager.Boundary
-    private var subscriptions = Set<AnyCancellable>()
     
+    private var subscriptions = Set<AnyCancellable>()
     var currentBounds: NMGLatLngBounds
     var currentPlaceID: String?
     
@@ -25,14 +27,11 @@ class UIMapViewModel: ObservableObject {
         self.currentPosition = NMGLatLng(from: LocationManager.shared.currentCoord)
     }
     
-    func fetchPlaces(in bounds: NMGLatLngBounds) {
-        PlaceSearchManager.getPlacesByBoundary(
-            bound(bounds.northEastLat, bounds.northEastLng, bounds.southWestLat, bounds.southWestLng)
-        )
+    private func listePlacePublisher(_ publisher: AnyPublisher<PlaceResponse, Error>) {
+        publisher
             .map({ $0.results.map(PlaceInfo.init) })
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { result in
-                print(result)
                 switch result {
                 case .failure(let error):
                     print("Error happend: \(error)")
@@ -43,14 +42,21 @@ class UIMapViewModel: ObservableObject {
                 // 받은 info를 맵뷰에서 쓰기 위한 래퍼로 치환
                 self.places = data.map({ PlaceWrapper($0)})
                 
-                print("count: \(self.places.count), Ex:\(self.places[0..<min(1, self.places.count)])...")
+                print("count: \(self.places.count), First content:\(self.places[0..<min(1, self.places.count)].first?.placeInfo.name as Any)...")
             })
             .store(in: &subscriptions)
     }
     
+    func fetchPlaces(by keyword: String) {
+        listePlacePublisher(PlaceSearchManager.getPlacesByName(name: keyword))
+    }
+    
+    func fetchPlaces(in bounds: NMGLatLngBounds) {
+        let bound = bound(bounds.northEastLat, bounds.northEastLng, bounds.southWestLat, bounds.southWestLng)
+        listePlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound))
+    }
+    
     init() {
-        print("Init called")
-        
         let offset: Double = 1 / 1000
         
         let coord = LocationManager.shared.currentCoord
@@ -66,7 +72,6 @@ class UIMapViewModel: ObservableObject {
             .throttle(for: 1, scheduler: RunLoop.main, latest: true)
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { coord in
-                print("Location called: \(coord as Any)")
                 self.currentPosition = NMGLatLng(lat: coord.latitude, lng: coord.longitude)
                 self.fetchPlaces(in: NMGLatLngBounds(
                     southWestLat: coord.latitude - offset,
@@ -74,7 +79,6 @@ class UIMapViewModel: ObservableObject {
                     northEastLat: coord.latitude + offset,
                     northEastLng: coord.longitude + offset)
                 )
-                print("Updated to current position")
             })
             .store(in: &subscriptions)
     }

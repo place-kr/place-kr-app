@@ -22,7 +22,7 @@ class SearchManager: ObservableObject {
     
     /// API 서버에 장소 키워드 전달 후 관련 정보를 받아옵니다.
     func fetchPlaces(_ keyword: String) {
-        PlaceSearchManager.getPlacesByName(name: keyword)
+        PlaceSearchManager.getKakaoPlacesByName(name: keyword)
             .map({ $0.documents.map(KakaoPlaceInfo.init) })
             .sink(receiveCompletion: { response in
                 switch response {
