@@ -43,7 +43,7 @@ struct LargePlaceCardView: View {
     }
     
     var body: some View {
-        HStack() {
+        HStack(alignment: .top) {
             RoundedRectangle(cornerRadius: 10)
                 .fill(.gray.opacity(0.5))
                 .frame(width: 94, height: 94)
@@ -54,7 +54,9 @@ struct LargePlaceCardView: View {
                 HStack(alignment: .bottom, spacing: 0) {
                     Text("\(viewModel.name)")
                         .bold()
-                        .font(.system(size: 24))
+//                        .font(.system(size: 24))
+                        .minimumScaleFactor(0.001)
+//                        .lineLimit(1)
                         .padding(.trailing, 6)
                     Group {
                         Image(systemName: "star.fill")

@@ -93,7 +93,8 @@ extension UIMapViewModel {
             let position = placeInfo.lonlat
             let marker = NMFMarker()
             marker.position = NMGLatLng(lat: position.lat, lng: position.lon)
-            
+            marker.isHideCollidedMarkers = true
+
             self.placeInfo = placeInfo
             self.marker = marker
         }

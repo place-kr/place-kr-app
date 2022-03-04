@@ -104,29 +104,29 @@ extension MapView {
     }
     
     var EntirePlaceButton: some View {
-        func showSheet() {
+        func doShowSheet() {
             self.showSheet.toggle()
             activeSheet = .entire
         }
         
-        return Button(action: { showSheet() }) {
+        return Button(action: { doShowSheet() }) {
             Text("전체")
         }
         .buttonStyle(CapsuledButtonStyle())
-        .background(Capsule().fill(activeSheet == .entire ? .gray : .white))
+        .background(Capsule().fill(activeSheet == .entire && showSheet ? .gray : .white))
     }
     
     var MyPlaceButton: some View {
-        func showSheet() {
+        func doShowSheet() {
             self.showSheet.toggle()
             activeSheet = .myPlace
         }
         
-        return Button(action: { showSheet() }) {
+        return Button(action: { doShowSheet() }) {
             Text("My")
         }
         .buttonStyle(CapsuledButtonStyle())
-        .background(Capsule().fill(activeSheet == .myPlace ? .gray : .white))
+        .background(Capsule().fill(activeSheet == .myPlace && showSheet ? .gray : .white))
     }
 }
 
