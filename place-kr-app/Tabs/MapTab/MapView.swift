@@ -18,59 +18,62 @@ struct MapView: View {
     @State var searchText = ""
     
     var body: some View {
-        ZStack {
-            /// 네이버 맵
-            UIMapView(viewModel: mapViewModel, markerAction: {
-                self.showSheet = true
-                self.activeSheet = .placeInfo
-            })
-                .edgesIgnoringSafeArea(.vertical)
-            
-            VStack {
-                Spacer()
-                 
-                // TODO: 맵 리로드 버튼 - 나중에 수정
-                Button(action: { mapViewModel.mapNeedsReload = false }) {
-                    Image(systemName: "arrow.clockwise.circle.fill")
-                        .resizable()
-                        .frame(width: 35, height: 35)
-                        .foregroundColor(.black)
-                        .shadow(radius: 5)
-                }
-            }
-            .padding(.bottom, 15)
-            .zIndex(1)
-            
-            VStack(spacing: 10) {
-                /// 검색창
-                HStack(spacing: 11) {
-                    SearchField
-                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                        .padding(.leading, 15)
-                    
-                    NotificationView()
-                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                        .padding(.trailing, 15)
-                }
+        NavigationView {
+            ZStack {
+                /// 네이버 맵
+                UIMapView(viewModel: mapViewModel, markerAction: {
+                    self.showSheet = true
+                    self.activeSheet = .placeInfo
+                })
+                    .edgesIgnoringSafeArea(.vertical)
                 
-                /// 검색창 및 Sheet view 버튼
-                HStack {
-                    EntirePlaceButton
-                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                VStack {
+                    Spacer()
+                     
+                    // TODO: 맵 리로드 버튼 - 나중에 수정
+                    Button(action: { mapViewModel.mapNeedsReload = false }) {
+                        Image(systemName: "arrow.clockwise.circle.fill")
+                            .resizable()
+                            .frame(width: 35, height: 35)
+                            .foregroundColor(.black)
+                            .shadow(radius: 5)
+                    }
+                }
+                .padding(.bottom, 15)
+                .zIndex(1)
+                
+                VStack(spacing: 10) {
+                    /// 검색창
+                    HStack(spacing: 11) {
+                        SearchField
+                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                            .padding(.leading, 15)
+                        
+                        NotificationView()
+                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                            .padding(.trailing, 15)
+                    }
+                    
+                    /// 검색창 및 Sheet view 버튼
+                    HStack {
+                        EntirePlaceButton
+                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
 
-                    MyPlaceButton
-                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                        MyPlaceButton
+                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
 
-                    sheetView
+                        sheetView
+                        Spacer()
+                    }
+                    .padding(.horizontal, 15)
+                    
                     Spacer()
                 }
-                .padding(.horizontal, 15)
-                
-                Spacer()
+                .zIndex(1)
             }
-            .zIndex(1)
+            .addPartialSheet(style: sheetStyle)
+            .navigationBarHidden(true)
         }
-        .addPartialSheet(style: sheetStyle)
     }
 }
 

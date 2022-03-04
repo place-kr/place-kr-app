@@ -37,6 +37,7 @@ class LargePlaceCardViewModel: ObservableObject {
 
 struct LargePlaceCardView: View {
     @ObservedObject var viewModel: LargePlaceCardViewModel
+    @State var showNavigation = false
     
     init(id placeID: String) {
         self.viewModel = LargePlaceCardViewModel(id: placeID)
@@ -44,6 +45,10 @@ struct LargePlaceCardView: View {
     
     var body: some View {
         HStack(alignment: .top) {
+            NavigationLink(destination: Text("Bazinga"), isActive: $showNavigation) {
+                EmptyView()
+            }
+            
             RoundedRectangle(cornerRadius: 10)
                 .fill(.gray.opacity(0.5))
                 .frame(width: 94, height: 94)
@@ -101,8 +106,11 @@ struct LargePlaceCardView: View {
                     }
                 }
                 .buttonStyle(CircleButtonStyle())
-//                Spacer()
             }
+        }
+        .onTapGesture {
+            print("Tapped \(showNavigation)")
+            self.showNavigation = true
         }
     }
 }
