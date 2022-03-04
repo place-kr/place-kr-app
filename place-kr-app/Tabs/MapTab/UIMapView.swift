@@ -39,6 +39,11 @@ struct UIMapView: UIViewRepresentable {
             
             // 마커 그리기
             for place in viewModel.places {
+                place.marker.touchHandler = { (marker) -> Bool in
+                    self.markerAction()
+                    self.viewModel.currentPlaceID = place.placeInfo.id
+                    return true
+                }
                 place.marker.mapView = uiView.mapView
             }
         }
@@ -81,7 +86,6 @@ struct UIMapView: UIViewRepresentable {
                 self.viewModel.fetchPlaces(in: mapView.contentBounds)
                 
                 for place in viewModel.places {
-                    print("idle: \(place.marker)")
                     place.marker.touchHandler = { (marker) -> Bool in
                         self.markerAction()
                         self.viewModel.currentPlaceID = place.placeInfo.id
