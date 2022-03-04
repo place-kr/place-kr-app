@@ -21,7 +21,10 @@ struct MapView: View {
     var body: some View {
         ZStack {
             /// 네이버 맵
-            UIMapView(viewModel: mapViewModel, markerAction: { showSheet = true })
+            UIMapView(viewModel: mapViewModel, markerAction: {
+                self.showSheet = true
+                self.activeSheet = .placeInfo
+            })
                 .edgesIgnoringSafeArea(.vertical)
             
             VStack {
@@ -82,18 +85,21 @@ extension MapView {
     }
     
     var sheetView: some View {
-        return EmptyView().partialSheet(isPresented: $showSheet) {
-            switch activeSheet {
-            case .myPlace:
-                Text("INFO")
-            case .entire:
-                Text("전체")
-            case .placeInfo:
-                MyPlaceSheetView()
-                    .frame(maxWidth: .infinity, maxHeight: 155)
-                    .padding(.horizontal, 15)
+        return EmptyView()
+            .partialSheet(isPresented: $showSheet) {
+                switch activeSheet {
+                case .myPlace:
+                    MyPlaceSheetView()
+                        .frame(maxWidth: .infinity, maxHeight: 155)
+                        .padding(.horizontal, 15)
+                case .entire:
+                    Text("전체")
+                case .placeInfo:
+                    if let placeID = mapViewModel.currentPlaceID {
+                        LargePlaceCardView(id: placeID)
+                    }
+                }
             }
-        }
     }
     
     var EntirePlaceButton: some View {

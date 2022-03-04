@@ -83,7 +83,7 @@ struct PlaceResponse: Codable {
         case results
     }
     
-    struct PlacePin: Codable {
+    struct PlacePin: Codable, PlaceInformation {
         let identifier: String
         let name: String
         let x: String
@@ -91,8 +91,28 @@ struct PlaceResponse: Codable {
     }
 }
 
+protocol PlaceInformation {
+    var identifier: String { get }
+    var name: String { get }
+    var x: String { get }
+    var y: String { get }
+    var phone: String? { get }
+    var address: String? { get }
+    var imageUrl: String? { get }
+    var category: String? { get }
+    var saves: Int? { get }
+}
+
+extension PlaceInformation {
+    var phone: String? { get {nil} }
+    var address: String? { get {nil} }
+    var imageUrl: String? { get {nil} }
+    var category: String? { get {nil} }
+    var saves: Int? { get {nil} }
+}
+
 struct PlaceInfo {
-    private let document: PlaceResponse.PlacePin
+    private let document: PlaceInformation
     
     var id: String {
         return document.identifier
@@ -102,14 +122,6 @@ struct PlaceInfo {
         return document.name
     }
     
-//    var nextUrl: URL {
-//        return URL(string: response.next)!
-//    }
-//
-//    var previousUrl: URL {
-//        return URL(string: response.previous)!
-//    }
-//
     var lonlat: LonLat {
         let x: Double = Double(document.x) ?? 0
         let y: Double = Double(document.y) ?? 0
@@ -117,7 +129,46 @@ struct PlaceInfo {
         return LonLat(lon: x, lat: y)
     }
     
+    var phone: String {
+        guard let phone = document.phone else {
+            return "전화번호 없음"
+        }
+        return phone
+    }
+    
+    var address: String {
+        guard let address = document.address else {
+            return "주소정보 없음"
+        }
+        return address
+    }
+    
+    var imageUrl: URL? {
+        guard let imageUrl = document.imageUrl else {
+            return nil
+        }
+        return URL(string: imageUrl)
+    }
+    
+    var category: String {
+        guard let category = document.category else {
+            return "카테고리 없음"
+        }
+        return category
+    }
+    
+    var saves: Int {
+        guard let saves = document.saves else {
+            return 0
+        }
+        return saves
+    }
+    
     init(document: PlaceResponse.PlacePin) {
+        self.document = document
+    }
+    
+    init(document: OnePlaceResponse) {
         self.document = document
     }
 }
@@ -129,3 +180,27 @@ extension PlaceInfo {
     }
 }
 
+
+struct OnePlaceResponse: Codable, PlaceInformation {
+    let identifier: String
+    let name: String
+    let x: String
+    let y: String
+    let phone: String?
+    let address: String?
+    let imageUrl: String?
+    let category: String?
+    let saves: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case identifier
+        case name
+        case phone
+        case address
+        case x
+        case y
+        case imageUrl = "thumnail_url"
+        case category
+        case saves = "saves_count"
+    }
+}

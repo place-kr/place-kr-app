@@ -7,7 +7,41 @@
 
 import SwiftUI
 
+import Combine
+
+class LargePlaceCardViewModel: ObservableObject {
+    private var subscriptions = Set<AnyCancellable>()
+    
+    @Published var name = ""
+    @Published var saves: Int = 0
+    
+    init(id placeID: String) {
+        PlaceSearchManager.getPlacesByIdentifier(placeID)
+            .receive(on: DispatchQueue.main)
+            .map({ PlaceInfo(document: $0) })
+            .sink(receiveCompletion: { result in
+                print(result)
+                switch result {
+                case .failure(let error):
+                    print("Error happend: \(error)")
+                case .finished:
+                    print("LargePlaceCardView successfully fetched")
+                }
+            }, receiveValue: { value in
+                self.name = value.name
+                self.saves = value.saves
+            })
+            .store(in: &subscriptions)
+    }
+}
+
 struct LargePlaceCardView: View {
+    @ObservedObject var viewModel: LargePlaceCardViewModel
+    
+    init(id placeID: String) {
+        self.viewModel = LargePlaceCardViewModel(id: placeID)
+    }
+    
     var body: some View {
         HStack() {
             RoundedRectangle(cornerRadius: 10)
@@ -18,13 +52,13 @@ struct LargePlaceCardView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .bottom, spacing: 0) {
-                    Text("미나미")
+                    Text("\(viewModel.name)")
                         .bold()
                         .font(.system(size: 24))
                         .padding(.trailing, 6)
                     Group {
                         Image(systemName: "star.fill")
-                        Text("3명이 저장")
+                        Text("\(viewModel.saves)명이 저장")
                     }
                     .font(.system(size: 12))
                     .foregroundColor(.gray)
@@ -65,7 +99,7 @@ struct LargePlaceCardView: View {
                     }
                 }
                 .buttonStyle(CircleButtonStyle())
-                Spacer()
+//                Spacer()
             }
         }
     }
@@ -73,6 +107,6 @@ struct LargePlaceCardView: View {
 
 struct LargePlaceCardView_Previews: PreviewProvider {
     static var previews: some View {
-        LargePlaceCardView()
+        LargePlaceCardView(id: "")
     }
 }

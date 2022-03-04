@@ -83,8 +83,8 @@ struct UIMapView: UIViewRepresentable {
                 for place in viewModel.places {
                     print("idle: \(place.marker)")
                     place.marker.touchHandler = { (marker) -> Bool in
-                        print("Touched")
                         self.markerAction()
+                        self.viewModel.currentPlaceID = place.placeInfo.id
                         return true
                     }
                     place.marker.mapView = mapView

@@ -8,9 +8,8 @@
 import SwiftUI
 import Combine
 
-// MARK: 자체 서버 콜로 대체 될 예정입니다.
 class PlaceSearchManager {
-    /// Place 이름을 기반으로 주변 정보를 받아옵니다.
+    /// Place 이름을 기반으로 주변 정보를 받아옵니다.(Kakao 기반)
     static func getPlacesByName(name: String) -> AnyPublisher<KakaoPlaceResponse, Error> {
         // Get path of APIKeys.plist
         guard let path = Bundle.main.path(forResource: "ApiKeys", ofType: "plist") else {
@@ -46,6 +45,7 @@ class PlaceSearchManager {
             .eraseToAnyPublisher()
     }
     
+    /// 맵 바운더리 기준으로 주변 정보를 받아옵니다
     static func getPlacesByBoundary(_ bounds: Boundary) -> AnyPublisher<PlaceResponse, Error> {
         // Fetch my user token from UserDefault
         let token = UserInfoManager.loadUserToken()
@@ -88,6 +88,51 @@ class PlaceSearchManager {
             .decode(type: PlaceResponse.self, decoder: decoder)
             .eraseToAnyPublisher()
     }
+    
+    /// Id로 장소 1개의 정보를 받아옵니다
+    static func getPlacesByIdentifier(_ identifier: String) -> AnyPublisher<OnePlaceResponse, Error> {
+        // Fetch my user token from UserDefault
+        let token = UserInfoManager.loadUserToken()
+        guard let token = token else {
+            return Fail(error: PlaceApiError.fetch).eraseToAnyPublisher()
+        }
+
+        // Make URLSession.datapublisher which requests informations from the server
+        let session = URLSession.shared
+        guard let url = URL(string: "https://dev.place.tk/api/v1/places/\(identifier)")
+        else {
+            return Fail(error: PlaceApiError.url).eraseToAnyPublisher()
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let decoder = JSONDecoder()
+        return session.dataTaskPublisher(for: request)
+            .tryMap() { data, response in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("Response error: \(response)")
+                    throw PlaceApiError.response
+                }
+                
+                guard 200..<300 ~= httpResponse.statusCode else {
+                    print("Response error: \(httpResponse)")
+                    throw PlaceApiError.response
+                }
+                
+                guard !data.isEmpty else {
+                    print("Data error: \(data)")
+                    throw PlaceApiError.data
+                }
+                
+                return data
+            }
+            .decode(type: OnePlaceResponse.self, decoder: decoder)
+            .eraseToAnyPublisher()
+    }
+
 }
 
 extension PlaceSearchManager {

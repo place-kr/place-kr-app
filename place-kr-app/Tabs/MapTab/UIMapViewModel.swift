@@ -12,7 +12,9 @@ import Combine
 class UIMapViewModel: ObservableObject {
     typealias bound = PlaceSearchManager.Boundary
     private var subscriptions = Set<AnyCancellable>()
+    
     var currentBounds: NMGLatLngBounds
+    var currentPlaceID: String?
     
     @Published var places = [PlaceWrapper]()
     @Published var currentPosition: NMGLatLng
@@ -90,7 +92,6 @@ extension UIMapViewModel {
             
             self.placeInfo = placeInfo
             self.marker = marker
-            
         }
     }
 }

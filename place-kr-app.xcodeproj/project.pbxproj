@@ -32,6 +32,7 @@
 		9B51C8C127B0F15200F3B76C /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */; };
 		9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C327B0F21300F3B76C /* SearchManager.swift */; };
 		9B5FD61527C519ED004B60E6 /* AddTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD61427C519ED004B60E6 /* AddTabView.swift */; };
+		9B60EF0927D1B89100A4A027 /* SinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B60EF0827D1B89100A4A027 /* SinkHandler.swift */; };
 		9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */; };
 		9B6A1F6327B4B6C200D160DC /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */; };
 		9B6C0D2527C895F900376373 /* AddTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C0D2427C895F900376373 /* AddTabViewModel.swift */; };
@@ -93,6 +94,7 @@
 		9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
 		9B51C8C327B0F21300F3B76C /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		9B5FD61427C519ED004B60E6 /* AddTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTabView.swift; sourceTree = "<group>"; };
+		9B60EF0827D1B89100A4A027 /* SinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinkHandler.swift; sourceTree = "<group>"; };
 		9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		9B6C0D2427C895F900376373 /* AddTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTabViewModel.swift; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 				9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */,
 				9B91641927AF82C3005FAC4A /* UserInfoManager.swift */,
 				9B43E02927C9DB0F0042F9C4 /* DummyData.swift */,
+				9B60EF0827D1B89100A4A027 /* SinkHandler.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -526,6 +529,7 @@
 				9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */,
 				9B6C0D2927C89C0400376373 /* RegisterPlaceView.swift in Sources */,
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
+				9B60EF0927D1B89100A4A027 /* SinkHandler.swift in Sources */,
 				9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */,
 				9B82F64B27D079150081A701 /* UIMapViewModel.swift in Sources */,
 				9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */,
