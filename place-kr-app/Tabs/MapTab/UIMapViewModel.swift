@@ -39,7 +39,7 @@ class UIMapViewModel: ObservableObject {
                 }
             }, receiveValue: { data in
                 // 받은 info를 맵뷰에서 쓰기 위한 래퍼로 치환
-                self.places = data.map({ PlaceWrapper($0) })
+                self.places = data.map({ PlaceWrapper($0)})
                 
                 print("count: \(self.places.count), Ex:\(self.places[0..<min(1, self.places.count)])...")
             })
@@ -48,7 +48,9 @@ class UIMapViewModel: ObservableObject {
     
     init() {
         print("Init called")
+        
         let offset: Double = 1 / 1000
+        
         let coord = LocationManager.shared.currentCoord
         self.currentPosition = NMGLatLng(lat: coord.latitude, lng: coord.longitude)
         self.currentBounds = NMGLatLngBounds(
@@ -80,7 +82,7 @@ extension UIMapViewModel {
     struct PlaceWrapper {
         let placeInfo: PlaceInfo
         let marker: NMFMarker
-    
+        
         init(_ placeInfo: PlaceInfo) {
             let position = placeInfo.lonlat
             let marker = NMFMarker()
@@ -88,6 +90,7 @@ extension UIMapViewModel {
             
             self.placeInfo = placeInfo
             self.marker = marker
+            
         }
     }
 }

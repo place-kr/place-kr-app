@@ -10,9 +10,10 @@ import NMapsMap
 
 struct UIMapView: UIViewRepresentable {
     @ObservedObject var viewModel: UIMapViewModel
+    let markerAction: () -> Void
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(viewModel: viewModel)
+        Coordinator(viewModel: viewModel, action: markerAction)
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
@@ -58,10 +59,12 @@ struct UIMapView: UIViewRepresentable {
     
     class Coordinator: NSObject, NMFMapViewCameraDelegate {
         @ObservedObject var viewModel: UIMapViewModel
+        let markerAction: () -> Void
 
-
-        init(viewModel: UIMapViewModel) {
+        init(viewModel: UIMapViewModel, action: @escaping () -> Void) {
             self.viewModel = viewModel
+            self.markerAction = action
+
         }
         
         func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
@@ -79,6 +82,11 @@ struct UIMapView: UIViewRepresentable {
                 
                 for place in viewModel.places {
                     print("idle: \(place.marker)")
+                    place.marker.touchHandler = { (marker) -> Bool in
+                        print("Touched")
+                        self.markerAction()
+                        return true
+                    }
                     place.marker.mapView = mapView
                 }
             }
