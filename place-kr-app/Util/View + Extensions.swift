@@ -33,7 +33,6 @@ struct LazyView<Content: View>: View {
     }
 }
 
-
 struct ProgressView: UIViewRepresentable {
 
     let isAnimating = true
@@ -147,15 +146,25 @@ struct CircleButtonStyle: ButtonStyle {
     }
 }
 
-extension View {
-    func expandToMax(width: CGFloat? = nil, height: CGFloat? = nil) -> some View{
-        self.frame(minWidth: width == nil ? 0 : width,
-                   maxWidth: width == nil ? .infinity: width,
-                   minHeight: height == nil ? 0 : height,
-                   maxHeight: height == nil ? .infinity : height,
-                   alignment: .center)
-    }
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
     
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+}
+
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
+    }
+}
+
+
+extension View {
     func encapsulate() -> some View {
         modifier(EncapsulateModifier())
     }

@@ -12,8 +12,8 @@ import Combine
 class LargePlaceCardViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
-    @Published var name = ""
-    @Published var saves: Int = 0
+    @Published var name: String?
+    @Published var saves: Int?
     
     init(id placeID: String) {
         PlaceSearchManager.getPlacesByIdentifier(placeID)
@@ -45,10 +45,9 @@ struct LargePlaceCardView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            NavigationLink(destination: Text("Bazinga"), isActive: $showNavigation) {
+            NavigationLink(destination: LazyView { Text("\(viewModel.name ?? "Default view")") }, isActive: $showNavigation) {
                 EmptyView()
             }
-            
             RoundedRectangle(cornerRadius: 10)
                 .fill(.gray.opacity(0.5))
                 .frame(width: 94, height: 94)
@@ -57,18 +56,21 @@ struct LargePlaceCardView: View {
             
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .bottom, spacing: 0) {
-                    Text("\(viewModel.name)")
-                        .bold()
-//                        .font(.system(size: 24))
-                        .minimumScaleFactor(0.001)
-//                        .lineLimit(1)
-                        .padding(.trailing, 6)
-                    Group {
-                        Image(systemName: "star.fill")
-                        Text("\(viewModel.saves)명이 저장")
+                    if let name = viewModel.name, let saves = viewModel.saves {
+                        Text("\(name)")
+                            .bold()
+    //                        .font(.system(size: 24))
+                            .minimumScaleFactor(0.001)
+    //                        .lineLimit(1)
+                            .padding(.trailing, 6)
+                        
+                        Group {
+                            Image(systemName: "star.fill")
+                            Text("\(saves)명이 저장")
+                        }
+                        .font(.system(size: 12))
+                        .foregroundColor(.gray)
                     }
-                    .font(.system(size: 12))
-                    .foregroundColor(.gray)
                 }
                 .padding(.bottom, 4)
                 

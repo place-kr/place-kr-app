@@ -13,6 +13,7 @@ struct MapView: View {
     @EnvironmentObject var partialSheetManager : PartialSheetManager
     
     @State var showSheet = false
+    @State var tempShowSheet = false
     @State var activeSheet: ActiveSheet = .placeInfo
     
     @State var searchText = ""
@@ -72,6 +73,11 @@ struct MapView: View {
                 .zIndex(1)
             }
             .addPartialSheet(style: sheetStyle)
+            .showSheet(sheet:
+                        LargePlaceCardView(id: mapViewModel.currentPlaceID ?? "")
+                        .padding(.horizontal, 15)
+                        .padding(.bottom, 20),
+                       show: tempShowSheet)
             .navigationBarHidden(true)
         }
     }
@@ -108,8 +114,11 @@ extension MapView {
     
     var EntirePlaceButton: some View {
         func doShowSheet() {
-            self.showSheet.toggle()
-            activeSheet = .entire
+//            self.showSheet.toggle()
+//            activeSheet = .entire
+            withAnimation(.spring()) {
+                self.tempShowSheet.toggle()
+            }
         }
         
         return Button(action: { doShowSheet() }) {

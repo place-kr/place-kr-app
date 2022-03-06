@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9B01412627C8FE810030CDC7 /* MyPlaceRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B01412527C8FE810030CDC7 /* MyPlaceRowView.swift */; };
+		9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */; };
 		9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A65B2796F42A0029CA0E /* AppDelegate.swift */; };
 		9B20A65E2796F42A0029CA0E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A65D2796F42A0029CA0E /* SceneDelegate.swift */; };
 		9B20A6652796F42B0029CA0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B20A6642796F42B0029CA0E /* Assets.xcassets */; };
@@ -67,6 +68,7 @@
 
 /* Begin PBXFileReference section */
 		9B01412527C8FE810030CDC7 /* MyPlaceRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceRowView.swift; sourceTree = "<group>"; };
+		9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetModifier.swift; sourceTree = "<group>"; };
 		9B20A6582796F42A0029CA0E /* place-kr-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "place-kr-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B20A65B2796F42A0029CA0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B20A65D2796F42A0029CA0E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +153,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		9B0FCE0627D4C1AD003A9CFA /* Sheets */ = {
+			isa = PBXGroup;
+			children = (
+				9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */,
+			);
+			path = Sheets;
+			sourceTree = "<group>";
+		};
 		9B20A64F2796F42A0029CA0E = {
 			isa = PBXGroup;
 			children = (
@@ -211,6 +221,7 @@
 		9B35BA4D27CDDA570013C1EA /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				9B0FCE0627D4C1AD003A9CFA /* Sheets */,
 				9B51C8BD27B0EB1600F3B76C /* Place */,
 				9B82F63E27CE5DF20081A701 /* Alerts */,
 				9B51C8C227B0F1FE00F3B76C /* SearchField */,
@@ -517,6 +528,7 @@
 			files = (
 				9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */,
 				9B6C0D2927C89C0400376373 /* RegisterPlaceView.swift in Sources */,
+				9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */,
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
 				9B60EF0927D1B89100A4A027 /* SinkHandler.swift in Sources */,
 				9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */,
