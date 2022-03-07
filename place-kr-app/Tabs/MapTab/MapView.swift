@@ -6,14 +6,11 @@
 //
 
 import SwiftUI
-import PartialSheet
 
 struct MapView: View {
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
-    @EnvironmentObject var partialSheetManager : PartialSheetManager
     
     @State var showSheet = false
-    @State var tempShowSheet = false
     @State var activeSheet: ActiveSheet = .placeInfo
     
     @State var searchText = ""
@@ -23,8 +20,10 @@ struct MapView: View {
             ZStack {
                 /// 네이버 맵
                 UIMapView(viewModel: mapViewModel, markerAction: {
-                    self.showSheet = true
-                    self.activeSheet = .placeInfo
+                    withAnimation(.spring()) {
+                        self.showSheet = true
+                        self.activeSheet = .placeInfo
+                    }
                 })
                     .edgesIgnoringSafeArea(.vertical)
                 
@@ -55,7 +54,7 @@ struct MapView: View {
                             .padding(.trailing, 15)
                     }
                     
-                    /// 검색창 및 Sheet view 버튼
+                    /// 검색창 및 Sheet view 버튼 + Sheet pop 용 빈 뷰
                     HStack {
                         EntirePlaceButton
                             .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
@@ -63,7 +62,8 @@ struct MapView: View {
                         MyPlaceButton
                             .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
 
-                        sheetView
+//                        sheetView
+                        
                         Spacer()
                     }
                     .padding(.horizontal, 15)
@@ -72,13 +72,8 @@ struct MapView: View {
                 }
                 .zIndex(1)
             }
-            .addPartialSheet(style: sheetStyle)
-            .showSheet(sheet:
-//                        LargePlaceCardView(id: mapViewModel.currentPlaceID ?? "")
-//                        .padding(.horizontal, 15)
-//                        .padding(.bottom, 20)
-                       Text("Hi"),
-                       show: $tempShowSheet)
+            .showSheet(show: $showSheet, sheet: sheetView(active: activeSheet)
+            )
             .navigationBarHidden(true)
         }
     }
@@ -89,36 +84,37 @@ extension MapView {
         case myPlace, entire, placeInfo
     }
     
+    @ViewBuilder
+    func sheetView(active: ActiveSheet) -> some View {
+        switch active {
+        case .myPlace:
+            Text("My place")
+        case .entire:
+            Text("전체")
+        case .placeInfo:
+            if let placeID = mapViewModel.currentPlaceID {
+                LazyView {
+                    LargePlaceCardView(id: placeID)
+                        .padding(.horizontal, 15)
+                        .padding(.bottom, 20)
+                }
+            } else {
+                ProgressView(style: UIActivityIndicatorView.Style.medium)
+            }
+        }
+    }
+    
     var SearchField: some View {
         ThemedTextField($searchText, "장소를 입력하세요", bgColor: .white, isStroked: false, position: .leading, buttonName: "magnifyingglass", buttonColor: .black) {
             print("tapped")
         }
     }
     
-    var sheetView: some View {
-        return EmptyView()
-            .partialSheet(isPresented: $showSheet) {
-                switch activeSheet {
-                case .myPlace:
-                    Text("My place")
-                case .entire:
-                    Text("전체")
-                case .placeInfo:
-                    if let placeID = mapViewModel.currentPlaceID {
-                        LargePlaceCardView(id: placeID)
-                            .padding(.horizontal, 15)
-                            .padding(.bottom, 20)
-                    }
-                }
-            }
-    }
-    
     var EntirePlaceButton: some View {
         func doShowSheet() {
-//            self.showSheet.toggle()
-//            activeSheet = .entire
             withAnimation(.spring()) {
-                self.tempShowSheet.toggle()
+                activeSheet = .entire
+                self.showSheet.toggle()
             }
         }
         
@@ -131,8 +127,10 @@ extension MapView {
     
     var MyPlaceButton: some View {
         func doShowSheet() {
-            self.showSheet.toggle()
-            activeSheet = .myPlace
+            withAnimation(.spring()) {
+                activeSheet = .myPlace
+                self.showSheet.toggle()
+            }
         }
         
         return Button(action: { doShowSheet() }) {

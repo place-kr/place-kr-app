@@ -16,22 +16,24 @@ class LargePlaceCardViewModel: ObservableObject {
     @Published var saves: Int?
     
     init(id placeID: String) {
-        PlaceSearchManager.getPlacesByIdentifier(placeID)
-            .receive(on: DispatchQueue.main)
-            .map({ PlaceInfo(document: $0) })
-            .sink(receiveCompletion: { result in
-                print(result)
-                switch result {
-                case .failure(let error):
-                    print("Error happend: \(error)")
-                case .finished:
-                    print("LargePlaceCardView successfully fetched")
-                }
-            }, receiveValue: { value in
-                self.name = value.name
-                self.saves = value.saves
-            })
-            .store(in: &subscriptions)
+//        PlaceSearchManager.getPlacesByIdentifier(placeID)
+//            .receive(on: DispatchQueue.main)
+//            .map({ PlaceInfo(document: $0) })
+//            .sink(receiveCompletion: { result in
+//                print(result)
+//                switch result {
+//                case .failure(let error):
+//                    print("Error happend: \(error)")
+//                case .finished:
+//                    print("LargePlaceCardView successfully fetched")
+//                }
+//            }, receiveValue: { value in
+//                print(value)
+//                self.name = value.name
+//                self.saves = value.saves
+//            })
+//            .store(in: &subscriptions)
+        print("\(Date().timeIntervalSince1970) LargeCardView")
     }
 }
 

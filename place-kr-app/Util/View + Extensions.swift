@@ -161,7 +161,7 @@ extension View {
         modifier(EncapsulateModifier())
     }
     
-    func showSheet<V>(sheet: V, show: Binding<Bool>) -> some View where V: View {
+    func showSheet<V>(show: Binding<Bool>, sheet: V) -> some View where V: View {
         modifier(SheetModifier(sheet: sheet, show: show))
     }
     
