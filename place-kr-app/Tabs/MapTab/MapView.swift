@@ -74,10 +74,11 @@ struct MapView: View {
             }
             .addPartialSheet(style: sheetStyle)
             .showSheet(sheet:
-                        LargePlaceCardView(id: mapViewModel.currentPlaceID ?? "")
-                        .padding(.horizontal, 15)
-                        .padding(.bottom, 20),
-                       show: tempShowSheet)
+//                        LargePlaceCardView(id: mapViewModel.currentPlaceID ?? "")
+//                        .padding(.horizontal, 15)
+//                        .padding(.bottom, 20)
+                       Text("Hi"),
+                       show: $tempShowSheet)
             .navigationBarHidden(true)
         }
     }

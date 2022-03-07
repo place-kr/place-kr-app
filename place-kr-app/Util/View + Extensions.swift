@@ -156,18 +156,19 @@ struct RoundedCorner: Shape {
     }
 }
 
-
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
-
-
 extension View {
     func encapsulate() -> some View {
         modifier(EncapsulateModifier())
     }
+    
+    func showSheet<V>(sheet: V, show: Binding<Bool>) -> some View where V: View {
+        modifier(SheetModifier(sheet: sheet, show: show))
+    }
+    
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
+    }
+    
 }
 
 

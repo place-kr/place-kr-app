@@ -7,33 +7,10 @@
 
 import SwiftUI
 
-extension View {
-    func showSheet<V>(sheet: V, show: Bool) -> some View where V: View {
-        modifier(SheetModifier(sheet: sheet, show: show))
-    }
-}
-
 struct SheetModifier<V>: ViewModifier where V: View {
     var sheet: V
-    var show: Bool
     
-    enum Style: CGFloat {
-        case small
-        case medium
-        case large
-        
-        var position: CGFloat {
-            switch self {
-            case .small:
-                return UIScreen.main.bounds.height - 300
-            case .medium:
-                return 400
-            case .large:
-                return 10
-            }
-        }
-    }
-    
+    @Binding var show: Bool
     @State var offset: CGFloat = 0
     @State var currentStyle: Style = .small
     
@@ -50,12 +27,13 @@ struct SheetModifier<V>: ViewModifier where V: View {
                     Spacer()
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
-                .zIndex(1)
                 .background(
                     sheetShape
                         .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y:-5)
                 )
+                .edgesIgnoringSafeArea(.bottom)
                 .offset(y: offset + currentStyle.position)
+                .zIndex(1)
                 .transition(.move(edge: .bottom))
                 .gesture(
                     DragGesture(minimumDistance: 0, coordinateSpace: .local)
@@ -67,13 +45,24 @@ struct SheetModifier<V>: ViewModifier where V: View {
                             }
                         }
                         .onEnded({ value in
-                            withAnimation(.spring()) {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0.4)) {
                                 self.offset = 0
-                                if value.translation.height < -100 {
-                                    currentStyle = .large
-                                    
-                                }  else {
+                                let swiped = value.translation.height
+                                // If dragged more than 100 upper side
+                                if swiped < -100 {
+                                    if currentStyle != .large {
+                                        currentStyle = currentStyle.next()
+                                    }
+                                } else if (swiped > 200) {
+                                    self.show = false
                                     currentStyle = .small
+                                } else if (swiped > 10) {
+                                    if currentStyle == .small {
+                                        self.show = false
+                                        currentStyle = .small
+                                    } else {
+                                        currentStyle = currentStyle.previous()
+                                    }
                                 }
                             }
                         })
@@ -86,8 +75,43 @@ struct SheetModifier<V>: ViewModifier where V: View {
     }
 }
 
-var sheetShape: some View {
-    Rectangle()
-        .fill(.white)
-        .cornerRadius(20, corners: [.topLeft, .topRight])
+extension SheetModifier {
+    enum Style: CGFloat, CaseIterable {
+        case small
+        case medium
+        case large
+        
+        // https://stackoverflow.com/questions/51103795/how-to-get-next-case-of-enumi-e-write-a-circulating-method-in-swift-4-2
+        func next() -> Self {
+            let all = Self.allCases
+            let idx = all.firstIndex(of: self)!
+            let next = all.index(after: idx)
+            return all[next == all.endIndex ? all.startIndex : next]
+        }
+        
+        func previous() -> Self {
+            let all = Self.allCases
+            let idx = all.firstIndex(of: self)!
+            let previous = all.index(before: idx)
+            return all[previous < all.startIndex ? all.index(before: all.endIndex) : previous]
+        }
+        
+        // Space from the top
+        var position: CGFloat {
+            switch self {
+            case .small:
+                return UIScreen.main.bounds.height - 250
+            case .medium:
+                return UIScreen.main.bounds.height / 2 - 100
+            case .large:
+                return 30
+            }
+        }
+    }
+    
+    var sheetShape: some View {
+        Rectangle()
+            .fill(.white)
+            .cornerRadius(20, corners: [.topLeft, .topRight])
+    }
 }
