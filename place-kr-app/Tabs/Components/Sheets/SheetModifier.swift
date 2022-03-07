@@ -78,7 +78,7 @@ struct SheetModifier<V>: ViewModifier where V: View {
 extension SheetModifier {
     enum Style: CGFloat, CaseIterable {
         case small
-        case medium
+//        case medium
         case large
         
         // https://stackoverflow.com/questions/51103795/how-to-get-next-case-of-enumi-e-write-a-circulating-method-in-swift-4-2
@@ -101,8 +101,8 @@ extension SheetModifier {
             switch self {
             case .small:
                 return UIScreen.main.bounds.height - 250
-            case .medium:
-                return UIScreen.main.bounds.height / 2 - 100
+//            case .medium:
+//                return UIScreen.main.bounds.height / 2 - 100
             case .large:
                 return 30
             }
