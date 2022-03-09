@@ -65,13 +65,22 @@ struct MapView: View {
                 VStack {
                     Spacer()
                      
-                    // TODO: 맵 리로드 버튼 - 나중에 수정
-                    Button(action: { mapViewModel.mapNeedsReload = false }) {
-                        Image(systemName: "arrow.clockwise.circle.fill")
-                            .resizable()
-                            .frame(width: 35, height: 35)
-                            .foregroundColor(.black)
-                            .shadow(radius: 5)
+                    if mapViewModel.mapNeedsReload {
+                        // TODO: 맵 리로드 버튼 - 나중에 수정
+                        Button(action: {
+                            // fetch -> make marker -> draw marker
+                            mapViewModel.fetchPlaces(in: mapViewModel.currentBounds)
+                            withAnimation(.spring()) {
+                                mapViewModel.mapNeedsReload = false
+                            }
+                        }) {
+                            Image(systemName: "arrow.clockwise.circle.fill")
+                                .resizable()
+                                .frame(width: 35, height: 35)
+                                .foregroundColor(.black)
+                                .shadow(radius: 5)
+                        }
+                        .transition(.move(edge: .bottom))
                     }
                 }
                 .padding(.bottom, 15)
@@ -96,8 +105,6 @@ struct MapView: View {
 
                         MyPlaceButton
                             .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-
-//                        sheetView
                         
                         Spacer()
                     }

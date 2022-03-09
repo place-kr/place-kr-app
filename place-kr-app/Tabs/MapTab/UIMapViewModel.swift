@@ -15,7 +15,9 @@ import Combine
 class UIMapViewModel: ObservableObject {
     typealias bound = PlaceSearchManager.Boundary
     
+    let mapView: NMFNaverMapView
     private var subscriptions = Set<AnyCancellable>()
+    private var markers = [NMFMarker]()
     var currentBounds: NMGLatLngBounds
     
     @Published var places = [PlaceWrapper]()
@@ -28,7 +30,8 @@ class UIMapViewModel: ObservableObject {
     }
     
     /// 플레이스 정보를 받아올 퍼블리셔를 결정하고 구독함
-    private func listPlacePublisher(_ publisher: AnyPublisher<PlaceResponse, Error>) {
+    private func listPlacePublisher(_ publisher: AnyPublisher<PlaceResponse, Error>,
+                                    completion: @escaping (Bool) -> Void) {
         publisher
             .map({ $0.results.map(PlaceInfo.init) })
             .receive(on: DispatchQueue.main)
@@ -42,8 +45,7 @@ class UIMapViewModel: ObservableObject {
             }, receiveValue: { data in
                 // 받은 info를 맵뷰에서 쓰기 위한 래퍼로 치환
                 self.places = data.map({ PlaceWrapper($0)})
-                       
-                
+                completion(true)
                 print("count: \(self.places.count), First content:\(self.places[0..<min(1, self.places.count)].first?.placeInfo.name as Any)...")
             })
             .store(in: &subscriptions)
@@ -51,16 +53,27 @@ class UIMapViewModel: ObservableObject {
     
     /// 퍼블리셔에 전달할 인자를 결정함
     func fetchPlaces(by keyword: String) {
-        listPlacePublisher(PlaceSearchManager.getPlacesByName(name: keyword))
+        listPlacePublisher(PlaceSearchManager.getPlacesByName(name: keyword)) { isSuccessed in
+            
+        }
     }
     
     /// 퍼블리셔에 전달할 인자를 결정함
     func fetchPlaces(in bounds: NMGLatLngBounds) {
         let bound = bound(bounds.northEastLat, bounds.northEastLng, bounds.southWestLat, bounds.southWestLng)
-        listPlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound))
+        listPlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound)) { isSuccessed in
+            if isSuccessed {
+                self.markers = self.places.map({ $0.marker })
+                
+            } else {
+                print("Error while fetching places")
+            }
+        }
     }
     
     init() {
+        self.mapView = NMFNaverMapView()
+        
         let offset: Double = 1 / 1000
         
         let coord = LocationManager.shared.currentCoord
