@@ -28,7 +28,7 @@ struct UIMapView: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
-        let view = viewModel.mapView
+        let view = viewModel.view
         view.showZoomControls = false
         view.showCompass = false
         

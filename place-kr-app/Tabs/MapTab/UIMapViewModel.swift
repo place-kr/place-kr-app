@@ -15,7 +15,8 @@ import Combine
 class UIMapViewModel: ObservableObject {
     typealias bound = PlaceSearchManager.Boundary
     
-    let mapView: NMFNaverMapView
+    let view: NMFNaverMapView
+    
     private var subscriptions = Set<AnyCancellable>()
     private var markers = [NMFMarker]()
     var currentBounds: NMGLatLngBounds
@@ -31,7 +32,7 @@ class UIMapViewModel: ObservableObject {
     
     /// 플레이스 정보를 받아올 퍼블리셔를 결정하고 구독함
     private func listPlacePublisher(_ publisher: AnyPublisher<PlaceResponse, Error>,
-                                    completion: @escaping (Bool) -> Void) {
+                                    completion: @escaping (Result<[PlaceWrapper], Error>) -> Void) {
         publisher
             .map({ $0.results.map(PlaceInfo.init) })
             .receive(on: DispatchQueue.main)
@@ -39,13 +40,17 @@ class UIMapViewModel: ObservableObject {
                 switch result {
                 case .failure(let error):
                     print("Error happend: \(error)")
+                    // 컴플리션으로 에러 전달
+                    completion(.failure(error))
                 case .finished:
                     print("API Places successfully fetched")
                 }
             }, receiveValue: { data in
                 // 받은 info를 맵뷰에서 쓰기 위한 래퍼로 치환
                 self.places = data.map({ PlaceWrapper($0)})
-                completion(true)
+                // 컴플리션으로 래퍼 전달
+                completion(.success(self.places))
+                
                 print("count: \(self.places.count), First content:\(self.places[0..<min(1, self.places.count)].first?.placeInfo.name as Any)...")
             })
             .store(in: &subscriptions)
@@ -54,25 +59,35 @@ class UIMapViewModel: ObservableObject {
     /// 퍼블리셔에 전달할 인자를 결정함
     func fetchPlaces(by keyword: String) {
         listPlacePublisher(PlaceSearchManager.getPlacesByName(name: keyword)) { isSuccessed in
-            
+            // Do nothing
         }
     }
     
-    /// 퍼블리셔에 전달할 인자를 결정함
+    /// 바운드로 장소 정보를 가져온 후 마커를 그림(범위에서 벗어난 마커는 삭제)
     func fetchPlaces(in bounds: NMGLatLngBounds) {
         let bound = bound(bounds.northEastLat, bounds.northEastLng, bounds.southWestLat, bounds.southWestLng)
-        listPlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound)) { isSuccessed in
-            if isSuccessed {
-                self.markers = self.places.map({ $0.marker })
-                
-            } else {
-                print("Error while fetching places")
+        listPlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound)) { result in
+            switch(result) {
+            case .success(let wrappers):
+                if !self.markers.isEmpty {
+                    for marker in self.markers {
+                        marker.mapView = nil
+                    }
+                }
+                self.markers = wrappers.map({
+                    $0.marker.mapView = self.view.mapView
+                    return $0.marker
+                })
+                break
+            case .failure(let error):
+                print("Error while fetching places: \(error), \(error.localizedDescription)")
+                break
             }
         }
     }
     
     init() {
-        self.mapView = NMFNaverMapView()
+        self.view = NMFNaverMapView()
         
         let offset: Double = 1 / 1000
         
