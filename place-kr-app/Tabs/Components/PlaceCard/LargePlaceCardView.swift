@@ -37,9 +37,13 @@ struct LargePlaceCardView: View {
             HStack(alignment: .top) {
                 
                 // 여기로 네비게이션
-//                NavigationLink(destination: LazyView { PlaceDetailView(placeInfo: viewModel.placeInfo) }, isActive: $showNavigation) {
-//                    EmptyView()
-//                }
+                NavigationLink(
+                    destination: LazyView {
+                        PlaceDetailView(info: viewModel.placeInfo)
+                    },
+                    isActive: $showNavigation) {
+                        EmptyView()
+                    }
                 
                 RoundedRectangle(cornerRadius: 10)
                     .fill(.gray.opacity(0.5))
