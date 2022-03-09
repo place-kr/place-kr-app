@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import PartialSheet
-
 fileprivate struct EncapsulateModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
@@ -32,7 +30,6 @@ struct LazyView<Content: View>: View {
         content()          // << everything is created here
     }
 }
-
 
 struct ProgressView: UIViewRepresentable {
 
@@ -104,20 +101,33 @@ struct RoundedButtonStyle: ButtonStyle {
 
     var bgColor: Color
     var textColor: Color
-    var isStroked: Bool
+    var isStroked: Bool?
+    var isSpanned: Bool?
     var width: CGFloat?
     var height: CGFloat
     let shape = RoundedRectangle(cornerRadius: 4)
     
+    var calculatedWidth: CGFloat? {
+        if let isSpanned = isSpanned, isSpanned == true {
+            return .infinity
+        } else {
+            if let width = width {
+                return width
+            } else {
+                return nil
+            }
+        }
+    }
+    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .foregroundColor(textColor)
-            .frame(minWidth: width, maxWidth: width == nil ? .infinity : width, minHeight: height)
+            .frame(minWidth: width, maxWidth: calculatedWidth, minHeight: height)
             .background(
                 shape.fill(bgColor)
             )
             .overlay(
-                shape.stroke(.black.opacity(isStroked ? 1 : 0), lineWidth: 1)
+                shape.stroke(.black.opacity(isStroked ?? false ? 1 : 0), lineWidth: 1)
             )
             .opacity(configuration.isPressed ? 0.5 : 1)
             .opacity(!isEnabled ? 0.3 : 1)
@@ -147,26 +157,43 @@ struct CircleButtonStyle: ButtonStyle {
     }
 }
 
-extension View {
-    func expandToMax(width: CGFloat? = nil, height: CGFloat? = nil) -> some View{
-        self.frame(minWidth: width == nil ? 0 : width,
-                   maxWidth: width == nil ? .infinity: width,
-                   minHeight: height == nil ? 0 : height,
-                   maxHeight: height == nil ? .infinity : height,
-                   alignment: .center)
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+    
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+}
+
+struct StarButtonShape: View {
+    let radius: CGFloat
+    let bgColor: Color
+    let fgColor: Color
+    
+    init(_ radius: CGFloat, fgColor: Color,  bgColor: Color) {
+        self.radius = radius
+        self.bgColor = bgColor
+        self.fgColor = fgColor
     }
     
+    var body: some View {
+        Image(systemName: "star.fill")
+            .resizable()
+            .frame(width: radius, height: radius)
+            .scaledToFit()
+            .foregroundColor(fgColor)
+            .padding(5)
+            .background(
+                Circle()
+                    .fill(bgColor)
+            )
+    }
+}
+
+extension View {
     func encapsulate() -> some View {
         modifier(EncapsulateModifier())
     }
 }
-
-
-let sheetStyle = PartialSheetStyle(background: .solid(.white),
-                               accentColor: Color(UIColor.systemGray2),
-                               enableCover: true,
-                               coverColor: Color.white.opacity(0.01),
-                               blurEffectStyle: nil,
-                               cornerRadius: 20,
-                               minTopDistance: 350
-)

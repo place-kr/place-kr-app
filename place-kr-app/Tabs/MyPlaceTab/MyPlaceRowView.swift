@@ -6,10 +6,8 @@
 //
 
 import SwiftUI
-import PartialSheet
 
 struct MyPlaceRowView: View {
-    @EnvironmentObject var partialSheetManager : PartialSheetManager
     @ObservedObject var viewModel: MyPlaceRowViewModel
     
     var body: some View {

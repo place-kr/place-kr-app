@@ -49,7 +49,7 @@ struct PlaceListDetailView: View {
             isEditable.toggle()
             viewModel.resetSelection()
         }, label: {
-            Text(isEditable ? "취소" : "Edit")
+            Text(isEditable ? "수정완료" : "Edit")
                 .foregroundColor(isEditable ? .red : .black)
         }))
         .navigationBarTitle("\(viewModel.listName)", displayMode: .inline) // TODO: 원본과 다름

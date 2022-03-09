@@ -80,7 +80,7 @@ class MyPlaceRowViewModel: ObservableObject {
 extension MyPlaceRowViewModel {
     class PlaceInfoWrapper: Hashable, Identifiable {
         let id = UUID()
-        let placeInfo: PlaceInfo
+        let placeInfo: KakaoPlaceInfo
         var isSelected: Bool
         
         func hash(into hasher: inout Hasher) {
@@ -91,7 +91,7 @@ extension MyPlaceRowViewModel {
             return lhs.id == rhs.id && lhs.id == rhs.id
         }
         
-        init(placeInfo: PlaceInfo, isSelected: Bool) {
+        init(placeInfo: KakaoPlaceInfo, isSelected: Bool) {
             self.placeInfo = placeInfo
             self.isSelected = isSelected
         }
