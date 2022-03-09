@@ -54,10 +54,10 @@ struct MapView: View {
             ZStack {
                 /// 네이버 맵
                 UIMapView(viewModel: mapViewModel, markerAction: {
-                    withAnimation(springAnimation) {
-                        self.bottomSheetPosition = .bottom
-                        self.activeSheet = .placeInfo
-                    }
+//                    withAnimation(springAnimation) {
+//                        self.bottomSheetPosition = .bottom
+//                        self.activeSheet = .placeInfo
+//                    }
                 })
                     .environmentObject(placeInfoManager)
                     .edgesIgnoringSafeArea(.vertical)
@@ -66,11 +66,13 @@ struct MapView: View {
                     Spacer()
                      
                     if mapViewModel.mapNeedsReload {
-                        // TODO: 맵 리로드 버튼 - 나중에 수정
+                        /// 맵 리로드 버튼
                         Button(action: {
-                            // fetch -> make marker -> draw marker
-                            mapViewModel.fetchPlaces(in: mapViewModel.currentBounds)
-                            withAnimation(.spring()) {
+                            // 보이는 범위 안의 플레이스 페칭, 마커 생성, 마커 그리기
+                            mapViewModel.fetchPlacesAndDrawMarkers(in: mapViewModel.currentBounds) { info in
+                                markerAction(id: info.id)
+                            }
+                            withAnimation(springAnimation) {
                                 mapViewModel.mapNeedsReload = false
                             }
                         }) {
@@ -134,6 +136,16 @@ extension MapView {
         case myPlace, entire, placeInfo
     }
     
+    func markerAction(id: String) {
+        self.placeInfoManager.currentPlaceID = id
+        self.placeInfoManager.fetchInfo(id: id)
+        
+        withAnimation(springAnimation) {
+            self.bottomSheetPosition = .bottom
+            self.activeSheet = .placeInfo
+        }
+    }
+    
     var SheetHeader: some View {
         VStack(alignment: .leading) {
             Text("Wuthering Heights")
@@ -145,7 +157,7 @@ extension MapView {
     
     var SheetContent: some View {
         VStack(spacing: 0) {
-            Text("This tumultuous tale of life in a bleak farmhouse on the Yorkshire moors is a popular set text for GCSE and A-level English study, but away from the demands of the classroom it’s easier to enjoy its drama and intensity. Populated largely by characters whose inability to control their own emotions...")
+            Text("대통령의 임기는 5년으로 하며, 중임할 수 없다. 모든 국민은 그 보호하는 자녀에게 적어도 초등교육과 법률이 정하는 교육을 받게 할 의무를 진다. 지방의회의 조직·권한·의원선거와 지방자치단체의 장의 선임방법 기타 지방자치단체의 조직과 운영에 관한 사항은 법률로 정한다. 법률이 헌법에 위반되는 여부가 재판의 전제가 된 경우에는 법원은 헌법재판소에 제청하여 그 심판에 의하여 재판한다. 모든 국민은 소급입법에 의하여 참정권의 제한을 받거나 재산권을 박탈당하지 아니한다.")
                 .fixedSize(horizontal: false, vertical: true)
             
             HStack {

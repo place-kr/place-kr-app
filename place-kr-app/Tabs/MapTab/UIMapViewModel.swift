@@ -24,7 +24,7 @@ class UIMapViewModel: ObservableObject {
     @Published var places = [PlaceWrapper]()
     @Published var currentPosition: NMGLatLng
     @Published var isInCurrentPosition = true
-    @Published var mapNeedsReload = false
+    @Published var mapNeedsReload = true
     
     func setCurrentLocation() {
         self.currentPosition = NMGLatLng(from: LocationManager.shared.currentCoord)
@@ -64,7 +64,7 @@ class UIMapViewModel: ObservableObject {
     }
     
     /// 바운드로 장소 정보를 가져온 후 마커를 그림(범위에서 벗어난 마커는 삭제)
-    func fetchPlaces(in bounds: NMGLatLngBounds) {
+    func fetchPlacesAndDrawMarkers(in bounds: NMGLatLngBounds, action: @escaping (PlaceInfo) -> Void) {
         let bound = bound(bounds.northEastLat, bounds.northEastLng, bounds.southWestLat, bounds.southWestLng)
         listPlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound)) { result in
             switch(result) {
@@ -74,9 +74,13 @@ class UIMapViewModel: ObservableObject {
                         marker.mapView = nil
                     }
                 }
-                self.markers = wrappers.map({
-                    $0.marker.mapView = self.view.mapView
-                    return $0.marker
+                self.markers = wrappers.map({ wrapper in
+                    wrapper.marker.touchHandler = { (marker) -> Bool in
+                        action(wrapper.placeInfo)
+                        return true
+                    }
+                    wrapper.marker.mapView = self.view.mapView
+                    return wrapper.marker
                 })
                 break
             case .failure(let error):
@@ -105,12 +109,6 @@ class UIMapViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { coord in
                 self.currentPosition = NMGLatLng(lat: coord.latitude, lng: coord.longitude)
-                self.fetchPlaces(in: NMGLatLngBounds(
-                    southWestLat: coord.latitude - offset,
-                    southWestLng: coord.longitude - offset,
-                    northEastLat: coord.latitude + offset,
-                    northEastLng: coord.longitude + offset)
-                )
             })
             .store(in: &subscriptions)
     }
