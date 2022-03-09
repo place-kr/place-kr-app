@@ -26,6 +26,7 @@
 		9B44BEF627C5E7D600755AD5 /* LargePlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */; };
 		9B44BEF827C5E98E00755AD5 /* PlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */; };
 		9B44BEFA27C6217300755AD5 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF927C6217300755AD5 /* SearchBarView.swift */; };
+		9B47C16827D74CB800A45FD8 /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = 9B47C16727D74CB800A45FD8 /* SwiftUIPager */; };
 		9B4A02D827A6B8240037D05F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02D727A6B8240037D05F /* MapView.swift */; };
 		9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02DB27A6BD170037D05F /* UIMapView.swift */; };
 		9B51C8B927B0D98700F3B76C /* PlaceSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8B827B0D98700F3B76C /* PlaceSearchManager.swift */; };
@@ -33,7 +34,6 @@
 		9B51C8C127B0F15200F3B76C /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */; };
 		9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C327B0F21300F3B76C /* SearchManager.swift */; };
 		9B5FD61527C519ED004B60E6 /* AddTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD61427C519ED004B60E6 /* AddTabView.swift */; };
-		9B60EF0927D1B89100A4A027 /* SinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B60EF0827D1B89100A4A027 /* SinkHandler.swift */; };
 		9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */; };
 		9B6A1F6327B4B6C200D160DC /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */; };
 		9B6C0D2527C895F900376373 /* AddTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C0D2427C895F900376373 /* AddTabViewModel.swift */; };
@@ -55,9 +55,11 @@
 		9B91641627AE6065005FAC4A /* AppleLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641527AE6065005FAC4A /* AppleLoginViewModel.swift */; };
 		9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641927AF82C3005FAC4A /* UserInfoManager.swift */; };
 		9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */; };
+		9B9D77C527D7455300326BB5 /* PlaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */; };
 		9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */; };
-		9B9FCE4F27B4EB0F00DCCF9D /* PartialSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 9B9FCE4E27B4EB0F00DCCF9D /* PartialSheet */; };
 		9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */; };
+		9BBDA06D27D66AC700BB96FA /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 9BBDA06C27D66AC700BB96FA /* BottomSheet */; };
+		9BCC370127D70A6E00E88F72 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCC370027D70A6E00E88F72 /* Animations.swift */; };
 		9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */; };
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
 		9BF582C9279B8AF90068805E /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C8279B8AF90068805E /* LogInView.swift */; };
@@ -95,7 +97,6 @@
 		9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
 		9B51C8C327B0F21300F3B76C /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		9B5FD61427C519ED004B60E6 /* AddTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTabView.swift; sourceTree = "<group>"; };
-		9B60EF0827D1B89100A4A027 /* SinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinkHandler.swift; sourceTree = "<group>"; };
 		9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		9B6C0D2427C895F900376373 /* AddTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTabViewModel.swift; sourceTree = "<group>"; };
@@ -119,8 +120,10 @@
 		9B91641527AE6065005FAC4A /* AppleLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewModel.swift; sourceTree = "<group>"; };
 		9B91641927AF82C3005FAC4A /* UserInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoManager.swift; sourceTree = "<group>"; };
 		9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPIManager.swift; sourceTree = "<group>"; };
+		9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailView.swift; sourceTree = "<group>"; };
 		9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginViewModel.swift; sourceTree = "<group>"; };
+		9BCC370027D70A6E00E88F72 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extensions.swift"; sourceTree = "<group>"; };
 		9BF582C6279ADDEB0068805E /* NaverUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverUserData.swift; sourceTree = "<group>"; };
 		9BF582C8279B8AF90068805E /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
@@ -136,7 +139,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B9FCE4F27B4EB0F00DCCF9D /* PartialSheet in Frameworks */,
+				9BBDA06D27D66AC700BB96FA /* BottomSheet in Frameworks */,
+				9B47C16827D74CB800A45FD8 /* SwiftUIPager in Frameworks */,
 				C1E57CCEE0673CDEBD22B5D4 /* Pods_place_kr_app.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
+				9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
 				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
 				9B82F64A27D079150081A701 /* UIMapViewModel.swift */,
@@ -378,11 +383,11 @@
 		9BEDED2927A26B7400EE560C /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				9BCC370027D70A6E00E88F72 /* Animations.swift */,
 				9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */,
 				9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */,
 				9B91641927AF82C3005FAC4A /* UserInfoManager.swift */,
 				9B43E02927C9DB0F0042F9C4 /* DummyData.swift */,
-				9B60EF0827D1B89100A4A027 /* SinkHandler.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -424,7 +429,8 @@
 			);
 			name = "place-kr-app";
 			packageProductDependencies = (
-				9B9FCE4E27B4EB0F00DCCF9D /* PartialSheet */,
+				9BBDA06C27D66AC700BB96FA /* BottomSheet */,
+				9B47C16727D74CB800A45FD8 /* SwiftUIPager */,
 			);
 			productName = "place-kr-app";
 			productReference = 9B20A6582796F42A0029CA0E /* place-kr-app.app */;
@@ -455,7 +461,8 @@
 			);
 			mainGroup = 9B20A64F2796F42A0029CA0E;
 			packageReferences = (
-				9B9FCE4D27B4EB0F00DCCF9D /* XCRemoteSwiftPackageReference "PartialSheet" */,
+				9BBDA06B27D66AC600BB96FA /* XCRemoteSwiftPackageReference "BottomSheet" */,
+				9B47C16627D74CB700A45FD8 /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
 			);
 			productRefGroup = 9B20A6592796F42A0029CA0E /* Products */;
 			projectDirPath = "";
@@ -530,7 +537,6 @@
 				9B6C0D2927C89C0400376373 /* RegisterPlaceView.swift in Sources */,
 				9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */,
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
-				9B60EF0927D1B89100A4A027 /* SinkHandler.swift in Sources */,
 				9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */,
 				9B82F64B27D079150081A701 /* UIMapViewModel.swift in Sources */,
 				9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */,
@@ -538,6 +544,7 @@
 				9BFBB9A127C76361002C5F10 /* SearchResultsViewModel.swift in Sources */,
 				9B4A02D827A6B8240037D05F /* MapView.swift in Sources */,
 				9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */,
+				9BCC370127D70A6E00E88F72 /* Animations.swift in Sources */,
 				9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */,
 				9B6C0D2527C895F900376373 /* AddTabViewModel.swift in Sources */,
 				9B44BEFA27C6217300755AD5 /* SearchBarView.swift in Sources */,
@@ -556,6 +563,7 @@
 				9B82F64627CF1FA80081A701 /* ThemedTextField.swift in Sources */,
 				9B01412627C8FE810030CDC7 /* MyPlaceRowView.swift in Sources */,
 				9B35BA4C27CDDA4B0013C1EA /* TabsView.swift in Sources */,
+				9B9D77C527D7455300326BB5 /* PlaceDetailView.swift in Sources */,
 				9B82F64227CF198E0081A701 /* AlertStyleModifier.swift in Sources */,
 				9B82F64827CF298E0081A701 /* AlertModifier.swift in Sources */,
 				9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */,
@@ -716,6 +724,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AA35C7AE8C712DACC6E4842A /* Pods-place-kr-app.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "place-kr-app/place-kr-app.entitlements";
@@ -747,6 +756,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E2112456F33453C2A4353562 /* Pods-place-kr-app.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "place-kr-app/place-kr-app.entitlements";
@@ -798,9 +808,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		9B9FCE4D27B4EB0F00DCCF9D /* XCRemoteSwiftPackageReference "PartialSheet" */ = {
+		9B47C16627D74CB700A45FD8 /* XCRemoteSwiftPackageReference "SwiftUIPager" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AndreaMiotto/PartialSheet";
+			repositoryURL = "https://github.com/fermoya/SwiftUIPager";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		9BBDA06B27D66AC600BB96FA /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LucasMucGH/BottomSheet";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.0.0;
@@ -809,10 +827,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		9B9FCE4E27B4EB0F00DCCF9D /* PartialSheet */ = {
+		9B47C16727D74CB800A45FD8 /* SwiftUIPager */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 9B9FCE4D27B4EB0F00DCCF9D /* XCRemoteSwiftPackageReference "PartialSheet" */;
-			productName = PartialSheet;
+			package = 9B47C16627D74CB700A45FD8 /* XCRemoteSwiftPackageReference "SwiftUIPager" */;
+			productName = SwiftUIPager;
+		};
+		9BBDA06C27D66AC700BB96FA /* BottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9BBDA06B27D66AC600BB96FA /* XCRemoteSwiftPackageReference "BottomSheet" */;
+			productName = BottomSheet;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

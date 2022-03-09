@@ -10,13 +10,13 @@ import NMapsMap
 import Combine
 
 /// 맵에 변경사항이 있을 때마다 그에 관련된 작업들을 진행합니다.
+/// 여러 장소를 관리하는 것은 이곳, 한 개의 장소를 관리하는 것은 PlaceInfoManager로 갑니다.
 /// ex. 시야 안에 있는 장소 검색, 현위치로 전환
 class UIMapViewModel: ObservableObject {
     typealias bound = PlaceSearchManager.Boundary
     
     private var subscriptions = Set<AnyCancellable>()
     var currentBounds: NMGLatLngBounds
-    var currentPlaceID: String?
     
     @Published var places = [PlaceWrapper]()
     @Published var currentPosition: NMGLatLng
@@ -27,7 +27,8 @@ class UIMapViewModel: ObservableObject {
         self.currentPosition = NMGLatLng(from: LocationManager.shared.currentCoord)
     }
     
-    private func listePlacePublisher(_ publisher: AnyPublisher<PlaceResponse, Error>) {
+    /// 플레이스 정보를 받아올 퍼블리셔를 결정하고 구독함
+    private func listPlacePublisher(_ publisher: AnyPublisher<PlaceResponse, Error>) {
         publisher
             .map({ $0.results.map(PlaceInfo.init) })
             .receive(on: DispatchQueue.main)
@@ -41,19 +42,22 @@ class UIMapViewModel: ObservableObject {
             }, receiveValue: { data in
                 // 받은 info를 맵뷰에서 쓰기 위한 래퍼로 치환
                 self.places = data.map({ PlaceWrapper($0)})
+                       
                 
                 print("count: \(self.places.count), First content:\(self.places[0..<min(1, self.places.count)].first?.placeInfo.name as Any)...")
             })
             .store(in: &subscriptions)
     }
     
+    /// 퍼블리셔에 전달할 인자를 결정함
     func fetchPlaces(by keyword: String) {
-        listePlacePublisher(PlaceSearchManager.getPlacesByName(name: keyword))
+        listPlacePublisher(PlaceSearchManager.getPlacesByName(name: keyword))
     }
     
+    /// 퍼블리셔에 전달할 인자를 결정함
     func fetchPlaces(in bounds: NMGLatLngBounds) {
         let bound = bound(bounds.northEastLat, bounds.northEastLng, bounds.southWestLat, bounds.southWestLng)
-        listePlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound))
+        listPlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound))
     }
     
     init() {

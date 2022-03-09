@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import PartialSheet
-
 fileprivate struct EncapsulateModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
@@ -161,22 +159,4 @@ extension View {
         modifier(EncapsulateModifier())
     }
     
-    func showSheet<V>(show: Binding<Bool>, sheet: V) -> some View where V: View {
-        modifier(SheetModifier(sheet: sheet, show: show))
-    }
-    
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-    
 }
-
-
-let sheetStyle = PartialSheetStyle(background: .solid(.white),
-                               accentColor: Color(UIColor.systemGray2),
-                               enableCover: true,
-                               coverColor: Color.white.opacity(0.01),
-                               blurEffectStyle: nil,
-                               cornerRadius: 20,
-                               minTopDistance: 350
-)

@@ -6,13 +6,47 @@
 //
 
 import SwiftUI
+import BottomSheet
+
+import Combine
+class PlaceInfoManager: ObservableObject {
+    private var subscriptions = Set<AnyCancellable>()
+    
+    @Published var placeInfo: PlaceInfo?
+    @Published var temp = false
+    var currentPlaceID: String?
+    let uuid = UUID()
+
+    func fetchInfo(id placeID: String) {
+        PlaceSearchManager.getPlacesByIdentifier(placeID)
+            .receive(on: DispatchQueue.main)
+            .map({ PlaceInfo(document: $0) })
+            .sink(receiveCompletion: { result in
+                print(result)
+                switch result {
+                case .failure(let error):
+                    print("Error happend: \(error)")
+                case .finished:
+                    print("PlaceInfoManager successfully fetched")
+                }
+            }, receiveValue: { value in
+                print("\(self.uuid) PlaceInfoManager: \(value)")
+                self.placeInfo = value
+            })
+            .store(in: &subscriptions)
+        
+        temp = true
+    }
+    
+    init() {    }
+}
 
 struct MapView: View {
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
+    @StateObject var placeInfoManager = PlaceInfoManager()
     
-    @State var showSheet = false
     @State var activeSheet: ActiveSheet = .placeInfo
-    
+    @State var bottomSheetPosition: SheetPosition = .hidden
     @State var searchText = ""
     
     var body: some View {
@@ -20,11 +54,12 @@ struct MapView: View {
             ZStack {
                 /// 네이버 맵
                 UIMapView(viewModel: mapViewModel, markerAction: {
-                    withAnimation(.spring()) {
-                        self.showSheet = true
+                    withAnimation(springAnimation) {
+                        self.bottomSheetPosition = .bottom
                         self.activeSheet = .placeInfo
                     }
                 })
+                    .environmentObject(placeInfoManager)
                     .edgesIgnoringSafeArea(.vertical)
                 
                 VStack {
@@ -72,8 +107,16 @@ struct MapView: View {
                 }
                 .zIndex(1)
             }
-            .showSheet(show: $showSheet, sheet: sheetView(active: activeSheet)
-            )
+            .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
+                         options: [.animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(10),
+                                   .allowContentDrag, .noBottomPosition, .swipeToDismiss,
+                                   .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)],
+                         headerContent: {
+                SheetHeader
+            }) {
+                SheetContent
+                    .padding([.horizontal, .top])
+            }
             .navigationBarHidden(true)
         }
     }
@@ -84,6 +127,38 @@ extension MapView {
         case myPlace, entire, placeInfo
     }
     
+    var SheetHeader: some View {
+        VStack(alignment: .leading) {
+            Text("Wuthering Heights")
+                .font(.title).bold()
+            
+            sheetView(active: activeSheet)
+        }
+    }
+    
+    var SheetContent: some View {
+        VStack(spacing: 0) {
+            Text("This tumultuous tale of life in a bleak farmhouse on the Yorkshire moors is a popular set text for GCSE and A-level English study, but away from the demands of the classroom it’s easier to enjoy its drama and intensity. Populated largely by characters whose inability to control their own emotions...")
+                .fixedSize(horizontal: false, vertical: true)
+            
+            HStack {
+                Button(action: {}, label: {
+                    Text("Read More")
+                        .padding(.horizontal)
+                })
+                
+                Spacer()
+                
+                Button(action: {}, label: {
+                    Image(systemName: "bookmark")
+                })
+            }
+            .padding(.top)
+            
+            Spacer(minLength: 0)
+        }
+    }
+    
     @ViewBuilder
     func sheetView(active: ActiveSheet) -> some View {
         switch active {
@@ -92,14 +167,11 @@ extension MapView {
         case .entire:
             Text("전체")
         case .placeInfo:
-            if let placeID = mapViewModel.currentPlaceID {
-                LazyView {
-                    LargePlaceCardView(id: placeID)
-                        .padding(.horizontal, 15)
-                        .padding(.bottom, 20)
-                }
+            if let placeInfo = placeInfoManager.placeInfo {
+                LargePlaceCardView(of: placeInfo)
             } else {
-                ProgressView(style: UIActivityIndicatorView.Style.medium)
+                Text("Yet.")
+//                ProgressView(style: UIActivityIndicatorView.Style.medium)
             }
         }
     }
@@ -112,9 +184,8 @@ extension MapView {
     
     var EntirePlaceButton: some View {
         func doShowSheet() {
-            withAnimation(.spring()) {
-                activeSheet = .entire
-                self.showSheet.toggle()
+            withAnimation(springAnimation) {
+                bottomSheetPosition = .bottom
             }
         }
         
@@ -122,14 +193,14 @@ extension MapView {
             Text("전체")
         }
         .buttonStyle(CapsuledButtonStyle())
-        .background(Capsule().fill(activeSheet == .entire && showSheet ? .gray : .white))
+        .background(Capsule().fill(activeSheet == .entire ? .gray : .white))
     }
     
     var MyPlaceButton: some View {
         func doShowSheet() {
-            withAnimation(.spring()) {
+            withAnimation(springAnimation) {
                 activeSheet = .myPlace
-                self.showSheet.toggle()
+                bottomSheetPosition = .bottom
             }
         }
         
@@ -137,7 +208,7 @@ extension MapView {
             Text("My")
         }
         .buttonStyle(CapsuledButtonStyle())
-        .background(Capsule().fill(activeSheet == .myPlace && showSheet ? .gray : .white))
+        .background(Capsule().fill(activeSheet == .myPlace ? .gray : .white))
     }
 }
 

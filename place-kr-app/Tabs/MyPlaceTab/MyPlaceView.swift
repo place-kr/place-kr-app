@@ -6,13 +6,9 @@
 //
 
 import SwiftUI
-import PartialSheet
-
 // TODO: 서버에서 리스트 정보를 받아와야 할 것 같다
 
 struct MyPlaceView: View {
-    @EnvironmentObject var partialSheetManager : PartialSheetManager
-    
     //TODO: Fix here
     @State var count = 5
     
@@ -31,7 +27,6 @@ struct MyPlaceView: View {
                             let viewModel = MyPlaceRowViewModel(name: "Hola!")
                             NavigationLink(destination: PlaceListDetailView().environmentObject(viewModel)) {
                                 MyPlaceRowView(viewModel: viewModel)
-                                    .environmentObject(partialSheetManager)
                                     .frame(height: 70)
                                     .background(
                                         RoundedRectangle(cornerRadius: 10)
@@ -55,7 +50,6 @@ struct MyPlaceView: View {
                             .foregroundColor(.black)
                     }
             )
-            .addPartialSheet(style: sheetStyle)
         }
     }
 }

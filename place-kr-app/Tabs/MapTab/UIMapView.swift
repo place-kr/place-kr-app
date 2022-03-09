@@ -10,10 +10,21 @@ import NMapsMap
 
 struct UIMapView: UIViewRepresentable {
     @ObservedObject var viewModel: UIMapViewModel
+    @EnvironmentObject var placeInfoManager: PlaceInfoManager
     let markerAction: () -> Void
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(viewModel: viewModel, action: markerAction)
+        let additionalMarkerAction: (String) -> Void = { id in
+            self.placeInfoManager.currentPlaceID = id
+            self.placeInfoManager.fetchInfo(id: id)
+        }
+        
+        return Coordinator(viewModel: viewModel) { id in
+            print("@ makeCoordinator")
+
+            markerAction()
+            additionalMarkerAction(id)
+        }
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
@@ -41,7 +52,7 @@ struct UIMapView: UIViewRepresentable {
             for place in viewModel.places {
                 place.marker.touchHandler = { (marker) -> Bool in
                     self.markerAction()
-                    self.viewModel.currentPlaceID = place.placeInfo.id
+                    self.placeInfoManager.currentPlaceID = place.placeInfo.id
                     return true
                 }
                 place.marker.mapView = uiView.mapView
@@ -64,12 +75,11 @@ struct UIMapView: UIViewRepresentable {
     
     class Coordinator: NSObject, NMFMapViewCameraDelegate {
         @ObservedObject var viewModel: UIMapViewModel
-        let markerAction: () -> Void
+        let markerAction: (String) -> Void
 
-        init(viewModel: UIMapViewModel, action: @escaping () -> Void) {
+        init(viewModel: UIMapViewModel,  action: @escaping (String) -> Void) {
             self.viewModel = viewModel
             self.markerAction = action
-
         }
         
         func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
@@ -87,8 +97,7 @@ struct UIMapView: UIViewRepresentable {
                 
                 for place in viewModel.places {
                     place.marker.touchHandler = { (marker) -> Bool in
-                        self.markerAction()
-                        self.viewModel.currentPlaceID = place.placeInfo.id
+                        self.markerAction(place.placeInfo.id)
                         return true
                     }
                     place.marker.mapView = mapView
