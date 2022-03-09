@@ -13,8 +13,8 @@ class LargePlaceCardViewModel: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     
     @Published var placeInfo: PlaceInfo
-    @Published var name: String?
-    @Published var saves: Int?
+    @Published var name: String
+    @Published var saves: Int
     
     init(info: PlaceInfo) {
         self.name = info.name
@@ -33,89 +33,112 @@ struct LargePlaceCardView: View {
     }
     
     var body: some View {
-        if viewModel.name != nil {
-            HStack(alignment: .top) {
-                
-                // 여기로 네비게이션
-                NavigationLink(
-                    destination: LazyView {
-                        PlaceDetailView(info: viewModel.placeInfo)
-                    },
-                    isActive: $showNavigation) {
-                        EmptyView()
-                    }
-                
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(.gray.opacity(0.5))
-                    .frame(width: 94, height: 94)
-                
-                Spacer()
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(alignment: .bottom, spacing: 0) {
-                        if let name = viewModel.name, let saves = viewModel.saves {
-//                            Text("\(name)")
-//                                .bold()
-//                            //                        .font(.system(size: 24))
-//                                .minimumScaleFactor(0.001)
-//                            //                        .lineLimit(1)
-//                                .padding(.trailing, 6)
-                            
-                            Group {
-                                Image(systemName: "star.fill")
-                                Text("\(viewModel.saves ?? 0)명이 저장")
-                            }
-                            .font(.system(size: 12))
-                            .foregroundColor(.gray)
-                        }
-                    }
-                    .padding(.bottom, 4)
-                    
-                    HStack(alignment: .center, spacing: 6) {
-                        Group {
-                            Image(systemName: "person.fill")
-                            Text("포로리님의 플레이스")
-                        }
-                        .font(.system(size: 12))
-                    }
-                    .padding(.bottom, 20)
-                    
-                    HStack(spacing: 5) {
-                        Text("일식")
-                            .encapsulate()
-                        Text("아늑해요")
-                            .encapsulate()
-                        Text("깔끔해요")
-                            .encapsulate()
-                    }
-
+        HStack(alignment: .top) {
+            
+            // 여기로 네비게이션
+            NavigationLink(
+                destination: LazyView {
+                    PlaceDetailView(info: viewModel.placeInfo)
+                },
+                isActive: $showNavigation) {
+                    EmptyView()
                 }
+            
+            /// 프로필 사진
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.gray.opacity(0.5))
+                .frame(width: 94, height: 94)
+            
+            Spacer()
+            
+            /// 텍스트 콘텐츠들
+            VStack(alignment: .leading, spacing: 0) {
+                // 이름, 저장 수
+                NameAndSaves
                 
-                Spacer()
+                // 저장한 사람
+                SavedByWhom
                 
-                VStack {
-                    HStack {
-                        Button(action: {}) {
-                            Image(systemName: "star.fill")
-                                .foregroundColor(.gray)
-                        }
-                        Button(action: {}) {
-                            Image(systemName: "square.and.arrow.up.fill")
-                                .foregroundColor(.gray)
-                        }
-                    }
-                    .buttonStyle(CircleButtonStyle())
-                }
+                // 카테고리
+                Categories
             }
-            .onTapGesture {
-                print("Tapped \(showNavigation)")
-                self.showNavigation = true
-            }
-        } else {
-            ProgressView(style: UIActivityIndicatorView.Style.medium)
+            
+            Spacer()
+            
+            // 액션 버튼
+            InteractivButtons
+        }
+        .onTapGesture {
+            print("Tapped \(showNavigation)")
+            self.showNavigation = true
         }
     }
 }
+
+extension LargePlaceCardView {
+    var NameAndSaves: some View {
+        /// Name과 저장 수
+        HStack(alignment: .bottom, spacing: 0) {
+            Text("\(viewModel.name)")
+                .bold()
+            //                        .font(.system(size: 24))
+                .minimumScaleFactor(0.001)
+            //                        .lineLimit(1)
+                .padding(.trailing, 6)
+            
+            Group {
+                Image(systemName: "star.fill")
+                Text("\(viewModel.saves)명이 저장")
+            }
+            .font(.system(size: 12))
+            .foregroundColor(.gray)
+        }
+        .padding(.bottom, 4)
+    }
+    
+    var SavedByWhom: some View {
+        /// 저장한 사람
+        HStack(alignment: .center, spacing: 6) {
+            Group {
+                Image(systemName: "person.fill")
+                Text("포로리님의 플레이스")
+            }
+            .font(.system(size: 12))
+        }
+        .padding(.bottom, 20)
+    }
+    
+    /// 카테고리
+    var Categories: some View {
+        HStack(spacing: 5) {
+            Text("일식")
+                .encapsulate()
+            Text("아늑해요")
+                .encapsulate()
+            Text("깔끔해요")
+                .encapsulate()
+        }
+    }
+    
+    /// 액션 버튼
+    var InteractivButtons: some View {
+        VStack {
+            HStack {
+                Button(action: {}) {
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.gray)
+                }
+                Button(action: {}) {
+                    Image(systemName: "square.and.arrow.up.fill")
+                        .foregroundColor(.gray)
+                }
+            }
+            .buttonStyle(CircleButtonStyle())
+        }
+    }
+}
+
+
 //
 //struct LargePlaceCardView_Previews: PreviewProvider {
 //    static var previews: some View {
