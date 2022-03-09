@@ -74,6 +74,7 @@ class UIMapViewModel: ObservableObject {
                         marker.mapView = nil
                     }
                 }
+                
                 self.markers = wrappers.map({ wrapper in
                     wrapper.marker.touchHandler = { (marker) -> Bool in
                         action(wrapper.placeInfo)
@@ -119,11 +120,12 @@ extension UIMapViewModel {
         let placeInfo: PlaceInfo
         let marker: NMFMarker
         
+        // MARK: 마커 세부옵션은 여기서!!!!
         init(_ placeInfo: PlaceInfo) {
             let position = placeInfo.lonlat
             let marker = NMFMarker()
             marker.position = NMGLatLng(lat: position.lat, lng: position.lon)
-            marker.isHideCollidedMarkers = true
+//            marker.isHideCollidedMarkers = true
 
             self.placeInfo = placeInfo
             self.marker = marker

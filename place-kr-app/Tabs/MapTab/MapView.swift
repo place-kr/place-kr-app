@@ -8,38 +8,6 @@
 import SwiftUI
 import BottomSheet
 
-import Combine
-class PlaceInfoManager: ObservableObject {
-    private var subscriptions = Set<AnyCancellable>()
-    
-    @Published var placeInfo: PlaceInfo?
-    @Published var temp = false
-    var currentPlaceID: String?
-    let uuid = UUID()
-
-    func fetchInfo(id placeID: String) {
-        PlaceSearchManager.getPlacesByIdentifier(placeID)
-            .receive(on: DispatchQueue.main)
-            .map({ PlaceInfo(document: $0) })
-            .sink(receiveCompletion: { result in
-                print(result)
-                switch result {
-                case .failure(let error):
-                    print("Error happend: \(error)")
-                case .finished:
-                    print("PlaceInfoManager successfully fetched")
-                }
-            }, receiveValue: { value in
-                print("\(self.uuid) PlaceInfoManager: \(value)")
-                self.placeInfo = value
-            })
-            .store(in: &subscriptions)
-        
-        temp = true
-    }
-    
-    init() {    }
-}
 
 struct MapView: View {
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
@@ -53,13 +21,7 @@ struct MapView: View {
         NavigationView {
             ZStack {
                 /// 네이버 맵
-                UIMapView(viewModel: mapViewModel, markerAction: {
-//                    withAnimation(springAnimation) {
-//                        self.bottomSheetPosition = .bottom
-//                        self.activeSheet = .placeInfo
-//                    }
-                })
-                    .environmentObject(placeInfoManager)
+                UIMapView(viewModel: mapViewModel)
                     .edgesIgnoringSafeArea(.vertical)
                 
                 VStack {

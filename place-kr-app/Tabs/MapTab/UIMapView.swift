@@ -10,21 +10,9 @@ import NMapsMap
 
 struct UIMapView: UIViewRepresentable {
     @ObservedObject var viewModel: UIMapViewModel
-    @EnvironmentObject var placeInfoManager: PlaceInfoManager
-    let markerAction: () -> Void
     
     func makeCoordinator() -> Coordinator {
-        let additionalMarkerAction: (String) -> Void = { id in
-            self.placeInfoManager.currentPlaceID = id
-            self.placeInfoManager.fetchInfo(id: id)
-        }
-        
-        return Coordinator(viewModel: viewModel) { id in
-            print("@ makeCoordinator")
-
-            markerAction()
-            additionalMarkerAction(id)
-        }
+        return Coordinator(viewModel: viewModel)
     }
     
     func makeUIView(context: Context) -> NMFNaverMapView {
@@ -48,15 +36,6 @@ struct UIMapView: UIViewRepresentable {
             let cameraUpdate = NMFCameraUpdate(scrollTo: viewModel.currentPosition)
             uiView.mapView.moveCamera(cameraUpdate)
             print("@ updateUIView")
-            
-            // 마커 그리기
-            for place in viewModel.places {
-                place.marker.touchHandler = { (marker) -> Bool in
-                    self.markerAction()
-                    return true
-                }
-                place.marker.mapView = uiView.mapView
-            }
         }
         
 //        } else if !places.isEmpty, let firstPlace = places.first {
@@ -75,11 +54,9 @@ struct UIMapView: UIViewRepresentable {
     
     class Coordinator: NSObject, NMFMapViewCameraDelegate {
         @ObservedObject var viewModel: UIMapViewModel
-        let markerAction: (String) -> Void
 
-        init(viewModel: UIMapViewModel,  action: @escaping (String) -> Void) {
+        init(viewModel: UIMapViewModel) {
             self.viewModel = viewModel
-            self.markerAction = action
         }
         
         func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
@@ -95,18 +72,6 @@ struct UIMapView: UIViewRepresentable {
         func mapViewCameraIdle(_ mapView: NMFMapView) {
             print("@ mapViewCameraIdle")
             self.viewModel.currentBounds = mapView.contentBounds
-            
-//            if self.viewModel.isInCurrentPosition == false {
-//                self.viewModel.fetchPlaces(in: mapView.contentBounds)
-//
-//                for place in viewModel.places {
-//                    place.marker.touchHandler = { (marker) -> Bool in
-//                        self.markerAction(place.placeInfo.id)
-//                        return true
-//                    }
-//                    place.marker.mapView = mapView
-//                }
-//            }
         }
     }
 }

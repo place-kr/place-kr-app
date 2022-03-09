@@ -58,6 +58,7 @@
 		9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */; };
 		9B9D77C527D7455300326BB5 /* PlaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */; };
 		9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */; };
+		9BA012A727D8D1500080F245 /* PlaceInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */; };
 		9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */; };
 		9BBDA06D27D66AC700BB96FA /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 9BBDA06C27D66AC700BB96FA /* BottomSheet */; };
 		9BCC370127D70A6E00E88F72 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCC370027D70A6E00E88F72 /* Animations.swift */; };
@@ -124,6 +125,7 @@
 		9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPIManager.swift; sourceTree = "<group>"; };
 		9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailView.swift; sourceTree = "<group>"; };
 		9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoManager.swift; sourceTree = "<group>"; };
 		9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginViewModel.swift; sourceTree = "<group>"; };
 		9BCC370027D70A6E00E88F72 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extensions.swift"; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 		9B4A02D527A6AC1E0037D05F /* MapTab */ = {
 			isa = PBXGroup;
 			children = (
+				9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */,
 				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
 				9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
@@ -574,6 +577,7 @@
 				9B20A6702796F4D80029CA0E /* ContentView.swift in Sources */,
 				9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */,
 				9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */,
+				9BA012A727D8D1500080F245 /* PlaceInfoManager.swift in Sources */,
 				9BF582C9279B8AF90068805E /* LogInView.swift in Sources */,
 				9B846689279852DA00066F04 /* AppleLoginDelegate.swift in Sources */,
 				9B6C0D2727C8966600376373 /* RequestPlaceView.swift in Sources */,
