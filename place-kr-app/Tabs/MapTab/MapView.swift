@@ -79,14 +79,20 @@ struct MapView: View {
                 .zIndex(1)
             }
             .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
-                         options: [.animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(10),
-                                   .allowContentDrag, .noBottomPosition, .swipeToDismiss,
-                                   .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)],
+                         options: [
+                            .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(10),
+                            .allowContentDrag, .noBottomPosition, .swipeToDismiss,
+                            .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
+                         ],
                          headerContent: {
                 SheetHeader
             }) {
-                SheetContent
-                    .padding([.horizontal, .top])
+                if placeInfoManager.placeInfo != nil {
+                    SheetContent
+                        .padding([.horizontal, .top])
+                } else {
+                    ProgressView(style: UIActivityIndicatorView.Style.medium)
+                }
             }
             .navigationBarHidden(true)
         }
@@ -99,6 +105,7 @@ extension MapView {
     }
     
     func markerAction(id: String) {
+        self.placeInfoManager.placeInfo = nil
         self.placeInfoManager.currentPlaceID = id
         self.placeInfoManager.fetchInfo(id: id)
         
@@ -113,7 +120,7 @@ extension MapView {
             Text("Wuthering Heights")
                 .font(.title).bold()
             
-            sheetView(active: activeSheet)
+            SheetView(active: activeSheet)
         }
     }
     
@@ -141,7 +148,7 @@ extension MapView {
     }
     
     @ViewBuilder
-    func sheetView(active: ActiveSheet) -> some View {
+    func SheetView(active: ActiveSheet) -> some View {
         switch active {
         case .myPlace:
             Text("My place")
@@ -150,9 +157,6 @@ extension MapView {
         case .placeInfo:
             if let placeInfo = placeInfoManager.placeInfo {
                 LargePlaceCardView(of: placeInfo)
-            } else {
-                Text("Yet.")
-//                ProgressView(style: UIActivityIndicatorView.Style.medium)
             }
         }
     }
