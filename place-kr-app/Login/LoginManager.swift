@@ -50,7 +50,7 @@ class LoginManager: ObservableObject {
     }
     
     
-    /// API 서버에 네이버 소셜로그인에서 받은 토큰을 주고 앱에서 쓸 유저 토큰을 받아오는 동작을 하는 루틴입니다.
+    /// API 서버에 애플 소셜로그인에서 받은 토큰을 주고 앱에서 쓸 유저 토큰을 받아오는 동작을 하는 루틴입니다.
     func socialAuthResultHandler(_ result: Result<AppleUserInfo, AppleLoginError>) {
         switch result {
         case .failure(let error):

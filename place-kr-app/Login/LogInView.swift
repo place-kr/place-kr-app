@@ -18,7 +18,8 @@ struct LogInView: View {
             VStack(alignment: .leading, spacing: 0) {
                 Spacer()
                 
-                // TODO: 로딩 뷰 문의
+                // TODO: 인디케이터
+                
                 /// 앱 로고 디폴트 이미지
                 RoundedRectangle(cornerRadius: 21)
                     .fill(.gray.opacity(0.5))
@@ -37,6 +38,7 @@ struct LogInView: View {
                 NaverLoginButtonView()
                     .environmentObject(loginManager)
                 
+                // TODO: 로그인 취소 후 블러 유지되는 문제 해결
                 AppleLogInView(viewModel: AppleLoginViewModel(window: window))
                     .frame(height: 54)
                     .environment(\.window, window)
@@ -45,6 +47,7 @@ struct LogInView: View {
                     .padding(.bottom, 60)
                 
                 ZStack {
+                    // TODO: 링크 연계
                     Text("소셜 로그인을 통해 로그인함으로써 개인정보처리방침¹과 이용약관²에 따라 계정을 연결하는 것에 동의합니다.")
                 }
                 .onTapGesture {
