@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Pages
 import SwiftUIPager
 
 class PlaceDetailViewModel: ObservableObject {

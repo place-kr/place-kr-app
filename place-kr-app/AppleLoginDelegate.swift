@@ -6,7 +6,8 @@ enum AppleLoginError: Error, CustomStringConvertible {
     case expiredToken
     case invalidResponse
     case fetch
-    
+    case userCancelled
+
     var description: String {
         switch self {
         case .expiredToken:
@@ -15,6 +16,8 @@ enum AppleLoginError: Error, CustomStringConvertible {
             return "Invalid network response."
         case .fetch:
             return "User data fetch error"
+        case .userCancelled:
+            return "User cancelled routine"
         }
     }
 }
@@ -68,6 +71,8 @@ extension AppleLoginDelegate: ASAuthorizationControllerDelegate {
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("[AppleLoginDelegate] \(error)")
+        completionHandler(.failure(.userCancelled))
         // Handle error.
     }
 }

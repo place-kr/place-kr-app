@@ -54,7 +54,7 @@ class LoginManager: ObservableObject {
     func socialAuthResultHandler(_ result: Result<AppleUserInfo, AppleLoginError>) {
         switch result {
         case .failure(let error):
-            print(error)
+            print("[LoginManager] Login failed: \(error)")
             self.status = .fail
         case .success(let userInfo):
             print("Successfully get token from API server. Email:\(userInfo.email), Token:\(userInfo.authCode)")
@@ -69,6 +69,7 @@ class LoginManager: ObservableObject {
             AuthAPIManager.sendPostRequest(to: url, body: body) { result in
                 switch result {
                 case .failure(let error):
+                    print("[LoginManager] Login failed: \(error)")
                     DispatchQueue.main.async {
                         self.status = .fail
                     }
