@@ -9,5 +9,5 @@ import SwiftUI
 
 //The custom BottomSheetPosition enum with absolute values.
 enum SheetPosition: CGFloat, CaseIterable {
-    case top = 1, bottom = 0.25, hidden = 0
+    case bottom = 0.25, hidden = 0
 }

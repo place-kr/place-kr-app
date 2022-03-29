@@ -33,7 +33,7 @@ struct LargePlaceCardView: View {
     }
     
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .center, spacing: 0) {
             
             // 여기로 네비게이션
             NavigationLink(
@@ -48,25 +48,22 @@ struct LargePlaceCardView: View {
             RoundedRectangle(cornerRadius: 10)
                 .fill(.gray.opacity(0.5))
                 .frame(width: 94, height: 94)
-            
-            Spacer()
-            
+                .padding(.trailing, 20)
+                        
             /// 텍스트 콘텐츠들
             VStack(alignment: .leading, spacing: 0) {
                 // 이름, 저장 수
-                NameAndSaves
+                Saves
                 
                 // 저장한 사람
                 SavedByWhom
                 
                 // 카테고리
                 Categories
+                
             }
             
             Spacer()
-            
-            // 액션 버튼
-            InteractivButtons
         }
         .onTapGesture {
             print("Tapped \(showNavigation)")
@@ -76,16 +73,9 @@ struct LargePlaceCardView: View {
 }
 
 extension LargePlaceCardView {
-    var NameAndSaves: some View {
-        /// Name과 저장 수
+    var Saves: some View {
+        /// 저장 수
         HStack(alignment: .bottom, spacing: 0) {
-            Text("\(viewModel.name)")
-                .bold()
-            //                        .font(.system(size: 24))
-                .minimumScaleFactor(0.001)
-            //                        .lineLimit(1)
-                .padding(.trailing, 6)
-            
             Group {
                 Image(systemName: "star.fill")
                 Text("\(viewModel.saves)명이 저장")
@@ -117,23 +107,6 @@ extension LargePlaceCardView {
                 .encapsulate()
             Text("깔끔해요")
                 .encapsulate()
-        }
-    }
-    
-    /// 액션 버튼
-    var InteractivButtons: some View {
-        VStack {
-            HStack {
-                Button(action: {}) {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.gray)
-                }
-                Button(action: {}) {
-                    Image(systemName: "square.and.arrow.up.fill")
-                        .foregroundColor(.gray)
-                }
-            }
-            .buttonStyle(CircleButtonStyle())
         }
     }
 }

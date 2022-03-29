@@ -13,6 +13,7 @@ struct MapView: View {
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
     @StateObject var placeInfoManager = PlaceInfoManager()
     
+    /// 현재 활성화된 시트의 종류를 저장, 리턴함
     @State var activeSheet: ActiveSheet = .placeInfo
     @State var bottomSheetPosition: SheetPosition = .hidden
     @State var searchText = ""
@@ -85,12 +86,9 @@ struct MapView: View {
                             .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
                          ],
                          headerContent: {
-                SheetHeader
+                SheetView(active: activeSheet)
             }) {
-                if placeInfoManager.placeInfo != nil {
-                    SheetContent
-                        .padding([.horizontal, .top])
-                } else {
+                if placeInfoManager.placeInfo == nil {
                     ProgressView(style: UIActivityIndicatorView.Style.medium)
                 }
             }
@@ -115,37 +113,6 @@ extension MapView {
         }
     }
     
-    var SheetHeader: some View {
-        VStack(alignment: .leading) {
-            Text("Wuthering Heights")
-                .font(.title).bold()
-            
-            SheetView(active: activeSheet)
-        }
-    }
-    
-    var SheetContent: some View {
-        VStack(spacing: 0) {
-            Text("대통령의 임기는 5년으로 하며, 중임할 수 없다. 모든 국민은 그 보호하는 자녀에게 적어도 초등교육과 법률이 정하는 교육을 받게 할 의무를 진다. 지방의회의 조직·권한·의원선거와 지방자치단체의 장의 선임방법 기타 지방자치단체의 조직과 운영에 관한 사항은 법률로 정한다. 법률이 헌법에 위반되는 여부가 재판의 전제가 된 경우에는 법원은 헌법재판소에 제청하여 그 심판에 의하여 재판한다. 모든 국민은 소급입법에 의하여 참정권의 제한을 받거나 재산권을 박탈당하지 아니한다.")
-                .fixedSize(horizontal: false, vertical: true)
-            
-            HStack {
-                Button(action: {}, label: {
-                    Text("Read More")
-                        .padding(.horizontal)
-                })
-                
-                Spacer()
-                
-                Button(action: {}, label: {
-                    Image(systemName: "bookmark")
-                })
-            }
-            .padding(.top)
-            
-            Spacer(minLength: 0)
-        }
-    }
     
     @ViewBuilder
     func SheetView(active: ActiveSheet) -> some View {
@@ -156,7 +123,17 @@ extension MapView {
             Text("전체")
         case .placeInfo:
             if let placeInfo = placeInfoManager.placeInfo {
-                LargePlaceCardView(of: placeInfo)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text(placeInfo.name)
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        InteractivButtons
+                    }
+                    
+                    LargePlaceCardView(of: placeInfo)
+                    Spacer()
+                }
             }
         }
     }
@@ -164,6 +141,22 @@ extension MapView {
     var SearchField: some View {
         ThemedTextField($searchText, "장소를 입력하세요", bgColor: .white, isStroked: false, position: .leading, buttonName: "magnifyingglass", buttonColor: .black) {
             print("tapped")
+        }
+    }
+    /// 액션 버튼
+    var InteractivButtons: some View {
+        VStack {
+            HStack {
+                Button(action: {}) {
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.gray)
+                }
+                Button(action: {}) {
+                    Image(systemName: "square.and.arrow.up.fill")
+                        .foregroundColor(.gray)
+                }
+            }
+            .buttonStyle(CircleButtonStyle())
         }
     }
     
