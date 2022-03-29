@@ -88,7 +88,7 @@ class UIMapViewModel: ObservableObject {
                         
                         let coord = wrapper.placeInfo.lonlat
                         let nCoord = NMGLatLng(lat:coord.lat, lng: coord.lon)
-//                        self.view.mapView.moveCamera(NMFCameraUpdate(scrollTo: nCoord)
+                        self.view.mapView.moveCamera(NMFCameraUpdate(scrollTo: nCoord))
                         
                         withAnimation {
                             marker.iconImage = self.activeMarkerImage
