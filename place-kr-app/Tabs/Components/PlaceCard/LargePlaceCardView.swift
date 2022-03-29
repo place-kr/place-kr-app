@@ -20,7 +20,6 @@ class LargePlaceCardViewModel: ObservableObject {
         self.name = info.name
         self.saves = info.saves
         self.placeInfo = info
-        print("\(Date().timeIntervalSince1970) LargeCardView")
     }
 }
 
