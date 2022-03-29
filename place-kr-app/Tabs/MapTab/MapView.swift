@@ -12,13 +12,17 @@ import BottomSheet
 struct MapView: View {
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
     @StateObject var placeInfoManager = PlaceInfoManager()
+    @ObservedObject var placeListManager = FavoritePlaceManager.shared
     
     /// 현재 활성화된 시트의 종류를 저장, 리턴함
     @State var activeSheet: ActiveSheet = .placeInfo
     @State var bottomSheetPosition: SheetPosition = .hidden
     @State var middleSheetPosition: MiddlePosition = .hidden
     @State var searchText = ""
+    @State var showNewListAlert = false
     
+    @State var newListName = ""
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -82,26 +86,30 @@ struct MapView: View {
             }
             .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
                          options: [
-                            .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(10),
+                            .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
                             .noBottomPosition, .swipeToDismiss,
                             .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
-                         ],
-                         headerContent: {
-                SheetView(active: activeSheet)
-            }) {
+                         ]
+                         , content: {
                 if placeInfoManager.placeInfo == nil {
                     ProgressView(style: UIActivityIndicatorView.Style.medium)
+                } else {
+                    SheetView(active: activeSheet)
                 }
-            }
+            })
             .bottomSheet(bottomSheetPosition: self.$middleSheetPosition,
                          options: [
-                            .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(10),
-                            .allowContentDrag, .noBottomPosition, .swipeToDismiss,
+                            .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
+                            .noBottomPosition, .swipeToDismiss,
                             .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
                          ]
                          , content: {
                 SheetView(active: activeSheet)
             })
+            .showAlert(alert: NewListAlertView(name: $newListName, action: {
+                withAnimation(.easeInOut(duration: 0.2)) { self.showNewListAlert = false }
+            }),
+                       show: showNewListAlert)
             .navigationBarHidden(true)
         }
     }
@@ -144,9 +152,10 @@ extension MapView {
                     LargePlaceCardView(of: placeInfo)
                     Spacer()
                 }
+                .padding(.horizontal, 20)
             }
         case .favoriteList:
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 15) {
                 HStack {
                     Text("리스트를 선택해주세요")
                         .font(.system(size: 21, weight: .bold))
@@ -155,10 +164,47 @@ extension MapView {
                 }
 
                 Divider()
-                
+
+                ScrollView(showsIndicators: false) {
+                    HStack {
+                        Button(action: {}) {
+                            Image(systemName: "plus")
+                                .foregroundColor(.gray)
+                                .padding(5)
+                                .background(Circle().fill(.gray.opacity(0.3)))
+                        }
+                        Text("새로운 리스트 만들기")
+                            .font(.basic.normal)
+                        
+                        Spacer()
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            self.showNewListAlert = true
+                        }
+                    }
+                    
+                    Divider()
+                        ForEach(placeListManager.favoritePlacesLists.indices, id: \.self) { index in
+                            let list = placeListManager.favoritePlacesLists[index]
+                            HStack {
+                                RoundedRectangle(cornerRadius: 5)
+                                    .fill(.gray)
+                                    .frame(width: 34, height: 34)
+                                
+                                Text(list.name)
+                                
+                                Spacer()
+                            }
+                            
+                            Divider()
+                        }
+                }
                 Spacer()
             }
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 28)
+            .padding(.top, 10)
         }
     }
     
@@ -170,7 +216,11 @@ extension MapView {
     
     /// 닫기 버튼
     var CloseButton: some View {
-        Button(action:{}) {
+        Button(action:{
+            withAnimation(.spring()) {
+                middleSheetPosition = .hidden
+            }
+        }) {
             Image(systemName: "xmark")
                 .foregroundColor(.black)
                 .font(.system(size: 16))

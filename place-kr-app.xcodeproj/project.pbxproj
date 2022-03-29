@@ -34,6 +34,8 @@
 		9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8BE27B0EB2700F3B76C /* Place.swift */; };
 		9B51C8C127B0F15200F3B76C /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */; };
 		9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C327B0F21300F3B76C /* SearchManager.swift */; };
+		9B5D5B4A27F33AEF00B81831 /* FavoritePlacesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5D5B4927F33AEF00B81831 /* FavoritePlacesManager.swift */; };
+		9B5D5B4E27F3459900B81831 /* NewListAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5D5B4D27F3459900B81831 /* NewListAlertView.swift */; };
 		9B5FD61527C519ED004B60E6 /* AddTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD61427C519ED004B60E6 /* AddTabView.swift */; };
 		9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */; };
 		9B6A1F6327B4B6C200D160DC /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */; };
@@ -101,6 +103,8 @@
 		9B51C8BE27B0EB2700F3B76C /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		9B51C8C027B0F15200F3B76C /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
 		9B51C8C327B0F21300F3B76C /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
+		9B5D5B4927F33AEF00B81831 /* FavoritePlacesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePlacesManager.swift; sourceTree = "<group>"; };
+		9B5D5B4D27F3459900B81831 /* NewListAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewListAlertView.swift; sourceTree = "<group>"; };
 		9B5FD61427C519ED004B60E6 /* AddTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTabView.swift; sourceTree = "<group>"; };
 		9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
@@ -269,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */,
+				9B5D5B4927F33AEF00B81831 /* FavoritePlacesManager.swift */,
 				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
 				9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
@@ -346,6 +351,7 @@
 				9B82F64727CF298E0081A701 /* AlertModifier.swift */,
 				9B82F64127CF198E0081A701 /* AlertStyleModifier.swift */,
 				9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */,
+				9B5D5B4D27F3459900B81831 /* NewListAlertView.swift */,
 			);
 			path = Alerts;
 			sourceTree = "<group>";
@@ -553,6 +559,7 @@
 				9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */,
 				9BFBB9A127C76361002C5F10 /* SearchResultsViewModel.swift in Sources */,
 				9B4A02D827A6B8240037D05F /* MapView.swift in Sources */,
+				9B5D5B4E27F3459900B81831 /* NewListAlertView.swift in Sources */,
 				9B2BCB0D27D895E800C1C16E /* Color + Extensions.swift in Sources */,
 				9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */,
 				9BCC370127D70A6E00E88F72 /* Animations.swift in Sources */,
@@ -592,6 +599,7 @@
 				9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */,
 				9B91641627AE6065005FAC4A /* AppleLoginViewModel.swift in Sources */,
 				9B43E02C27C9EE410042F9C4 /* SimplePlaceCardView.swift in Sources */,
+				9B5D5B4A27F33AEF00B81831 /* FavoritePlacesManager.swift in Sources */,
 				9B3DE9A427BE337D00DAD9CC /* Font + Extensions.swift in Sources */,
 				9B84668227981E5200066F04 /* NaverLoginDelegate.swift in Sources */,
 				9B8466962798574F00066F04 /* AppleUserData.swift in Sources */,
