@@ -16,6 +16,7 @@ struct MapView: View {
     /// 현재 활성화된 시트의 종류를 저장, 리턴함
     @State var activeSheet: ActiveSheet = .placeInfo
     @State var bottomSheetPosition: SheetPosition = .hidden
+    @State var middleSheetPosition: MiddlePosition = .hidden
     @State var searchText = ""
     
     var body: some View {
@@ -82,7 +83,7 @@ struct MapView: View {
             .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
                          options: [
                             .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(10),
-                            .allowContentDrag, .noBottomPosition, .swipeToDismiss,
+                            .noBottomPosition, .swipeToDismiss,
                             .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
                          ],
                          headerContent: {
@@ -92,6 +93,15 @@ struct MapView: View {
                     ProgressView(style: UIActivityIndicatorView.Style.medium)
                 }
             }
+            .bottomSheet(bottomSheetPosition: self.$middleSheetPosition,
+                         options: [
+                            .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(10),
+                            .allowContentDrag, .noBottomPosition, .swipeToDismiss,
+                            .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
+                         ]
+                         , content: {
+                SheetView(active: activeSheet)
+            })
             .navigationBarHidden(true)
         }
     }
@@ -99,7 +109,7 @@ struct MapView: View {
 
 extension MapView {
     enum ActiveSheet {
-        case myPlace, entire, placeInfo
+        case myPlace, entire, placeInfo, favoriteList
     }
     
     func markerAction(id: String) {
@@ -135,6 +145,20 @@ extension MapView {
                     Spacer()
                 }
             }
+        case .favoriteList:
+            VStack(alignment: .leading) {
+                HStack {
+                    Text("리스트를 선택해주세요")
+                        .font(.system(size: 21, weight: .bold))
+                    Spacer()
+                    CloseButton
+                }
+
+                Divider()
+                
+                Spacer()
+            }
+            .padding(.horizontal, 10)
         }
     }
     
@@ -143,11 +167,27 @@ extension MapView {
             print("tapped")
         }
     }
+    
+    /// 닫기 버튼
+    var CloseButton: some View {
+        Button(action:{}) {
+            Image(systemName: "xmark")
+                .foregroundColor(.black)
+                .font(.system(size: 16))
+        }
+    }
+    
     /// 액션 버튼
     var InteractivButtons: some View {
         VStack {
             HStack {
-                Button(action: {}) {
+                Button(action: {
+                    withAnimation(.spring()){
+                        self.activeSheet = .favoriteList
+                        self.bottomSheetPosition = .hidden
+                        self.middleSheetPosition = .middle
+                    }
+                }) {
                     Image(systemName: "star.fill")
                         .foregroundColor(.gray)
                 }
