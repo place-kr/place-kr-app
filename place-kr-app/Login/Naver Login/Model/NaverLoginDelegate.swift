@@ -51,8 +51,6 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, NaverThirdPartyLoginConnectionDelegate {
         @Published var cancellable: AnyCancellable?
-        //        var callback: (NaverUserData) -> Void
-        //        var callback: (Result<(String, String), NaverLoginError>) -> Void
         var callback : (Result<NaverUserInfo, NaverLoginError>) -> Void
         
         init(vc: NaverViewController, callback: @escaping (Result<NaverUserInfo, NaverLoginError>) -> Void) {
@@ -65,6 +63,7 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
             NaverVCRepresentable.loginInstance?.requestThirdPartyLogin()
         }
         
+
         // 로그인에 성공한 경우 호출
         func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
             print("Success login")
@@ -74,6 +73,7 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
         
         //  로그인된 상태(로그아웃이나 연동해제 하지않은 상태)에서 로그인 재시도
         func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+            print("Retry")
             //      loginInstance?.accessToken
             getInfo()
             //            self.callback(getAcessToken())
@@ -86,7 +86,17 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
         
         // 모든 error
         func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+            print("SS")
+            print("[NaverVCRepresentable] \(error as Any)")
             print("error = \(error.localizedDescription)")
+        }
+        
+        func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFinishAuthorizationWithResult receiveType: THIRDPARTYLOGIN_RECEIVE_TYPE) {
+            print("[NaverVCRepresentable] \(receiveType as Any)")
+        }
+        
+        func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailAuthorizationWithRecieveType receiveType: THIRDPARTYLOGIN_RECEIVE_TYPE) {
+            print("[NaverVCRepresentable] \(receiveType as Any)")
         }
         
         

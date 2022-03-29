@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

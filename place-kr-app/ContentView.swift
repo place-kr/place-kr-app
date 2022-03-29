@@ -17,7 +17,6 @@ struct ContentView: View {
     
     var body: some View {
 //        TabsView()
-
         if loginManger.status != .success {
             LogInView(success: $isLoginSuccessed)
                 .environment(\.window, window)
