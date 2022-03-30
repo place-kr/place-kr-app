@@ -36,6 +36,7 @@
 		9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B51C8C327B0F21300F3B76C /* SearchManager.swift */; };
 		9B5D5B4A27F33AEF00B81831 /* FavoritePlacesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5D5B4927F33AEF00B81831 /* FavoritePlacesManager.swift */; };
 		9B5D5B4E27F3459900B81831 /* RegisterNewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5D5B4D27F3459900B81831 /* RegisterNewListView.swift */; };
+		9B5D5B5027F3FB8600B81831 /* PageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5D5B4F27F3FB8600B81831 /* PageHeader.swift */; };
 		9B5FD61527C519ED004B60E6 /* AddTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5FD61427C519ED004B60E6 /* AddTabView.swift */; };
 		9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */; };
 		9B6A1F6327B4B6C200D160DC /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */; };
@@ -105,6 +106,7 @@
 		9B51C8C327B0F21300F3B76C /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		9B5D5B4927F33AEF00B81831 /* FavoritePlacesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePlacesManager.swift; sourceTree = "<group>"; };
 		9B5D5B4D27F3459900B81831 /* RegisterNewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewListView.swift; sourceTree = "<group>"; };
+		9B5D5B4F27F3FB8600B81831 /* PageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageHeader.swift; sourceTree = "<group>"; };
 		9B5FD61427C519ED004B60E6 /* AddTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTabView.swift; sourceTree = "<group>"; };
 		9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9B6A1F6227B4B6C200D160DC /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				9B82F63E27CE5DF20081A701 /* Alerts */,
 				9B51C8C227B0F1FE00F3B76C /* SearchField */,
 				9B7D508527CCEA9F0015ED2C /* PlaceCard */,
+				9B5D5B4F27F3FB8600B81831 /* PageHeader.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -582,6 +585,7 @@
 				9B01412627C8FE810030CDC7 /* MyPlaceRowView.swift in Sources */,
 				9B35BA4C27CDDA4B0013C1EA /* TabsView.swift in Sources */,
 				9B9D77C527D7455300326BB5 /* PlaceDetailView.swift in Sources */,
+				9B5D5B5027F3FB8600B81831 /* PageHeader.swift in Sources */,
 				9B82F64227CF198E0081A701 /* AlertStyleModifier.swift in Sources */,
 				9B82F64827CF298E0081A701 /* AlertModifier.swift in Sources */,
 				9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */,

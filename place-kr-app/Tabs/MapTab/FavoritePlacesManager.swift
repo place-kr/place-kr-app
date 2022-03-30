@@ -12,8 +12,8 @@ struct PlaceList {
     let places: [PlaceInfo]
 }
 
-class FavoritePlaceManager: ObservableObject {
-    static let shared = FavoritePlaceManager()
+class FavoritePlacesListManager: ObservableObject {
+    static let shared = FavoritePlacesListManager()
     
     @Published var favoritePlacesLists: [PlaceList]
     

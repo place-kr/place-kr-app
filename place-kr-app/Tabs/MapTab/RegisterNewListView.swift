@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RegisterNewListView: View {
-    @EnvironmentObject var viewModel: FavoritePlaceManager
+    @EnvironmentObject var viewModel: FavoritePlacesListManager
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @State var name = ""
     
