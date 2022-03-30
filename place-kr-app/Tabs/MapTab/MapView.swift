@@ -19,99 +19,95 @@ struct MapView: View {
     @State var bottomSheetPosition: SheetPosition = .hidden
     @State var middleSheetPosition: MiddlePosition = .hidden
     @State var searchText = ""
-    @State var showNewListAlert = false
     
-    @State var newListName = ""
-
+    @State var navigateToRegisterNewListView = false
+    
     var body: some View {
-        NavigationView {
-            ZStack {
-                /// 네이버 맵
-                UIMapView(viewModel: mapViewModel)
-                    .edgesIgnoringSafeArea(.vertical)
+        
+        ZStack {
+            Navigators
+            
+            /// 네이버 맵
+            UIMapView(viewModel: mapViewModel)
+                .edgesIgnoringSafeArea(.vertical)
+            
+            VStack {
+                Spacer()
                 
-                VStack {
-                    Spacer()
-                     
-                    if mapViewModel.mapNeedsReload {
-                        /// 맵 리로드 버튼
-                        Button(action: {
-                            // 보이는 범위 안의 플레이스 페칭, 마커 생성, 마커 그리기
-                            mapViewModel.fetchPlacesAndDrawMarkers(in: mapViewModel.currentBounds) { info in
-                                markerAction(id: info.id)
-                            }
-                            withAnimation(springAnimation) {
-                                mapViewModel.mapNeedsReload = false
-                            }
-                        }) {
-                            Image(systemName: "arrow.clockwise.circle.fill")
-                                .resizable()
-                                .frame(width: 35, height: 35)
-                                .foregroundColor(.black)
-                                .shadow(radius: 5)
+                if mapViewModel.mapNeedsReload {
+                    /// 맵 리로드 버튼
+                    Button(action: {
+                        // 보이는 범위 안의 플레이스 페칭, 마커 생성, 마커 그리기
+                        mapViewModel.fetchPlacesAndDrawMarkers(in: mapViewModel.currentBounds) { info in
+                            markerAction(id: info.id)
                         }
-                        .transition(.move(edge: .bottom))
+                        withAnimation(springAnimation) {
+                            mapViewModel.mapNeedsReload = false
+                        }
+                    }) {
+                        Image(systemName: "arrow.clockwise.circle.fill")
+                            .resizable()
+                            .frame(width: 35, height: 35)
+                            .foregroundColor(.black)
+                            .shadow(radius: 5)
                     }
+                    .transition(.move(edge: .bottom))
                 }
-                .padding(.bottom, 15)
-                .zIndex(1)
-                
-                VStack(spacing: 10) {
-                    /// 검색창
-                    HStack(spacing: 11) {
-                        SearchField
-                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                            .padding(.leading, 15)
-                        
-                        NotificationView()
-                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                            .padding(.trailing, 15)
-                    }
+            }
+            .padding(.bottom, 15)
+            .zIndex(1)
+            
+            VStack(spacing: 10) {
+                /// 검색창
+                HStack(spacing: 11) {
+                    SearchField
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                        .padding(.leading, 15)
                     
-                    /// 검색창 및 Sheet view 버튼 + Sheet pop 용 빈 뷰
-                    HStack {
-                        EntirePlaceButton
-                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-
-                        MyPlaceButton
-                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal, 15)
+                    NotificationView()
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                        .padding(.trailing, 15)
+                }
+                
+                /// 검색창 및 Sheet view 버튼 + Sheet pop 용 빈 뷰
+                HStack {
+                    EntirePlaceButton
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                    
+                    MyPlaceButton
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
                     
                     Spacer()
                 }
-                .zIndex(1)
+                .padding(.horizontal, 15)
+                
+                Spacer()
             }
-            .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
-                         options: [
-                            .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
-                            .noBottomPosition, .swipeToDismiss,
-                            .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
-                         ]
-                         , content: {
-                if placeInfoManager.placeInfo == nil {
-                    ProgressView(style: UIActivityIndicatorView.Style.medium)
-                } else {
-                    SheetView(active: activeSheet)
-                }
-            })
-            .bottomSheet(bottomSheetPosition: self.$middleSheetPosition,
-                         options: [
-                            .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
-                            .noBottomPosition, .swipeToDismiss,
-                            .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
-                         ]
-                         , content: {
-                SheetView(active: activeSheet)
-            })
-            .showAlert(alert: NewListAlertView(name: $newListName, action: {
-                withAnimation(.easeInOut(duration: 0.2)) { self.showNewListAlert = false }
-            }),
-                       show: showNewListAlert)
-            .navigationBarHidden(true)
+            .zIndex(1)
         }
+        .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
+                     options: [
+                        .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
+                        .noBottomPosition, .swipeToDismiss,
+                        .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
+                     ]
+                     , content: {
+            if placeInfoManager.placeInfo == nil {
+                ProgressView(style: UIActivityIndicatorView.Style.medium)
+            } else {
+                SheetView(active: activeSheet)
+            }
+        })
+        .bottomSheet(bottomSheetPosition: self.$middleSheetPosition,
+                     options: [
+                        .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
+                        .noBottomPosition, .swipeToDismiss,
+                        .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
+                     ]
+                     , content: {
+            SheetView(active: activeSheet)
+        })
+        .navigationBarHidden(true)
     }
 }
 
@@ -131,6 +127,12 @@ extension MapView {
         }
     }
     
+    var Navigators: some View {
+        NavigationLink( destination: LazyView { RegisterNewListView().environmentObject(placeListManager) },
+                        isActive: $navigateToRegisterNewListView) {
+            EmptyView()
+        }
+    }
     
     @ViewBuilder
     func SheetView(active: ActiveSheet) -> some View {
@@ -180,9 +182,8 @@ extension MapView {
                     }
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            self.showNewListAlert = true
-                        }
+                        print("SS")
+                        self.navigateToRegisterNewListView = true
                     }
                     
                     Divider()
@@ -217,6 +218,7 @@ extension MapView {
     /// 닫기 버튼
     var CloseButton: some View {
         Button(action:{
+            print("SS")
             withAnimation(.spring()) {
                 middleSheetPosition = .hidden
             }
@@ -225,6 +227,7 @@ extension MapView {
                 .foregroundColor(.black)
                 .font(.system(size: 16))
         }
+        .frame(width: 20, height: 20)
     }
     
     /// 액션 버튼

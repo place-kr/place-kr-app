@@ -7,17 +7,18 @@
 
 import SwiftUI
 
-struct NewListAlertView: View {
-    @Binding var name: String
-    let action: () -> Void
+struct RegisterNewListView: View {
+    @EnvironmentObject var viewModel: FavoritePlaceManager
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    @State var name = ""
     
     let colors: [Color] = [.gray]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading) {
             Text("리스트 만들기")
                 .font(.basic.largetitle)
-                .padding(.top, 40)
+            
             Text("리스트명을 입력하세요")
                 .font(.basic.subtitle)
                 .padding(.bottom, 15)
@@ -25,7 +26,7 @@ struct NewListAlertView: View {
                             bgColor: .gray.opacity(0.3),
                             isStroked: false,
                             position: .trailing,
-                            buttonName: "faceid",
+                            buttonName: "photo",
                             buttonColor: .gray.opacity(0.5),
                             action: {})
             .padding(.bottom, 14)
@@ -33,22 +34,28 @@ struct NewListAlertView: View {
             Text("리스트 컬러를 선택하세요")
                 .padding(.bottom, 14)
             VStack(spacing: 12) {
-                HStack(spacing: 20) {
+                HStack {
                     Spacer()
                     ForEach(0..<5, id: \.self) { index in
                         let color = colors[0]
                         Circle().fill(color)
-                            .frame(width: 40, height: 40)
+                            .frame(width: 50, height: 50)
+                        if index != 4 {
+                            Spacer()
+                        }
                     }
                     Spacer()
                 }
-                HStack(spacing: 20) {
+                HStack {
                     Spacer()
                     ForEach(0..<5, id: \.self) { index in
                         let color = colors[0]
                         Circle()
                             .fill(color)
-                            .frame(width: 40, height: 40)
+                            .frame(width: 50, height: 50)
+                        if index != 4 {
+                            Spacer()
+                        }
                     }
                     Spacer()
                 }
@@ -56,24 +63,27 @@ struct NewListAlertView: View {
             
             HStack {
                 Spacer()
-                Button(action: action) {
+                Button(action: {
+                    self.viewModel.favoritePlacesLists.append(PlaceList(name: name, places: [PlaceInfo]()))
+                    self.mode.wrappedValue.dismiss()
+                }) {
                     Text("입력완료")
                 }
+                .disabled(name.isEmpty)
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)
                 
                 Spacer()
             }
-            
         }
-        .frame(height: 380)
-        .alertStyle()
+        .padding(.horizontal, 25)
     }
 }
 
-struct NewListAlertView_Preview: PreviewProvider {
+
+struct RegisterNewListView_Preview: PreviewProvider {
     static var previews: some View {
-        NewListAlertView(name: .constant(""), action: {})
+        RegisterNewListView()
     }
 }
