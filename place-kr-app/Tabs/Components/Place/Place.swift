@@ -111,6 +111,7 @@ extension PlaceInformation {
     var saves: Int? { get {nil} }
 }
 
+/// 플레이스 정보를 담은 데이터 타입입니다
 struct PlaceInfo {
     private let document: PlaceInformation
     

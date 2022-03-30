@@ -13,51 +13,54 @@ struct TabsView: View {
     @State var name = ""
     
     var body: some View {
-        TabView {
-            MapView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "magnifyingglass")
-                        Text("Home")
-                    }
-                }
+        NavigationView {
             
-            MyPlaceView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "star")
-                        Text("My place")
+            TabView {
+                MapView()
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "magnifyingglass")
+                            Text("Home")
+                        }
                     }
-                }
-            
-            AddTabView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "plus.circle")
-                        Text("Add")
+                
+                MyPlaceView()
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "star")
+                            Text("My place")
+                        }
                     }
-                }
-            
-            ProfileTabView()
-                .tabItem {
-                    VStack {
-                        Image(systemName: "person")
-                        Text("Profile")
+                
+                AddTabView()
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "plus.circle")
+                            Text("Add")
+                        }
                     }
-                }
-        }
-        .accentColor(.black)
-        .showAlert(alert: NewNameAlertView(name: $name, action: {
-            withAnimation(.easeInOut(duration: 0.2)) { self.showNewNameAlert = false }
-        }),
-                   show: showNewNameAlert)
-        .onAppear() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    self.showNewNameAlert = true
-                }
+                
+                ProfileTabView()
+                    .tabItem {
+                        VStack {
+                            Image(systemName: "person")
+                            Text("Profile")
+                        }
+                    }
             }
-            UITabBar.appearance().backgroundColor = .white
+            .accentColor(.black)
+            .showAlert(alert: NewNameAlertView(name: $name, action: {
+                withAnimation(.easeInOut(duration: 0.2)) { self.showNewNameAlert = false }
+            }),
+                       show: showNewNameAlert)
+            .onAppear() {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        self.showNewNameAlert = true
+                    }
+                }
+                UITabBar.appearance().backgroundColor = .white
+            }
         }
     }
 }

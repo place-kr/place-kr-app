@@ -17,6 +17,9 @@ class UIMapViewModel: ObservableObject {
     
     let view: NMFNaverMapView
     
+    let activeMarkerImage = NMFOverlayImage(name: "placeActive")
+    let inactiveMarkerImage = NMFOverlayImage(name: "placeDesactive")
+    
     private var subscriptions = Set<AnyCancellable>()
     private var markers = [NMFMarker]()
     var currentBounds: NMGLatLngBounds
@@ -66,28 +69,49 @@ class UIMapViewModel: ObservableObject {
     /// 바운드로 장소 정보를 가져온 후 마커를 그림(범위에서 벗어난 마커는 삭제)
     func fetchPlacesAndDrawMarkers(in bounds: NMGLatLngBounds, action: @escaping (PlaceInfo) -> Void) {
         let bound = bound(bounds.northEastLat, bounds.northEastLng, bounds.southWestLat, bounds.southWestLng)
-        listPlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound)) { result in
+        self.listPlacePublisher(PlaceSearchManager.getPlacesByBoundary(bound)) { [weak self] result in
+            guard let self = self else { return }
+            
             switch(result) {
             case .success(let wrappers):
-                if !self.markers.isEmpty {
-                    for marker in self.markers {
-                        marker.mapView = nil
-                    }
+                if !self.markers.isEmpty { // 존재하는 마커가 있으면
+                    _ = self.markers.map { $0.mapView = nil } // 비우기
                 }
                 
-                self.markers = wrappers.map({ wrapper in
-                    wrapper.marker.touchHandler = { (marker) -> Bool in
+                self.markers = wrappers.map({ wrapper in // 그리기, 액션 더하기
+                    let marker = wrapper.marker
+                    marker.iconImage = self.inactiveMarkerImage
+                    
+                    // 마커에 터치 액션 부여
+                    marker.touchHandler = { (m) -> Bool in
+                        self.makeMarkersDefault(self.markers)
+                        
+                        let coord = wrapper.placeInfo.lonlat
+                        let nCoord = NMGLatLng(lat:coord.lat, lng: coord.lon)
+                        self.view.mapView.moveCamera(NMFCameraUpdate(scrollTo: nCoord))
+                        
+                        withAnimation {
+                            marker.iconImage = self.activeMarkerImage
+                        }
                         action(wrapper.placeInfo)
                         return true
                     }
-                    wrapper.marker.mapView = self.view.mapView
-                    return wrapper.marker
+                    marker.mapView = self.view.mapView
+                    return marker
                 })
+                
                 break
             case .failure(let error):
                 print("Error while fetching places: \(error), \(error.localizedDescription)")
                 break
             }
+        }
+    }
+    
+    /// 마커 이미지 기본으로 변경
+    func makeMarkersDefault(_ markers: [NMFMarker]) {
+        for marker in markers {
+            marker.iconImage = self.inactiveMarkerImage
         }
     }
     
