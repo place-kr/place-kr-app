@@ -9,19 +9,10 @@ import SwiftUI
 
 struct PlaceCardView: View {
     let bgColor: Color
-    var placeInfo: KakaoPlaceInfo
+    var placeInfo: PlaceInfo
     
     // TODO: Fix default data
-    init(bgColor: Color,
-         placeInfo: KakaoPlaceInfo = KakaoPlaceInfo(document: KakaoPlaceResponse.Document(
-            id: UUID().uuidString,
-            textAddress: "Dump",
-            roadAddress: "Dump",
-            name: "미나미",
-            url: "Dump",
-            x: String(111),
-            y: String(111))
-         ))
+    init(bgColor: Color, placeInfo: PlaceInfo)
     {
         self.bgColor = bgColor
         self.placeInfo = placeInfo
@@ -87,8 +78,8 @@ struct PlaceCardView: View {
     }
 }
 
-struct PlaceCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        PlaceCardView(bgColor: Color(red: 246/255, green: 246/255, blue: 246/255))
-    }
-}
+//struct PlaceCardView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PlaceCardView(bgColor: Color(red: 246/255, green: 246/255, blue: 246/255), placeInfo: <#PlaceInfo#>)
+//    }
+//}

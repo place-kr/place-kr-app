@@ -66,13 +66,20 @@ class MyPlaceRowViewModel: ObservableObject {
         self.selectionCount = 0
     }
     
-    init(name: String) {
-        self.listName = name
-        self.places = dummyPlaceInfoArray.map({ place in
-            let placeWrapper = PlaceInfoWrapper(placeInfo: place, isSelected: false)
-            placeDict[placeWrapper.id] = placeWrapper
-            return placeWrapper
-        })
+    init(list: PlaceList) {
+        self.listName = list.name
+        self.places = [PlaceInfoWrapper]()
+//            .map({ place -> PlaceInfoWrapper in
+//                let placeWrapper = PlaceInfoWrapper(placeInfo: place, isSelected: false)
+//                placeDict[placeWrapper.id] = placeWrapper
+//                return placeWrapper
+//            })
+        
+//        self.places = dummyPlaceInfoArray.map({ place in
+//            let placeWrapper = PlaceInfoWrapper(placeInfo: place, isSelected: false)
+//            placeDict[placeWrapper.id] = placeWrapper
+//            return placeWrapper
+//        })
         self.resetSelection()
     }
 }
@@ -80,7 +87,7 @@ class MyPlaceRowViewModel: ObservableObject {
 extension MyPlaceRowViewModel {
     class PlaceInfoWrapper: Hashable, Identifiable {
         let id = UUID()
-        let placeInfo: KakaoPlaceInfo
+        let placeInfo: PlaceInfo
         var isSelected: Bool
         
         func hash(into hasher: inout Hasher) {
@@ -91,7 +98,7 @@ extension MyPlaceRowViewModel {
             return lhs.id == rhs.id && lhs.id == rhs.id
         }
         
-        init(placeInfo: KakaoPlaceInfo, isSelected: Bool) {
+        init(placeInfo: PlaceInfo, isSelected: Bool) {
             self.placeInfo = placeInfo
             self.isSelected = isSelected
         }

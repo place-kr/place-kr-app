@@ -59,8 +59,9 @@ class UserInfoManager {
         print("Token is successfully saved: \(token)")
     }
     
-    static func loadUserToken() -> String? {
-        let token = UserDefaults.standard.string(forKey: tokenKey)
+    /// 인증에 사용되는 유저 토큰(수정)
+    static var userToken: String? {
+        let token = UserDefaults.standard.string(forKey: UserInfoManager.tokenKey)
         print("Token is successfully loaded: \(token as Any)")
         return token 
     }

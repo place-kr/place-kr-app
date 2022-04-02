@@ -22,10 +22,12 @@ struct SimplePlaceCardView: View {
     
     var body: some View {
         HStack(spacing: 0) {
+            // 프로필 이미지
             RoundedRectangle(cornerRadius: 10)
                 .fill(.gray.opacity(0.5))
                 .frame(width: 50, height: 50)
             
+            // 이름과 설명
             VStack(alignment: .leading) {
                 Text(placeName)
                     .font(.system(size: 14, weight: .bold))
@@ -37,20 +39,15 @@ struct SimplePlaceCardView: View {
             Spacer()
             
             if let buttonAction = buttonAction {
-                Button(action: { buttonAction() }) {
-                        Text("Edit")
-                            .font(.system(size: 10))
-                    }
-                    .buttonStyle(RoundedButtonStyle(
-                        bgColor: .gray.opacity(0.5),
-                        textColor: .black,
-                        isStroked: false,
-                        width: 50,
-                        height: 24)
-                    )
+                Button(action: buttonAction) {
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 25))
+                        .frame(width: 25, height: 25)
+                }
+                .foregroundColor(.gray.opacity(0.8))
             }
         }
-
+        
     }
 }
 

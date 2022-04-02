@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RegisterNewListView: View {
-    @EnvironmentObject var viewModel: FavoritePlacesListManager
+    @EnvironmentObject var viewModel: ListManager
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @State var name = ""
     
@@ -64,7 +64,9 @@ struct RegisterNewListView: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    self.viewModel.favoritePlacesLists.append(PlaceList(name: name, places: [PlaceInfo]()))
+                    // TODO: 에러 콜
+                    let postBody = PlaceListPostBody(name: self.name, icon: "🧮", color: "000000", places: [String]())
+                    self.viewModel.addPlaceList(body: postBody)
                     self.mode.wrappedValue.dismiss()
                 }) {
                     Text("입력완료")

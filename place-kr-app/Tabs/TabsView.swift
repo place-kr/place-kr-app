@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TabsView: View {
-    @ObservedObject var favoritePlacesListManager = FavoritePlacesListManager.shared
+    @ObservedObject var listManager = ListManager()
     // TODO: 나중에 고칠 것 둘
     @State var showNewNameAlert = false
     @State var name = ""
@@ -17,7 +17,7 @@ struct TabsView: View {
         NavigationView {
             TabView {
                 MapView()
-                    .environmentObject(favoritePlacesListManager)
+                    .environmentObject(listManager)
                     .tabItem {
                         VStack {
                             Image(systemName: "magnifyingglass")
@@ -27,7 +27,7 @@ struct TabsView: View {
                     .navigationBarHidden(true)
 
                 MyPlaceView()
-                    .environmentObject(favoritePlacesListManager)
+                    .environmentObject(listManager)
                     .tabItem {
                         VStack {
                             Image(systemName: "star")

@@ -48,7 +48,7 @@ class PlaceSearchManager {
     /// Place 이름을 기반으로 주변 정보를 받아옵니다.(자체 서버)
     static func getPlacesByName(name: String) -> AnyPublisher<PlaceResponse, Error> {
         // Fetch my user token from UserDefault
-        let token = UserInfoManager.loadUserToken()
+        let token = UserInfoManager.userToken
         guard let token = token else {
             return Fail(error: PlaceApiError.fetch).eraseToAnyPublisher()
         }
@@ -93,7 +93,7 @@ class PlaceSearchManager {
     /// 맵 바운더리 기준으로 주변 정보를 받아옵니다
     static func getPlacesByBoundary(_ bounds: Boundary) -> AnyPublisher<PlaceResponse, Error> {
         // Fetch my user token from UserDefault
-        let token = UserInfoManager.loadUserToken()
+        let token = UserInfoManager.userToken
         guard let token = token else {
             return Fail(error: PlaceApiError.fetch).eraseToAnyPublisher()
         }
@@ -137,7 +137,7 @@ class PlaceSearchManager {
     /// Id로 장소 1개의 정보를 받아옵니다
     static func getPlacesByIdentifier(_ identifier: String) -> AnyPublisher<OnePlaceResponse, Error> {
         // Fetch my user token from UserDefault
-        let token = UserInfoManager.loadUserToken()
+        let token = UserInfoManager.userToken
         guard let token = token else {
             return Fail(error: PlaceApiError.fetch).eraseToAnyPublisher()
         }

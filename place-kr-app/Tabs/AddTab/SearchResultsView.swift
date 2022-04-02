@@ -67,11 +67,11 @@ struct SearchResultsView: View {
                         
                         ScrollView {
                             ForEach(places, id: \.id) { place in
-                                PlaceCardView(
-                                    bgColor: Color(red: 246/255, green: 246/255, blue: 246/255),
-                                    placeInfo: place
-                                )
-                                    .frame(height: 100)
+//                                PlaceCardView(
+//                                    bgColor: Color(red: 246/255, green: 246/255, blue: 246/255),
+//                                    placeInfo: place
+//                                )
+//                                    .frame(height: 100)
                             }
                         }
                     }

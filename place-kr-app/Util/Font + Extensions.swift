@@ -12,7 +12,7 @@ extension Font {
         /// size: 11, weight: light
         let caption = Font.system(size: 11)
         
-        /// size: 12, weight: bold
+        /// size: 12, weight: normal
         let normal = Font.system(size: 12)
 
         /// size: 14, weight: light

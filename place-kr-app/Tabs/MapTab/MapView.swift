@@ -12,7 +12,7 @@ import BottomSheet
 struct MapView: View {
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
     @StateObject var placeInfoManager = PlaceInfoManager()
-    @ObservedObject var favoritePlacesListManager = FavoritePlacesListManager.shared
+    @EnvironmentObject var listManager: ListManager
     
     /// 현재 활성화된 시트의 종류를 저장, 리턴함
     @State var activeSheet: ActiveSheet = .placeInfo
@@ -127,7 +127,7 @@ extension MapView {
     }
     
     var Navigators: some View {
-        NavigationLink( destination: LazyView { RegisterNewListView().environmentObject(favoritePlacesListManager) },
+        NavigationLink( destination: LazyView { RegisterNewListView().environmentObject(listManager) },
                         isActive: $navigateToRegisterNewListView) {
             EmptyView()
         }
@@ -186,8 +186,7 @@ extension MapView {
                     }
                     
                     Divider()
-                        ForEach(favoritePlacesListManager.favoritePlacesLists.indices, id: \.self) { index in
-                            let list = favoritePlacesListManager.favoritePlacesLists[index]
+                        ForEach(listManager.placeLists, id: \.self) { list in
                             HStack {
                                 RoundedRectangle(cornerRadius: 5)
                                     .fill(.gray)
