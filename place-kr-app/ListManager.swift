@@ -42,8 +42,8 @@ struct PlaceList: Codable, Hashable {
 
 struct PlaceListPostBody: Encodable {
     let name: String
-    let icon: String
-    let color: String
+    var icon: String? = nil
+    var color: String? = nil
     let places: [String]
     
     enum CodingKeys: String, CodingKey {
@@ -57,19 +57,28 @@ class ListManager: ObservableObject {
     @Published var placeLists: [PlaceList]
     
     private var subscriptions = Set<AnyCancellable>()
-    private let baseUrl = URL(string: "https://dev.place.tk/api/v1/")!
+    private let baseUrl = URL(string: "https://dev.place.tk/api/v1")!
 
     private func authroizedRequest(with components: String,
                                    method: String,
+                                   queryItem: String? = nil,
                                    body: PlaceListPostBody? = nil,
                                    completionHandler: ((Bool) -> ())? = nil) -> URLRequest? {
-        let url = baseUrl.appendingPathComponent(components)
+        var url = baseUrl.appendingPathComponent(components)
         guard let token = UserInfoManager.userToken else {
             if let completionHandler = completionHandler {
                 completionHandler(false)
             }
             return nil
         }
+        
+        if let _ = queryItem {
+            var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            let queryItem = URLQueryItem(name: "add_place_identifier", value: queryItem)
+            urlComponents?.queryItems = [queryItem]
+            url = (urlComponents?.url)!
+        }
+        
         var request = URLRequest(url: url)
         request.httpMethod = method
         request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
@@ -85,10 +94,53 @@ class ListManager: ObservableObject {
         }
         return request
     }
+    
+    /// 리스트에 플레이스 1개 더하기
+    func addPlaceToList(listID: String, placeID: String, completionHandler: ((Bool) -> ())? = nil) {
+        guard let request = authroizedRequest(with: "/me/lists/\(listID)",
+                                              method: "PATCH",
+                                              queryItem: placeID) else {
+            if let completionHandler = completionHandler {
+                completionHandler(false)
+            }
+            print("Place list url error")
+            return
+        }
+        
+        
+        let session = URLSession.shared
+        session.dataTask(with: request) { _, response, error in
+            guard let httpResponse = response as? HTTPURLResponse,
+                  200..<300 ~= httpResponse.statusCode
+            else {
+                print("Place list response error: \(response as Any)")
+                switch (response as! HTTPURLResponse).statusCode {
+                case (400...499):
+                    if let completionHandler = completionHandler {
+                        completionHandler(false)
+                    }
+                    return
+                default:
+                    if let completionHandler = completionHandler {
+                        completionHandler(false)
+                    }
+                    return
+                }
+            }
+            
+            if let completionHandler = completionHandler {
+                completionHandler(true)
+                print("TRUE")
+            }
+            self.updateLists()
+        }
+        .resume()
+        
+    }
    
     /// 플레이스 리스트 받아오기. 퍼블리셔 타입.
     func getPlaceLists() -> AnyPublisher<[PlaceList], Error> {
-        guard let request = authroizedRequest(with: "me/lists", method: "GET") else {
+        guard let request = authroizedRequest(with: "/me/lists", method: "GET") else {
             return Fail(error: HTTPError.url).eraseToAnyPublisher()
         }
         let session = URLSession.shared
@@ -117,7 +169,7 @@ class ListManager: ObservableObject {
     
     /// 새로운 플레이스 추가. 컴플리션으로 성공 여부 받을 수 있음.
     func addPlaceList(body: PlaceListPostBody, completionHandler: ((Bool) -> ())? = nil) {
-        guard let request = authroizedRequest(with: "me/lists", method: "POST", body: body) else {
+        guard let request = authroizedRequest(with: "/me/lists", method: "POST", body: body) else {
             if let completionHandler = completionHandler {
                 completionHandler(false)
             }
@@ -156,7 +208,7 @@ class ListManager: ObservableObject {
     
     /// 플레이스 리스트 삭제
     func deletePlaceList(id: String, completionHandler: ((Bool) -> ())? = nil) {
-        guard let request = authroizedRequest(with: "me/lists/\(id)", method: "DELETE") else {
+        guard let request = authroizedRequest(with: "/me/lists/\(id)", method: "DELETE") else {
             if let completionHandler = completionHandler {
                 completionHandler(false)
             }
