@@ -15,7 +15,6 @@ struct MyPlaceView: View {
     @State var bottomSheetPosition: PlaceListSheetPosition = .hidden
 
     var body: some View {
-        let lists = listManager.placeLists
         VStack {
             Navigators
             
@@ -37,7 +36,7 @@ struct MyPlaceView: View {
             // 플레이스 리스트
             VStack(spacing: 15) {
                 HStack {
-                    Text("총 \(lists.count)개의 플레이스 리스트가 있습니다")
+                    Text("총 \(listManager.placeLists.count)개의 플레이스 리스트가 있습니다")
                         .font(.basic.normal)
                     Spacer()
                 }
@@ -45,7 +44,7 @@ struct MyPlaceView: View {
                 ScrollView {
                     VStack(spacing: 10) {
                         ForEach(listManager.placeLists, id: \.self) { list in
-                            let viewModel = MyPlaceRowViewModel(list: list)
+                            let viewModel = MyPlaceRowViewModel(list: list, listManager: listManager)
                             NavigationLink(destination: PlaceListDetailView().environmentObject(viewModel)) {
                                 MyPlaceRowView(viewModel: viewModel, action: {
                                     withAnimation(.spring()) {

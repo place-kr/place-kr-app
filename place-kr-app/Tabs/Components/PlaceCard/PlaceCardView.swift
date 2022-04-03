@@ -9,15 +9,22 @@ import SwiftUI
 
 struct PlaceCardView: View {
     let bgColor: Color
-    var placeInfo: PlaceInfo
+    var placeInfo: PlaceInfo?
+    var tempPlaceInfo: String
     
     // TODO: Fix default data
     init(bgColor: Color, placeInfo: PlaceInfo)
     {
         self.bgColor = bgColor
         self.placeInfo = placeInfo
+        self.tempPlaceInfo = ""
     }
     
+    init(bgColor: Color, placeInfo: String)
+    {
+        self.bgColor = bgColor
+        self.tempPlaceInfo = placeInfo
+    }
     
     var body: some View {
         ZStack {
@@ -30,7 +37,7 @@ struct PlaceCardView: View {
                             
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(alignment: .bottom, spacing: 0) {
-                        Text("\(placeInfo.name)")
+                        Text("\(tempPlaceInfo)") // TODO: FIXFIXFIX
                             .bold()
                             .font(.system(size: 24))
                             .padding(.trailing, 6)

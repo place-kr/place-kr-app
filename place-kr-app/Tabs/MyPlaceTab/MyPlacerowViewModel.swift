@@ -8,12 +8,14 @@
 import SwiftUI
 
 class MyPlaceRowViewModel: ObservableObject {
+    private var listManager: ListManager
+    
     @Published var listName: String
-    @Published var places = [PlaceInfoWrapper]()
+    @Published var places = [TempPlaceInfoWrapper]() // 고치기
     @Published var selectionCount = 0
     @Published var isAllSelected = false
         
-    private var placeDict = [UUID: PlaceInfoWrapper]()
+    private var placeDict = [UUID: TempPlaceInfoWrapper]() // 고치기
     
     func resetSelection() {
         isAllSelected = false
@@ -66,25 +68,45 @@ class MyPlaceRowViewModel: ObservableObject {
         self.selectionCount = 0
     }
     
-    init(list: PlaceList) {
+    init(list: PlaceList, listManager: ListManager) {
+        self.listManager = listManager
         self.listName = list.name
-        self.places = [PlaceInfoWrapper]()
-//            .map({ place -> PlaceInfoWrapper in
+        self.places = list.places
+            .map({ (place: String) -> TempPlaceInfoWrapper in
+                let placeWrapper = TempPlaceInfoWrapper(placeInfo: place, isSelected: false)
+                placeDict[placeWrapper.id] = placeWrapper
+                return placeWrapper
+            })
+//            .map({ (place: PlaceInfo) -> PlaceInfoWrapper in
 //                let placeWrapper = PlaceInfoWrapper(placeInfo: place, isSelected: false)
 //                placeDict[placeWrapper.id] = placeWrapper
 //                return placeWrapper
 //            })
         
-//        self.places = dummyPlaceInfoArray.map({ place in
-//            let placeWrapper = PlaceInfoWrapper(placeInfo: place, isSelected: false)
-//            placeDict[placeWrapper.id] = placeWrapper
-//            return placeWrapper
-//        })
         self.resetSelection()
     }
 }
 
 extension MyPlaceRowViewModel {
+    class TempPlaceInfoWrapper: Hashable, Identifiable {
+        let id = UUID()
+        let placeInfo: String
+        var isSelected: Bool
+        
+        init(placeInfo: String, isSelected: Bool) {
+            self.placeInfo = placeInfo
+            self.isSelected = isSelected
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
+        static func == (lhs: TempPlaceInfoWrapper, rhs: TempPlaceInfoWrapper) -> Bool {
+            return lhs.id == rhs.id && lhs.id == rhs.id
+        }
+    }
+    
     class PlaceInfoWrapper: Hashable, Identifiable {
         let id = UUID()
         let placeInfo: PlaceInfo
