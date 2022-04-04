@@ -8,14 +8,16 @@
 import SwiftUI
 
 class MyPlaceRowViewModel: ObservableObject {
-    private var listManager: ListManager
+    private let listManager: ListManager
+    private let id: String
     
     @Published var listName: String
     @Published var places = [TempPlaceInfoWrapper]() // 고치기
     @Published var selectionCount = 0
     @Published var isAllSelected = false
+    @Published var progress: Progress = .ready
         
-    private var placeDict = [UUID: TempPlaceInfoWrapper]() // 고치기
+    private var placeDict = [String: TempPlaceInfoWrapper]() // 고치기
     
     func resetSelection() {
         isAllSelected = false
@@ -41,7 +43,7 @@ class MyPlaceRowViewModel: ObservableObject {
         }
     }
     
-    func toggleOneSelection(_ id: UUID) {
+    func toggleOneSelection(_ id: String) {
         isAllSelected = false
         let isSelected = placeDict[id]!.isSelected
         if isSelected {
@@ -57,18 +59,34 @@ class MyPlaceRowViewModel: ObservableObject {
     }
     
     func deleteSelected() {
-        self.places = places.filter { wrapper in
-            if wrapper.isSelected {
-                placeDict.removeValue(forKey: wrapper.id)
-                return false
-            } else {
-                return true
+        self.progress = .inProgress
+        
+        let selected = self.placeDict
+            .filter { $1.isSelected == true }
+        
+        let selectedIDs = selected
+            .keys
+            .map { $0 }
+        
+        listManager.editPlacesList(listID: self.id, placeIDs: selectedIDs) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case true:
+                    self.placeDict = selected
+                    self.selectionCount = 0
+                    break
+                case false:
+                    break
+                }
+                
+                self.progress = .ready
             }
         }
-        self.selectionCount = 0
     }
     
     init(list: PlaceList, listManager: ListManager) {
+        self.id = list.identifier
         self.listManager = listManager
         self.listName = list.name
         self.places = list.places
@@ -88,12 +106,18 @@ class MyPlaceRowViewModel: ObservableObject {
 }
 
 extension MyPlaceRowViewModel {
+    enum Progress {
+        case inProgress
+        case ready
+    }
+    
     class TempPlaceInfoWrapper: Hashable, Identifiable {
-        let id = UUID()
+        let id: String
         let placeInfo: String
         var isSelected: Bool
         
         init(placeInfo: String, isSelected: Bool) {
+            self.id = placeInfo
             self.placeInfo = placeInfo
             self.isSelected = isSelected
         }

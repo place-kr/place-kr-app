@@ -40,8 +40,10 @@ struct PlaceList: Codable, Hashable {
     }
 }
 
-struct PlaceListPostBody: Encodable {
-    let name: String
+protocol HTTPBody {}
+
+struct PlaceListPostBody: Encodable  {
+    var name: String? = nil
     var icon: String? = nil
     var color: String? = nil
     let places: [String]
@@ -53,16 +55,76 @@ struct PlaceListPostBody: Encodable {
     }
 }
 
+struct ListBody: Encodable {
+    let places: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case places
+    }
+}
+
+struct ErrorBody: Decodable {
+    let message: String
+    let details: Details
+    
+    enum CodingKeys: String, CodingKey {
+        case message, details
+    }
+    struct Details: Decodable {
+        let places: [String]
+        
+        enum CodingKeys: String, CodingKey {
+            case places
+        }
+    }
+}
+
 class ListManager: ObservableObject {
     @Published var placeLists: [PlaceList]
     
     private var subscriptions = Set<AnyCancellable>()
     private let baseUrl = URL(string: "https://dev.place.tk/api/v1")!
-
+    
+    /// [바디 있음] 공통적으로 사용되는 리퀘스트(토큰 실어서 보내기 등)
+    private func authroizedRequest<T: Encodable>(with components: String,
+                                                 method: String,
+                                                 queryItem: String? = nil,
+                                                 body: T,
+                                                 completionHandler: ((Bool) -> ())? = nil) -> URLRequest? {
+        var url = baseUrl.appendingPathComponent(components)
+        guard let token = UserInfoManager.userToken else {
+            if let completionHandler = completionHandler {
+                completionHandler(false)
+            }
+            return nil
+        }
+        
+        if let _ = queryItem {
+            var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            let queryItem = URLQueryItem(name: "add_place_identifier", value: queryItem)
+            urlComponents?.queryItems = [queryItem]
+            url = (urlComponents?.url)!
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = method
+        request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        
+        if let encoded = try? JSONEncoder().encode(body) {
+            print("HERE", body, encoded)
+            if let completionHandler = completionHandler {
+                completionHandler(false)
+            }
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = encoded
+        }
+        return request
+    }
+    
+    /// [바디 없음] 공통적으로 사용되는 리퀘스트(토큰 실어서 보내기 등)
     private func authroizedRequest(with components: String,
                                    method: String,
                                    queryItem: String? = nil,
-                                   body: PlaceListPostBody? = nil,
                                    completionHandler: ((Bool) -> ())? = nil) -> URLRequest? {
         var url = baseUrl.appendingPathComponent(components)
         guard let token = UserInfoManager.userToken else {
@@ -83,20 +145,11 @@ class ListManager: ObservableObject {
         request.httpMethod = method
         request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
         
-        if let body = body, let encoded = try? JSONEncoder().encode(body) {
-            if let completionHandler = completionHandler {
-                completionHandler(false)
-            }
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = encoded
-            
-            print(encoded)
-        }
         return request
     }
     
     /// 리스트에 플레이스 1개 더하기
-    func addPlaceToList(listID: String, placeID: String, completionHandler: ((Bool) -> ())? = nil) {
+    func addOnePlaceToList(listID: String, placeID: String, completionHandler: ((Bool) -> ())? = nil) {
         guard let request = authroizedRequest(with: "/me/lists/\(listID)",
                                               method: "PATCH",
                                               queryItem: placeID) else {
@@ -137,7 +190,61 @@ class ListManager: ObservableObject {
         .resume()
         
     }
-   
+    
+    /// 리스트에 있는 플레이스 수정하기
+    /// 뺄 어레이가 아니라 있는 어레이를 전달해야 업데이트 됨
+    func editPlacesList(listID: String, placeIDs: [String], completionHandler: ((Bool) -> ())? = nil) {
+        let body = ListBody(places: placeIDs)
+        
+        guard let request = authroizedRequest(with: "/me/lists/\(listID)",
+                                              method: "PATCH",
+                                              body: body) else {
+            if let completionHandler = completionHandler {
+                completionHandler(false)
+            }
+            print("Place list url error")
+            return
+        }
+        
+        let session = URLSession.shared
+        session.dataTask(with: request) { data, response, error in
+            guard let httpResponse = response as? HTTPURLResponse,
+                  200..<300 ~= httpResponse.statusCode
+            else {
+                print("Place list response error: \(response as Any)")
+                switch (response as! HTTPURLResponse).statusCode {
+                case (400...499):
+                    if let completionHandler = completionHandler {
+                        completionHandler(false)
+                    }
+                    
+                    if let data = data, let body = try? JSONDecoder().decode(ErrorBody.self, from: data) {
+                        print(body)
+                    }
+                    
+                    return
+                default:
+                    if let completionHandler = completionHandler {
+                        completionHandler(false)
+                    }
+                    return
+                }
+            }
+            
+           
+            
+            
+            if let completionHandler = completionHandler {
+                completionHandler(true)
+                print("TRUE")
+            }
+            self.updateLists()
+        }
+        .resume()
+        
+    }
+
+    
     /// 플레이스 리스트 받아오기. 퍼블리셔 타입.
     func getPlaceLists() -> AnyPublisher<[PlaceList], Error> {
         guard let request = authroizedRequest(with: "/me/lists", method: "GET") else {

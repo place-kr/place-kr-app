@@ -284,7 +284,7 @@ extension MapView {
                                     return
                                 }
                                 
-                                listManager.addPlaceToList(listID: listId, placeID: selectedPlaceId) { result in
+                                listManager.addOnePlaceToList(listID: listId, placeID: selectedPlaceId) { result in
                                     switch result {
                                     case true:
                                         withAnimation(.spring()) {
