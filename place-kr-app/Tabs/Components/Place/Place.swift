@@ -182,6 +182,14 @@ extension PlaceInfo {
 }
 
 
+struct MultiplePlaceResponse: Codable {
+    let results: [OnePlaceResponse]
+    
+    enum CodingKeys: CodingKey {
+        case results
+    }
+}
+
 struct OnePlaceResponse: Codable, PlaceInformation {
     let identifier: String
     let name: String

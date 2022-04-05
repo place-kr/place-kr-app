@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9B01412627C8FE810030CDC7 /* MyPlaceRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B01412527C8FE810030CDC7 /* MyPlaceRowView.swift */; };
 		9B025B5F27DB6A1000B3271A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9B025B5E27DB6A1000B3271A /* Settings.bundle */; };
 		9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */; };
 		9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A65B2796F42A0029CA0E /* AppDelegate.swift */; };
@@ -24,7 +23,7 @@
 		9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02727C9C9AA0042F9C4 /* PlaceListDetailView.swift */; };
 		9B43E02A27C9DB0F0042F9C4 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02927C9DB0F0042F9C4 /* DummyData.swift */; };
 		9B43E02C27C9EE410042F9C4 /* SimplePlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */; };
-		9B43E02E27C9F97A0042F9C4 /* MyPlacerowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02D27C9F97A0042F9C4 /* MyPlacerowViewModel.swift */; };
+		9B43E02E27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02D27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift */; };
 		9B44BEF627C5E7D600755AD5 /* LargePlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */; };
 		9B44BEF827C5E98E00755AD5 /* PlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */; };
 		9B44BEFA27C6217300755AD5 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF927C6217300755AD5 /* SearchBarView.swift */; };
@@ -75,7 +74,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9B01412527C8FE810030CDC7 /* MyPlaceRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceRowView.swift; sourceTree = "<group>"; };
 		9B025B5E27DB6A1000B3271A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetModifier.swift; sourceTree = "<group>"; };
 		9B20A6582796F42A0029CA0E /* place-kr-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "place-kr-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,7 +92,7 @@
 		9B43E02727C9C9AA0042F9C4 /* PlaceListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListDetailView.swift; sourceTree = "<group>"; };
 		9B43E02927C9DB0F0042F9C4 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePlaceCardView.swift; sourceTree = "<group>"; };
-		9B43E02D27C9F97A0042F9C4 /* MyPlacerowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlacerowViewModel.swift; sourceTree = "<group>"; };
+		9B43E02D27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListDetailViewModel.swift; sourceTree = "<group>"; };
 		9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargePlaceCardView.swift; sourceTree = "<group>"; };
 		9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCardView.swift; sourceTree = "<group>"; };
 		9B44BEF927C6217300755AD5 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
@@ -254,8 +252,7 @@
 			children = (
 				9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */,
 				9B43E02727C9C9AA0042F9C4 /* PlaceListDetailView.swift */,
-				9B01412527C8FE810030CDC7 /* MyPlaceRowView.swift */,
-				9B43E02D27C9F97A0042F9C4 /* MyPlacerowViewModel.swift */,
+				9B43E02D27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift */,
 			);
 			path = MyPlaceTab;
 			sourceTree = "<group>";
@@ -577,12 +574,11 @@
 				9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */,
 				9B3DE9A227BE2FAE00DAD9CC /* MyPlaceView.swift in Sources */,
 				9B7D508427CCE8750015ED2C /* ProfileTabView.swift in Sources */,
-				9B43E02E27C9F97A0042F9C4 /* MyPlacerowViewModel.swift in Sources */,
+				9B43E02E27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift in Sources */,
 				9BFBB99F27C743DD002C5F10 /* SearchResultsView.swift in Sources */,
 				9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */,
 				9B44BEF627C5E7D600755AD5 /* LargePlaceCardView.swift in Sources */,
 				9B82F64627CF1FA80081A701 /* ThemedTextField.swift in Sources */,
-				9B01412627C8FE810030CDC7 /* MyPlaceRowView.swift in Sources */,
 				9B35BA4C27CDDA4B0013C1EA /* TabsView.swift in Sources */,
 				9B9D77C527D7455300326BB5 /* PlaceDetailView.swift in Sources */,
 				9B5D5B5027F3FB8600B81831 /* PageHeader.swift in Sources */,

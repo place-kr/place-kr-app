@@ -44,20 +44,27 @@ struct MyPlaceView: View {
                 ScrollView {
                     VStack(spacing: 10) {
                         ForEach(listManager.placeLists, id: \.self) { list in
-                            let viewModel = MyPlaceRowViewModel(list: list, listManager: listManager)
-                            NavigationLink(destination: PlaceListDetailView().environmentObject(viewModel)) {
-                                MyPlaceRowView(viewModel: viewModel, action: {
-                                    withAnimation(.spring()) {
-                                        bottomSheetPosition = .bottom
-                                    }
+                            NavigationLink(
+                                destination: LazyView {
+                                    PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list, listManager: listManager))
+                                },
+                                label: {
+                                    SimplePlaceCardView(list.name,
+                                                        subscripts: "\(list.places.count) places",
+                                                        image: UIImage(),
+                                                        action: {
+                                        withAnimation(.spring()) {
+                                            bottomSheetPosition = .bottom
+                                        }})
+                                    .padding(.horizontal, 12)
                                 })
-                                .frame(height: 70)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(.white)
-                                        .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                                )
-                            }
+                            .frame(height: 70)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(.white)
+                                    .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                            )
+                            
                             .foregroundColor(.black)
                         }
                     }

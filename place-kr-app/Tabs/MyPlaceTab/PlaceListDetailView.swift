@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct PlaceListDetailView: View {
-    @EnvironmentObject var viewModel: MyPlaceRowViewModel
+    @ObservedObject var viewModel: PlaceListDetailViewModel
     @State var isEditable = false
+    
+    init(viewModel: PlaceListDetailViewModel) {
+        self.viewModel = viewModel
+        viewModel.fetchMultipleInfos()
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -125,8 +130,8 @@ extension PlaceListDetailView {
     }
 }
 
-struct PlaceListDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        PlaceListDetailView()
-    }
-}
+//struct PlaceListDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PlaceListDetailView()
+//    }
+//}

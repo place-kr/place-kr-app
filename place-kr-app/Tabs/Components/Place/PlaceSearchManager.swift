@@ -178,6 +178,58 @@ class PlaceSearchManager {
             .eraseToAnyPublisher()
     }
 
+    /// comma seperator로 구분된 아이디로 장소 여러개의 정보를 받아옵니다
+    static func getMultiplePlacesByIdentifiers(_ identifiers: [String]) -> AnyPublisher<MultiplePlaceResponse, Error> {
+        // Fetch my user token from UserDefault
+        let token = UserInfoManager.userToken
+        guard let token = token else {
+            return Fail(error: PlaceApiError.fetch).eraseToAnyPublisher()
+        }
+
+        // Make URLSession.datapublisher which requests informations from the server
+        let session = URLSession.shared
+        let commaSeperatedIds = identifiers
+            .reduce("") { previos, next in
+                previos + "," + next
+            }
+            .dropFirst()
+        
+        guard let url = URL(string: "https://dev.place.tk/api/v1/places?identifiers=\(commaSeperatedIds)")
+        else {
+            return Fail(error: PlaceApiError.url).eraseToAnyPublisher()
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let decoder = JSONDecoder()
+        return session.dataTaskPublisher(for: request)
+            .tryMap() { data, response in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("Response error: \(response)")
+                    throw PlaceApiError.response
+                }
+                
+                guard 200..<300 ~= httpResponse.statusCode else {
+                    print("Response error: \(httpResponse)")
+                    throw PlaceApiError.response
+                }
+                
+                guard !data.isEmpty else {
+                    print("Data error: \(data)")
+                    throw PlaceApiError.data
+                }
+                
+                
+                
+                return data
+            }
+            .decode(type: MultiplePlaceResponse.self, decoder: decoder)
+            .eraseToAnyPublisher()
+    }
+
 }
 
 extension PlaceSearchManager {

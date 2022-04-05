@@ -6,18 +6,22 @@
 //
 
 import SwiftUI
+import Combine
 
-class MyPlaceRowViewModel: ObservableObject {
+/// 리스트 내의 플레이스 정보를 관리하는 뷰모델입니다.
+/// 삭제, 정렬 등의 기능을 갖습니다.
+class PlaceListDetailViewModel: ObservableObject {
     private let listManager: ListManager
-    private let id: String
+    private let list: PlaceList
     
     @Published var listName: String
-    @Published var places = [TempPlaceInfoWrapper]() // 고치기
+    @Published var places = [PlaceInfoWrapper]() // 고치기
     @Published var selectionCount = 0
     @Published var isAllSelected = false
     @Published var progress: Progress = .ready
         
-    private var placeDict = [String: TempPlaceInfoWrapper]() // 고치기
+    private var placeDict = [String: PlaceInfoWrapper]() // 고치기
+    private var subscriptions = Set<AnyCancellable>()
     
     func resetSelection() {
         isAllSelected = false
@@ -68,7 +72,7 @@ class MyPlaceRowViewModel: ObservableObject {
             .keys
             .map { $0 }
         
-        listManager.editPlacesList(listID: self.id, placeIDs: selectedIDs) { [weak self] result in
+        listManager.editPlacesList(listID: self.list.identifier, placeIDs: selectedIDs) { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
@@ -85,54 +89,51 @@ class MyPlaceRowViewModel: ObservableObject {
         }
     }
     
+    func fetchMultipleInfos() {
+        self.progress = .inProgress
+        PlaceSearchManager.getMultiplePlacesByIdentifiers(self.list.places)
+            .receive(on: DispatchQueue.main)
+            .map { $0.results }
+            .map { $0.map { PlaceInfo(document: $0) } }
+            .map { $0.map { place -> PlaceInfoWrapper in
+                let wrapper = PlaceInfoWrapper(placeInfo: place, isSelected: false)
+                self.placeDict[wrapper.id] = wrapper
+                return wrapper
+            }}
+            .sink(receiveCompletion: { [weak self] result in
+                guard let self = self else { return }
+
+                switch result {
+                case .failure(let error):
+                    print("[getMultiplePlacesByIdentifiers] Error happend: \(error)")
+                case .finished:
+                    print("PlaceInfo successfully fetched")
+                }
+
+                self.progress = .ready
+            }, receiveValue: { placeInfos in
+                self.places = placeInfos
+            })
+            .store(in: &subscriptions)
+    }
+    
     init(list: PlaceList, listManager: ListManager) {
-        self.id = list.identifier
+        self.list = list
         self.listManager = listManager
         self.listName = list.name
-        self.places = list.places
-            .map({ (place: String) -> TempPlaceInfoWrapper in
-                let placeWrapper = TempPlaceInfoWrapper(placeInfo: place, isSelected: false)
-                placeDict[placeWrapper.id] = placeWrapper
-                return placeWrapper
-            })
-//            .map({ (place: PlaceInfo) -> PlaceInfoWrapper in
-//                let placeWrapper = PlaceInfoWrapper(placeInfo: place, isSelected: false)
-//                placeDict[placeWrapper.id] = placeWrapper
-//                return placeWrapper
-//            })
         
         self.resetSelection()
     }
 }
 
-extension MyPlaceRowViewModel {
+extension PlaceListDetailViewModel {
     enum Progress {
         case inProgress
         case ready
     }
     
-    class TempPlaceInfoWrapper: Hashable, Identifiable {
+    struct PlaceInfoWrapper: Hashable, Identifiable {
         let id: String
-        let placeInfo: String
-        var isSelected: Bool
-        
-        init(placeInfo: String, isSelected: Bool) {
-            self.id = placeInfo
-            self.placeInfo = placeInfo
-            self.isSelected = isSelected
-        }
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
-        
-        static func == (lhs: TempPlaceInfoWrapper, rhs: TempPlaceInfoWrapper) -> Bool {
-            return lhs.id == rhs.id && lhs.id == rhs.id
-        }
-    }
-    
-    class PlaceInfoWrapper: Hashable, Identifiable {
-        let id = UUID()
         let placeInfo: PlaceInfo
         var isSelected: Bool
         
@@ -145,6 +146,7 @@ extension MyPlaceRowViewModel {
         }
         
         init(placeInfo: PlaceInfo, isSelected: Bool) {
+            self.id = placeInfo.id
             self.placeInfo = placeInfo
             self.isSelected = isSelected
         }
