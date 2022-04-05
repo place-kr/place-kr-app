@@ -37,12 +37,13 @@ struct MyPlaceView: View {
             VStack(spacing: 15) {
                 HStack {
                     Text("총 \(listManager.placeLists.count)개의 플레이스 리스트가 있습니다")
-                        .font(.basic.normal)
+                        .font(.basic.normal12)
                     Spacer()
                 }
                 
                 ScrollView {
                     VStack(spacing: 10) {
+                        // 리스트 카드 뷰
                         ForEach(listManager.placeLists, id: \.self) { list in
                             NavigationLink(
                                 destination: LazyView {

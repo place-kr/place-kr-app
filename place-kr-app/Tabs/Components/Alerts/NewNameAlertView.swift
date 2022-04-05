@@ -14,10 +14,10 @@ struct NewNameAlertView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text("환영합니다")
-                .font(.basic.largetitle)
+                .font(.basic.bold21)
                 .padding(.top, 40)
             Text("name에서 활동할 이름을 입력해주세요")
-                .font(.basic.subtitle)
+                .font(.basic.light14)
                 .padding(.bottom, 15)
             ThemedTextField($name, "이곳에 이름을 입력해주세요",
                             bgColor: .gray.opacity(0.3),

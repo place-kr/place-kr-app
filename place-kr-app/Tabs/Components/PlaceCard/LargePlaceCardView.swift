@@ -101,11 +101,11 @@ extension LargePlaceCardView {
     var Categories: some View {
         HStack(spacing: 5) {
             Text("일식")
-                .encapsulate()
+                .encapsulate(mode: .dark)
             Text("아늑해요")
-                .encapsulate()
+                .encapsulate(mode: .dark)
             Text("깔끔해요")
-                .encapsulate()
+                .encapsulate(mode: .dark)
         }
     }
 }

@@ -10,20 +10,14 @@ import SwiftUI
 struct PlaceCardView: View {
     let bgColor: Color
     var placeInfo: PlaceInfo?
-    var tempPlaceInfo: String
+    var title: String
     
     // TODO: Fix default data
-    init(bgColor: Color, placeInfo: PlaceInfo)
+    init(placeInfo: PlaceInfo, bgColor: Color)
     {
         self.bgColor = bgColor
         self.placeInfo = placeInfo
-        self.tempPlaceInfo = ""
-    }
-    
-    init(bgColor: Color, placeInfo: String)
-    {
-        self.bgColor = bgColor
-        self.tempPlaceInfo = placeInfo
+        self.title = placeInfo.name
     }
     
     var body: some View {
@@ -37,7 +31,7 @@ struct PlaceCardView: View {
                             
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(alignment: .bottom, spacing: 0) {
-                        Text("\(tempPlaceInfo)") // TODO: FIXFIXFIX
+                        Text("\(title)") // TODO: FIXFIXFIX
                             .bold()
                             .font(.system(size: 24))
                             .padding(.trailing, 6)
@@ -69,11 +63,11 @@ struct PlaceCardView: View {
                     
                     HStack(spacing: 5) {
                         Text("일식")
-                            .encapsulate()
+                            .encapsulate(mode: .dark)
                         Text("아늑해요")
-                            .encapsulate()
+                            .encapsulate(mode: .dark)
                         Text("깔끔해요")
-                            .encapsulate()
+                            .encapsulate(mode: .dark)
                     }
                 }
                 

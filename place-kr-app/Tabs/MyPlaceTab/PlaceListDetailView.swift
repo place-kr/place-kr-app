@@ -21,32 +21,42 @@ struct PlaceListDetailView: View {
             if isEditable {
                 editableView
             } else {
-                SimplePlaceCardView(viewModel.listName,
-                                    subscripts: "\(viewModel.places.count) places",
-                                    image: UIImage())
-                    .frame(height: 100)
-                    .padding(.horizontal, 17)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.white)
-                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                    )
+                // 헤더에 올라가는 리스트 카드 뷰
+                Group {
+                    SimplePlaceCardView(viewModel.listName,
+                                        subscripts: "\(viewModel.places.count) places",
+                                        image: UIImage())
+                        .frame(height: 100)
+                        .padding(.horizontal, 17)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(.white)
+                                .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                        )
+                    
+                    Text("총 \(viewModel.places.count)개의 플레이스")
+                        .font(.basic.light14)
+                }
+                .padding(.horizontal, 15)
                 
-                Text("총 \(viewModel.places.count)개의 플레이스")
-                    .font(.basic.subtitle)
-                
-                ScrollView {
-                    VStack(spacing: 10) {
-                        ForEach(viewModel.places, id: \.id) { place in
-                            PlaceCardView(bgColor: .white, placeInfo: place.placeInfo)
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(.white)
-                                        .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                                )
+                ZStack {
+                    Color.backgroundGray
+                    ScrollView {
+                        // 플레이스 리스트
+                        VStack(spacing: 7) {
+                            ForEach(viewModel.places, id: \.id) { wrapper in
+                                let place = wrapper.placeInfo
+                                LightCardView(place: place, isFavorite: wrapper.isSelected)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(.white)
+                                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                                    )
+                            }
                         }
+                        .padding(.top, 12)
                     }
+                    .padding(.horizontal, 15)
                 }
             }
         }
@@ -58,7 +68,6 @@ struct PlaceListDetailView: View {
                 .foregroundColor(isEditable ? .red : .black)
         }))
         .navigationBarTitle("\(viewModel.listName)", displayMode: .inline) // TODO: 원본과 다름
-        .padding(.horizontal, 15)
     }
 }
 
@@ -96,7 +105,7 @@ extension PlaceListDetailView {
                         Image(systemName: !viewModel.isAllSelected ? "square" : "checkmark.square")
                         Text("전체선택")
                     }
-                    .font(.basic.subtitle)
+                    .font(.basic.light14)
                     .foregroundColor(.black)
                 }
                 
@@ -106,7 +115,7 @@ extension PlaceListDetailView {
                             let placeID = place.id
                             
                             // 플레이스 정보
-                            PlaceCardView(bgColor: .white, placeInfo: place.placeInfo)
+                            PlaceCardView(placeInfo: place.placeInfo, bgColor: .white)
                                 .padding()
                                 .overlay (
                                     RoundedRectangle(cornerRadius: 10)

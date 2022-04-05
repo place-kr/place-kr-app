@@ -253,7 +253,7 @@ extension MapView {
                                 .background(Circle().fill(.gray.opacity(0.3)))
                         }
                         Text("새로운 리스트 만들기")
-                            .font(.basic.normal)
+                            .font(.basic.normal12)
                         
                         Spacer()
                     }

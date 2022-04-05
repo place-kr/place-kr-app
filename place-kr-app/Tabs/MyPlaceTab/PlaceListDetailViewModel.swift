@@ -66,7 +66,7 @@ class PlaceListDetailViewModel: ObservableObject {
         self.progress = .inProgress
         
         let selected = self.placeDict
-            .filter { $1.isSelected == true }
+            .filter { $1.isSelected == false }
         
         let selectedIDs = selected
             .keys

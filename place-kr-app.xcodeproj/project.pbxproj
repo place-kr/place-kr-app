@@ -62,8 +62,10 @@
 		9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */; };
 		9BA012A727D8D1500080F245 /* PlaceInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */; };
 		9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */; };
+		9BA965D327FC370900C05D42 /* LightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA965D227FC370900C05D42 /* LightCardView.swift */; };
 		9BB8E67027DB6DB400E07AD0 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 9BB8E66F27DB6DB400E07AD0 /* BottomSheet */; };
 		9BB8E67327DB6DEB00E07AD0 /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = 9BB8E67227DB6DEB00E07AD0 /* SwiftUIPager */; };
+		9BC0E42027FC3BB700306CCA /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 9BC0E41F27FC3BB700306CCA /* SDWebImageSwiftUI */; };
 		9BCC370127D70A6E00E88F72 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCC370027D70A6E00E88F72 /* Animations.swift */; };
 		9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */; };
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
@@ -133,6 +135,7 @@
 		9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoManager.swift; sourceTree = "<group>"; };
 		9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginViewModel.swift; sourceTree = "<group>"; };
+		9BA965D227FC370900C05D42 /* LightCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightCardView.swift; sourceTree = "<group>"; };
 		9BCC370027D70A6E00E88F72 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extensions.swift"; sourceTree = "<group>"; };
 		9BF582C6279ADDEB0068805E /* NaverUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverUserData.swift; sourceTree = "<group>"; };
@@ -149,6 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BC0E42027FC3BB700306CCA /* SDWebImageSwiftUI in Frameworks */,
 				C1E57CCEE0673CDEBD22B5D4 /* Pods_place_kr_app.framework in Frameworks */,
 				9BB8E67027DB6DB400E07AD0 /* BottomSheet in Frameworks */,
 				9BB8E67327DB6DEB00E07AD0 /* SwiftUIPager in Frameworks */,
@@ -341,6 +345,7 @@
 			children = (
 				9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */,
 				9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */,
+				9BA965D227FC370900C05D42 /* LightCardView.swift */,
 				9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */,
 			);
 			path = PlaceCard;
@@ -446,6 +451,7 @@
 			packageProductDependencies = (
 				9BB8E66F27DB6DB400E07AD0 /* BottomSheet */,
 				9BB8E67227DB6DEB00E07AD0 /* SwiftUIPager */,
+				9BC0E41F27FC3BB700306CCA /* SDWebImageSwiftUI */,
 			);
 			productName = "place-kr-app";
 			productReference = 9B20A6582796F42A0029CA0E /* place-kr-app.app */;
@@ -478,6 +484,7 @@
 			packageReferences = (
 				9BB8E66E27DB6DB400E07AD0 /* XCRemoteSwiftPackageReference "BottomSheet" */,
 				9BB8E67127DB6DEB00E07AD0 /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
+				9BC0E41E27FC3BB700306CCA /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			productRefGroup = 9B20A6592796F42A0029CA0E /* Products */;
 			projectDirPath = "";
@@ -552,6 +559,7 @@
 				9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */,
 				9B6C0D2927C89C0400376373 /* RegisterPlaceView.swift in Sources */,
 				9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */,
+				9BA965D327FC370900C05D42 /* LightCardView.swift in Sources */,
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
 				9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */,
 				9B82F64B27D079150081A701 /* UIMapViewModel.swift in Sources */,
@@ -846,6 +854,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		9BC0E41E27FC3BB700306CCA /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -858,6 +874,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9BB8E67127DB6DEB00E07AD0 /* XCRemoteSwiftPackageReference "SwiftUIPager" */;
 			productName = SwiftUIPager;
+		};
+		9BC0E41F27FC3BB700306CCA /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9BC0E41E27FC3BB700306CCA /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

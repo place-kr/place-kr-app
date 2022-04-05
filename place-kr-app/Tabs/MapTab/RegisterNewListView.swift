@@ -17,10 +17,10 @@ struct RegisterNewListView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("리스트 만들기")
-                .font(.basic.largetitle)
+                .font(.basic.bold21)
             
             Text("리스트명을 입력하세요")
-                .font(.basic.subtitle)
+                .font(.basic.light14)
                 .padding(.bottom, 15)
             ThemedTextField($name, "리스트명을 입력해주세요",
                             bgColor: .gray.opacity(0.3),
