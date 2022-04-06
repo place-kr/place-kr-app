@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func showAlert<V>(alert: V, show: Bool) -> some View where V: View {
+    func showAlert<V>(show: Bool, alert: V) -> some View where V: View {
         modifier(AlertModifier(alert: alert, show: show))
 
     }

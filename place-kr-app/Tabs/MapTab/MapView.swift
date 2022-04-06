@@ -18,6 +18,8 @@ struct MapView: View {
     @State var activeSheet: ActiveSheet = .placeInfo
     @State var bottomSheetPosition: SheetPosition = .hidden
     @State var listSheetPosition: MiddlePosition = .hidden
+    
+    
     @State var searchText = ""
     
     @State var navigateToRegisterNewListView = false
@@ -25,7 +27,7 @@ struct MapView: View {
     var body: some View {
         
         ZStack {
-            Navigators
+//            Navigators
             
             /// 네이버 맵
             UIMapView(viewModel: mapViewModel)
@@ -107,6 +109,12 @@ struct MapView: View {
                      , content: {
             SheetView(active: activeSheet)
         })
+        .showAlert(show: navigateToRegisterNewListView, alert: RegisterNewListAlertView(action: {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                navigateToRegisterNewListView = false
+            }
+        })
+        )
     }
 }
 
@@ -123,13 +131,6 @@ extension MapView {
         withAnimation(springAnimation) {
             self.bottomSheetPosition = .bottom
             self.activeSheet = .placeInfo
-        }
-    }
-    
-    var Navigators: some View {
-        NavigationLink( destination: LazyView { RegisterNewListView().environmentObject(listManager) },
-                        isActive: $navigateToRegisterNewListView) {
-            EmptyView()
         }
     }
     
@@ -169,7 +170,6 @@ extension MapView {
     /// 닫기 버튼
     var CloseButton: some View {
         Button(action:{
-            print("SS")
             withAnimation(.spring()) {
                 listSheetPosition = .hidden
             }
@@ -246,12 +246,10 @@ extension MapView {
 
                 ScrollView(showsIndicators: false) {
                     HStack {
-                        Button(action: {}) {
-                            Image(systemName: "plus")
-                                .foregroundColor(.gray)
-                                .padding(5)
-                                .background(Circle().fill(.gray.opacity(0.3)))
-                        }
+                        Image(systemName: "plus")
+                            .foregroundColor(.gray)
+                            .padding(5)
+                            .background(Circle().fill(.gray.opacity(0.3)))
                         Text("새로운 리스트 만들기")
                             .font(.basic.normal12)
                         
@@ -259,7 +257,10 @@ extension MapView {
                     }
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        self.navigateToRegisterNewListView = true
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            self.navigateToRegisterNewListView = true
+                            listManager.updateLists()
+                        }
                     }
                     
                     Divider()

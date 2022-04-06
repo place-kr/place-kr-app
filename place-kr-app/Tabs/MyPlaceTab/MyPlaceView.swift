@@ -13,15 +13,16 @@ struct MyPlaceView: View {
     @EnvironmentObject var listManager: ListManager
     @State var navigateToNewList = false
     @State var bottomSheetPosition: PlaceListSheetPosition = .hidden
+    @State var selectedList: PlaceList?
 
     var body: some View {
         VStack {
-            Navigators
-            
             VStack {
                 // 페이지 헤더 부분
                 PageHeader(title: "나의 플레이스", trailing: "추가하기", trailingAction: {
-                    self.navigateToNewList = true
+                    withAnimation(.easeInOut(duration: 0.2)){
+                        self.navigateToNewList = true
+                    }
                 })
                 .padding(.bottom, 18)
                 .padding(.horizontal, 15)
@@ -40,6 +41,7 @@ struct MyPlaceView: View {
                         .font(.basic.normal12)
                     Spacer()
                 }
+                .padding(.horizontal, 15)
                 
                 ScrollView {
                     VStack(spacing: 10) {
@@ -54,6 +56,7 @@ struct MyPlaceView: View {
                                                         subscripts: "\(list.places.count) places",
                                                         image: UIImage(),
                                                         action: {
+                                        self.selectedList = list
                                         withAnimation(.spring()) {
                                             bottomSheetPosition = .bottom
                                         }})
@@ -65,13 +68,13 @@ struct MyPlaceView: View {
                                     .fill(.white)
                                     .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
                             )
-                            
                             .foregroundColor(.black)
                         }
                     }
+                    .padding(.horizontal, 15)
+                    .padding(.bottom, 30)
                 }
             }
-            .padding(.horizontal, 15)
         }
         .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
                      options: [
@@ -103,53 +106,66 @@ struct MyPlaceView: View {
             managePlaceList
                 .padding(.horizontal, 28)
         })
+        .showAlert(show: navigateToNewList, alert: RegisterNewListAlertView(action: {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                navigateToNewList = false
+            }
+        })
+        )
         .navigationBarTitle("") //this must be empty
         .navigationBarHidden(true)
     }
 }
 
 extension MyPlaceView {
-    var Navigators: some View {
-        NavigationLink(
-            isActive: self.$navigateToNewList,
-            destination: { RegisterNewListView().environmentObject(listManager) }) {
-                EmptyView()
-            }
-    }
-    
     var managePlaceList: some View {
-        List {
-            NavigationLink(destination: Text("공유하기")) {
-                HStack(spacing: 9) {
-                    Image(systemName: "square")
-                    Text("공유하기")
-                }
+        VStack {
+            HStack(spacing: 9) {
+                Image(systemName: "square")
+                Text("공유하기")
+            }
+            .onTapGesture {
+                print("Share")
             }
             
-            NavigationLink(destination: Text("리스트명 변경하기")) {
-                HStack(spacing: 9) {
-                    Image(systemName: "pencil")
-                    Text("리스트명 변경하기")
-                }
+            Divider()
+            
+            HStack(spacing: 9) {
+                Image(systemName: "pencil")
+                Text("리스트명 변경하기")
+            }
+            .onTapGesture {
+                print("Share")
             }
             
-            NavigationLink(destination: Text("플레이스 편집하기")) {
-                HStack(spacing: 9) {
-                    Image(systemName: "mappin")
-                    Text("플레이스 편집하기")
-                }
+            Divider()
+            
+            HStack(spacing: 9) {
+                Image(systemName: "mappin")
+                Text("플레이스 편집하기")
+            }
+            .onTapGesture {
+                print("Share")
             }
             
-            NavigationLink(destination: Text("삭제하기")) {
-                HStack(spacing: 9) {
-                    Image(systemName: "trash")
-                    Text("삭제하기")
+            Divider()
+            
+            HStack(spacing: 9) {
+                Image(systemName: "trash")
+                Text("삭제하기")
+            }
+            .onTapGesture {
+                guard let selectedList = self.selectedList else { return }
+                
+                listManager.deletePlaceList(id: selectedList.identifier) { result in
+                    if result {
+                        listManager.updateLists()
+                        print(listManager.placeLists)
+                    }
                 }
             }
         }
         .font(.system(size: 14))
-        .listStyle(PlainListStyle())
-        .environment(\.defaultMinListRowHeight, 50)
     }
 }
 

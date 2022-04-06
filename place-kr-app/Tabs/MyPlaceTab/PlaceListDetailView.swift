@@ -80,59 +80,71 @@ extension PlaceListDetailView {
                     Button(action: { viewModel.deleteSelected() }) {
                         Text("삭제하기")
                     }
-                    .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 50))
+                    .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 50))
                     .padding(.bottom, 15)
+                    .padding(.horizontal, 15)
                 }
                 .zIndex(1)
                 .transition(.move(edge: .bottom))
                 .animation(.spring())
             }
             
-            VStack(alignment: .leading) {
-                SimplePlaceCardView(viewModel.listName,
-                                    subscripts: "\(viewModel.places.count) places",
-                                    image: UIImage())
-                    .frame(height: 100)
-                    .padding(.horizontal, 17)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.white)
-                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                    )
-                
-                HStack {
-                    Button(action: { viewModel.toggleAllSelection() }) {
-                        Image(systemName: !viewModel.isAllSelected ? "square" : "checkmark.square")
-                        Text("전체선택")
-                    }
-                    .font(.basic.light14)
-                    .foregroundColor(.black)
-                }
-                
-                ScrollView {
-                    VStack(spacing: 10) {
-                        ForEach(viewModel.places, id: \.id) { place in
-                            let placeID = place.id
-                            
-                            // 플레이스 정보
-                            PlaceCardView(placeInfo: place.placeInfo, bgColor: .white)
-                                .padding()
-                                .overlay (
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(.black.opacity(place.isSelected ? 1 : 0))
-                                )
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(.white)
-                                        .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                                )
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    viewModel.toggleOneSelection(placeID)
-                                }
+            VStack {
+                VStack {
+                    SimplePlaceCardView(viewModel.listName,
+                                        subscripts: "\(viewModel.places.count) places",
+                                        image: UIImage())
+                        .frame(height: 100)
+                        .padding(.horizontal, 17)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(.white)
+                                .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                        )
+                    
+                    HStack {
+                        Button(action: { viewModel.toggleAllSelection() }) {
+                            Image(systemName: !viewModel.isAllSelected ? "square" : "checkmark.square")
+                            Text("전체선택")
                         }
+                        .font(.basic.light14)
+                        .foregroundColor(.black)
+                        
+                        Spacer()
                     }
-                    .animation(.spring())
+                }
+                .padding(.horizontal, 15)
+                
+                ZStack {
+                    Color.backgroundGray
+                        .edgesIgnoringSafeArea(.all)
+                    
+                    ScrollView {
+                        // 플레이스 리스트
+                        VStack(spacing: 7) {
+                            ForEach(viewModel.places, id: \.id) { wrapper in
+                                let place = wrapper.placeInfo
+                                LightCardView(place: place, isFavorite: wrapper.isSelected)
+                                    .overlay (
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(.black.opacity(wrapper.isSelected ? 1 : 0))
+                                    )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(.white)
+                                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                                    )
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        viewModel.toggleOneSelection(wrapper.id)
+                                    }
+                            }
+                        }
+                        .animation(.spring())
+                        .padding(.top, 12)
+                        .padding(.bottom, 30)
+                    }
+                    .padding(.horizontal, 15)
                 }
             }
         }

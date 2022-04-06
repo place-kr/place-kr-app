@@ -246,7 +246,7 @@ class ListManager: ObservableObject {
 
     
     /// 플레이스 리스트 받아오기. 퍼블리셔 타입.
-    func getPlaceLists() -> AnyPublisher<[PlaceList], Error> {
+    private func getPlaceLists() -> AnyPublisher<[PlaceList], Error> {
         guard let request = authroizedRequest(with: "/me/lists", method: "GET") else {
             return Fail(error: HTTPError.url).eraseToAnyPublisher()
         }
@@ -324,6 +324,7 @@ class ListManager: ObservableObject {
         let session = URLSession.shared
         
         session.dataTask(with: request) { _, response, error in
+            print(response as? HTTPURLResponse)
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode else {
                 switch (response as! HTTPURLResponse).statusCode {
@@ -340,6 +341,7 @@ class ListManager: ObservableObject {
                 }
             }
         }
+        .resume()
         
         if let completionHandler = completionHandler {
             completionHandler(true)
@@ -380,7 +382,7 @@ class ListManager: ObservableObject {
     }
     
     /// 퍼블리셔로 리스트 업데이트 하는 루틴
-    private func updateLists() {
+    func updateLists() {
         self.getPlaceLists()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { result in
@@ -392,7 +394,6 @@ class ListManager: ObservableObject {
                 
                 }
             }, receiveValue: { data in
-                print(data)
                 self.placeLists = data
             })
             .store(in: &subscriptions)

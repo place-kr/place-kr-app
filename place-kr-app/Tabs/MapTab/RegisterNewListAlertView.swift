@@ -7,15 +7,26 @@
 
 import SwiftUI
 
-struct RegisterNewListView: View {
+struct RegisterNewListAlertView: View {
     @EnvironmentObject var viewModel: ListManager
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @State var name = ""
     
     let colors: [Color] = [.gray]
+    let action: () -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
+            HStack {
+                Spacer()
+                
+                Button(action: action) {
+                    Image(systemName: "xmark")
+                }
+                .font(.system(size: 20))
+            }
+            .padding(.top, 20)
+            
             Text("리스트 만들기")
                 .font(.basic.bold21)
             
@@ -66,8 +77,16 @@ struct RegisterNewListView: View {
                 Button(action: {
                     // TODO: 에러 콜
                     let postBody = PlaceListPostBody(name: self.name, icon: "🧮", color: "000000", places: [String]())
-                    self.viewModel.addPlaceList(body: postBody)
-                    self.mode.wrappedValue.dismiss()
+                    self.viewModel.addPlaceList(body: postBody) { result in
+                        switch result {
+                        case true:
+                            self.action()
+                            break
+                        case false:
+                            break
+                        }
+                    }
+                    self.action()
                 }) {
                     Text("입력완료")
                 }
@@ -79,13 +98,13 @@ struct RegisterNewListView: View {
                 Spacer()
             }
         }
-        .padding(.horizontal, 25)
+        .alertStyle()
     }
 }
 
 
 struct RegisterNewListView_Preview: PreviewProvider {
     static var previews: some View {
-        RegisterNewListView()
+        RegisterNewListAlertView(action: {})
     }
 }

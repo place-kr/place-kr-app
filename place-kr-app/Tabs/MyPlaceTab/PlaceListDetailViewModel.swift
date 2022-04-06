@@ -15,12 +15,12 @@ class PlaceListDetailViewModel: ObservableObject {
     private let list: PlaceList
     
     @Published var listName: String
-    @Published var places = [PlaceInfoWrapper]() // 고치기
+    @Published var places = [PlaceInfoWrapper]()
     @Published var selectionCount = 0
     @Published var isAllSelected = false
     @Published var progress: Progress = .ready
         
-    private var placeDict = [String: PlaceInfoWrapper]() // 고치기
+    private var placeDict = [String: PlaceInfoWrapper]() // 래퍼아이디 : 래퍼
     private var subscriptions = Set<AnyCancellable>()
     
     func resetSelection() {
@@ -49,6 +49,7 @@ class PlaceListDetailViewModel: ObservableObject {
     
     func toggleOneSelection(_ id: String) {
         isAllSelected = false
+        
         let isSelected = placeDict[id]!.isSelected
         if isSelected {
             placeDict[id]?.isSelected = false
@@ -132,7 +133,7 @@ extension PlaceListDetailViewModel {
         case ready
     }
     
-    struct PlaceInfoWrapper: Hashable, Identifiable {
+    class PlaceInfoWrapper: Hashable, Identifiable {
         let id: String
         let placeInfo: PlaceInfo
         var isSelected: Bool
