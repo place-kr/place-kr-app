@@ -13,7 +13,8 @@ import Combine
 class PlaceListDetailViewModel: ObservableObject {
     private let listManager: ListManager
     private let list: PlaceList
-    
+   
+    @Published var listColor: String
     @Published var listName: String
     @Published var places = [PlaceInfoWrapper]()
     @Published var selectionCount = 0
@@ -122,6 +123,7 @@ class PlaceListDetailViewModel: ObservableObject {
         self.list = list
         self.listManager = listManager
         self.listName = list.name
+        self.listColor = list.color
         
         self.resetSelection()
     }

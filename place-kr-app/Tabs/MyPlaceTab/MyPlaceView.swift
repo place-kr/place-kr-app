@@ -53,6 +53,7 @@ struct MyPlaceView: View {
                                 },
                                 label: {
                                     SimplePlaceCardView(list.name,
+                                                        hex: list.color,
                                                         subscripts: "\(list.places.count) places",
                                                         image: UIImage(),
                                                         action: {
@@ -119,7 +120,7 @@ struct MyPlaceView: View {
 
 extension MyPlaceView {
     var managePlaceList: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 15) {
             HStack(spacing: 9) {
                 Image(systemName: "square")
                 Text("공유하기")
@@ -135,7 +136,14 @@ extension MyPlaceView {
                 Text("리스트명 변경하기")
             }
             .onTapGesture {
-                print("Share")
+//                guard let selectedList = self.selectedList else { return }
+//
+//                listManager.editListName(id: selectedList.identifier, name: <#T##String#>) { result in
+//                    if result {
+//                        listManager.updateLists()
+//                        bottomSheetPosition = .hidden
+//                    }
+//                }
             }
             
             Divider()
@@ -160,7 +168,7 @@ extension MyPlaceView {
                 listManager.deletePlaceList(id: selectedList.identifier) { result in
                     if result {
                         listManager.updateLists()
-                        print(listManager.placeLists)
+                        bottomSheetPosition = .hidden
                     }
                 }
             }

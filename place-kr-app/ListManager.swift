@@ -63,6 +63,14 @@ struct ListBody: Encodable {
     }
 }
 
+struct NameBody: Encodable {
+    let name: String
+
+    enum CodingKeys: String, CodingKey {
+        case name
+    }
+}
+
 struct ErrorBody: Decodable {
     let message: String
     let details: Details
@@ -244,7 +252,6 @@ class ListManager: ObservableObject {
         
     }
 
-    
     /// 플레이스 리스트 받아오기. 퍼블리셔 타입.
     private func getPlaceLists() -> AnyPublisher<[PlaceList], Error> {
         guard let request = authroizedRequest(with: "/me/lists", method: "GET") else {
@@ -324,7 +331,6 @@ class ListManager: ObservableObject {
         let session = URLSession.shared
         
         session.dataTask(with: request) { _, response, error in
-            print(response as? HTTPURLResponse)
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode else {
                 switch (response as! HTTPURLResponse).statusCode {
@@ -350,6 +356,41 @@ class ListManager: ObservableObject {
     
     /// 플레이스 리스트 수정
     func patchPlaceList(id: String, body: PlaceListPostBody, completionHandler: ((Bool) -> ())? = nil) {
+        guard let request = authroizedRequest(with: "me/lists/\(id)", method: "PATCH", body: body) else {
+            if let completionHandler = completionHandler {
+                completionHandler(false)
+            }
+            return
+        }
+        let session = URLSession.shared
+        
+        session.dataTask(with: request) { _, response, error in
+            guard let httpResponse = response as? HTTPURLResponse,
+                  200..<300 ~= httpResponse.statusCode else {
+                switch (response as! HTTPURLResponse).statusCode {
+                case (400...499):
+                    if let completionHandler = completionHandler {
+                        completionHandler(false)
+                    }
+                    return
+                default:
+                    if let completionHandler = completionHandler {
+                        completionHandler(false)
+                    }
+                    return
+                }
+            }
+        }
+        
+        if let completionHandler = completionHandler {
+            completionHandler(true)
+        }
+    }
+    
+    /// 플레이스 리스트 이름 수정
+    func editListName(id: String, name: String, completionHandler: ((Bool) -> ())? = nil) {
+        let body = NameBody(name: name)
+        
         guard let request = authroizedRequest(with: "me/lists/\(id)", method: "PATCH", body: body) else {
             if let completionHandler = completionHandler {
                 completionHandler(false)

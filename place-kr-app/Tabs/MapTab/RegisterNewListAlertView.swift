@@ -11,8 +11,9 @@ struct RegisterNewListAlertView: View {
     @EnvironmentObject var viewModel: ListManager
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @State var name = ""
+    @State var selectedColor: ListColor?
     
-    let colors: [Color] = [.gray]
+    let colors: [ListColor] = ListColor.allCases
     let action: () -> Void
     
     var body: some View {
@@ -48,9 +49,18 @@ struct RegisterNewListAlertView: View {
                 HStack {
                     Spacer()
                     ForEach(0..<5, id: \.self) { index in
-                        let color = colors[0]
-                        Circle().fill(color)
-                            .frame(width: 50, height: 50)
+                        let colorName = colors[index]
+                        let color = colorName.color
+                        ZStack {
+                            Circle().fill(color)
+                            if selectedColor == colorName {
+                                Circle().stroke(lineWidth: 1.5)
+                            }
+                        }
+                        .frame(width: 50, height: 50)
+                        .onTapGesture {
+                            self.selectedColor = colorName
+                        }
                         if index != 4 {
                             Spacer()
                         }
@@ -59,12 +69,19 @@ struct RegisterNewListAlertView: View {
                 }
                 HStack {
                     Spacer()
-                    ForEach(0..<5, id: \.self) { index in
-                        let color = colors[0]
-                        Circle()
-                            .fill(color)
-                            .frame(width: 50, height: 50)
-                        if index != 4 {
+                    ForEach(5..<10, id: \.self) { index in
+                        let colorName = colors[index]
+                        let color = colorName.color
+                        ZStack {
+                            Circle().fill(color)
+                            if selectedColor == colorName {
+                                Circle().stroke(lineWidth: 1.5)
+                            }                        }
+                        .frame(width: 50, height: 50)
+                        .onTapGesture {
+                            self.selectedColor = colorName
+                        }
+                        if index != 9 {
                             Spacer()
                         }
                     }
@@ -76,7 +93,7 @@ struct RegisterNewListAlertView: View {
                 Spacer()
                 Button(action: {
                     // TODO: 에러 콜
-                    let postBody = PlaceListPostBody(name: self.name, icon: "🧮", color: "000000", places: [String]())
+                    let postBody = PlaceListPostBody(name: self.name, icon: "🧮", color: selectedColor?.HEX, places: [String]())
                     self.viewModel.addPlaceList(body: postBody) { result in
                         switch result {
                         case true:
@@ -90,7 +107,7 @@ struct RegisterNewListAlertView: View {
                 }) {
                     Text("입력완료")
                 }
-                .disabled(name.isEmpty)
+                .disabled(name.isEmpty || selectedColor == nil)
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)

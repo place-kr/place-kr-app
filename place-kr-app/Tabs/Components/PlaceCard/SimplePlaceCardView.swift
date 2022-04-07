@@ -9,12 +9,14 @@ import SwiftUI
 
 struct SimplePlaceCardView: View {
     private let placeName: String
+    private let placeColor: Color
     private let subscripts: String
     private let buttonAction: (() -> Void)?
     private let image: UIImage
     
-    init(_ name: String, subscripts: String, image: UIImage, action: (() -> Void)? = nil) {
+    init(_ name: String, hex: String, subscripts: String, image: UIImage, action: (() -> Void)? = nil) {
         self.placeName = name
+        self.placeColor = colorFrom(hex: hex).color
         self.subscripts = subscripts
         self.image = image
         self.buttonAction = action
@@ -24,7 +26,7 @@ struct SimplePlaceCardView: View {
         HStack(spacing: 0) {
             // 프로필 이미지
             RoundedRectangle(cornerRadius: 10)
-                .fill(.gray.opacity(0.5))
+                .fill(self.placeColor)
                 .frame(width: 50, height: 50)
             
             // 이름과 설명
@@ -51,8 +53,8 @@ struct SimplePlaceCardView: View {
     }
 }
 
-struct SimplePlaceCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        SimplePlaceCardView("", subscripts: "", image: UIImage())
-    }
-}
+//struct SimplePlaceCardView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SimplePlaceCardView("", subscripts: "", image: UIImage())
+//    }
+//}

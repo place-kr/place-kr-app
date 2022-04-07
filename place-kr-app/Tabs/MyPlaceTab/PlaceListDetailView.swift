@@ -23,7 +23,7 @@ struct PlaceListDetailView: View {
             } else {
                 // 헤더에 올라가는 리스트 카드 뷰
                 Group {
-                    SimplePlaceCardView(viewModel.listName,
+                    SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor,
                                         subscripts: "\(viewModel.places.count) places",
                                         image: UIImage())
                         .frame(height: 100)
@@ -91,7 +91,7 @@ extension PlaceListDetailView {
             
             VStack {
                 VStack {
-                    SimplePlaceCardView(viewModel.listName,
+                    SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor,
                                         subscripts: "\(viewModel.places.count) places",
                                         image: UIImage())
                         .frame(height: 100)
