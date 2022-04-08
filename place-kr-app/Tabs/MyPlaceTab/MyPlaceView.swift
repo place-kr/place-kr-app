@@ -158,6 +158,7 @@ extension MyPlaceView {
             
             Divider()
             
+            // 플레이스 삭제하기
             HStack(spacing: 9) {
                 Image(systemName: "trash")
                 Text("삭제하기")
@@ -167,7 +168,6 @@ extension MyPlaceView {
                 
                 listManager.deletePlaceList(id: selectedList.identifier) { result in
                     if result {
-                        listManager.updateLists()
                         bottomSheetPosition = .hidden
                     }
                 }

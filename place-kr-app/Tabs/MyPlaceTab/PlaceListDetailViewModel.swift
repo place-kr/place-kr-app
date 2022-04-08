@@ -67,18 +67,23 @@ class PlaceListDetailViewModel: ObservableObject {
     func deleteSelected() {
         self.progress = .inProgress
         
+        // 선택된 플레이스
         let selected = self.placeDict
             .filter { $1.isSelected == false }
         
+        // 선택된 플레이스의 아이디들
         let selectedIDs = selected
             .keys
             .map { $0 }
         
+        // 네트워크 리퀘스트
         listManager.editPlacesList(listID: self.list.identifier, placeIDs: selectedIDs) { [weak self] result in
             guard let self = self else { return }
+            
             DispatchQueue.main.async {
                 switch result {
                 case true:
+                    // 성공하면 플레이스 갈아치우기
                     self.placeDict = selected
                     self.selectionCount = 0
                     break

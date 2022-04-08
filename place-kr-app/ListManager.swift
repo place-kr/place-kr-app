@@ -292,7 +292,8 @@ class ListManager: ObservableObject {
         }
         let session = URLSession.shared
         
-        session.dataTask(with: request) { _, response, error in
+        session.dataTask(with: request) { [weak self] _, response, error in
+            guard let self = self else { return }
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode
             else {
@@ -310,14 +311,15 @@ class ListManager: ObservableObject {
                     return
                 }
             }
+            
+            
+            if let completionHandler = completionHandler {
+                completionHandler(true)
+            }
+            
+            self.updateLists()
         }
         .resume()
-        
-        
-        if let completionHandler = completionHandler {
-            completionHandler(true)
-        }
-        self.updateLists()
     }
     
     /// 플레이스 리스트 삭제
@@ -330,7 +332,8 @@ class ListManager: ObservableObject {
         }
         let session = URLSession.shared
         
-        session.dataTask(with: request) { _, response, error in
+        session.dataTask(with: request) { [weak self] _, response, error in
+            guard let self = self else { return }
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode else {
                 switch (response as! HTTPURLResponse).statusCode {
@@ -346,12 +349,18 @@ class ListManager: ObservableObject {
                     return
                 }
             }
+            
+            
+            if let completionHandler = completionHandler {
+                completionHandler(true)
+            }
+            
+            guard let index = (self.placeLists.firstIndex{ $0.identifier == id }) else {
+                return
+            }
+            self.placeLists.remove(at: Int(index))
         }
         .resume()
-        
-        if let completionHandler = completionHandler {
-            completionHandler(true)
-        }
     }
     
     /// 플레이스 리스트 수정
@@ -429,7 +438,7 @@ class ListManager: ObservableObject {
             .sink(receiveCompletion: { result in
                 switch result {
                 case .finished:
-                    print("Place list fetched")
+                    print("[updateLists] Place list fetched")
                 case .failure(let error):
                     print("Error while fetching place lists: \(error)")
                 

@@ -19,15 +19,17 @@ struct MapView: View {
     @State var bottomSheetPosition: SheetPosition = .hidden
     @State var listSheetPosition: MiddlePosition = .hidden
     
-    
     @State var searchText = ""
     
     @State var navigateToRegisterNewListView = false
+    @State var navigateToSearch = false
     
     var body: some View {
         
         ZStack {
-//            Navigators
+            NavigationLink(destination: LazyView { AddTabView() }, isActive: $navigateToSearch) {
+                    EmptyView()
+                }
             
             /// 네이버 맵
             UIMapView(viewModel: mapViewModel)
@@ -162,9 +164,21 @@ extension MapView {
     }
     
     var SearchField: some View {
-        ThemedTextField($searchText, "장소를 입력하세요", bgColor: .white, isStroked: false, position: .leading, buttonName: "magnifyingglass", buttonColor: .black) {
-            print("tapped")
+        Button(action: { self.navigateToSearch = true }) {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                Text("플레이스 검색")
+
+                Spacer()
+            }
+                .background(RoundedRectangle(cornerRadius: 7)
+                    .fill(.white)
+                    .frame(height: 50)
+                )
         }
+//        ThemedTextField($searchText, "장소를 입력하세요", bgColor: .white, isStroked: false, isFocused: self.$isFocused, position: .leading, buttonName: "magnifyingglass", buttonColor: .black) {
+//            print("tapped")
+//        }
     }
     
     /// 닫기 버튼
