@@ -11,9 +11,14 @@ import BottomSheet
 
 struct MyPlaceView: View {
     @EnvironmentObject var listManager: ListManager
-    @State var navigateToNewList = false
+    
     @State var bottomSheetPosition: PlaceListSheetPosition = .hidden
     @State var selectedList: PlaceList?
+    @State var showShareSheet = false
+    @State var showEditSheet = false
+    @State var navigateToNewList = false
+    
+    @State var text = ""
 
     var body: some View {
         VStack {
@@ -111,8 +116,20 @@ struct MyPlaceView: View {
             withAnimation(.easeInOut(duration: 0.2)) {
                 navigateToNewList = false
             }
-        })
-        )
+        }))
+        .showAlert(show: showEditSheet, alert: EditListNameAlertView(name: $text, action: {
+            guard let selectedList = self.selectedList else { return }
+            
+            listManager.editListName(id: selectedList.identifier, name: self.text) { result in
+                if result {
+                    withAnimation(.spring()) {
+                        showEditSheet = false
+                    }
+                    bottomSheetPosition = .hidden
+                }
+                self.text = ""
+            }
+        }))
         .navigationBarTitle("") //this must be empty
         .navigationBarHidden(true)
     }
@@ -126,7 +143,10 @@ extension MyPlaceView {
                 Text("공유하기")
             }
             .onTapGesture {
-                print("Share")
+                showShareSheet = true
+                withAnimation(.spring()) {
+                    bottomSheetPosition = .hidden
+                }
             }
             
             Divider()
@@ -136,14 +156,7 @@ extension MyPlaceView {
                 Text("리스트명 변경하기")
             }
             .onTapGesture {
-//                guard let selectedList = self.selectedList else { return }
-//
-//                listManager.editListName(id: selectedList.identifier, name: <#T##String#>) { result in
-//                    if result {
-//                        listManager.updateLists()
-//                        bottomSheetPosition = .hidden
-//                    }
-//                }
+                showEditSheet = true
             }
             
             Divider()
@@ -153,7 +166,7 @@ extension MyPlaceView {
                 Text("플레이스 편집하기")
             }
             .onTapGesture {
-                print("Share")
+                print("edit")
             }
             
             Divider()
@@ -174,6 +187,9 @@ extension MyPlaceView {
             }
         }
         .font(.system(size: 14))
+        .sheet(isPresented: $showShareSheet) {
+            ShareSheet(activityItems: ["Hello world"])
+        }
     }
 }
 

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9B025B5F27DB6A1000B3271A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9B025B5E27DB6A1000B3271A /* Settings.bundle */; };
+		9B0ADB1A2806E0A000E934FC /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB192806E09F00E934FC /* ShareSheet.swift */; };
+		9B0ADB1C2806E35A00E934FC /* EditListNameAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB1B2806E35A00E934FC /* EditListNameAlertView.swift */; };
 		9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */; };
 		9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A65B2796F42A0029CA0E /* AppDelegate.swift */; };
 		9B20A65E2796F42A0029CA0E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A65D2796F42A0029CA0E /* SceneDelegate.swift */; };
@@ -78,6 +80,8 @@
 
 /* Begin PBXFileReference section */
 		9B025B5E27DB6A1000B3271A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		9B0ADB192806E09F00E934FC /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
+		9B0ADB1B2806E35A00E934FC /* EditListNameAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListNameAlertView.swift; sourceTree = "<group>"; };
 		9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetModifier.swift; sourceTree = "<group>"; };
 		9B20A6582796F42A0029CA0E /* place-kr-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "place-kr-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B20A65B2796F42A0029CA0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -176,6 +180,7 @@
 		9B0FCE0627D4C1AD003A9CFA /* Sheets */ = {
 			isa = PBXGroup;
 			children = (
+				9B0ADB192806E09F00E934FC /* ShareSheet.swift */,
 				9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */,
 			);
 			path = Sheets;
@@ -360,6 +365,7 @@
 				9B82F64127CF198E0081A701 /* AlertStyleModifier.swift */,
 				9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */,
 				9BE91FB028031843000DE8C9 /* CommentAlertView.swift */,
+				9B0ADB1B2806E35A00E934FC /* EditListNameAlertView.swift */,
 			);
 			path = Alerts;
 			sourceTree = "<group>";
@@ -590,6 +596,7 @@
 				9BFBB99F27C743DD002C5F10 /* SearchResultsView.swift in Sources */,
 				9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */,
 				9B44BEF627C5E7D600755AD5 /* LargePlaceCardView.swift in Sources */,
+				9B0ADB1A2806E0A000E934FC /* ShareSheet.swift in Sources */,
 				9B82F64627CF1FA80081A701 /* ThemedTextField.swift in Sources */,
 				9B35BA4C27CDDA4B0013C1EA /* TabsView.swift in Sources */,
 				9B9D77C527D7455300326BB5 /* PlaceDetailView.swift in Sources */,
@@ -602,6 +609,7 @@
 				9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */,
 				9BA012A727D8D1500080F245 /* PlaceInfoManager.swift in Sources */,
 				9BF582C9279B8AF90068805E /* LogInView.swift in Sources */,
+				9B0ADB1C2806E35A00E934FC /* EditListNameAlertView.swift in Sources */,
 				9B846689279852DA00066F04 /* AppleLoginDelegate.swift in Sources */,
 				9B6C0D2727C8966600376373 /* RequestPlaceView.swift in Sources */,
 				9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */,

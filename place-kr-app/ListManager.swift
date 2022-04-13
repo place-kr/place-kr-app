@@ -18,7 +18,7 @@ struct PlaceListResponse: Codable {
 
 struct PlaceList: Codable, Hashable {
     let identifier: String
-    let name: String
+    var name: String
     let icon: String
     let color: String
     let places: [String]
@@ -350,17 +350,16 @@ class ListManager: ObservableObject {
                 }
             }
             
-            
-            if let completionHandler = completionHandler {
-                completionHandler(true)
-            }
-            
             guard let index = (self.placeLists.firstIndex{ $0.identifier == id }) else {
                 return
             }
             
             DispatchQueue.main.async {
                 self.placeLists.remove(at: Int(index))
+                
+                if let completionHandler = completionHandler {
+                    completionHandler(true)
+                }
             }
         }
         .resume()
@@ -428,9 +427,18 @@ class ListManager: ObservableObject {
                 }
             }
         }
+        .resume()
         
-        if let completionHandler = completionHandler {
-            completionHandler(true)
+        guard let index = (self.placeLists.firstIndex{ $0.identifier == id }) else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+            self.placeLists[index].name = name
+            
+            if let completionHandler = completionHandler {
+                completionHandler(true)
+            }
         }
     }
     
