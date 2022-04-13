@@ -32,6 +32,7 @@ struct PlaceDetailView: View {
     @ObservedObject var viewModel: PlaceDetailViewModel
     
     @State var showEntireComments = false
+    @State var showAddComment = false
     
     let placeInfo: PlaceInfo
 
@@ -89,6 +90,11 @@ struct PlaceDetailView: View {
             }
             
         }
+        .showAlert(show: showAddComment, alert: CommentAlertView(action: {
+            withAnimation(.spring()) {
+                self.showAddComment = false
+            }
+        }))
         .background(Color("grayBackground").edgesIgnoringSafeArea(.bottom))        .navigationBarTitle("플레이스 정보", displayMode: .inline)
         .navigationBarItems(leading:
                                 Button(action: { self.presentation.wrappedValue.dismiss() },
@@ -104,7 +110,11 @@ struct PlaceDetailView: View {
 
 extension PlaceDetailView {
     var LeaveCommentButton: some View {
-        Button(action: {  }) {
+        Button(action: {
+            withAnimation(.spring()) {
+                self.showAddComment = true
+            }
+        }) {
             HStack {
                 Spacer()
                 Text("평가 남기기")
@@ -140,7 +150,8 @@ extension PlaceDetailView {
         .padding(.vertical, 21)
         .frame(maxWidth: .infinity)
         .background(
-            RoundedRectangle(cornerRadius: 12)                        .fill(Color.white))
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white))
     }
     
     var Comments: some View {

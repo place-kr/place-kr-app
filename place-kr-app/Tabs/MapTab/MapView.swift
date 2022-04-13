@@ -171,10 +171,11 @@ extension MapView {
 
                 Spacer()
             }
-                .background(RoundedRectangle(cornerRadius: 7)
-                    .fill(.white)
-                    .frame(height: 50)
-                )
+            .padding(.horizontal)
+            .background(RoundedRectangle(cornerRadius: 7)
+                .fill(.white)
+                .frame(height: 50)
+            )
         }
 //        ThemedTextField($searchText, "장소를 입력하세요", bgColor: .white, isStroked: false, isFocused: self.$isFocused, position: .leading, buttonName: "magnifyingglass", buttonColor: .black) {
 //            print("tapped")

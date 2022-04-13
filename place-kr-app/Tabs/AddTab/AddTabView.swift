@@ -17,7 +17,8 @@ struct AddTabView: View {
     var body: some View {
         VStack {
             /// Navgation용 빈 뷰. 검색 결과 뷰로 navigate.
-            NavigationLink(destination: LazyView { SearchResultsView(keyword: viewModel.searchKeyword) }, isActive: $doNavigate) {
+            NavigationLink(destination: LazyView { SearchResultsView(keyword: viewModel.searchKeyword) }, 
+                           isActive: $doNavigate) {
                 EmptyView()
             }
             
