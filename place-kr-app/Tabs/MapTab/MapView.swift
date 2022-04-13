@@ -115,8 +115,7 @@ struct MapView: View {
             withAnimation(.easeInOut(duration: 0.2)) {
                 navigateToRegisterNewListView = false
             }
-        })
-        )
+        }, completion: { _ in }))
     }
 }
 

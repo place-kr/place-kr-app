@@ -7,86 +7,98 @@
 
 import SwiftUI
 import BottomSheet
-// TODO: 서버에서 리스트 정보를 받아와야 할 것 같다
+
+class MyPlaceViewModel: ObservableObject {
+    @Published var progress: Progress = .ready
+}
 
 struct MyPlaceView: View {
     @EnvironmentObject var listManager: ListManager
+    @ObservedObject var viewModel = MyPlaceViewModel()
     
     @State var bottomSheetPosition: PlaceListSheetPosition = .hidden
     @State var selectedList: PlaceList?
     @State var showShareSheet = false
     @State var showEditSheet = false
-    @State var navigateToNewList = false
+    @State var showNewListAlert = false
     
     @State var text = ""
 
     var body: some View {
-        VStack {
-            VStack {
-                // 페이지 헤더 부분
-                PageHeader(title: "나의 플레이스", trailing: "추가하기", trailingAction: {
-                    withAnimation(.easeInOut(duration: 0.2)){
-                        self.navigateToNewList = true
-                    }
-                })
-                .padding(.bottom, 18)
-                .padding(.horizontal, 15)
-
-                Rectangle()
-                    .fill(.gray.opacity(0.2))
-                    .frame(maxHeight: 0.5)
-                    .padding(.bottom, 18)
+        ZStack {
+            if viewModel.progress == .inProcess {
+                ProgressView(style: .medium)
+                    .zIndex(1)
+                Color.gray.opacity(0.2)
             }
-            .padding(.top, 20)
-
-            // 플레이스 리스트
-            VStack(spacing: 15) {
-                HStack {
-                    Text("총 \(listManager.placeLists.count)개의 플레이스 리스트가 있습니다")
-                        .font(.basic.normal12)
-                    Spacer()
-                }
-                .padding(.horizontal, 15)
-                
-                ScrollView {
-                    VStack(spacing: 10) {
-                        // 리스트 카드 뷰
-                        ForEach(listManager.placeLists, id: \.self) { list in
-                            NavigationLink(
-                                destination: LazyView {
-                                    PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list, listManager: listManager))
-                                },
-                                label: {
-                                    SimplePlaceCardView(list.name,
-                                                        hex: list.color,
-                                                        subscripts: "\(list.places.count) places",
-                                                        image: UIImage(),
-                                                        action: {
-                                        self.selectedList = list
-                                        withAnimation(.spring()) {
-                                            bottomSheetPosition = .bottom
-                                        }})
-                                    .padding(.horizontal, 12)
-                                })
-                            .frame(height: 70)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(.white)
-                                    .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                            )
-                            .foregroundColor(.black)
+            
+            VStack {
+                VStack {
+                    // 페이지 헤더 부분
+                    PageHeader(title: "나의 플레이스", trailing: "추가하기", trailingAction: {
+                        withAnimation(.easeInOut(duration: 0.2)){
+                            self.showNewListAlert = true
                         }
+                    })
+                    .padding(.bottom, 18)
+                    .padding(.horizontal, 15)
+
+                    Rectangle()
+                        .fill(.gray.opacity(0.2))
+                        .frame(maxHeight: 0.5)
+                        .padding(.bottom, 18)
+                }
+                .padding(.top, 20)
+
+                // 플레이스 리스트
+                VStack(spacing: 15) {
+                    HStack {
+                        Text("총 \(listManager.placeLists.count)개의 플레이스 리스트가 있습니다")
+                            .font(.basic.normal12)
+                        Spacer()
                     }
                     .padding(.horizontal, 15)
-                    .padding(.bottom, 30)
+                    
+                    ScrollView {
+                        VStack(spacing: 10) {
+                            // 리스트 카드 뷰
+                            ForEach(listManager.placeLists, id: \.self) { list in
+                                NavigationLink(
+                                    destination: LazyView {
+                                        PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list, listManager: listManager))
+                                    },
+                                    label: {
+                                        SimplePlaceCardView(list.name,
+                                                            hex: list.color,
+                                                            subscripts: "\(list.places.count) places",
+                                                            image: UIImage(),
+                                                            action: {
+                                            self.selectedList = list
+                                            withAnimation(.spring()) {
+                                                bottomSheetPosition = .bottom
+                                            }})
+                                        .padding(.horizontal, 12)
+                                    })
+                                .frame(height: 70)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(.white)
+                                        .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                                )
+                                .foregroundColor(.black)
+                            }
+                        }
+                        .padding(.horizontal, 15)
+                        .padding(.bottom, 30)
+                    }
                 }
             }
         }
         .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
                      options: [
                         .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20), .absolutePositionValue,
-                        .noBottomPosition, .swipeToDismiss, .tapToDismiss, .backgroundBlur(effect: .dark), 
-                        .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
+                        .noBottomPosition, .swipeToDismiss, .tapToDismiss, .backgroundBlur(effect: .dark),
+                            .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
                      ]
                      ,
                      headerContent: {
@@ -103,7 +115,7 @@ struct MyPlaceView: View {
                 }) {
                     Image(systemName: "xmark")
                         .font(.system(size: 21, weight: .bold))
-
+                    
                 }
             }
             .padding(.horizontal, 25)
@@ -112,22 +124,48 @@ struct MyPlaceView: View {
             managePlaceList
                 .padding(.horizontal, 28)
         })
-        .showAlert(show: navigateToNewList, alert: RegisterNewListAlertView(action: {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                navigateToNewList = false
+        .showAlert(show: showNewListAlert, alert: RegisterNewListAlertView(action: {
+            viewModel.progress = .inProcess
+            withAnimation(.spring()) {
+                showNewListAlert = false
+            }
+        }, completion: { result in
+            DispatchQueue.main.async {
+                switch result {
+                case true:
+                    withAnimation(.spring()) {
+                        showNewListAlert = false
+                    }
+                    bottomSheetPosition = .hidden
+                    viewModel.progress = .finished
+                    return
+                case false:
+                    viewModel.progress = .failed
+                    return
+                }
             }
         }))
         .showAlert(show: showEditSheet, alert: EditListNameAlertView(name: $text, action: {
             guard let selectedList = self.selectedList else { return }
+            viewModel.progress = .inProcess
             
             listManager.editListName(id: selectedList.identifier, name: self.text) { result in
-                if result {
-                    withAnimation(.spring()) {
-                        showEditSheet = false
+                DispatchQueue.main.async {
+                    switch result {
+                    case true:
+                        withAnimation(.spring()) {
+                            showEditSheet = false
+                        }
+                        bottomSheetPosition = .hidden
+                        self.text = ""
+                        viewModel.progress = .finished
+                        return
+                    case false:
+                        self.text = ""
+                        viewModel.progress = .failed
+                        return
                     }
-                    bottomSheetPosition = .hidden
                 }
-                self.text = ""
             }
         }))
         .navigationBarTitle("") //this must be empty
@@ -178,10 +216,19 @@ extension MyPlaceView {
             }
             .onTapGesture {
                 guard let selectedList = self.selectedList else { return }
+                viewModel.progress = .inProcess
                 
                 listManager.deletePlaceList(id: selectedList.identifier) { result in
-                    if result {
-                        bottomSheetPosition = .hidden
+                    DispatchQueue.main.async {
+                        switch result {
+                        case true:
+                            bottomSheetPosition = .hidden
+                            viewModel.progress = .finished
+                            return
+                        case false:
+                            viewModel.progress = .failed
+                            return
+                        }
                     }
                 }
             }

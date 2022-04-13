@@ -12,9 +12,11 @@ struct RegisterNewListAlertView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @State var name = ""
     @State var selectedColor: ListColor?
+    @State var clicked = false
     
     let colors: [ListColor] = ListColor.allCases
     let action: () -> Void
+    let completion: (Bool) -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -92,22 +94,15 @@ struct RegisterNewListAlertView: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    // TODO: 에러 콜
+                    clicked = true
                     let postBody = PlaceListPostBody(name: self.name, icon: "🧮", color: selectedColor?.HEX, places: [String]())
                     self.viewModel.addPlaceList(body: postBody) { result in
-                        switch result {
-                        case true:
-                            self.action()
-                            break
-                        case false:
-                            break
-                        }
+                        completion(result)
                     }
-                    self.action()
                 }) {
                     Text("입력완료")
                 }
-                .disabled(name.isEmpty || selectedColor == nil)
+                .disabled(name.isEmpty || selectedColor == nil || clicked)
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)
@@ -122,6 +117,6 @@ struct RegisterNewListAlertView: View {
 
 struct RegisterNewListView_Preview: PreviewProvider {
     static var previews: some View {
-        RegisterNewListAlertView(action: {})
+        RegisterNewListAlertView(action: {}, completion: {_ in })
     }
 }
