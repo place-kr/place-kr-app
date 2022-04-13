@@ -358,7 +358,10 @@ class ListManager: ObservableObject {
             guard let index = (self.placeLists.firstIndex{ $0.identifier == id }) else {
                 return
             }
-            self.placeLists.remove(at: Int(index))
+            
+            DispatchQueue.main.async {
+                self.placeLists.remove(at: Int(index))
+            }
         }
         .resume()
     }
