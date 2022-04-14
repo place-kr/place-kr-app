@@ -19,16 +19,16 @@ struct SearchBarView: View {
     private let placeholder: String
     
     var body: some View {
-        TextField(placeholder, text: $inputText, onEditingChanged: { isFocused in
-            self.isFocused = isFocused
-        })
-            .modifier(TextFieldSearchButton(text: $inputText, showButton: showButton ,action: action))
-            .multilineTextAlignment(.leading)
-            .frame(minWidth: 200, maxWidth: .infinity, maxHeight: height)
-            .padding(.horizontal)
-            .background(RoundedRectangle(cornerRadius: 7).stroke(.black.opacity(isStroked ? 1 : 0)))
-            .background(backgroundColor)
-            .cornerRadius(7)
+        TextField(placeholder, text: $inputText,
+                  onEditingChanged: { self.isFocused = $0 },
+                  onCommit: { if !inputText.isEmpty { print("SSSS"); action() }})
+        .modifier(TextFieldSearchButton(text: $inputText, showButton: showButton ,action: action))
+        .multilineTextAlignment(.leading)
+        .frame(minWidth: 200, maxWidth: .infinity, maxHeight: height)
+        .padding(.horizontal)
+        .background(RoundedRectangle(cornerRadius: 7).stroke(.black.opacity(isStroked ? 1 : 0)))
+        .background(backgroundColor)
+        .cornerRadius(7)
     }
     
     init(_ inputText: Binding<String>,

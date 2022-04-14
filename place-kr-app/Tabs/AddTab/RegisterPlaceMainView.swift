@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+class RegisterPlaceMainViewModel: ObservableObject {
+    
+}
+
 struct RegisterPlaceMainView: View {
     @State var navigateToRegister = false
     
@@ -20,22 +24,7 @@ struct RegisterPlaceMainView: View {
             
             CustomDivider()
             
-            Spacer()
-            
-            Image("addEmpty")
-                .resizable()
-                .frame(width: 65, height: 80)
-                .padding(.bottom, 55)
-            
-            Text("직접 플레이스를 등록해보세요")
-                .font(.basic.bold17)
-                .padding(.bottom, 9)
-            
-            Text("여러분의 플레이스 등록 참여로\n 더욱 풍성한 플레이스를 만들어주세요")
-                .multilineTextAlignment(.center)
-                .font(.basic.normal14)
-
-            Spacer()
+            EmptyCaseView
             
             Button(action: { navigateToRegister = true }) {
                 Text("플레이스 등록하기")
@@ -52,6 +41,27 @@ extension RegisterPlaceMainView {
     var Navigators: some View {
         NavigationLink(destination: RegisterPlaceView(), isActive: $navigateToRegister) {
             EmptyView()
+        }
+    }
+    
+    var EmptyCaseView: some View {
+        VStack {
+            Spacer()
+            
+            Image("addEmpty")
+                .resizable()
+                .frame(width: 65, height: 80)
+                .padding(.bottom, 55)
+            
+            Text("직접 플레이스를 등록해보세요")
+                .font(.basic.bold17)
+                .padding(.bottom, 9)
+            
+            Text("여러분의 플레이스 등록 참여로\n 더욱 풍성한 플레이스를 만들어주세요")
+                .multilineTextAlignment(.center)
+                .font(.basic.normal14)
+
+            Spacer()
         }
     }
 }

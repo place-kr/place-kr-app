@@ -31,10 +31,16 @@ struct KakaoPlaceResponse: Codable {
         }
     }
     
-    struct Meta: Codable {}
+    struct Meta: Codable {
+        let isEnd: Bool
+        
+        enum CodingKeys: String, CodingKey {
+            case isEnd = "is_end"
+        }
+    }
 }
 
-struct KakaoPlaceInfo {
+struct KakaoPlaceInfo: Identifiable {
     private let document: KakaoPlaceResponse.Document
     
     var id: String {

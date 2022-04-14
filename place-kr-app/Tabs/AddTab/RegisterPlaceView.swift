@@ -6,14 +6,48 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
+import Combine
+
+class RegisterPlaceviewModel: ObservableObject {
+    @Published var progress: Progress = .ready
+    
+    private var subscriptions = Set<AnyCancellable>()
+    
+    func register(name: String, address: String, completion: @escaping (Bool)->()) {
+        self.progress = .inProcess
+        
+        let registerRequest = RegisterRequest(name: name, address: address)
+        
+        RegisterManager.registerPlace(registerRequest)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .failure(let error):
+                    self.progress = .failedWithError(error: error)
+                    completion(false)
+                case .finished:
+                    self.progress = .finished
+                    completion(true)
+                }
+                
+                self.subscriptions.removeAll()
+            }, receiveValue: { _ in })
+            .store(in: &subscriptions)
+    }
+}
 
 struct RegisterPlaceView: View {
     @Environment(\.presentationMode) var presentation
+    @ObservedObject var viewModel = RegisterPlaceviewModel()
+    
+    @State var showAddressSearch = false
     
     @State var placeName = ""
     @State var address = ""
     @State var restAddress = ""
+    @State var descriptionText = ""
     
     var body: some View {
         VStack(spacing: 0) {
@@ -41,6 +75,9 @@ struct RegisterPlaceView: View {
                 .padding(.bottom, 15)
         }
         .padding(.horizontal, 15)
+        .overlay(
+            Group{ if viewModel.progress == .inProcess { ProgressView(style: .medium) }}
+        )
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }
@@ -79,10 +116,11 @@ extension RegisterPlaceView {
                 .padding(.bottom, 4)
             
             SearchBarView($address, "주소찾기를 통해 주소를 입력하세요", bgColor: .white, height: 40, isStroked: true)
+                .disabled(true)
             SearchBarView($restAddress, "나머지 주소를 입력해주세요", bgColor: .white, height: 40, isStroked: true)
             
             
-            Button(action: {}) {
+            Button(action: { showAddressSearch = true }) {
                 HStack {
                     Image(systemName: "magnifyingglass")
                     Text("플레이스 검색하기")
@@ -90,7 +128,15 @@ extension RegisterPlaceView {
                 }
             }
             .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 40))
-            
+        }
+        .sheet(isPresented: $showAddressSearch) {
+            addressSearch
+        }
+    }
+    
+    var addressSearch: some View {
+        SearchKakaoPlaceView { result in
+            self.address = result
         }
     }
     
@@ -100,15 +146,24 @@ extension RegisterPlaceView {
                 .font(.basic.light14)
                 .padding(.bottom, 4)
 
-            SearchBarView($address, "플레이스에 대해 설명해주세요", bgColor: .white, height: 40, isStroked: true)
+            SearchBarView($descriptionText, "플레이스에 대해 설명해주세요", bgColor: .white, height: 40, isStroked: true)
         }
     }
     
     var registerButton: some View {
-        Button(action: {}) {
+        Button(action: {
+            viewModel.register(name: self.placeName, address: self.address) { result in
+                if result == true {
+                    presentation.wrappedValue.dismiss()
+                } else {
+                    print("Error") // TODO: 고치기
+                }
+            }
+        }) {
             Text("플레이스 등록 요청하기")
                 .font(.system(size: 14))
         }
+        .disabled(placeName.isEmpty || address.isEmpty || restAddress.isEmpty)
         .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 52))
     }
 }
