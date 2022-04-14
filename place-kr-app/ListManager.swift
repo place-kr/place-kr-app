@@ -72,8 +72,8 @@ struct NameBody: Encodable {
 }
 
 struct ErrorBody: Decodable {
-    let message: String
-    let details: Details
+    let message: String?
+    let details: Details?
     
     enum CodingKeys: String, CodingKey {
         case message, details

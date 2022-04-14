@@ -8,6 +8,20 @@
 import SwiftUI
 
 @ViewBuilder
+func PageHeader(title: String) -> some View  {
+    
+    ZStack {
+        HStack(alignment: .center) {
+            Spacer()
+            Text(title)
+                .bold()
+                .font(.system(size: 21))
+            Spacer()
+        }
+    }
+}
+
+@ViewBuilder
 func PageHeader<T: View>(title: String, leading: T, leadingAction: @escaping (() -> ())) -> some View  {
     
     ZStack {
@@ -55,8 +69,8 @@ func PageHeader<T: View>(title: String, trailing: T, trailingAction: @escaping (
 
 @ViewBuilder
 func PageHeader<T: View, S: View>(title: String,
-                leading: T? = nil, leadingAction: (() -> ())? = nil,
-                trailing: S? = nil, trailingAction: (() -> ())? = nil ) -> some View  {
+                leading: T, leadingAction: (() -> ())? = nil,
+                trailing: S, trailingAction: (() -> ())? = nil ) -> some View  {
     
     ZStack {
         HStack(alignment: .center) {

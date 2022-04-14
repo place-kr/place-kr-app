@@ -37,6 +37,7 @@ struct TabsView: View {
                             Text("My place")
                         }
                     }
+                    .navigationBarHidden(true)
                     .tag(Tab.myPlace)
 
 
@@ -47,6 +48,7 @@ struct TabsView: View {
                             Text("Add")
                         }
                     }
+                    .navigationBarHidden(true)
                     .tag(Tab.register)
                 
                 ProfileTabView()

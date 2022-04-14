@@ -14,26 +14,28 @@ struct SearchBarView: View {
     private let showButton: Bool
     private let action: (() -> Void)
     private let backgroundColor: Color
+    private let height: CGFloat
     private let isStroked: Bool
     private let placeholder: String
     
     var body: some View {
-        TextField(placeholder, text: $inputText, onEditingChanged: { isFocused in
-            self.isFocused = isFocused
-        })
-            .modifier(TextFieldSearchButton(text: $inputText, showButton: showButton ,action: action))
-            .multilineTextAlignment(.leading)
-            .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
-            .padding(.horizontal)
-            .background(RoundedRectangle(cornerRadius: 7).stroke(.black.opacity(isStroked ? 1 : 0)))
-            .background(backgroundColor)
-            .cornerRadius(7)
+        TextField(placeholder, text: $inputText,
+                  onEditingChanged: { self.isFocused = $0 },
+                  onCommit: { if !inputText.isEmpty { print("SSSS"); action() }})
+        .modifier(TextFieldSearchButton(text: $inputText, showButton: showButton ,action: action))
+        .multilineTextAlignment(.leading)
+        .frame(minWidth: 200, maxWidth: .infinity, maxHeight: height)
+        .padding(.horizontal)
+        .background(RoundedRectangle(cornerRadius: 7).stroke(.black.opacity(isStroked ? 1 : 0)))
+        .background(backgroundColor)
+        .cornerRadius(7)
     }
     
     init(_ inputText: Binding<String>,
          _ placeholder: String = "현위치",
          isFocused: Binding<Bool>? = nil,
          bgColor: Color = .white,
+         height: CGFloat = 50,
          isStroked: Bool = false,
          action: (() -> Void)? = nil)
     {
@@ -56,6 +58,7 @@ struct SearchBarView: View {
         self.isStroked = isStroked
         self.backgroundColor = bgColor
         self.placeholder = placeholder
+        self.height = height
     }
 }
 

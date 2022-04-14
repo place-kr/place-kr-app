@@ -31,10 +31,16 @@ struct KakaoPlaceResponse: Codable {
         }
     }
     
-    struct Meta: Codable {}
+    struct Meta: Codable {
+        let isEnd: Bool
+        
+        enum CodingKeys: String, CodingKey {
+            case isEnd = "is_end"
+        }
+    }
 }
 
-struct KakaoPlaceInfo {
+struct KakaoPlaceInfo: Identifiable {
     private let document: KakaoPlaceResponse.Document
     
     var id: String {
@@ -55,6 +61,10 @@ struct KakaoPlaceInfo {
     
     var url: URL {
         return URL(string: document.url)!
+    }
+    
+    var coordString: (String, String) {
+        return (document.x, document.y)
     }
     
     var coord: (Double, Double) {

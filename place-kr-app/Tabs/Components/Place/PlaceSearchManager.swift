@@ -9,39 +9,71 @@ import SwiftUI
 import Combine
 
 class PlaceSearchManager {
+    static func authorizedRequest(url: String, name: String? = nil, page: Int? = nil) -> URLRequest? {
+        // Fetch my user token from UserDefault
+        let token = UserInfoManager.userToken
+        guard let token = token else {
+            return nil
+        }
+        
+        guard var components = URLComponents(string: url) else {
+            return nil
+        }
+        
+        var queryItems = [URLQueryItem]()
+        
+        if let name = name {
+            let name = URLQueryItem(name: "query", value: name)
+            queryItems.append(name)
+        }
+        
+        if let page = page {
+            let page = URLQueryItem(name: "page", value: String(page))
+            queryItems.append(page)
+        }
+        
+        components.queryItems = queryItems
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        return request
+    }
+    
     /// Place 이름을 기반으로 주변 정보를 받아옵니다.(Kakao 기반)
-    static func getKakaoPlacesByName(name: String) -> AnyPublisher<KakaoPlaceResponse, Error> {
-        // Get path of APIKeys.plist
-        guard let path = Bundle.main.path(forResource: "ApiKeys", ofType: "plist") else {
-            return Fail(error: PlaceApiError.keyLoad as Error).eraseToAnyPublisher()
+    static func getKakaoPlacesByName(name: String, page: Int) -> AnyPublisher<[KakaoPlaceInfo], Error> {
+        guard let request = authorizedRequest(url: "https://dev.place.tk/api/v1/places/kakao", name: name, page: page) else {
+            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
         
-        // Fetch my api key from APIKeys.plist
-        var apiKey: String?
-        do {
-            let keyDictUrl = URL(fileURLWithPath: path)
-            let data = try Data(contentsOf: keyDictUrl)
-            let keyDict = try PropertyListDecoder().decode([String: String].self, from: data)
-            apiKey = keyDict["KakaoApiKey"]
-        } catch  {
-            return Fail(error: error).eraseToAnyPublisher()
-        }
-        
-        // Make URLSession.datapublisher which requests informations from the server
-        let session = URLSession.shared
-        guard let parsedPlace = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let url = URL(string: "https://dapi.kakao.com/v2/local/search/keyword.json?query=\(parsedPlace)")
-        else {
-            return Fail(error: PlaceApiError.url).eraseToAnyPublisher()
-        }
-        
-        var request = URLRequest(url: url)
-        request.setValue("KakaoAK \(apiKey!)", forHTTPHeaderField: "Authorization")
-        
-        let decoder = JSONDecoder()
-        return session.dataTaskPublisher(for: request)
-            .map(\.data)
-            .decode(type: KakaoPlaceResponse.self, decoder: decoder)
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response in
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("Response error: \(response)")
+                    throw PlaceApiError.response
+                }
+                
+                guard 200..<300 ~= httpResponse.statusCode else {
+                    print("Response error: \(httpResponse)")
+                    throw PlaceApiError.response
+                }
+                
+                guard !data.isEmpty else {
+                    print("Data error: \(data)")
+                    throw PlaceApiError.data
+                }
+                
+                return data
+            }
+            .decode(type: KakaoPlaceResponse.self, decoder: JSONDecoder())
+            .map {
+                if $0.meta.isEnd {
+                    return []
+                } else {
+                    return $0.documents.map{ KakaoPlaceInfo(document: $0) }
+                }
+            }
             .eraseToAnyPublisher()
     }
     
