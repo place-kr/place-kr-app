@@ -27,7 +27,7 @@ struct MapView: View {
     var body: some View {
         
         ZStack {
-            NavigationLink(destination: LazyView { AddTabView() }, isActive: $navigateToSearch) {
+            NavigationLink(destination: LazyView { SearchMainView() }, isActive: $navigateToSearch) {
                     EmptyView()
                 }
             

@@ -40,14 +40,14 @@ struct TabsView: View {
                     .tag(Tab.myPlace)
 
 
-                AddTabView()
+                RegisterPlaceMainView()
                     .tabItem {
                         VStack {
                             Image(systemName: "plus.circle")
                             Text("Add")
                         }
                     }
-                    .tag(Tab.add)
+                    .tag(Tab.register)
                 
                 ProfileTabView()
                     .tabItem {
@@ -79,7 +79,7 @@ extension TabsView {
     enum Tab {
         case map
         case myPlace
-        case add
+        case register
         case profile
     }
 }

@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-class AddTabViewModel: ObservableObject {
+class SearchMainViewModel: ObservableObject {
     // TODO: 더미 데이터 고치기
     @Published var categoriesData = ["일식", "중식", "한식", "일식", "중식", "한식", "일식", "중식", "한식"]
     @Published var searchKeyword = ""

@@ -9,9 +9,9 @@ import SwiftUI
 
 // 검색 완료시 네비게이션 뷰로 전환하는 모델 생각해볼 것
 
-struct AddTabView: View {
+struct SearchMainView: View {
     @Environment(\.presentationMode) var presentation
-    @ObservedObject var viewModel = AddTabViewModel()
+    @ObservedObject var viewModel = SearchMainViewModel()
     @State var doNavigate = false
     
     var body: some View {
@@ -44,7 +44,7 @@ struct AddTabView: View {
     }
 }
 
-extension AddTabView {
+extension SearchMainView {
     var searchField: some View {
         HStack {
             /// 이전 뷰로 pop
@@ -108,6 +108,6 @@ extension AddTabView {
 
 struct AddTabView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTabView()
+        SearchMainView()
     }
 }
