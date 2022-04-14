@@ -14,6 +14,7 @@ struct SearchBarView: View {
     private let showButton: Bool
     private let action: (() -> Void)
     private let backgroundColor: Color
+    private let height: CGFloat
     private let isStroked: Bool
     private let placeholder: String
     
@@ -23,7 +24,7 @@ struct SearchBarView: View {
         })
             .modifier(TextFieldSearchButton(text: $inputText, showButton: showButton ,action: action))
             .multilineTextAlignment(.leading)
-            .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
+            .frame(minWidth: 200, maxWidth: .infinity, maxHeight: height)
             .padding(.horizontal)
             .background(RoundedRectangle(cornerRadius: 7).stroke(.black.opacity(isStroked ? 1 : 0)))
             .background(backgroundColor)
@@ -34,6 +35,7 @@ struct SearchBarView: View {
          _ placeholder: String = "현위치",
          isFocused: Binding<Bool>? = nil,
          bgColor: Color = .white,
+         height: CGFloat = 50,
          isStroked: Bool = false,
          action: (() -> Void)? = nil)
     {
@@ -56,6 +58,7 @@ struct SearchBarView: View {
         self.isStroked = isStroked
         self.backgroundColor = bgColor
         self.placeholder = placeholder
+        self.height = height
     }
 }
 

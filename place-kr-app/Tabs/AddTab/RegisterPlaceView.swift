@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct RegisterPlaceView: View {
     @Environment(\.presentationMode) var presentation
@@ -30,7 +31,12 @@ struct RegisterPlaceView: View {
                 .padding(.bottom, 20)
             
             searchAddr
+                .padding(.bottom, 20)
+            
+            description
+            
             Spacer()
+            
             registerButton
                 .padding(.bottom, 15)
         }
@@ -60,9 +66,9 @@ extension RegisterPlaceView {
         VStack(alignment: .leading, spacing:  6) {
             Text("플레이스명")
                 .font(.basic.light14)
-                .foregroundColor(.gray)
-            
-            SearchBarView($placeName, "플레이스 이름을 입력해주세요", bgColor: .white, isStroked: true)
+                .padding(.bottom, 4)
+
+            SearchBarView($placeName, "플레이스 이름을 입력해주세요", bgColor: .white, height: 40, isStroked: true)
         }
     }
     
@@ -70,17 +76,31 @@ extension RegisterPlaceView {
         VStack(alignment: .leading, spacing:  10) {
             Text("주소")
                 .font(.basic.light14)
-                .foregroundColor(.gray)
-                .padding(.bottom, 5)
+                .padding(.bottom, 4)
+            
+            SearchBarView($address, "주소찾기를 통해 주소를 입력하세요", bgColor: .white, height: 40, isStroked: true)
+            SearchBarView($restAddress, "나머지 주소를 입력해주세요", bgColor: .white, height: 40, isStroked: true)
+            
             
             Button(action: {}) {
-                Text("주소 찾기")
-                    .font(.system(size: 14))
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                    Text("플레이스 검색하기")
+                        .font(.system(size: 14))
+                }
             }
-            .buttonStyle(RoundedButtonStyle(bgColor: .gray.opacity(0.3), textColor: .black, isStroked: false, width: 90, height: 40))
+            .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 40))
             
-            SearchBarView($address, "주소찾기를 통해 주소를 입력하세요", bgColor: .white, isStroked: true)
-            SearchBarView($restAddress, "나머지 주소를 입력해주세요", bgColor: .white, isStroked: true)
+        }
+    }
+    
+    var description: some View {
+        VStack(alignment: .leading) {
+            Text("설명 (옵션)")
+                .font(.basic.light14)
+                .padding(.bottom, 4)
+
+            SearchBarView($address, "플레이스에 대해 설명해주세요", bgColor: .white, height: 40, isStroked: true)
         }
     }
     
@@ -89,7 +109,7 @@ extension RegisterPlaceView {
             Text("플레이스 등록 요청하기")
                 .font(.system(size: 14))
         }
-        .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 52))
+        .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 52))
     }
 }
 
