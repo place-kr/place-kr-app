@@ -10,44 +10,51 @@ import SwiftUI
 // 검색 완료시 네비게이션 뷰로 전환하는 모델 생각해볼 것
 
 struct AddTabView: View {
+    @Environment(\.presentationMode) var presentation
     @ObservedObject var viewModel = AddTabViewModel()
     @State var doNavigate = false
     
     var body: some View {
-        NavigationView {
-            VStack {
-                /// Navgation용 빈 뷰. 검색 결과 뷰로 navigate.
-                NavigationLink(destination: LazyView { SearchResultsView(keyword: viewModel.searchKeyword) }, isActive: $doNavigate) {
-                    EmptyView()
-                }
-                
-                searchField
-                    .padding(.bottom, 30)
-                
-                
-                /// 플레이스 텍스트가 비어있을 때 나타나는 뷰
-                if viewModel.searchKeyword.isEmpty {
-                    searchHistory
-                        .padding(.bottom, 40)
-                    
-                    categories
-                }
-                
-                Spacer()
+        VStack {
+            /// Navgation용 빈 뷰. 검색 결과 뷰로 navigate.
+            NavigationLink(destination: LazyView { SearchResultsView(keyword: viewModel.searchKeyword) }, 
+                           isActive: $doNavigate) {
+                EmptyView()
             }
-            .onAppear {
-                viewModel.searchKeyword = ""
+            
+            searchField
+                .padding(.bottom, 30)
+            
+            
+            /// 플레이스 텍스트가 비어있을 때 나타나는 뷰
+            if viewModel.searchKeyword.isEmpty {
+                searchHistory
+                    .padding(.bottom, 40)
+                
+//                categories
             }
-            .padding(.horizontal, 20)
-            .navigationBarHidden(true)
+            
+            Spacer()
         }
+        .onAppear {
+            viewModel.searchKeyword = ""
+        }
+        .padding(.horizontal, 20)
+        .navigationBarHidden(true)
     }
 }
 
 extension AddTabView {
     var searchField: some View {
-        SearchBarView($viewModel.searchKeyword, "검색 장소를 입력하세요", bgColor: Color(red: 243/255,  green: 243/255, blue: 243/255)) {
-            doNavigate = true
+        HStack {
+            /// 이전 뷰로 pop
+            Button(action: { self.presentation.wrappedValue.dismiss() }) {
+                Image(systemName: "chevron.left") // TODO: Root 로 pop 할지 이대로 할지 결정
+            }
+            
+            SearchBarView($viewModel.searchKeyword, "검색 장소를 입력하세요", bgColor: Color(red: 243/255,  green: 243/255, blue: 243/255)) {
+                doNavigate = true
+            }
         }
     }
     

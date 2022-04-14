@@ -32,6 +32,7 @@ struct PlaceDetailView: View {
     @ObservedObject var viewModel: PlaceDetailViewModel
     
     @State var showEntireComments = false
+    @State var showAddComment = false
     
     let placeInfo: PlaceInfo
 
@@ -56,13 +57,13 @@ struct PlaceDetailView: View {
                     .padding(.bottom, 21)
                     
                     Text(placeInfo.name)
-                        .font(.basic.largetitle)
+                        .font(.basic.bold21)
                     
                     HStack(spacing: 6) {
                         Image(systemName: "person.fill")
                         Text("포로리님의 플레이스")
                     }
-                    .font(.basic.normal)
+                    .font(.basic.normal12)
                     
                     Categories
                     
@@ -89,6 +90,11 @@ struct PlaceDetailView: View {
             }
             
         }
+        .showAlert(show: showAddComment, alert: CommentAlertView(action: {
+            withAnimation(.spring()) {
+                self.showAddComment = false
+            }
+        }))
         .background(Color("grayBackground").edgesIgnoringSafeArea(.bottom))        .navigationBarTitle("플레이스 정보", displayMode: .inline)
         .navigationBarItems(leading:
                                 Button(action: { self.presentation.wrappedValue.dismiss() },
@@ -104,11 +110,15 @@ struct PlaceDetailView: View {
 
 extension PlaceDetailView {
     var LeaveCommentButton: some View {
-        Button(action: {  }) {
+        Button(action: {
+            withAnimation(.spring()) {
+                self.showAddComment = true
+            }
+        }) {
             HStack {
                 Spacer()
                 Text("평가 남기기")
-                    .font(.basic.subtitle)
+                    .font(.basic.light14)
                 Spacer()
             }
         }
@@ -118,7 +128,7 @@ extension PlaceDetailView {
     var PlaceInformations: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("플레이스 정보")
-                .font(.basic.largetitle)
+                .font(.basic.bold21)
                 .padding(.bottom, 5)
             
             HStack {
@@ -127,27 +137,28 @@ extension PlaceDetailView {
                 Text("서울 서초구 서초대로")
                 Spacer()
             }
-            .font(.basic.subtitle)
+            .font(.basic.light14)
             
             HStack {
                 Image(systemName: "phone.fill")
                 Text("02-1234-5678")
                 Spacer()
             }
-            .font(.basic.subtitle)
+            .font(.basic.light14)
         }
         .padding(.horizontal, 21)
         .padding(.vertical, 21)
         .frame(maxWidth: .infinity)
         .background(
-            RoundedRectangle(cornerRadius: 12)                        .fill(Color.white))
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white))
     }
     
     var Comments: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .center) {
                 Text("한줄 평")
-                    .font(.basic.largetitle)
+                    .font(.basic.bold21)
                 .padding(.bottom, 5)
                 
                 Spacer()
@@ -157,14 +168,14 @@ extension PlaceDetailView {
 
                 }
                 .foregroundColor(.black)
-                .font(.basic.normal)
+                .font(.basic.normal12)
             }
             .padding(.bottom, 12)
             
             ForEach(0..<min(3, viewModel.messeages.count), id: \.self) { idx in
                 let message = viewModel.messeages[idx]
                 Text(message)
-                    .font(.basic.subtitle)
+                    .font(.basic.light14)
                     .padding(.vertical, 9)
                     .padding(.trailing, 12)
                     .padding(.leading, 17)
@@ -188,7 +199,7 @@ extension PlaceDetailView {
                 HStack(spacing: 9) {
                     StarButtonShape(15, fgColor: .gray, bgColor: .gray.opacity(0.3))
                     Text("123")
-                        .font(.basic.normal)
+                        .font(.basic.normal12)
                         .foregroundColor(.black)
                 }
             }
@@ -197,7 +208,7 @@ extension PlaceDetailView {
                 HStack(spacing: 9) {
                     StarButtonShape(15, fgColor: .gray, bgColor: .gray.opacity(0.3))
                     Text("공유하기")
-                        .font(.basic.normal)
+                        .font(.basic.normal12)
                         .foregroundColor(.black)
                 }
             }
@@ -212,7 +223,7 @@ extension PlaceDetailView {
             ForEach(texts, id: \.self) { text in
                 Button(action: {}, label: {
                     Text(text)
-                        .font(.basic.caption)
+                        .font(.basic.light11)
                         .padding(.vertical, 8)
                         .padding(.horizontal, 8)
                 })

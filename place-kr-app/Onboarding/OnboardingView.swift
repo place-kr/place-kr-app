@@ -125,7 +125,7 @@ struct OnboardingView: View {
                     Text("시작하기")
                         .foregroundColor(.white)
                 }
-                .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 52))
+                .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 52))
                 .disabled(viewModel.selectionCount == 0)
                 .transition(.opacity)
                 .animation(.easeInOut)

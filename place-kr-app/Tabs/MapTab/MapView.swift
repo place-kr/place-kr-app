@@ -12,20 +12,24 @@ import BottomSheet
 struct MapView: View {
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
     @StateObject var placeInfoManager = PlaceInfoManager()
-    @ObservedObject var placeListManager = FavoritePlaceManager.shared
+    @EnvironmentObject var listManager: ListManager
     
     /// 현재 활성화된 시트의 종류를 저장, 리턴함
     @State var activeSheet: ActiveSheet = .placeInfo
     @State var bottomSheetPosition: SheetPosition = .hidden
-    @State var middleSheetPosition: MiddlePosition = .hidden
+    @State var listSheetPosition: MiddlePosition = .hidden
+    
     @State var searchText = ""
     
     @State var navigateToRegisterNewListView = false
+    @State var navigateToSearch = false
     
     var body: some View {
         
         ZStack {
-            Navigators
+            NavigationLink(destination: LazyView { AddTabView() }, isActive: $navigateToSearch) {
+                    EmptyView()
+                }
             
             /// 네이버 맵
             UIMapView(viewModel: mapViewModel)
@@ -98,7 +102,7 @@ struct MapView: View {
                 SheetView(active: activeSheet)
             }
         })
-        .bottomSheet(bottomSheetPosition: self.$middleSheetPosition,
+        .bottomSheet(bottomSheetPosition: self.$listSheetPosition,
                      options: [
                         .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
                         .noBottomPosition, .swipeToDismiss,
@@ -107,7 +111,11 @@ struct MapView: View {
                      , content: {
             SheetView(active: activeSheet)
         })
-        .navigationBarHidden(true)
+        .showAlert(show: navigateToRegisterNewListView, alert: RegisterNewListAlertView(action: {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                navigateToRegisterNewListView = false
+            }
+        }, completion: { _ in }))
     }
 }
 
@@ -124,13 +132,6 @@ extension MapView {
         withAnimation(springAnimation) {
             self.bottomSheetPosition = .bottom
             self.activeSheet = .placeInfo
-        }
-    }
-    
-    var Navigators: some View {
-        NavigationLink( destination: LazyView { RegisterNewListView().environmentObject(placeListManager) },
-                        isActive: $navigateToRegisterNewListView) {
-            EmptyView()
         }
     }
     
@@ -157,70 +158,34 @@ extension MapView {
                 .padding(.horizontal, 20)
             }
         case .favoriteList:
-            VStack(alignment: .leading, spacing: 15) {
-                HStack {
-                    Text("리스트를 선택해주세요")
-                        .font(.system(size: 21, weight: .bold))
-                    Spacer()
-                    CloseButton
-                }
-
-                Divider()
-
-                ScrollView(showsIndicators: false) {
-                    HStack {
-                        Button(action: {}) {
-                            Image(systemName: "plus")
-                                .foregroundColor(.gray)
-                                .padding(5)
-                                .background(Circle().fill(.gray.opacity(0.3)))
-                        }
-                        Text("새로운 리스트 만들기")
-                            .font(.basic.normal)
-                        
-                        Spacer()
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        print("SS")
-                        self.navigateToRegisterNewListView = true
-                    }
-                    
-                    Divider()
-                        ForEach(placeListManager.favoritePlacesLists.indices, id: \.self) { index in
-                            let list = placeListManager.favoritePlacesLists[index]
-                            HStack {
-                                RoundedRectangle(cornerRadius: 5)
-                                    .fill(.gray)
-                                    .frame(width: 34, height: 34)
-                                
-                                Text(list.name)
-                                
-                                Spacer()
-                            }
-                            
-                            Divider()
-                        }
-                }
-                Spacer()
-            }
-            .padding(.horizontal, 28)
-            .padding(.top, 10)
+            AddingListSheetView
         }
     }
     
     var SearchField: some View {
-        ThemedTextField($searchText, "장소를 입력하세요", bgColor: .white, isStroked: false, position: .leading, buttonName: "magnifyingglass", buttonColor: .black) {
-            print("tapped")
+        Button(action: { self.navigateToSearch = true }) {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                Text("플레이스 검색")
+
+                Spacer()
+            }
+            .padding(.horizontal)
+            .background(RoundedRectangle(cornerRadius: 7)
+                .fill(.white)
+                .frame(height: 50)
+            )
         }
+//        ThemedTextField($searchText, "장소를 입력하세요", bgColor: .white, isStroked: false, isFocused: self.$isFocused, position: .leading, buttonName: "magnifyingglass", buttonColor: .black) {
+//            print("tapped")
+//        }
     }
     
     /// 닫기 버튼
     var CloseButton: some View {
         Button(action:{
-            print("SS")
             withAnimation(.spring()) {
-                middleSheetPosition = .hidden
+                listSheetPosition = .hidden
             }
         }) {
             Image(systemName: "xmark")
@@ -238,7 +203,7 @@ extension MapView {
                     withAnimation(.spring()){
                         self.activeSheet = .favoriteList
                         self.bottomSheetPosition = .hidden
-                        self.middleSheetPosition = .middle
+                        self.listSheetPosition = .middle
                     }
                 }) {
                     Image(systemName: "star.fill")
@@ -280,6 +245,81 @@ extension MapView {
         }
         .buttonStyle(CapsuledButtonStyle())
         .background(Capsule().fill(activeSheet == .myPlace ? .gray : .white))
+    }
+    
+    var AddingListSheetView: some View {
+            VStack(alignment: .leading, spacing: 15) {
+                HStack {
+                    Text("리스트를 선택해주세요")
+                        .font(.system(size: 21, weight: .bold))
+                    Spacer()
+                    CloseButton
+                }
+
+                Divider()
+
+                ScrollView(showsIndicators: false) {
+                    HStack {
+                        Image(systemName: "plus")
+                            .foregroundColor(.gray)
+                            .padding(5)
+                            .background(Circle().fill(.gray.opacity(0.3)))
+                        Text("새로운 리스트 만들기")
+                            .font(.basic.normal12)
+                        
+                        Spacer()
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            self.navigateToRegisterNewListView = true
+                            listManager.updateLists()
+                        }
+                    }
+                    
+                    Divider()
+                        ForEach(listManager.placeLists, id: \.self) { list in
+                            HStack {
+                                RoundedRectangle(cornerRadius: 5)
+                                    .fill(.gray)
+                                    .frame(width: 34, height: 34)
+                                
+                                Text(list.name)
+                                
+                                Spacer()
+                            }
+                            .onTapGesture {
+                                let listId = list.identifier
+                                guard let selectedPlaceId = placeInfoManager.currentPlaceID else {
+                                    return
+                                }
+                                
+                                if list.places.contains(selectedPlaceId) {
+                                    print("Already exists")
+                                    return
+                                }
+                                
+                                listManager.addOnePlaceToList(listID: listId, placeID: selectedPlaceId) { result in
+                                    switch result {
+                                    case true:
+                                        withAnimation(.spring()) {
+                                            listSheetPosition = .hidden
+                                        }
+                                        break
+                                    case false:
+                                        print("Network: Already exists")
+                                        break
+                                    }
+                                }
+                            }
+                            
+                            Divider()
+                        }
+                }
+                Spacer()
+            }
+            .padding(.horizontal, 28)
+            .padding(.top, 10)
     }
 }
 

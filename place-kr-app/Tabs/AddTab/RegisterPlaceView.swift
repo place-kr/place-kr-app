@@ -36,9 +36,9 @@ extension RegisterPlaceView {
     var headerTexts: some View {
         VStack(alignment: .leading, spacing: 15) {
             Text("플레이스를 요청해보세요")
-                .font(.basic.title)
+                .font(.basic.bold17)
             Text("플레이스를 등록해주시면 ---님의 이름으로 플레이스가\n추가되며, 등록 내용을 실시간으로 알려드릴게요!")
-                .font(.basic.subtitle)
+                .font(.basic.light14)
                 .foregroundColor(.gray)
             
             // Filler
@@ -51,7 +51,7 @@ extension RegisterPlaceView {
     var searchPlaceName: some View {
         VStack(alignment: .leading, spacing:  6) {
             Text("플레이스명")
-                .font(.basic.subtitle)
+                .font(.basic.light14)
                 .foregroundColor(.gray)
             
             SearchBarView($placeName, "플레이스 이름을 입력해주세요", bgColor: .white, isStroked: true)
@@ -61,7 +61,7 @@ extension RegisterPlaceView {
     var searchAddr: some View {
         VStack(alignment: .leading, spacing:  10) {
             Text("주소")
-                .font(.basic.subtitle)
+                .font(.basic.light14)
                 .foregroundColor(.gray)
                 .padding(.bottom, 5)
             

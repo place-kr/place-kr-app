@@ -6,17 +6,36 @@
 //
 
 import SwiftUI
-fileprivate struct EncapsulateModifier: ViewModifier {
+struct EncapsulateModifier: ViewModifier {
+    let mode: Mode
+    
+    enum Mode {
+        case dark
+        case light
+    }
+    
     func body(content: Content) -> some View {
-        content
-            .font(.system(size: 11, weight: .bold))
-            .padding(.vertical, 4)
-            .padding(.horizontal, 9)
-            .background(
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color(red: 38/255, green: 38/255, blue: 38/255))
-            )
-            .foregroundColor(.white)
+        if mode == .dark {
+            content
+                .font(.system(size: 11, weight: .bold))
+                .padding(.vertical, 4)
+                .padding(.horizontal, 9)
+                .background(
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color(red: 38/255, green: 38/255, blue: 38/255))
+                )
+                .foregroundColor(.white)
+        } else {
+            content
+                .font(.system(size: 11, weight: .bold))
+                .padding(.vertical, 4)
+                .padding(.horizontal, 9)
+                .background(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(.black)
+                )
+                .foregroundColor(.black)
+        }
     }
 }
 
@@ -181,19 +200,44 @@ struct StarButtonShape: View {
     var body: some View {
         Image(systemName: "star.fill")
             .resizable()
-            .frame(width: radius, height: radius)
-            .scaledToFit()
             .foregroundColor(fgColor)
+            .aspectRatio(contentMode: .fit)
             .padding(5)
             .background(
                 Circle()
                     .fill(bgColor)
             )
+            .frame(width: radius, height: radius)
+    }
+}
+
+struct ShareButtonShape: View {
+    let radius: CGFloat
+    let bgColor: Color
+    let fgColor: Color
+    
+    init(_ radius: CGFloat, fgColor: Color,  bgColor: Color) {
+        self.radius = radius
+        self.bgColor = bgColor
+        self.fgColor = fgColor
+    }
+    
+    var body: some View {
+        Image(systemName: "square.and.arrow.up")
+            .resizable()
+            .foregroundColor(fgColor)
+            .aspectRatio(contentMode: .fit)
+            .padding(5)
+            .background(
+                Circle()
+                    .fill(bgColor)
+            )
+            .frame(width: radius, height: radius)
     }
 }
 
 extension View {
-    func encapsulate() -> some View {
-        modifier(EncapsulateModifier())
+    func encapsulate(mode: EncapsulateModifier.Mode) -> some View {
+        modifier(EncapsulateModifier(mode: mode))
     }
 }

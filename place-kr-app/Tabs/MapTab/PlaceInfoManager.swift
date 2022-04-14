@@ -14,8 +14,7 @@ class PlaceInfoManager: ObservableObject {
     @Published var placeInfo: PlaceInfo?
 
     var currentPlaceID: String?
-    let uuid = UUID()
-
+    
     func fetchInfo(id placeID: String) {
         PlaceSearchManager.getPlacesByIdentifier(placeID)
             .receive(on: DispatchQueue.main)
@@ -29,7 +28,6 @@ class PlaceInfoManager: ObservableObject {
                     print("PlaceInfoManager successfully fetched")
                 }
             }, receiveValue: { value in
-                print("\(self.uuid) PlaceInfoManager: \(value)")
                 self.placeInfo = value
             })
             .store(in: &subscriptions)

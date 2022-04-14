@@ -11,19 +11,19 @@ import Combine
 /// 검색창에서 리턴한 정보를 바탕으로 관련 장소 정보를 서버에서 받아 오는 역할을 합니다.
 /// 최초값은 현위치를 기반으로 설정됩니다.
 class SearchManager: ObservableObject {
-    @Published var places: [KakaoPlaceInfo]?   // 장소 정보 저장된 리스트
+    @Published var places: [PlaceInfo]?   // 장소 정보 저장된 리스트
     @Published var searchKeyword = ""
     private var subscriptions = Set<AnyCancellable>()
     
     func reset() {
-        places = [KakaoPlaceInfo]()
+        places = [PlaceInfo]()
         searchKeyword = ""
     }
     
     /// API 서버에 장소 키워드 전달 후 관련 정보를 받아옵니다.
     func fetchPlaces(_ keyword: String) {
-        PlaceSearchManager.getKakaoPlacesByName(name: keyword)
-            .map({ $0.documents.map(KakaoPlaceInfo.init) })
+        PlaceSearchManager.getPlacesByName(name: keyword)
+            .map { $0.results.map{ PlaceInfo(document: $0) }} 
             .sink(receiveCompletion: { response in
                 switch response {
                 case .failure(let error):

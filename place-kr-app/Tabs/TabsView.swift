@@ -8,30 +8,38 @@
 import SwiftUI
 
 struct TabsView: View {
+    @ObservedObject var listManager = ListManager()
     // TODO: 나중에 고칠 것 둘
     @State var showNewNameAlert = false
     @State var name = ""
     
+    @State var selection: Tab = .map
+    
     var body: some View {
         NavigationView {
-            
-            TabView {
+            TabView(selection: $selection) {
                 MapView()
+                    .environmentObject(listManager)
                     .tabItem {
                         VStack {
                             Image(systemName: "magnifyingglass")
                             Text("Home")
                         }
                     }
-                
-                MyPlaceView()
+                    .navigationBarHidden(true)
+                    .tag(Tab.map)
+
+                MyPlaceView(selection: $selection)
+                    .environmentObject(listManager)
                     .tabItem {
                         VStack {
                             Image(systemName: "star")
                             Text("My place")
                         }
                     }
-                
+                    .tag(Tab.myPlace)
+
+
                 AddTabView()
                     .tabItem {
                         VStack {
@@ -39,6 +47,7 @@ struct TabsView: View {
                             Text("Add")
                         }
                     }
+                    .tag(Tab.add)
                 
                 ProfileTabView()
                     .tabItem {
@@ -47,12 +56,13 @@ struct TabsView: View {
                             Text("Profile")
                         }
                     }
+                    .tag(Tab.profile)
+
             }
             .accentColor(.black)
-            .showAlert(alert: NewNameAlertView(name: $name, action: {
+            .showAlert(show: showNewNameAlert, alert: NewNameAlertView(name: $name, action: {
                 withAnimation(.easeInOut(duration: 0.2)) { self.showNewNameAlert = false }
-            }),
-                       show: showNewNameAlert)
+            }))
             .onAppear() {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     withAnimation(.easeInOut(duration: 0.2)) {
@@ -62,6 +72,15 @@ struct TabsView: View {
                 UITabBar.appearance().backgroundColor = .white
             }
         }
+    }
+}
+
+extension TabsView {
+    enum Tab {
+        case map
+        case myPlace
+        case add
+        case profile
     }
 }
 

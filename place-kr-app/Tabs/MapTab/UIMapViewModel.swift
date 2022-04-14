@@ -28,6 +28,7 @@ class UIMapViewModel: ObservableObject {
     @Published var currentPosition: NMGLatLng
     @Published var isInCurrentPosition = true
     @Published var mapNeedsReload = true
+    @Published var selectdMarker = NMFMarker()
     
     func setCurrentLocation() {
         self.currentPosition = NMGLatLng(from: LocationManager.shared.currentCoord)
@@ -85,6 +86,7 @@ class UIMapViewModel: ObservableObject {
                     // 마커에 터치 액션 부여
                     marker.touchHandler = { (m) -> Bool in
                         self.makeMarkersDefault(self.markers)
+                        self.selectdMarker = marker
                         
                         let coord = wrapper.placeInfo.lonlat
                         let nCoord = NMGLatLng(lat:coord.lat, lng: coord.lon)

@@ -9,24 +9,16 @@ import SwiftUI
 
 struct PlaceCardView: View {
     let bgColor: Color
-    var placeInfo: KakaoPlaceInfo
+    var placeInfo: PlaceInfo?
+    var title: String
     
     // TODO: Fix default data
-    init(bgColor: Color,
-         placeInfo: KakaoPlaceInfo = KakaoPlaceInfo(document: KakaoPlaceResponse.Document(
-            id: UUID().uuidString,
-            textAddress: "Dump",
-            roadAddress: "Dump",
-            name: "미나미",
-            url: "Dump",
-            x: String(111),
-            y: String(111))
-         ))
+    init(placeInfo: PlaceInfo, bgColor: Color)
     {
         self.bgColor = bgColor
         self.placeInfo = placeInfo
+        self.title = placeInfo.name
     }
-    
     
     var body: some View {
         ZStack {
@@ -39,7 +31,7 @@ struct PlaceCardView: View {
                             
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(alignment: .bottom, spacing: 0) {
-                        Text("\(placeInfo.name)")
+                        Text("\(title)") // TODO: FIXFIXFIX
                             .bold()
                             .font(.system(size: 24))
                             .padding(.trailing, 6)
@@ -71,11 +63,11 @@ struct PlaceCardView: View {
                     
                     HStack(spacing: 5) {
                         Text("일식")
-                            .encapsulate()
+                            .encapsulate(mode: .dark)
                         Text("아늑해요")
-                            .encapsulate()
+                            .encapsulate(mode: .dark)
                         Text("깔끔해요")
-                            .encapsulate()
+                            .encapsulate(mode: .dark)
                     }
                 }
                 
@@ -87,8 +79,8 @@ struct PlaceCardView: View {
     }
 }
 
-struct PlaceCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        PlaceCardView(bgColor: Color(red: 246/255, green: 246/255, blue: 246/255))
-    }
-}
+//struct PlaceCardView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PlaceCardView(bgColor: Color(red: 246/255, green: 246/255, blue: 246/255), placeInfo: <#PlaceInfo#>)
+//    }
+//}

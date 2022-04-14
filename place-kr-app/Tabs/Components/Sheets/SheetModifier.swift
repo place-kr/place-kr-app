@@ -12,6 +12,10 @@ enum SheetPosition: CGFloat, CaseIterable {
     case bottom = 0.25, hidden = 0
 }
 
+enum PlaceListSheetPosition: CGFloat, CaseIterable {
+    case bottom = 295, hidden = 0
+}
+
 enum MiddlePosition: CGFloat, CaseIterable {
     case middle = 0.45, hidden = 0
 }
