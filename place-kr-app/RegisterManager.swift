@@ -8,9 +8,19 @@
 import Combine
 import Foundation
 
-struct RegisterRequest: Encodable {
+struct RegisterRequest: Codable {
     let name: String
+    var x: String? = nil
+    var y: String? = nil
     let address: String
+    var addressDetail: String? = nil
+    var descriptions: String? = nil
+    var status: String? = nil
+    
+    enum CodingKeys: String, CodingKey {
+        case name, address, descriptions, status, x, y
+        case addressDetail = "address_detail"
+    }
 }
 
 class RegisterManager: ObservableObject {
@@ -40,10 +50,12 @@ class RegisterManager: ObservableObject {
         
         request.httpBody = encoded
         request.httpMethod = "POST"
-        
         return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap { _, response in
-                print(response)
+            .tryMap { data, response in
+                guard let decoded = try? JSONDecoder().decode(ErrorBody.self, from: data) else {
+                    throw URLError(.cannotDecodeRawData)
+                }
+                
                 guard let httpResponse = response as? HTTPURLResponse,
                       200..<300 ~= httpResponse.statusCode
                 else {
@@ -52,6 +64,25 @@ class RegisterManager: ObservableObject {
                 
                 return true
             }
+            .eraseToAnyPublisher()
+    }
+    
+    static func getRequests() -> AnyPublisher<[RegisterRequest], Error> {
+        guard let request = self.authorizedRequest else {
+            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+        }
+        
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .tryMap { data, response in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      200..<300 ~= httpResponse.statusCode
+                else {
+                    throw URLError(.badServerResponse)
+                }
+                
+                return data
+            }
+            .decode(type: [RegisterRequest].self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
 }

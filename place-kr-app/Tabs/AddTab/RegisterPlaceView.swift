@@ -8,39 +8,9 @@
 import SwiftUI
 import Combine
 
-class RegisterPlaceviewModel: ObservableObject {
-    @Published var progress: Progress = .ready
-    
-    private var subscriptions = Set<AnyCancellable>()
-    
-    func register(name: String, address: String, completion: @escaping (Bool)->()) {
-        self.progress = .inProcess
-        
-        let registerRequest = RegisterRequest(name: name, address: address)
-        
-        RegisterManager.registerPlace(registerRequest)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                case .failure(let error):
-                    self.progress = .failedWithError(error: error)
-                    completion(false)
-                case .finished:
-                    self.progress = .finished
-                    completion(true)
-                }
-                
-                self.subscriptions.removeAll()
-            }, receiveValue: { _ in })
-            .store(in: &subscriptions)
-    }
-}
-
 struct RegisterPlaceView: View {
     @Environment(\.presentationMode) var presentation
-    @ObservedObject var viewModel = RegisterPlaceviewModel()
+    @EnvironmentObject var viewModel: RegisterPlaceMainViewModel
     
     @State var showAddressSearch = false
     
@@ -48,6 +18,7 @@ struct RegisterPlaceView: View {
     @State var address = ""
     @State var restAddress = ""
     @State var descriptionText = ""
+    @State var coord = ("0.0", "0.0")
     
     var body: some View {
         VStack(spacing: 0) {
@@ -84,6 +55,7 @@ struct RegisterPlaceView: View {
 }
 
 extension RegisterPlaceView {
+    // 설명
     var headerTexts: some View {
         VStack(alignment: .leading, spacing: 15) {
             Text("플레이스를 요청해보세요")
@@ -91,7 +63,6 @@ extension RegisterPlaceView {
             Text("플레이스를 등록해주시면 ---님의 이름으로 플레이스가\n추가되며, 등록 내용을 실시간으로 알려드릴게요!")
                 .font(.basic.light14)
                 
-            
             // Filler
             HStack {
                 Spacer()
@@ -99,6 +70,7 @@ extension RegisterPlaceView {
         }
     }
     
+    // 플레이스 이름 입력 파트
     var searchPlaceName: some View {
         VStack(alignment: .leading, spacing:  6) {
             Text("플레이스명")
@@ -109,6 +81,7 @@ extension RegisterPlaceView {
         }
     }
     
+    // 주소찾기 텍스트 필드 파트
     var searchAddr: some View {
         VStack(alignment: .leading, spacing:  10) {
             Text("주소")
@@ -134,12 +107,15 @@ extension RegisterPlaceView {
         }
     }
     
+    // 주소 찾기 버튼
     var addressSearch: some View {
         SearchKakaoPlaceView { result in
-            self.address = result
+            self.address = result.roadAddress
+            self.coord = result.coordString
         }
     }
     
+    // 상세설명 텍스트필드
     var description: some View {
         VStack(alignment: .leading) {
             Text("설명 (옵션)")
@@ -150,9 +126,10 @@ extension RegisterPlaceView {
         }
     }
     
+    // 등록요청 버튼
     var registerButton: some View {
         Button(action: {
-            viewModel.register(name: self.placeName, address: self.address) { result in
+            viewModel.register(name: self.placeName, address: self.address, coord: self.coord) { result in
                 if result == true {
                     presentation.wrappedValue.dismiss()
                 } else {

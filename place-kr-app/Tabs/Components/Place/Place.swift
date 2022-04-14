@@ -63,6 +63,10 @@ struct KakaoPlaceInfo: Identifiable {
         return URL(string: document.url)!
     }
     
+    var coordString: (String, String) {
+        return (document.x, document.y)
+    }
+    
     var coord: (Double, Double) {
         let x: Double = Double(document.x) ?? 0
         let y: Double = Double(document.y) ?? 0

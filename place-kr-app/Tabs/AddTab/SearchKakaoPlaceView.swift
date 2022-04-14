@@ -19,6 +19,7 @@ class SearchKakaoPlaceViewModel: ObservableObject {
     func search(name: String, page: Int) {
         self.progress = .inProcess
         
+        // TODO: Paging
         PlaceSearchManager.getKakaoPlacesByName(name: name, page: page)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] result in
@@ -51,7 +52,7 @@ struct SearchKakaoPlaceView: View {
     @ObservedObject var viewModel = SearchKakaoPlaceViewModel()
     @State var text = ""
     
-    let completion: (String) -> Void
+    let completion: (KakaoPlaceInfo) -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -86,7 +87,7 @@ struct SearchKakaoPlaceView: View {
                                 .padding(.vertical, 5)
                             RowView(name: result.name, roadAddress: result.roadAddress)
                                 .onTapGesture {
-                                    completion(result.roadAddress)
+                                    completion(result)
                                     presentationMode.wrappedValue.dismiss()
                                 }
                         }

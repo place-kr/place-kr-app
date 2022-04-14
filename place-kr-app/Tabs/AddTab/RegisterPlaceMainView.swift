@@ -6,12 +6,43 @@
 //
 
 import SwiftUI
+import Combine
 
 class RegisterPlaceMainViewModel: ObservableObject {
+    private var subscriptions = Set<AnyCancellable>()
+    
+    @Published var progress: Progress = .ready
+    @Published var requests = [RegisterRequest]()
+    
+    func register(name: String, address: String, coord: (String, String), completion: @escaping (Bool)->()) {
+        self.progress = .inProcess
+        
+        let registerRequest = RegisterRequest(name: name, x: coord.0, y: coord.1, address: address)
+        
+        RegisterManager.registerPlace(registerRequest)
+            .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .failure(let error):
+                    self.progress = .failedWithError(error: error)
+                    completion(false)
+                case .finished:
+                    self.progress = .finished
+                    completion(true)
+                }
+                
+                self.subscriptions.removeAll()
+            }, receiveValue: { _ in })
+            .store(in: &subscriptions)
+    }
+    
     
 }
 
 struct RegisterPlaceMainView: View {
+    @ObservedObject var viewModel = RegisterPlaceMainViewModel()
     @State var navigateToRegister = false
     
     var body: some View {
@@ -39,7 +70,7 @@ struct RegisterPlaceMainView: View {
 
 extension RegisterPlaceMainView {
     var Navigators: some View {
-        NavigationLink(destination: RegisterPlaceView(), isActive: $navigateToRegister) {
+        NavigationLink(destination: RegisterPlaceView().environmentObject(viewModel) , isActive: $navigateToRegister) {
             EmptyView()
         }
     }
