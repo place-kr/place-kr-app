@@ -23,6 +23,8 @@ struct MyPlaceView: View {
     @State var showNewListAlert = false
     
     @State var text = ""
+    
+    @Binding var selection: TabsView.Tab
 
     var body: some View {
         ZStack {
@@ -65,7 +67,7 @@ struct MyPlaceView: View {
                             ForEach(listManager.placeLists, id: \.self) { list in
                                 NavigationLink(
                                     destination: LazyView {
-                                        PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list, listManager: listManager))
+                                        PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list, listManager: listManager), selection: $selection)
                                     },
                                     label: {
                                         SimplePlaceCardView(list.name,
@@ -244,6 +246,6 @@ extension MyPlaceView {
 
 struct MyPlaceView_Previews: PreviewProvider {
     static var previews: some View {
-        MyPlaceView()
+        MyPlaceView(selection: .constant(.map))
     }
 }

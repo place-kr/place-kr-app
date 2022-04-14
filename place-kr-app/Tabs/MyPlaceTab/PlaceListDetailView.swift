@@ -11,9 +11,12 @@ struct PlaceListDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: PlaceListDetailViewModel
     @State var isEditable = false
+    @Binding var selection: TabsView.Tab
     
-    init(viewModel: PlaceListDetailViewModel) {
+    init(viewModel: PlaceListDetailViewModel, selection: Binding<TabsView.Tab>) {
         self.viewModel = viewModel
+        self._selection = selection
+        
         viewModel.fetchMultipleInfos()
     }
     
@@ -100,7 +103,10 @@ struct PlaceListDetailView: View {
 extension PlaceListDetailView {
     var AdditionButton: some View {
         Button(action: {
-            presentationMode.wrappedValue.dismiss()
+            self.selection = .map
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                presentationMode.wrappedValue.dismiss()
+            }
         }, label: {
             HStack {
                 Spacer()

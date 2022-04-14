@@ -13,9 +13,11 @@ struct TabsView: View {
     @State var showNewNameAlert = false
     @State var name = ""
     
+    @State var selection: Tab = .map
+    
     var body: some View {
         NavigationView {
-            TabView {
+            TabView(selection: $selection) {
                 MapView()
                     .environmentObject(listManager)
                     .tabItem {
@@ -25,8 +27,9 @@ struct TabsView: View {
                         }
                     }
                     .navigationBarHidden(true)
+                    .tag(Tab.map)
 
-                MyPlaceView()
+                MyPlaceView(selection: $selection)
                     .environmentObject(listManager)
                     .tabItem {
                         VStack {
@@ -34,6 +37,8 @@ struct TabsView: View {
                             Text("My place")
                         }
                     }
+                    .tag(Tab.myPlace)
+
 
                 AddTabView()
                     .tabItem {
@@ -42,6 +47,7 @@ struct TabsView: View {
                             Text("Add")
                         }
                     }
+                    .tag(Tab.add)
                 
                 ProfileTabView()
                     .tabItem {
@@ -50,6 +56,8 @@ struct TabsView: View {
                             Text("Profile")
                         }
                     }
+                    .tag(Tab.profile)
+
             }
             .accentColor(.black)
             .showAlert(show: showNewNameAlert, alert: NewNameAlertView(name: $name, action: {
@@ -64,6 +72,15 @@ struct TabsView: View {
                 UITabBar.appearance().backgroundColor = .white
             }
         }
+    }
+}
+
+extension TabsView {
+    enum Tab {
+        case map
+        case myPlace
+        case add
+        case profile
     }
 }
 
