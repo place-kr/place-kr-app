@@ -16,6 +16,7 @@
 		9B0ADB272807C73800E934FC /* RegisterPlaceMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB262807C73800E934FC /* RegisterPlaceMainView.swift */; };
 		9B0ADB292807F22000E934FC /* SearchKakaoPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB282807F22000E934FC /* SearchKakaoPlaceView.swift */; };
 		9B0ADB2B28080F2800E934FC /* RegisterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB2A28080F2800E934FC /* RegisterManager.swift */; };
+		9B0ADB2D2808663A00E934FC /* RequestCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB2C2808663A00E934FC /* RequestCardView.swift */; };
 		9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */; };
 		9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A65B2796F42A0029CA0E /* AppDelegate.swift */; };
 		9B20A65E2796F42A0029CA0E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A65D2796F42A0029CA0E /* SceneDelegate.swift */; };
@@ -94,6 +95,7 @@
 		9B0ADB262807C73800E934FC /* RegisterPlaceMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPlaceMainView.swift; sourceTree = "<group>"; };
 		9B0ADB282807F22000E934FC /* SearchKakaoPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchKakaoPlaceView.swift; sourceTree = "<group>"; };
 		9B0ADB2A28080F2800E934FC /* RegisterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterManager.swift; sourceTree = "<group>"; };
+		9B0ADB2C2808663A00E934FC /* RequestCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCardView.swift; sourceTree = "<group>"; };
 		9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetModifier.swift; sourceTree = "<group>"; };
 		9B20A6582796F42A0029CA0E /* place-kr-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "place-kr-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B20A65B2796F42A0029CA0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */,
 				9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */,
 				9BA965D227FC370900C05D42 /* LightCardView.swift */,
+				9B0ADB2C2808663A00E934FC /* RequestCardView.swift */,
 				9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */,
 			);
 			path = PlaceCard;
@@ -649,6 +652,7 @@
 				9B0ADB292807F22000E934FC /* SearchKakaoPlaceView.swift in Sources */,
 				9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */,
 				9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */,
+				9B0ADB2D2808663A00E934FC /* RequestCardView.swift in Sources */,
 				9B91641627AE6065005FAC4A /* AppleLoginViewModel.swift in Sources */,
 				9B43E02C27C9EE410042F9C4 /* SimplePlaceCardView.swift in Sources */,
 				9B5D5B4A27F33AEF00B81831 /* ListManager.swift in Sources */,
