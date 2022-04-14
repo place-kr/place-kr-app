@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PlaceListDetailView: View {
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: PlaceListDetailViewModel
     @State var isEditable = false
     
@@ -36,27 +37,45 @@ struct PlaceListDetailView: View {
                     
                     Text("총 \(viewModel.places.count)개의 플레이스")
                         .font(.basic.light14)
+                        .foregroundColor(.gray)
                 }
                 .padding(.horizontal, 15)
                 
                 ZStack {
                     Color.backgroundGray
+                        .edgesIgnoringSafeArea(.all)
+                    
                     ScrollView {
                         // 플레이스 리스트
                         VStack(spacing: 7) {
-                            ForEach(viewModel.places, id: \.id) { wrapper in
-                                let place = wrapper.placeInfo
-                                LightCardView(place: place, isFavorite: wrapper.isSelected)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .fill(.white)
-                                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                                    )
+                            if viewModel.places.isEmpty {
+                                Text("아직 플레이스가 없어요\n 지도에서 플레이스를 추가해보세요!")
+                                    .multilineTextAlignment(.center)
+                                    .font(.basic.normal15)
+                                    .padding(.vertical, 40)
+                                    .foregroundColor(.gray)
+                                
+                                AdditionButton
+                                Spacer()
+                            } else {
+                                ForEach(viewModel.places, id: \.id) { wrapper in
+                                    let place = wrapper.placeInfo
+                                    LightCardView(place: place, isFavorite: wrapper.isSelected)
+                                        .padding(10)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 20)
+                                                .fill(.white)
+                                                .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                                        )
+                                }
+
+                                AdditionButton
+                                    .padding(.top, 20)
                             }
                         }
                         .padding(.top, 12)
+                        .padding(.horizontal, 15)
                     }
-                    .padding(.horizontal, 15)
                 }
             }
         }
@@ -72,6 +91,23 @@ struct PlaceListDetailView: View {
 }
 
 extension PlaceListDetailView {
+    var AdditionButton: some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }, label: {
+            HStack {
+                Spacer()
+                Text("+ 플레이스 추가하기")
+                    .font(.basic.normal15)
+                Spacer()
+            }
+        })
+        .frame(height: 52)
+        .foregroundColor(.gray)
+        .overlay(RoundedRectangle(cornerRadius: 10)
+            .stroke(.gray))
+    }
+    
     var editableView: some View {
         ZStack {
             if viewModel.selectionCount != 0 {

@@ -78,8 +78,7 @@ struct LightCardView: View {
                 Spacer()
             }
         }
-        .frame(height: 90)
-        .padding(10)
+        .frame(height: 80)
     }
 }
 

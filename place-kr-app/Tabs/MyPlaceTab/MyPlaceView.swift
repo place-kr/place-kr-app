@@ -29,7 +29,6 @@ struct MyPlaceView: View {
             if viewModel.progress == .inProcess {
                 ProgressView(style: .medium)
                     .zIndex(1)
-                Color.gray.opacity(0.2)
             }
             
             VStack {

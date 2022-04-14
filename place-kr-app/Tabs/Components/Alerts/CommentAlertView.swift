@@ -34,6 +34,7 @@ struct TextView: UIViewRepresentable {
 
 struct CommentAlertView: View {
     @State var text: String = ""
+    @State var clicked = false
     let action: () -> Void
     
     var body: some View {
@@ -55,6 +56,7 @@ struct CommentAlertView: View {
                 Button(action: { action() }) {
                     Text("입력완료")
                 }
+                .disabled(clicked)
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)
