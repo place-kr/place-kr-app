@@ -19,6 +19,20 @@ struct PlaceListDetailView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
+            PageHeader(title: "나의 플레이스",
+                       leading: Image(systemName: "chevron.left"),
+                       leadingAction: { presentationMode.wrappedValue.dismiss() },
+                       trailing: Text(isEditable ? "수정완료" : "Edit").foregroundColor(isEditable ? .red : .black),
+                       trailingAction: {
+                isEditable.toggle()
+                viewModel.resetSelection()
+            })
+            .padding(.vertical, 17)
+            .padding(.horizontal, 15)
+            
+            CustomDivider()
+                .padding(.bottom, 17)
+            
             if isEditable {
                 editableView
             } else {
@@ -79,14 +93,7 @@ struct PlaceListDetailView: View {
                 }
             }
         }
-        .navigationBarItems(trailing: Button(action: {
-            isEditable.toggle()
-            viewModel.resetSelection()
-        }, label: {
-            Text(isEditable ? "수정완료" : "Edit")
-                .foregroundColor(isEditable ? .red : .black)
-        }))
-        .navigationBarTitle("\(viewModel.listName)", displayMode: .inline) // TODO: 원본과 다름
+        .navigationBarHidden(true)
     }
 }
 
@@ -161,8 +168,9 @@ extension PlaceListDetailView {
                             ForEach(viewModel.places, id: \.id) { wrapper in
                                 let place = wrapper.placeInfo
                                 LightCardView(place: place, isFavorite: wrapper.isSelected)
+                                    .padding(10)
                                     .overlay (
-                                        RoundedRectangle(cornerRadius: 10)
+                                        RoundedRectangle(cornerRadius: 20)
                                             .stroke(.black.opacity(wrapper.isSelected ? 1 : 0))
                                     )
                                     .background(

@@ -8,9 +8,8 @@
 import SwiftUI
 
 @ViewBuilder
-func PageHeader(title: String,
-                leading: String? = nil, leadingAction leadingAction: (() -> ())? = nil,
-                trailing: String? = nil, trailingAction trailingAction: (() -> ())? = nil ) -> some View  {
+func PageHeader<T: View>(title: String, leading: T, leadingAction: @escaping (() -> ())) -> some View  {
+    
     ZStack {
         HStack(alignment: .center) {
             Spacer()
@@ -20,25 +19,72 @@ func PageHeader(title: String,
             Spacer()
         }
         HStack {
-            if let text = leading, let action = leadingAction {
+            Button(action: leadingAction) {
+                leading
+                    .font(.system(size: 18))
+                    .foregroundColor(.black)
+            }
+            
+            Spacer()
+        }
+    }
+}
+
+@ViewBuilder
+func PageHeader<T: View>(title: String, trailing: T, trailingAction: @escaping (() -> ())) -> some View  {
+    
+    ZStack {
+        HStack(alignment: .center) {
+            Spacer()
+            Text(title)
+                .bold()
+                .font(.system(size: 21))
+            Spacer()
+        }
+        HStack {
+            Spacer()
+
+            Button(action: trailingAction) {
+                trailing
+                    .font(.system(size: 14))
+                    .foregroundColor(.black)
+            }
+        }
+    }
+}
+
+@ViewBuilder
+func PageHeader<T: View, S: View>(title: String,
+                leading: T? = nil, leadingAction: (() -> ())? = nil,
+                trailing: S? = nil, trailingAction: (() -> ())? = nil ) -> some View  {
+    
+    ZStack {
+        HStack(alignment: .center) {
+            Spacer()
+            Text(title)
+                .bold()
+                .font(.system(size: 21))
+            Spacer()
+        }
+        HStack {
+            if let leading = leading, let action = leadingAction {
                 Button(action: action) {
-                    Text(text)
-                        .font(.system(size: 14))
+                    leading
+                        .font(.system(size: 18))
                         .foregroundColor(.black)
                 }
             }
             
             Spacer()
             
-            if let text = trailing, let action = trailingAction {
+            if let trailing = trailing, let action = trailingAction {
                 Button(action: action) {
-                    Text(text)
+                    trailing
                         .font(.system(size: 14))
                         .foregroundColor(.black)
                 }
             }
         }
     }
-
-    
 }
+

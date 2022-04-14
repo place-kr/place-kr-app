@@ -34,7 +34,8 @@ struct MyPlaceView: View {
             VStack {
                 VStack {
                     // 페이지 헤더 부분
-                    PageHeader(title: "나의 플레이스", trailing: "추가하기", trailingAction: {
+                    PageHeader(title: "나의 플레이스", trailing: Text("추가하기"), trailingAction: {
+                        viewModel.progress = .inProcess
                         withAnimation(.easeInOut(duration: 0.2)){
                             self.showNewListAlert = true
                         }
@@ -124,11 +125,13 @@ struct MyPlaceView: View {
                 .padding(.horizontal, 28)
         })
         .showAlert(show: showNewListAlert, alert: RegisterNewListAlertView(action: {
-            viewModel.progress = .inProcess
+            // 닫기버튼 누른 후
+            viewModel.progress = .finished
             withAnimation(.spring()) {
                 showNewListAlert = false
             }
         }, completion: { result in
+            // 입력 완료 후 결과 기다릴 때
             DispatchQueue.main.async {
                 switch result {
                 case true:

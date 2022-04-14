@@ -12,6 +12,7 @@
 		9B0ADB1C2806E35A00E934FC /* EditListNameAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB1B2806E35A00E934FC /* EditListNameAlertView.swift */; };
 		9B0ADB1E2806F1D600E934FC /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB1D2806F1D600E934FC /* Progress.swift */; };
 		9B0ADB202806F2D900E934FC /* CustomProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB1F2806F2D900E934FC /* CustomProgressView.swift */; };
+		9B0ADB222807AC1E00E934FC /* CustomDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB212807AC1E00E934FC /* CustomDivider.swift */; };
 		9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */; };
 		9B20A65C2796F42A0029CA0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A65B2796F42A0029CA0E /* AppDelegate.swift */; };
 		9B20A65E2796F42A0029CA0E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A65D2796F42A0029CA0E /* SceneDelegate.swift */; };
@@ -86,6 +87,7 @@
 		9B0ADB1B2806E35A00E934FC /* EditListNameAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListNameAlertView.swift; sourceTree = "<group>"; };
 		9B0ADB1D2806F1D600E934FC /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
 		9B0ADB1F2806F2D900E934FC /* CustomProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProgressView.swift; sourceTree = "<group>"; };
+		9B0ADB212807AC1E00E934FC /* CustomDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDivider.swift; sourceTree = "<group>"; };
 		9B0FCE0727D4C1E3003A9CFA /* SheetModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetModifier.swift; sourceTree = "<group>"; };
 		9B20A6582796F42A0029CA0E /* place-kr-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "place-kr-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B20A65B2796F42A0029CA0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				9B5D5B4F27F3FB8600B81831 /* PageHeader.swift */,
 				9B0ADB1D2806F1D600E934FC /* Progress.swift */,
 				9B0ADB1F2806F2D900E934FC /* CustomProgressView.swift */,
+				9B0ADB212807AC1E00E934FC /* CustomDivider.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -619,6 +622,7 @@
 				9B0ADB1C2806E35A00E934FC /* EditListNameAlertView.swift in Sources */,
 				9B846689279852DA00066F04 /* AppleLoginDelegate.swift in Sources */,
 				9B0ADB202806F2D900E934FC /* CustomProgressView.swift in Sources */,
+				9B0ADB222807AC1E00E934FC /* CustomDivider.swift in Sources */,
 				9B6C0D2727C8966600376373 /* RequestPlaceView.swift in Sources */,
 				9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */,
 				9B5FD61527C519ED004B60E6 /* AddTabView.swift in Sources */,
