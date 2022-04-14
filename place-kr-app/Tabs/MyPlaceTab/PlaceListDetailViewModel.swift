@@ -19,6 +19,7 @@ class PlaceListDetailViewModel: ObservableObject {
     @Published var places = [PlaceInfoWrapper]()
     @Published var selectionCount = 0
     @Published var isAllSelected = false
+    
     @Published var progress: Progress = .ready
         
     private var placeDict = [String: PlaceInfoWrapper]() // 래퍼아이디 : 래퍼
@@ -65,7 +66,7 @@ class PlaceListDetailViewModel: ObservableObject {
     }
     
     func deleteSelected() {
-        self.progress = .inProgress
+        self.progress = .inProcess
         
         // 선택된 플레이스
         let selected = self.placeDict
@@ -97,7 +98,7 @@ class PlaceListDetailViewModel: ObservableObject {
     }
     
     func fetchMultipleInfos() {
-        self.progress = .inProgress
+        self.progress = .inProcess
         PlaceSearchManager.getMultiplePlacesByIdentifiers(self.list.places)
             .receive(on: DispatchQueue.main)
             .map { $0.results }
@@ -135,11 +136,6 @@ class PlaceListDetailViewModel: ObservableObject {
 }
 
 extension PlaceListDetailViewModel {
-    enum Progress {
-        case inProgress
-        case ready
-    }
-    
     class PlaceInfoWrapper: Hashable, Identifiable {
         let id: String
         let placeInfo: PlaceInfo
