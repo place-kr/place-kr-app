@@ -7,15 +7,22 @@
 
 import SwiftUI
 
-// MARK: TEMPORARY-
-
 struct RegisterPlaceView: View {
+    @Environment(\.presentationMode) var presentation
+    
     @State var placeName = ""
     @State var address = ""
     @State var restAddress = ""
     
     var body: some View {
         VStack(spacing: 0) {
+            PageHeader(title: "플레이스 등록", leading: Image(systemName: "chevron.left"), leadingAction: {
+                presentation.wrappedValue.dismiss()
+            })
+            .padding(.vertical)
+            
+            CustomDivider()
+            
             headerTexts
                 .padding(.vertical, 30)
             
@@ -28,7 +35,8 @@ struct RegisterPlaceView: View {
                 .padding(.bottom, 15)
         }
         .padding(.horizontal, 15)
-        .navigationBarTitle("플레이스 등록", displayMode: .inline)
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
     }
 }
 
@@ -39,7 +47,7 @@ extension RegisterPlaceView {
                 .font(.basic.bold17)
             Text("플레이스를 등록해주시면 ---님의 이름으로 플레이스가\n추가되며, 등록 내용을 실시간으로 알려드릴게요!")
                 .font(.basic.light14)
-                .foregroundColor(.gray)
+                
             
             // Filler
             HStack {

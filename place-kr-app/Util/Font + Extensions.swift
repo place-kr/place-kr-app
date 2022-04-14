@@ -14,15 +14,18 @@ extension Font {
         
         /// size: 14, weight: light
         let light14 = Font.system(size: 14)
-        
+                
         /// size: 12, weight: normal
         let normal12 = Font.system(size: 12)
         
-        /// size: 14, weight: bold
-        let bold14 = Font.custom("Arial-BoldMT", size: 14)
+        /// size: 12, weight: normal
+        let normal14 = Font.system(size: 14)
         
         /// size: 15, weight: normal
         let normal15 = Font.custom("ArialHebrew", size: 15)
+        
+        /// size: 14, weight: bold
+        let bold14 = Font.custom("Arial-BoldMT", size: 14)
         
         /// size: 17, weight: bold
         let bold17 = Font.system(size: 17, weight: .bold)
