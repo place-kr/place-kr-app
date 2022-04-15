@@ -74,6 +74,7 @@ struct MyPlaceView: View {
                                                             hex: list.color,
                                                             subscripts: "\(list.places.count) places",
                                                             image: UIImage(),
+                                                            buttonLabel: Image(systemName: "ellipsis"),
                                                             action: {
                                             self.selectedList = list
                                             withAnimation(.spring()) {
