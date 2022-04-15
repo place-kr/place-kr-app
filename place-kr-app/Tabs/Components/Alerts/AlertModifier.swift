@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func showAlert<V>(show: Bool, alert: V) -> some View where V: View {
+    func showAlert<V>(show: Binding<Bool>, alert: V) -> some View where V: View {
         modifier(AlertModifier(alert: alert, show: show))
 
     }
@@ -16,11 +16,17 @@ extension View {
 
 struct AlertModifier<V>: ViewModifier where V: View {
     var alert: V
-    var show: Bool
+    @Binding var show: Bool
     
     func body(content: Content) -> some View {
         ZStack {
             if show {
+                Color.gray.opacity(0.01)
+                    .onTapGesture {
+                        self.show = false
+                    }
+                    .zIndex(0.8)
+                
                 self.alert
                     .transition(.opacity)
                     .padding(.horizontal, 16)

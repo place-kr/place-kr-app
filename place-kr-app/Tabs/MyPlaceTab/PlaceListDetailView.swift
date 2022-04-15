@@ -71,7 +71,7 @@ struct PlaceListDetailView: View {
                         // 플레이스 리스트
                         VStack(spacing: 7) {
                             if viewModel.places.isEmpty {
-                                Text("아직 플레이스가 없어요\n 지도에서 플레이스를 추가해보세요!")
+                                Text("아직 플레이스가 없어요\n지도에서 플레이스를 추가해보세요!")
                                     .multilineTextAlignment(.center)
                                     .font(.basic.normal15)
                                     .padding(.vertical, 40)
@@ -126,7 +126,7 @@ struct PlaceListDetailView: View {
         .alert(isPresented: $showWarning) {
             Alert(title: Text("오류 발생"), message: Text("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요."), dismissButton: .default(Text("Close")))
         }
-        .showAlert(show: showEditPopup, alert: RegisterNewListAlertView(submitAction: {
+        .showAlert(show: $showEditPopup, alert: RegisterNewListAlertView(submitAction: {
             // 수정 팝업 띄우기
             withAnimation(.spring()) {
                 showEditPopup = false
@@ -159,14 +159,15 @@ extension PlaceListDetailView {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 presentationMode.wrappedValue.dismiss()
             }
-        }, label: {
+        }) {
             HStack {
                 Spacer()
                 Text("+ 플레이스 추가하기")
                     .font(.basic.normal15)
+                    .padding()
                 Spacer()
             }
-        })
+        }
         .frame(height: 52)
         .foregroundColor(.gray)
         .overlay(RoundedRectangle(cornerRadius: 10)

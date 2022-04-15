@@ -26,29 +26,38 @@ struct RegisterPlaceView: View {
                 presentation.wrappedValue.dismiss()
             })
             .padding(.vertical)
-            
+            .padding(.horizontal, 15)
+
             CustomDivider()
             
-            headerTexts
-                .padding(.vertical, 30)
-            
-            searchPlaceName
-                .padding(.bottom, 20)
-            
-            searchAddr
-                .padding(.bottom, 20)
-            
-            description
-            
-            Spacer()
-            
-            registerButton
-                .padding(.bottom, 15)
+            ScrollView {
+                VStack {
+                    headerTexts
+                        .padding(.vertical, 30)
+                    
+                    searchPlaceName
+                        .padding(.bottom, 20)
+                    
+                    searchAddr
+                        .padding(.bottom, 20)
+                    
+                    description
+                    
+                    Spacer()
+                    
+                    registerButton
+                        .padding(.bottom, 15)
+                }
+                .frame(height: UIScreen.main.bounds.height - 150)
+                .padding(.horizontal, 15)
+                .overlay(
+                    Group{ if viewModel.progress == .inProcess { ProgressView(style: .medium) }}
+                )
+            }
         }
-        .padding(.horizontal, 15)
-        .overlay(
-            Group{ if viewModel.progress == .inProcess { ProgressView(style: .medium) }}
-        )
+        .onTapGesture {
+            endTextEditing()
+        }
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }

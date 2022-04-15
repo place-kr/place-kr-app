@@ -241,3 +241,10 @@ extension View {
         modifier(EncapsulateModifier(mode: mode))
     }
 }
+
+extension View {
+  func endTextEditing() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                    to: nil, from: nil, for: nil)
+  }
+}

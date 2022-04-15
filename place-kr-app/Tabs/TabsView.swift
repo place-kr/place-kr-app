@@ -62,7 +62,7 @@ struct TabsView: View {
 
             }
             .accentColor(.black)
-            .showAlert(show: showNewNameAlert, alert: NewNameAlertView(name: $name, action: {
+            .showAlert(show: $showNewNameAlert, alert: NewNameAlertView(name: $name, action: {
                 withAnimation(.easeInOut(duration: 0.2)) { self.showNewNameAlert = false }
             }))
             .onAppear() {

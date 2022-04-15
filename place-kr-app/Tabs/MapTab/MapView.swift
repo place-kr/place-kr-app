@@ -111,7 +111,7 @@ struct MapView: View {
                      , content: {
             SheetView(active: activeSheet)
         })
-        .showAlert(show: navigateToRegisterNewListView, alert: RegisterNewListAlertView(submitAction: {
+        .showAlert(show: $navigateToRegisterNewListView, alert: RegisterNewListAlertView(submitAction: {
             withAnimation(.easeInOut(duration: 0.2)) {
                 navigateToRegisterNewListView = false
             }
@@ -255,40 +255,31 @@ extension MapView {
                     Spacer()
                     CloseButton
                 }
-
+                
                 Divider()
-
+                
                 ScrollView(showsIndicators: false) {
-                    HStack {
-                        Image(systemName: "plus")
-                            .foregroundColor(.gray)
-                            .padding(5)
-                            .background(Circle().fill(.gray.opacity(0.3)))
-                        Text("새로운 리스트 만들기")
-                            .font(.basic.normal12)
-                        
-                        Spacer()
-                    }
-                    .contentShape(Rectangle())
-                    .onTapGesture {
+                    Button(action: {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             self.navigateToRegisterNewListView = true
                             listManager.updateLists()
                         }
+                    }) {
+                        HStack {
+                            Image(systemName: "plus")
+                                .foregroundColor(.gray)
+                                .padding(5)
+                                .background(Circle().fill(.gray.opacity(0.3)))
+                            Text("새로운 리스트 만들기")
+                                .font(.basic.normal12)
+                            
+                            Spacer()
+                        }
                     }
                     
                     Divider()
-                        ForEach(listManager.placeLists, id: \.self) { list in
-                            HStack {
-                                RoundedRectangle(cornerRadius: 5)
-                                    .fill(.gray)
-                                    .frame(width: 34, height: 34)
-                                
-                                Text(list.name)
-                                
-                                Spacer()
-                            }
-                            .onTapGesture {
+                    ForEach(listManager.placeLists, id: \.self) { list in
+                            Button(action: {
                                 let listId = list.identifier
                                 guard let selectedPlaceId = placeInfoManager.currentPlaceID else {
                                     return
@@ -311,8 +302,17 @@ extension MapView {
                                         break
                                     }
                                 }
+                            }) {
+                                HStack {
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .fill(.gray)
+                                        .frame(width: 34, height: 34)
+                                    
+                                    Text(list.name)
+                                    
+                                    Spacer()
+                                }
                             }
-                            
                             Divider()
                         }
                 }

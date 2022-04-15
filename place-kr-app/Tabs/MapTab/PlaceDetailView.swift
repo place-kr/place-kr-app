@@ -90,7 +90,7 @@ struct PlaceDetailView: View {
             }
             
         }
-        .showAlert(show: showAddComment, alert: CommentAlertView(action: {
+        .showAlert(show: $showAddComment, alert: CommentAlertView(action: {
             withAnimation(.spring()) {
                 self.showAddComment = false
             }

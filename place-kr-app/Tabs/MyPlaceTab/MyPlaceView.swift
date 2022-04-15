@@ -38,7 +38,6 @@ struct MyPlaceView: View {
                 VStack {
                     // 페이지 헤더 부분
                     PageHeader(title: "나의 플레이스", trailing: Text("추가하기"), trailingAction: {
-                        viewModel.progress = .inProcess
                         withAnimation(.easeInOut(duration: 0.2)){
                             self.showNewListAlert = true
                         }
@@ -114,8 +113,7 @@ struct MyPlaceView: View {
                     }
                 }) {
                     Image(systemName: "xmark")
-                        .font(.system(size: 14, weight: .bold))
-                    
+                        .font(.system(size: 16, weight: .bold))
                 }
             }
             .padding(.horizontal, 25)
@@ -124,7 +122,7 @@ struct MyPlaceView: View {
             managePlaceList
                 .padding(.horizontal, 28)
         })
-        .showAlert(show: showNewListAlert, alert: RegisterNewListAlertView(submitAction: {
+        .showAlert(show: $showNewListAlert, alert: RegisterNewListAlertView(submitAction: {
             // 새로운 리스트 등록
             // 닫기버튼 누른 후
             viewModel.progress = .finished
@@ -149,7 +147,7 @@ struct MyPlaceView: View {
             }
         }).environmentObject(listManager)
         )
-        .showAlert(show: showEditSheet, alert: EditListNameAlertView(name: $text, action: {
+        .showAlert(show: $showEditSheet, alert: EditListNameAlertView(name: $text, action: {
             // 리스트 이름만 편집 팝업
             guard let selectedList = self.selectedList else { return }
             viewModel.progress = .inProcess
@@ -196,25 +194,29 @@ extension MyPlaceView {
     
     var managePlaceList: some View {
         VStack(alignment: .leading, spacing: 15) {
-            HStack(spacing: 9) {
-                Image(systemName: "square")
-                Text("공유하기")
-            }
-            .onTapGesture {
+            Button(action: {
                 showShareSheet = true
                 withAnimation(.spring()) {
                     bottomSheetPosition = .hidden
+                }
+            }) {
+                HStack(spacing: 9) {
+                    Image(systemName: "square")
+                    Text("공유하기")
+                    Spacer()
                 }
             }
             
             Divider()
             
-            HStack(spacing: 9) {
-                Image(systemName: "pencil")
-                Text("리스트명 변경하기")
-            }
-            .onTapGesture {
+            Button(action: {
                 showEditSheet = true
+            }) {
+                HStack(spacing: 9) {
+                    Image(systemName: "pencil")
+                    Text("리스트명 변경하기")
+                    Spacer()
+                }
             }
             
             Divider()
@@ -223,22 +225,14 @@ extension MyPlaceView {
                 HStack(spacing: 9) {
                     Image(systemName: "mappin")
                     Text("플레이스 편집하기")
+                Spacer()
                 }
             )
-            .onTapGesture {
-                withAnimation(.spring()) {
-                    bottomSheetPosition = .hidden
-                }
-            }
             
             Divider()
             
             // 플레이스 삭제하기
-            HStack(spacing: 9) {
-                Image(systemName: "trash")
-                Text("삭제하기")
-            }
-            .onTapGesture {
+            Button(action: {
                 guard let selectedList = self.selectedList else { return }
                 viewModel.progress = .inProcess
                 
@@ -254,6 +248,12 @@ extension MyPlaceView {
                             return
                         }
                     }
+                }
+            }) {
+                HStack(spacing: 9) {
+                    Image(systemName: "trash")
+                    Text("삭제하기")
+                    Spacer()
                 }
             }
         }
