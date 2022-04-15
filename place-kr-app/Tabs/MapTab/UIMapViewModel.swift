@@ -88,10 +88,14 @@ class UIMapViewModel: ObservableObject {
                         self.makeMarkersDefault(self.markers)
                         self.selectdMarker = marker
                         
+                        // 카메라 무빙
                         let coord = wrapper.placeInfo.lonlat
                         let nCoord = NMGLatLng(lat:coord.lat, lng: coord.lon)
-                        self.view.mapView.moveCamera(NMFCameraUpdate(scrollTo: nCoord))
-                        
+                        let cameraUpdate = NMFCameraUpdate(scrollTo: nCoord)
+                        cameraUpdate.animation = .easeOut
+                        cameraUpdate.animationDuration = 0.5
+                        self.view.mapView.moveCamera(cameraUpdate)
+                                    
                         withAnimation {
                             marker.iconImage = self.activeMarkerImage
                         }
