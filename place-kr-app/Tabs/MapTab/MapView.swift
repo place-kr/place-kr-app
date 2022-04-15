@@ -210,7 +210,7 @@ extension MapView {
                         .foregroundColor(.gray)
                 }
                 Button(action: {}) {
-                    Image(systemName: "share")
+                    Image("share")
                         .foregroundColor(.gray)
                 }
             }
