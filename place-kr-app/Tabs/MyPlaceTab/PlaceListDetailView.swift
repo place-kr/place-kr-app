@@ -9,8 +9,13 @@ import SwiftUI
 
 struct PlaceListDetailView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var listManager: ListManager
     @ObservedObject var viewModel: PlaceListDetailViewModel
+    
     @State var isEditable = false
+    @State var showEditPopup = false
+    @State var showWarning = false
+    
     @Binding var selection: TabsView.Tab
     
     init(viewModel: PlaceListDetailViewModel, selection: Binding<TabsView.Tab>) {
@@ -24,83 +29,125 @@ struct PlaceListDetailView: View {
         VStack(alignment: .leading) {
             PageHeader(title: "나의 플레이스",
                        leading: Image(systemName: "chevron.left"),
-                       leadingAction: { presentationMode.wrappedValue.dismiss() },
-                       trailing: Text(isEditable ? "수정완료" : "Edit").foregroundColor(isEditable ? .red : .black),
-                       trailingAction: {
-                isEditable.toggle()
-                viewModel.resetSelection()
-            })
+                       leadingAction: { presentationMode.wrappedValue.dismiss() })
             .padding(.vertical, 17)
             .padding(.horizontal, 15)
             
             CustomDivider()
                 .padding(.bottom, 17)
             
-            if isEditable {
-                editableView
-            } else {
-                // 헤더에 올라가는 리스트 카드 뷰
-                Group {
-                    SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor,
-                                        subscripts: "\(viewModel.places.count) places",
-                                        image: UIImage())
-                    .frame(height: 100)
-                    .padding(.horizontal, 17)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.white)
-                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                    )
-                    
-                    Text("총 \(viewModel.places.count)개의 플레이스")
-                        .font(.basic.light14)
-                        .foregroundColor(.gray)
-                }
-                .padding(.horizontal, 15)
+            // 헤더에 올라가는 리스트 카드 뷰
+            Group {
+                SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor,
+                                    subscripts: "\(viewModel.places.count) places",
+                                    image: UIImage(), buttonLabel: Text("Edit"), action:  {
+                    withAnimation(.spring()) {
+                        showEditPopup = true
+                    }
+                })
+                .frame(height: 100)
+                .padding(.horizontal, 17)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.white)
+                        .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                )
                 
-                ZStack {
-                    Color.backgroundGray
-                        .edgesIgnoringSafeArea(.all)
-                    
-                    if viewModel.progress == .inProcess {
-                        // 진행상황 표시
-                        ProgressView(style: .medium)
-                    } else {
-                        ScrollView {
-                            // 플레이스 리스트
-                            VStack(spacing: 7) {
-                                if viewModel.places.isEmpty {
-                                    Text("아직 플레이스가 없어요\n 지도에서 플레이스를 추가해보세요!")
-                                        .multilineTextAlignment(.center)
-                                        .font(.basic.normal15)
-                                        .padding(.vertical, 40)
-                                        .foregroundColor(.gray)
-                                    
-                                    AdditionButton
-                                    Spacer()
-                                } else {
-                                    ForEach(viewModel.places, id: \.id) { wrapper in
-                                        let place = wrapper.placeInfo
-                                        LightCardView(place: place, isFavorite: wrapper.isSelected)
-                                            .padding(10)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 20)
-                                                    .fill(.white)
-                                                    .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                                            )
-                                    }
-                                    
-                                    AdditionButton
-                                        .padding(.top, 20)
+                Text("총 \(viewModel.places.count)개의 플레이스")
+                    .font(.basic.light14)
+                    .foregroundColor(.gray)
+            }
+            .padding(.horizontal, 15)
+            
+            ZStack {
+                Color.backgroundGray
+                    .edgesIgnoringSafeArea(.all)
+                
+                if viewModel.progress == .inProcess {
+                    // 진행상황 표시
+                    ProgressView(style: .medium)
+                } else {
+                    ScrollView {
+                        // 플레이스 리스트
+                        VStack(spacing: 7) {
+                            if viewModel.places.isEmpty {
+                                Text("아직 플레이스가 없어요\n 지도에서 플레이스를 추가해보세요!")
+                                    .multilineTextAlignment(.center)
+                                    .font(.basic.normal15)
+                                    .padding(.vertical, 40)
+                                    .foregroundColor(.gray)
+                                
+                                AdditionButton
+                                Spacer()
+                            } else {
+                                ForEach(viewModel.places, id: \.id) { wrapper in
+                                    let place = wrapper.placeInfo
+                                    // 카드 뷰
+                                    LightCardView(place: place, isFavorite: true, starAction: {
+                                        guard let index = viewModel.places.firstIndex(of: wrapper) else { return }
+                                        var updatedPlaces = viewModel.places
+                                        updatedPlaces.remove(at: index)
+                                        let ids = updatedPlaces.map{ $0.placeInfo.id }
+                                        
+                                        listManager.editPlacesList(listID: viewModel.list.identifier,
+                                                                   placeIDs: ids) { result in
+                                            DispatchQueue.main.async {
+                                                switch result {
+                                                case true:
+                                                    viewModel.progress = .finished
+                                                    viewModel.places.remove(at: index)
+                                                    return
+                                                case false:
+                                                    viewModel.progress = .failed
+                                                    showWarning = true
+                                                    return
+                                                }
+                                            }
+                                        }
+                                    })
+                                    .padding(10)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .fill(.white)
+                                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                                    )
                                 }
+                                
+                                AdditionButton
+                                    .padding(.top, 20)
                             }
-                            .padding(.top, 12)
-                            .padding(.horizontal, 15)
                         }
+                        .padding(.top, 12)
+                        .padding(.horizontal, 15)
                     }
                 }
             }
         }
+        .alert(isPresented: $showWarning) {
+            Alert(title: Text("오류 발생"), message: Text("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요."), dismissButton: .default(Text("Close")))
+        }
+        .showAlert(show: showEditPopup, alert: RegisterNewListAlertView(submitAction: {
+            // 수정 팝업 띄우기
+            withAnimation(.spring()) {
+                showEditPopup = false
+            }
+        }, requestType: .patch(id: viewModel.list.identifier), completion: { result in
+            DispatchQueue.main.async {
+                switch result {
+                case true:
+                    withAnimation(.spring()) {
+                        showEditPopup = false
+                    }
+                    return
+                case false:
+                    // TODO: Do something
+                    showWarning = true
+                    return
+                }
+            }
+        })
+            .environmentObject(listManager)
+        )
         .navigationBarHidden(true)
     }
 }
@@ -124,85 +171,6 @@ extension PlaceListDetailView {
         .foregroundColor(.gray)
         .overlay(RoundedRectangle(cornerRadius: 10)
             .stroke(.gray))
-    }
-    
-    var editableView: some View {
-        ZStack {
-            if viewModel.selectionCount != 0 {
-                VStack {
-                    Spacer()
-                    Button(action: { viewModel.deleteSelected() }) {
-                        Text("삭제하기")
-                    }
-                    .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 50))
-                    .padding(.bottom, 15)
-                    .padding(.horizontal, 15)
-                }
-                .zIndex(1)
-                .transition(.move(edge: .bottom))
-                .animation(.spring())
-            }
-            
-            VStack {
-                VStack {
-                    SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor,
-                                        subscripts: "\(viewModel.places.count) places",
-                                        image: UIImage())
-                        .frame(height: 100)
-                        .padding(.horizontal, 17)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(.white)
-                                .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                        )
-                    
-                    HStack {
-                        Button(action: { viewModel.toggleAllSelection() }) {
-                            Image(systemName: !viewModel.isAllSelected ? "square" : "checkmark.square")
-                            Text("전체선택")
-                        }
-                        .font(.basic.light14)
-                        .foregroundColor(.black)
-                        
-                        Spacer()
-                    }
-                }
-                .padding(.horizontal, 15)
-                
-                ZStack {
-                    Color.backgroundGray
-                        .edgesIgnoringSafeArea(.all)
-                    
-                    ScrollView {
-                        // 플레이스 리스트
-                        VStack(spacing: 7) {
-                            ForEach(viewModel.places, id: \.id) { wrapper in
-                                let place = wrapper.placeInfo
-                                LightCardView(place: place, isFavorite: wrapper.isSelected)
-                                    .padding(10)
-                                    .overlay (
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .stroke(.black.opacity(wrapper.isSelected ? 1 : 0))
-                                    )
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .fill(.white)
-                                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                                    )
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {
-                                        viewModel.toggleOneSelection(wrapper.id)
-                                    }
-                            }
-                        }
-                        .animation(.spring())
-                        .padding(.top, 12)
-                        .padding(.bottom, 30)
-                    }
-                    .padding(.horizontal, 15)
-                }
-            }
-        }
     }
 }
 

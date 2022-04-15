@@ -18,7 +18,7 @@ struct RequestCardView: View {
             return Color.blue
         case "등록실패":
             return Color.red
-        case "진행중":
+        case "접수중":
             return Color.gray
         default:
             return Color.black
@@ -27,8 +27,15 @@ struct RequestCardView: View {
     
     var body: some View {
         HStack(spacing: 0) {
+            // 플레이스 홀더
+            Image("listLogo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 50, height: 50)
+                .padding(.trailing, 10)
+            
             // 이름과 설명
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 2) {
                 Spacer()
                 
                 // 장소 이름
@@ -37,7 +44,7 @@ struct RequestCardView: View {
                 
                 // 장소 주소
                 Text(address)
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.basic.normal12)
                 
                 Spacer()
             }
@@ -47,11 +54,11 @@ struct RequestCardView: View {
             
             if let status = status {
                 Text(status)
+                    .font(.basic.bold12)
                     .foregroundColor(requestColor)
             }
             
         }
-        .frame(height: 80)
     }
     
     init(place: RegisterRequest) {

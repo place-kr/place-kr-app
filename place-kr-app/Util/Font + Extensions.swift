@@ -24,6 +24,9 @@ extension Font {
         /// size: 15, weight: normal
         let normal15 = Font.custom("ArialHebrew", size: 15)
         
+        /// size: 12, weight: bold
+        let bold12 = Font.custom("Arial-BoldMT", size: 12)
+
         /// size: 14, weight: bold
         let bold14 = Font.custom("Arial-BoldMT", size: 14)
         

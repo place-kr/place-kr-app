@@ -18,6 +18,7 @@ struct MyPlaceView: View {
     
     @State var bottomSheetPosition: PlaceListSheetPosition = .hidden
     @State var selectedList: PlaceList?
+    
     @State var showShareSheet = false
     @State var showEditSheet = false
     @State var showNewListAlert = false
@@ -52,7 +53,7 @@ struct MyPlaceView: View {
                 }
                 .padding(.top, 20)
 
-                // 플레이스 리스트
+                // MARK: - 플레이스 리스트
                 VStack(spacing: 15) {
                     HStack {
                         Text("총 \(listManager.placeLists.count)개의 플레이스 리스트가 있습니다")
@@ -63,24 +64,21 @@ struct MyPlaceView: View {
                     
                     ScrollView {
                         VStack(spacing: 10) {
-                            // 리스트 카드 뷰
+                            // MARK: -리스트 카드 뷰
                             ForEach(listManager.placeLists, id: \.self) { list in
-                                NavigationLink(
-                                    destination: LazyView {
-                                        PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list, listManager: listManager), selection: $selection)
-                                    },
-                                    label: {
-                                        SimplePlaceCardView(list.name,
-                                                            hex: list.color,
-                                                            subscripts: "\(list.places.count) places",
-                                                            image: UIImage(),
-                                                            action: {
-                                            self.selectedList = list
-                                            withAnimation(.spring()) {
-                                                bottomSheetPosition = .bottom
-                                            }})
-                                        .padding(.horizontal, 12)
-                                    })
+                                navigator(list: list, label:
+                                            SimplePlaceCardView(list.name,
+                                                                hex: list.color,
+                                                                subscripts: "\(list.places.count) places",
+                                                                image: UIImage(),
+                                                                buttonLabel: Image(systemName: "ellipsis"),
+                                                                action: {
+                                                self.selectedList = list
+                                                withAnimation(.spring()) {
+                                                    bottomSheetPosition = .bottom
+                                                }})
+                                            .padding(.horizontal, 12)
+                                )
                                 .frame(height: 70)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
@@ -116,7 +114,7 @@ struct MyPlaceView: View {
                     }
                 }) {
                     Image(systemName: "xmark")
-                        .font(.system(size: 21, weight: .bold))
+                        .font(.system(size: 14, weight: .bold))
                     
                 }
             }
@@ -126,13 +124,14 @@ struct MyPlaceView: View {
             managePlaceList
                 .padding(.horizontal, 28)
         })
-        .showAlert(show: showNewListAlert, alert: RegisterNewListAlertView(action: {
+        .showAlert(show: showNewListAlert, alert: RegisterNewListAlertView(submitAction: {
+            // 새로운 리스트 등록
             // 닫기버튼 누른 후
             viewModel.progress = .finished
             withAnimation(.spring()) {
                 showNewListAlert = false
             }
-        }, completion: { result in
+        }, requestType: .post, completion: { result in
             // 입력 완료 후 결과 기다릴 때
             DispatchQueue.main.async {
                 switch result {
@@ -148,12 +147,14 @@ struct MyPlaceView: View {
                     return
                 }
             }
-        }))
+        }).environmentObject(listManager)
+        )
         .showAlert(show: showEditSheet, alert: EditListNameAlertView(name: $text, action: {
+            // 리스트 이름만 편집 팝업
             guard let selectedList = self.selectedList else { return }
             viewModel.progress = .inProcess
             
-            listManager.editListName(id: selectedList.identifier, name: self.text) { result in
+            listManager.editListComponent(id: selectedList.identifier, name: self.text) { result in
                 DispatchQueue.main.async {
                     switch result {
                     case true:
@@ -178,6 +179,21 @@ struct MyPlaceView: View {
 }
 
 extension MyPlaceView {
+    @ViewBuilder
+    func navigator<T: View>(list: PlaceList?, label: T) -> some View {
+        switch list {
+        case nil:
+            label
+        default:
+            NavigationLink(
+                destination: LazyView {
+                    PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list!, listManager: listManager), selection: $selection)
+                        .environmentObject(listManager)
+                },
+                label: { label })
+        }
+    }
+    
     var managePlaceList: some View {
         VStack(alignment: .leading, spacing: 15) {
             HStack(spacing: 9) {
@@ -202,13 +218,17 @@ extension MyPlaceView {
             }
             
             Divider()
-            
-            HStack(spacing: 9) {
-                Image(systemName: "mappin")
-                Text("플레이스 편집하기")
-            }
+
+            navigator(list: self.selectedList, label:
+                HStack(spacing: 9) {
+                    Image(systemName: "mappin")
+                    Text("플레이스 편집하기")
+                }
+            )
             .onTapGesture {
-                print("edit")
+                withAnimation(.spring()) {
+                    bottomSheetPosition = .hidden
+                }
             }
             
             Divider()

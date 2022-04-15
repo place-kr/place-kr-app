@@ -7,18 +7,20 @@
 
 import SwiftUI
 
-struct SimplePlaceCardView: View {
+struct SimplePlaceCardView<T: View>: View {
     private let placeName: String
     private let placeColor: Color
     private let subscripts: String
+    private let buttonLabel: T
     private let buttonAction: (() -> Void)?
     private let image: UIImage
     
-    init(_ name: String, hex: String, subscripts: String, image: UIImage, action: (() -> Void)? = nil) {
+    init(_ name: String, hex: String, subscripts: String, image: UIImage, buttonLabel: T, action: (() -> Void)? = nil) {
         self.placeName = name
         self.placeColor = colorFrom(hex: hex).color
         self.subscripts = subscripts
         self.image = image
+        self.buttonLabel = buttonLabel
         self.buttonAction = action
     }
     
@@ -42,9 +44,9 @@ struct SimplePlaceCardView: View {
             
             if let buttonAction = buttonAction {
                 Button(action: buttonAction) {
-                    Image(systemName: "ellipsis")
-                        .font(.system(size: 25))
-                        .frame(width: 25, height: 25)
+                    buttonLabel
+//                        .font(.system(size: 25))
+//                        .frame(width: 25, height: 25)
                 }
                 .foregroundColor(.gray.opacity(0.8))
             }

@@ -10,9 +10,10 @@ import Combine
 
 /// 리스트 내의 플레이스 정보를 관리하는 뷰모델입니다.
 /// 삭제, 정렬 등의 기능을 갖습니다.
+/// 해당 리스트 1개의 정보를 저장하고 있습니다.
 class PlaceListDetailViewModel: ObservableObject {
     private let listManager: ListManager
-    private let list: PlaceList
+    let list: PlaceList
    
     @Published var listColor: String
     @Published var listName: String

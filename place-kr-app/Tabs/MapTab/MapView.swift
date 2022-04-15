@@ -111,11 +111,11 @@ struct MapView: View {
                      , content: {
             SheetView(active: activeSheet)
         })
-        .showAlert(show: navigateToRegisterNewListView, alert: RegisterNewListAlertView(action: {
+        .showAlert(show: navigateToRegisterNewListView, alert: RegisterNewListAlertView(submitAction: {
             withAnimation(.easeInOut(duration: 0.2)) {
                 navigateToRegisterNewListView = false
             }
-        }, completion: { _ in }))
+        }, requestType: .post, completion: { _ in }))
     }
 }
 
