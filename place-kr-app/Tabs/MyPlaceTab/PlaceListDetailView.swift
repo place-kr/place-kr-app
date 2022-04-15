@@ -9,10 +9,12 @@ import SwiftUI
 
 struct PlaceListDetailView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var listManager: ListManager
     @ObservedObject var viewModel: PlaceListDetailViewModel
     
     @State var isEditable = false
     @State var showEditPopup = false
+    @State var showWarning = false
     
     @Binding var selection: TabsView.Tab
     
@@ -39,7 +41,9 @@ struct PlaceListDetailView: View {
                 SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor,
                                     subscripts: "\(viewModel.places.count) places",
                                     image: UIImage(), buttonLabel: Text("Edit"), action:  {
-                    showEditPopup = true
+                    withAnimation(.spring()) {
+                        showEditPopup = true
+                    }
                 })
                 .frame(height: 100)
                 .padding(.horizontal, 17)
@@ -97,6 +101,31 @@ struct PlaceListDetailView: View {
                 }
             }
         }
+        .alert(isPresented: $showWarning) {
+            Alert(title: Text("오류 발생"), message: Text("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요."), dismissButton: .default(Text("Close")))
+        }
+        .showAlert(show: showEditPopup, alert: RegisterNewListAlertView(submitAction: {
+            // 수정 팝업 띄우기
+            withAnimation(.spring()) {
+                showEditPopup = false
+            }
+        }, requestType: .patch(id: viewModel.list.identifier), completion: { result in
+            DispatchQueue.main.async {
+                switch result {
+                case true:
+                    withAnimation(.spring()) {
+                        showEditPopup = false
+                    }
+                    return
+                case false:
+                    // TODO: Do something
+                    showWarning = true
+                    return
+                }
+            }
+        })
+            .environmentObject(listManager)
+        )
         .navigationBarHidden(true)
     }
 }

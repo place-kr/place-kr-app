@@ -15,7 +15,8 @@ struct RegisterNewListAlertView: View {
     @State var clicked = false
     
     let colors: [ListColor] = ListColor.allCases
-    let action: () -> Void
+    let submitAction: () -> Void
+    let requestType: RequestType
     let completion: (Bool) -> Void
     
     var body: some View {
@@ -23,19 +24,23 @@ struct RegisterNewListAlertView: View {
             HStack {
                 Spacer()
                 
-                Button(action: action) {
+                Button(action: submitAction) {
                     Image(systemName: "xmark")
                 }
+                .foregroundColor(.black)
                 .font(.system(size: 20))
             }
             .padding(.top, 20)
             
-            Text("리스트 만들기")
+            // 헤더
+            Text(requestType == .post ? "리스트 만들기" : "리스트 수정하기")
                 .font(.basic.bold21)
             
-            Text("리스트명을 입력하세요")
+            Text(requestType == .post ? "리스트명을 입력하세요" : "수정하고 싶은 정보를 입력하세요")
                 .font(.basic.light14)
                 .padding(.bottom, 15)
+            
+            // 리스트 명 입력 텍스트필드
             ThemedTextField($name, "리스트명을 입력해주세요",
                             bgColor: .gray.opacity(0.3),
                             isStroked: false,
@@ -45,6 +50,7 @@ struct RegisterNewListAlertView: View {
                             action: {})
             .padding(.bottom, 14)
             
+            // 컬러 선택
             Text("리스트 컬러를 선택하세요")
                 .padding(.bottom, 14)
             VStack(spacing: 12) {
@@ -95,9 +101,17 @@ struct RegisterNewListAlertView: View {
                 Spacer()
                 Button(action: {
                     clicked = true
-                    let postBody = PlaceListPostBody(name: self.name, icon: "🧮", color: selectedColor?.HEX, places: [String]())
-                    self.viewModel.addPlaceList(body: postBody) { result in
-                        completion(result)
+                    
+                    switch requestType {
+                    case .post:
+                        let postBody = PlaceListPostBody(name: self.name, icon: "🧮", color: selectedColor?.HEX, places: [String]())
+                        self.viewModel.addPlaceList(body: postBody) { result in
+                            completion(result)
+                        }
+                    case .patch(let id):
+                        self.viewModel.editListName(id: id, name: name, hex: selectedColor?.HEX) { result in
+                            completion(result)
+                        }
                     }
                 }) {
                     Text("입력완료")
@@ -114,9 +128,15 @@ struct RegisterNewListAlertView: View {
     }
 }
 
+extension RegisterNewListAlertView {
+    enum RequestType: Equatable {
+        case post
+        case patch(id: String)
+    }
+}
 
 struct RegisterNewListView_Preview: PreviewProvider {
     static var previews: some View {
-        RegisterNewListAlertView(action: {}, completion: {_ in })
+        RegisterNewListAlertView(submitAction: {}, requestType: .post, completion: {_ in })
     }
 }

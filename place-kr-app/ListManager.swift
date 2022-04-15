@@ -19,9 +19,9 @@ struct PlaceListResponse: Codable {
 struct PlaceList: Codable, Hashable {
     let identifier: String
     var name: String
-    let icon: String
-    let color: String
-    let places: [String]
+    var icon: String
+    var color: String
+    var places: [String]
     let count: Int
     
     static func == (lhs: PlaceList, rhs: PlaceList) -> Bool {
@@ -365,8 +365,26 @@ class ListManager: ObservableObject {
         .resume()
     }
     
-    /// 플레이스 리스트 수정
-    func patchPlaceList(id: String, body: PlaceListPostBody, completionHandler: ((Bool) -> ())? = nil) {
+    /// 플레이스 리스트 요소 수정
+    func editListName(id: String, name: String? = nil, hex: String? = nil, completionHandler: ((Bool) -> ())? = nil) {
+        guard let index = self.placeLists.firstIndex(where: { $0.identifier == id }) else {
+            if let completionHandler = completionHandler {
+                completionHandler(false)
+            }
+            return
+        }
+        
+        let list = self.placeLists[index]
+        var body = PlaceListPostBody(name: list.name, icon: list.icon, color: list.color, places: list.places)
+        
+        if let name = name {
+            body.name = name
+        }
+        
+        if let hex = hex {
+            body.color = hex
+        }
+        
         guard let request = authroizedRequest(with: "me/lists/\(id)", method: "PATCH", body: body) else {
             if let completionHandler = completionHandler {
                 completionHandler(false)
@@ -375,7 +393,8 @@ class ListManager: ObservableObject {
         }
         let session = URLSession.shared
         
-        session.dataTask(with: request) { _, response, error in
+        session.dataTask(with: request) { [weak self] _, response, error in
+            guard let self = self else { return }
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode else {
                 switch (response as! HTTPURLResponse).statusCode {
@@ -391,55 +410,25 @@ class ListManager: ObservableObject {
                     return
                 }
             }
-        }
-        
-        if let completionHandler = completionHandler {
-            completionHandler(true)
-        }
-    }
-    
-    /// 플레이스 리스트 이름 수정
-    func editListName(id: String, name: String, completionHandler: ((Bool) -> ())? = nil) {
-        let body = NameBody(name: name)
-        
-        guard let request = authroizedRequest(with: "me/lists/\(id)", method: "PATCH", body: body) else {
-            if let completionHandler = completionHandler {
-                completionHandler(false)
-            }
-            return
-        }
-        let session = URLSession.shared
-        
-        session.dataTask(with: request) { _, response, error in
-            guard let httpResponse = response as? HTTPURLResponse,
-                  200..<300 ~= httpResponse.statusCode else {
-                switch (response as! HTTPURLResponse).statusCode {
-                case (400...499):
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
-                default:
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
+            
+            DispatchQueue.main.async {
+                if let name = name {
+                    self.placeLists[index].name = name
                 }
+                
+                if let hex = hex {
+                    self.placeLists[index].color = hex
+                }
+                
+                if let completionHandler = completionHandler {
+                    completionHandler(true)
+                }
+                
+//                self.updateLists()
             }
         }
         .resume()
         
-        guard let index = (self.placeLists.firstIndex{ $0.identifier == id }) else {
-            return
-        }
-        
-        DispatchQueue.main.async {
-            self.placeLists[index].name = name
-            
-            if let completionHandler = completionHandler {
-                completionHandler(true)
-            }
-        }
     }
     
     /// 퍼블리셔로 리스트 업데이트 하는 루틴

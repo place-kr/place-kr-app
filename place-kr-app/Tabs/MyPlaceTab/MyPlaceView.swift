@@ -68,6 +68,7 @@ struct MyPlaceView: View {
                                 NavigationLink(
                                     destination: LazyView {
                                         PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list, listManager: listManager), selection: $selection)
+                                            .environmentObject(listManager)
                                     },
                                     label: {
                                         SimplePlaceCardView(list.name,
@@ -127,13 +128,14 @@ struct MyPlaceView: View {
             managePlaceList
                 .padding(.horizontal, 28)
         })
-        .showAlert(show: showNewListAlert, alert: RegisterNewListAlertView(action: {
+        .showAlert(show: showNewListAlert, alert: RegisterNewListAlertView(submitAction: {
+            // 새로운 리스트 등록
             // 닫기버튼 누른 후
             viewModel.progress = .finished
             withAnimation(.spring()) {
                 showNewListAlert = false
             }
-        }, completion: { result in
+        }, requestType: .post, completion: { result in
             // 입력 완료 후 결과 기다릴 때
             DispatchQueue.main.async {
                 switch result {
@@ -149,8 +151,10 @@ struct MyPlaceView: View {
                     return
                 }
             }
-        }))
+        }).environmentObject(listManager)
+        )
         .showAlert(show: showEditSheet, alert: EditListNameAlertView(name: $text, action: {
+            // 리스트 이름만 편집 팝업
             guard let selectedList = self.selectedList else { return }
             viewModel.progress = .inProcess
             
