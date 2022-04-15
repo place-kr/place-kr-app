@@ -14,7 +14,7 @@ struct NaverLoginButtonView: View {
             HStack {
                 Spacer()
                 Image("naver")
-                Text("Naver로 로그인")
+                Text("Naver로 시작하기")
                     .font(.system(size: 20))
                 Spacer()
             }
@@ -22,7 +22,9 @@ struct NaverLoginButtonView: View {
         .frame(height: 54)
         .background(
             RoundedRectangle(cornerRadius: 5)
-                .fill(Color("naver")))
+                .fill(.black)
+        )
+//                .fill(Color("naver")))
         .foregroundColor(.white)
         
         if showNaverLogin {

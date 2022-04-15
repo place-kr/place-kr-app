@@ -7,11 +7,17 @@
 
 import SwiftUI
 
+class LoginViewModel: ObservableObject {
+    let imageNames = ["mainIcon1", "mainIcon2", "mainIcon3", "mainIcon4", "mainIcon5", "mainIcon6"]
+}
+
 // TODO: 자동로그인
 struct LogInView: View {
     @EnvironmentObject var loginManager: LoginManager
     @Environment(\.window) var window: UIWindow?
     @Binding var success: Bool
+    
+    @ObservedObject var viewModel = LoginViewModel()
     
     var body: some View {
         ZStack {
@@ -21,17 +27,37 @@ struct LogInView: View {
                 // TODO: 인디케이터
                 
                 /// 앱 로고 디폴트 이미지
-                RoundedRectangle(cornerRadius: 21)
-                    .fill(.gray.opacity(0.5))
-                    .frame(width: 125, height: 125)
-                    .padding(.bottom, 40)
+                HStack {
+                    Spacer()
+                    ZStack(alignment: .bottomLeading) {
+                        Image("mainLogo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 70, height: 84)
+                            .padding(.bottom, 40)
+                            .zIndex(1)
+                        
+                        HStack(spacing: 0) {
+                            ForEach(viewModel.imageNames, id: \.self) { name in
+                                Image(name)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                            }
+                        }
+                    }
+                }
                 
-                Text("MY PLACE")
-                    .font(.system(size: 37, weight: .black))
-                    .padding(.bottom, 13)
+                Spacer()
                 
-                Text("나만의 플레이스를 만들어보세요!")
-                    .font(.system(size: 17))
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("PLAIST")
+                        .font(.system(size: 40, weight: .bold))
+                        .padding(.bottom, 14)
+                    
+                    Text("플레이스트에서 나만의 플레이스를\n 만들고, 즐겨보세요!")
+                        .font(.system(size: 17))
+                }
                 
                 Spacer()
                 

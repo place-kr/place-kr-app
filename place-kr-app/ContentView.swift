@@ -16,18 +16,18 @@ struct ContentView: View {
     @State var isFirstRegistered = true // TODO: 언젠가 바꾸기
     
     var body: some View {
-        TabsView()
-//        if loginManger.status != .success {
-//            LogInView(success: $isLoginSuccessed)
-//                .environment(\.window, window)
-//                .environmentObject(loginManger)
-//        } else {
-//            if isFirstRegistered {
-//                OnboardingView(isClicked: $isFirstRegistered)
-//            } else {
-//                TabsView()
-//            }
-//        }
+//        TabsView()
+        if loginManger.status != .success {
+            LogInView(success: $isLoginSuccessed)
+                .environment(\.window, window)
+                .environmentObject(loginManger)
+        } else {
+            if isFirstRegistered {
+                OnboardingView(isClicked: $isFirstRegistered)
+            } else {
+                TabsView()
+            }
+        }
     }
 }
 
