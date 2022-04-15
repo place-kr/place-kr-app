@@ -26,79 +26,108 @@ struct PlaceListDetailView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            PageHeader(title: "나의 플레이스",
-                       leading: Image(systemName: "chevron.left"),
-                       leadingAction: { presentationMode.wrappedValue.dismiss() })
-            .padding(.vertical, 17)
-            .padding(.horizontal, 15)
-            
-            CustomDivider()
-                .padding(.bottom, 17)
-            
-            // 헤더에 올라가는 리스트 카드 뷰
-            Group {
-                SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor,
-                                    subscripts: "\(viewModel.places.count) places",
-                                    image: UIImage(), buttonLabel: Text("Edit"), action:  {
-                    withAnimation(.spring()) {
-                        showEditPopup = true
-                    }
-                })
-                .frame(height: 100)
-                .padding(.horizontal, 17)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(.white)
-                        .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                )
+        ZStack {
+            VStack(alignment: .leading) {
+                PageHeader(title: "나의 플레이스",
+                           leading: Image(systemName: "chevron.left"),
+                           leadingAction: { presentationMode.wrappedValue.dismiss() })
+                .padding(.vertical, 17)
+                .padding(.horizontal, 15)
                 
-                Text("총 \(viewModel.places.count)개의 플레이스")
-                    .font(.basic.light14)
-                    .foregroundColor(.gray)
-            }
-            .padding(.horizontal, 15)
-            
-            ZStack {
-                Color.backgroundGray
-                    .edgesIgnoringSafeArea(.all)
+                CustomDivider()
+                    .padding(.bottom, 17)
                 
-                if viewModel.progress == .inProcess {
-                    // 진행상황 표시
-                    ProgressView(style: .medium)
-                } else {
-                    ScrollView {
-                        // 플레이스 리스트
-                        VStack(spacing: 7) {
-                            if viewModel.places.isEmpty {
-                                Text("아직 플레이스가 없어요\n 지도에서 플레이스를 추가해보세요!")
-                                    .multilineTextAlignment(.center)
-                                    .font(.basic.normal15)
-                                    .padding(.vertical, 40)
-                                    .foregroundColor(.gray)
-                                
-                                AdditionButton
-                                Spacer()
-                            } else {
-                                ForEach(viewModel.places, id: \.id) { wrapper in
-                                    let place = wrapper.placeInfo
-                                    LightCardView(place: place, isFavorite: wrapper.isSelected)
-                                        .padding(10)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 20)
-                                                .fill(.white)
-                                                .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                                        )
-                                }
-                                
-                                AdditionButton
-                                    .padding(.top, 20)
-                            }
+                // 헤더에 올라가는 리스트 카드 뷰
+                Group {
+                    SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor,
+                                        subscripts: "\(viewModel.places.count) places",
+                                        image: UIImage(), buttonLabel: Text("Edit"), action:  {
+                        withAnimation(.spring()) {
+                            showEditPopup = true
                         }
-                        .padding(.top, 12)
-                        .padding(.horizontal, 15)
+                    })
+                    .frame(height: 100)
+                    .padding(.horizontal, 17)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.white)
+                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                    )
+                    
+                    Text("총 \(viewModel.places.count)개의 플레이스")
+                        .font(.basic.light14)
+                        .foregroundColor(.gray)
+                }
+                .padding(.horizontal, 15)
+                
+                ZStack {
+                    Color.backgroundGray
+                        .edgesIgnoringSafeArea(.all)
+                    
+                    if viewModel.progress == .inProcess {
+                        // 진행상황 표시
+                        ProgressView(style: .medium)
+                    } else {
+                        ScrollView {
+                            // 플레이스 리스트
+                            VStack(spacing: 7) {
+                                if viewModel.places.isEmpty {
+                                    Text("아직 플레이스가 없어요\n 지도에서 플레이스를 추가해보세요!")
+                                        .multilineTextAlignment(.center)
+                                        .font(.basic.normal15)
+                                        .padding(.vertical, 40)
+                                        .foregroundColor(.gray)
+                                    
+                                    AdditionButton
+                                    Spacer()
+                                } else {
+                                    ForEach(viewModel.places, id: \.id) { wrapper in
+                                        let place = wrapper.placeInfo
+                                        // 카드 뷰
+                                        LightCardView(place: place, isFavorite: true, starAction: {
+                                            guard let index = viewModel.places.firstIndex(of: wrapper) else { return }
+                                            var updatedPlaces = viewModel.places
+                                            updatedPlaces.remove(at: index)
+                                            let ids = updatedPlaces.map{ $0.placeInfo.id }
+                                            
+                                            listManager.editPlacesList(listID: viewModel.list.identifier,
+                                                                       placeIDs: ids) { result in
+                                                DispatchQueue.main.async {
+                                                    switch result {
+                                                    case true:
+                                                        viewModel.progress = .finished
+                                                        viewModel.places.remove(at: index)
+                                                        return
+                                                    case false:
+                                                        viewModel.progress = .failed
+                                                        showWarning = true
+                                                        return
+                                                    }
+                                                }
+                                            }
+                                        })
+                                            .padding(10)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 20)
+                                                    .fill(.white)
+                                                    .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                                            )
+                                    }
+                                    
+                                    AdditionButton
+                                        .padding(.top, 20)
+                                }
+                            }
+                            .padding(.top, 12)
+                            .padding(.horizontal, 15)
+                        }
                     }
                 }
+            }
+            
+            // 로딩 인디케이터
+            if viewModel.progress == .inProcess {
+                ProgressView(style: .medium)
             }
         }
         .alert(isPresented: $showWarning) {

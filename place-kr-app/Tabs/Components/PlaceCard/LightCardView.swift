@@ -14,18 +14,21 @@ struct LightCardView: View {
     private let subscripts: String
     private let countsDescription: String
     private let categories: String // TODO: BE AN ARRAY
-    private let buttonAction: (() -> Void)?
+    private let starButtonAction: (() -> Void)?
+    private let shareButtonAction: (() -> Void)?
     private let imageUrl: URL?
     
     
-    init(place: PlaceInfo, isFavorite: Bool, action: (() -> Void)? = nil) {
+    init(place: PlaceInfo, isFavorite: Bool, starAction: (() -> Void)? = nil, shareAction: (() -> Void)? = nil) {
         self.placeName = place.name
         self.subscripts = "ㅇㅇㅇ님의 플레이스"
         self.countsDescription = "★ \(place.saves)명이 저장"
         self.imageUrl = place.imageUrl
         self.categories = place.category
         self.isFavorite = isFavorite
-        self.buttonAction = action
+        
+        self.starButtonAction = starAction
+        self.shareButtonAction = shareAction
     }
     
     var body: some View {
@@ -72,8 +75,26 @@ struct LightCardView: View {
             // 스타, 공유 버튼
             VStack {
                 HStack {
-                    StarButtonShape(27, fgColor: .gray, bgColor: .gray.opacity(0.3))
-                    ShareButtonShape(27, fgColor: .gray, bgColor: .gray.opacity(0.3))
+                    Button(action: {
+                        guard let starButtonAction = starButtonAction else { return }                        
+                        // 스타 버튼이 할 기능을 정함. 좋아요, 좋아요 취소 등이 들어갈 것임.
+                        starButtonAction()
+                    }) {
+                        Image(isFavorite ? "placeAdded" : "placeNotAdded")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 27, height: 27)
+                    }
+                    
+                    Button(action: {
+                        guard let shareButtonAction = shareButtonAction else { return }
+                        shareButtonAction()
+                    }) {
+                        Image("share")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 27, height: 27)
+                    }
                 }
                 Spacer()
             }

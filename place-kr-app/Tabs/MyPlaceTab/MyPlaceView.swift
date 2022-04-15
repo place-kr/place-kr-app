@@ -158,7 +158,7 @@ struct MyPlaceView: View {
             guard let selectedList = self.selectedList else { return }
             viewModel.progress = .inProcess
             
-            listManager.editListName(id: selectedList.identifier, name: self.text) { result in
+            listManager.editListComponent(id: selectedList.identifier, name: self.text) { result in
                 DispatchQueue.main.async {
                     switch result {
                     case true:

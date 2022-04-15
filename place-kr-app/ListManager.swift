@@ -199,7 +199,7 @@ class ListManager: ObservableObject {
         
     }
     
-    /// 리스트에 있는 플레이스 수정하기
+    /// 리스트에 있는 플레이스 수정하기(주로 삭제하기)
     /// 뺄 어레이가 아니라 있는 어레이를 전달해야 업데이트 됨
     func editPlacesList(listID: String, placeIDs: [String], completionHandler: ((Bool) -> ())? = nil) {
         let body = ListBody(places: placeIDs)
@@ -239,14 +239,11 @@ class ListManager: ObservableObject {
                 }
             }
             
-           
-            
             
             if let completionHandler = completionHandler {
                 completionHandler(true)
                 print("TRUE")
             }
-            self.updateLists()
         }
         .resume()
         
@@ -366,7 +363,7 @@ class ListManager: ObservableObject {
     }
     
     /// 플레이스 리스트 요소 수정
-    func editListName(id: String, name: String? = nil, hex: String? = nil, completionHandler: ((Bool) -> ())? = nil) {
+    func editListComponent(id: String, name: String? = nil, hex: String? = nil, completionHandler: ((Bool) -> ())? = nil) {
         guard let index = self.placeLists.firstIndex(where: { $0.identifier == id }) else {
             if let completionHandler = completionHandler {
                 completionHandler(false)

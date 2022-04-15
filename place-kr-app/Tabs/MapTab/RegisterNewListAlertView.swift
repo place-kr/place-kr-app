@@ -109,7 +109,7 @@ struct RegisterNewListAlertView: View {
                             completion(result)
                         }
                     case .patch(let id):
-                        self.viewModel.editListName(id: id, name: name, hex: selectedColor?.HEX) { result in
+                        self.viewModel.editListComponent(id: id, name: name, hex: selectedColor?.HEX) { result in
                             completion(result)
                         }
                     }
