@@ -23,6 +23,7 @@ struct MapView: View {
     
     @State var navigateToRegisterNewListView = false
     @State var navigateToSearch = false
+    @State var showError = false
     
     var body: some View {
         
@@ -115,7 +116,17 @@ struct MapView: View {
             withAnimation(.easeInOut(duration: 0.2)) {
                 navigateToRegisterNewListView = false
             }
-        }, requestType: .post, completion: { _ in }))
+        }, requestType: .post, completion: { result in
+            switch result {
+            case true:
+                self.navigateToRegisterNewListView = false
+            case false:
+                self.showError = true
+            }
+        }))
+        .alert(isPresented: self.$showError) {
+            Alert(title: Text("오류 발생"), message: Text("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요."), dismissButton: .default(Text("Close")))
+        }
     }
 }
 
