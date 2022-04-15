@@ -9,7 +9,7 @@ struct NaverLoginButtonView: View {
     var body: some View {
         Button(action: {
             showNaverLogin = true
-            loginManager.status = .inProgress
+//            loginManager.status = .inProgress
         }) {
             HStack {
                 Spacer()

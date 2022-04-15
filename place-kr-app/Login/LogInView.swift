@@ -82,7 +82,6 @@ struct LogInView: View {
                 .font(.system(size: 12))
                 .foregroundColor(.gray)
             }
-            .blur(radius: loginManager.status == .inProgress ? 5 : 0)
             
             if loginManager.status == .inProgress {
                 ProgressView(style: UIActivityIndicatorView.Style.medium)
