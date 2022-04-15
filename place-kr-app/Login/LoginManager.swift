@@ -9,7 +9,7 @@ import Foundation
 
 class LoginManager: ObservableObject {
     typealias AppleUserInfo = UserInfoManager.AppleUserInfo
-    @Published var status: status
+    @Published var status: Status
     
     /// API 서버에 네이버 소셜로그인에서 받은 토큰을 주고 앱에서 쓸 유저 토큰을 받아오는 동작을 하는 루틴입니다.
     func socialAuthResultHandler(_ result: Result<NaverUserInfo, NaverLoginError>) {
@@ -42,7 +42,7 @@ class LoginManager: ObservableObject {
                     
                     /// UserDefault에 토큰 저장
                     UserInfoManager.saveUserToken(result.token)
-                    print(result)
+                    UserInfoManager.login()
                     break
                 }
             }
@@ -82,8 +82,8 @@ class LoginManager: ObservableObject {
                     
                     /// UserDefault에 토큰 저장
                     UserInfoManager.saveUserToken(result.token)
+                    UserInfoManager.login()
                     print("Successfully post apple login request")
-                    print(result)
                     break
                 }
             }
@@ -96,7 +96,7 @@ class LoginManager: ObservableObject {
 }
 
 extension LoginManager {
-    enum status {
+    enum Status {
         case waiting
         case fail
         case success

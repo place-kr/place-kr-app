@@ -15,7 +15,6 @@ class LoginViewModel: ObservableObject {
 struct LogInView: View {
     @EnvironmentObject var loginManager: LoginManager
     @Environment(\.window) var window: UIWindow?
-    @Binding var success: Bool
     
     @ObservedObject var viewModel = LoginViewModel()
     
@@ -64,7 +63,7 @@ struct LogInView: View {
                 NaverLoginButtonView()
                     .environmentObject(loginManager)
                 
-                // TODO: 로그인 취소 후 블러 유지되는 문제 해결
+                // TODO: 로그인 취소 후 블러 유지되는 문제 해결할 것
                 AppleLogInView(viewModel: AppleLoginViewModel(window: window))
                     .frame(height: 54)
                     .environment(\.window, window)
@@ -95,6 +94,6 @@ struct LogInView: View {
 
 struct LogInView_Previews: PreviewProvider {
     static var previews: some View {
-        LogInView(success: .constant(false))
+        LogInView()
     }
 }

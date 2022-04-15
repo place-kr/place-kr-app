@@ -11,19 +11,24 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.window) var window: UIWindow?
     @ObservedObject var loginManger = LoginManager()
-
-    @State var isLoginSuccessed = false
-    @State var isFirstRegistered = true // TODO: 언젠가 바꾸기
     
+    @State var showOnboarding = (UserInfoManager.isRegistered != true)
+    
+    init() {
+        print("Onboarding", UserInfoManager.isRegistered)
+    }
+
     var body: some View {
 //        TabsView()
-        if loginManger.status != .success {
-            LogInView(success: $isLoginSuccessed)
+        
+        // 로그인 안 되어있으면 로그인부터
+        if UserInfoManager.isLoggenIn != true {
+            LogInView()
                 .environment(\.window, window)
                 .environmentObject(loginManger)
         } else {
-            if isFirstRegistered {
-                OnboardingView(isClicked: $isFirstRegistered)
+            if showOnboarding == true {
+                OnboardingView(show: $showOnboarding)
             } else {
                 TabsView()
             }

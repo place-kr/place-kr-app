@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import SDWebImageSwiftUI
 import Combine
 
 class LargePlaceCardViewModel: ObservableObject {
@@ -15,11 +15,13 @@ class LargePlaceCardViewModel: ObservableObject {
     @Published var placeInfo: PlaceInfo
     @Published var name: String
     @Published var saves: Int
+//    @Published var isFavorite: Bool
     
     init(info: PlaceInfo) {
         self.name = info.name
         self.saves = info.saves
         self.placeInfo = info
+//        self.isFavorite = info.isFavorite
     }
 }
 
@@ -44,8 +46,10 @@ struct LargePlaceCardView: View {
                 }
             
             /// 프로필 사진
-            RoundedRectangle(cornerRadius: 10)
-                .fill(.gray.opacity(0.5))
+            WebImage(url: viewModel.placeInfo.imageUrl)
+                .placeholder(Image("listLogo"))
+                .resizable()
+                .scaledToFit()
                 .frame(width: 94, height: 94)
                 .padding(.trailing, 20)
                         
@@ -74,13 +78,15 @@ struct LargePlaceCardView: View {
 extension LargePlaceCardView {
     var Saves: some View {
         /// 저장 수
-        HStack(alignment: .bottom, spacing: 0) {
-            Group {
-                Image(systemName: "star.fill")
-                Text("\(viewModel.saves)명이 저장")
-            }
-            .font(.system(size: 12))
-            .foregroundColor(.gray)
+        HStack(alignment: .center, spacing: 5) {
+            //                Image(viewModel.isFavorite ? "placeAdded" : "placeNotAdded")
+            Image("addedCount")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 17, height: 17)
+            Text("\(viewModel.saves)명이 저장")
+                .font(.system(size: 12))
+                .foregroundColor(.gray)
         }
         .padding(.bottom, 4)
     }

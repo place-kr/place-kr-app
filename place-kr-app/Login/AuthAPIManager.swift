@@ -45,7 +45,7 @@ class AuthAPIManager {
                 completionHandler(.failure(FetchError.invalidResponse))
                 // Peek into response if error occurs
             }
-
+            
             guard let data = data else {
                 print("Error in data")
                 completionHandler(.failure(FetchError.invalidData))

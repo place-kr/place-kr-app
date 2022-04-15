@@ -79,6 +79,26 @@ struct KakaoPlaceInfo: Identifiable {
     }
 }
 
+protocol PlaceInformation {
+    var identifier: String { get }
+    var name: String { get }
+    var x: String { get }
+    var y: String { get }
+//    var isFavorite: Bool { get }
+    var thumbnailUrl: String? { get }
+    var phone: String? { get }
+    var address: String? { get }
+    var category: String? { get }
+    var saves: Int? { get }
+}
+
+extension PlaceInformation {
+    var phone: String? { get {nil} }
+    var address: String? { get {nil} }
+    var thumbnailUrl: String? { get {nil} }
+    var category: String? { get {nil} }
+    var saves: Int? { get {nil} }
+}
 
 struct PlaceResponse: Codable {
     let count: Int
@@ -96,29 +116,22 @@ struct PlaceResponse: Codable {
     struct PlacePin: Codable, PlaceInformation {
         let identifier: String
         let name: String
+        let registrant: Registrant
+        let thumbnailUrl: String
+        let isFavorite: Bool
         let x: String
         let y: String
+        
+        enum CodingKeys: String, CodingKey {
+            case identifier, name, registrant, x, y
+            case thumbnailUrl = "thumbnail_url"
+            case isFavorite = "is_in_my_list"
+        }
     }
-}
-
-protocol PlaceInformation {
-    var identifier: String { get }
-    var name: String { get }
-    var x: String { get }
-    var y: String { get }
-    var phone: String? { get }
-    var address: String? { get }
-    var imageUrl: String? { get }
-    var category: String? { get }
-    var saves: Int? { get }
-}
-
-extension PlaceInformation {
-    var phone: String? { get {nil} }
-    var address: String? { get {nil} }
-    var imageUrl: String? { get {nil} }
-    var category: String? { get {nil} }
-    var saves: Int? { get {nil} }
+    
+    struct Registrant: Codable {
+        let nickname: String
+    }
 }
 
 /// 플레이스 정보를 담은 데이터 타입입니다
@@ -155,7 +168,7 @@ struct PlaceInfo {
     }
     
     var imageUrl: URL? {
-        guard let imageUrl = document.imageUrl else {
+        guard let imageUrl = document.thumbnailUrl else {
             return nil
         }
         return URL(string: imageUrl)
@@ -174,6 +187,10 @@ struct PlaceInfo {
         }
         return saves
     }
+    
+//    var isFavorite: Bool {
+//        return document.isFavorite
+//    }
     
     init(document: PlaceResponse.PlacePin) {
         self.document = document
@@ -205,21 +222,19 @@ struct OnePlaceResponse: Codable, PlaceInformation {
     let name: String
     let x: String
     let y: String
+//    let isFavorite: Bool
+
     let phone: String?
     let address: String?
-    let imageUrl: String?
+    let thumbnailUrl: String?
     let category: String?
     let saves: Int?
 
     enum CodingKeys: String, CodingKey {
-        case identifier
-        case name
-        case phone
-        case address
-        case x
-        case y
-        case imageUrl = "thumnail_url"
-        case category
+        case identifier, name, phone, address, x, y, category
+//        case isFavorite = "saved_in_my_lists"
+        case thumbnailUrl = "thumnail_url"
         case saves = "saves_count"
     }
 }
+ 

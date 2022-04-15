@@ -13,7 +13,10 @@ import Foundation
 class UserInfoManager {
     static let userInfoKey = "user"
     static let tokenKey = "token"
+    static let loginKey = "login"
+    static let registeredKey = "registered"
     
+    /// 유저 정보를 저장함. 애플은 나중에 이메일을 알려주지 않으므로 잘 저장해놓아야 함.
     static func saveAppleUserInfo(_ info: AppleUserData) {
         let encoder = PropertyListEncoder()
         
@@ -59,11 +62,38 @@ class UserInfoManager {
         print("Token is successfully saved: \(token)")
     }
     
+    static func login() {
+        UserDefaults.standard.set(true, forKey: UserInfoManager.loginKey)
+        print("Logged in")
+    }
+    
+    static func logout(_ token: String) {
+        UserDefaults.standard.set(false, forKey: UserInfoManager.loginKey)
+        print("Logged out")
+    }
+    
+    static func register() {
+        UserDefaults.standard.set(true, forKey: UserInfoManager.registeredKey)
+        print("Registered")
+    }
+    
     /// 인증에 사용되는 유저 토큰(수정)
     static var userToken: String? {
         let token = UserDefaults.standard.string(forKey: UserInfoManager.tokenKey)
         print("Token is successfully loaded: \(token as Any)")
         return token 
+    }
+    
+    /// 로그인 상태 확인
+    static var isLoggenIn: Bool? {
+        let loginStatus = UserDefaults.standard.object(forKey: UserInfoManager.loginKey) as? Bool
+        return loginStatus
+    }
+    
+    /// 등록된 유저인지 확인
+    static var isRegistered: Bool? {
+        let loginStatus = UserDefaults.standard.object(forKey: UserInfoManager.registeredKey) as? Bool
+        return loginStatus != nil
     }
 }
 

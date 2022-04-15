@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+class NewNameAlertViewModel: ObservableObject {
+    @Published var progress: Progress = .ready
+    
+    
+}
+
 struct NewNameAlertView: View {
     @Binding var name: String
     @State var clicked = false
@@ -17,7 +23,7 @@ struct NewNameAlertView: View {
             Text("환영합니다")
                 .font(.basic.bold21)
                 .padding(.top, 40)
-            Text("name에서 활동할 이름을 입력해주세요")
+            Text("플레이스트에서 활동할 이름을 입력해주세요")
                 .font(.basic.light14)
                 .padding(.bottom, 15)
             ThemedTextField($name, "이곳에 이름을 입력해주세요",
