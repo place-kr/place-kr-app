@@ -22,7 +22,6 @@ struct MyPlaceView: View {
     @State var showShareSheet = false
     @State var showEditSheet = false
     @State var showNewListAlert = false
-    @State var navigateToDetailView = false
     
     @State var text = ""
     
@@ -67,25 +66,19 @@ struct MyPlaceView: View {
                         VStack(spacing: 10) {
                             // MARK: -리스트 카드 뷰
                             ForEach(listManager.placeLists, id: \.self) { list in
-                                NavigationLink(
-                                    destination: LazyView {
-                                        PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list, listManager: listManager), selection: $selection)
-                                            .environmentObject(listManager)
-                                    },
-                                    isActive: $navigateToDetailView,
-                                    label: {
-                                        SimplePlaceCardView(list.name,
-                                                            hex: list.color,
-                                                            subscripts: "\(list.places.count) places",
-                                                            image: UIImage(),
-                                                            buttonLabel: Image(systemName: "ellipsis"),
-                                                            action: {
-                                            self.selectedList = list
-                                            withAnimation(.spring()) {
-                                                bottomSheetPosition = .bottom
-                                            }})
-                                        .padding(.horizontal, 12)
-                                    })
+                                navigator(list: list, label:
+                                            SimplePlaceCardView(list.name,
+                                                                hex: list.color,
+                                                                subscripts: "\(list.places.count) places",
+                                                                image: UIImage(),
+                                                                buttonLabel: Image(systemName: "ellipsis"),
+                                                                action: {
+                                                self.selectedList = list
+                                                withAnimation(.spring()) {
+                                                    bottomSheetPosition = .bottom
+                                                }})
+                                            .padding(.horizontal, 12)
+                                )
                                 .frame(height: 70)
                                 .background(
                                     RoundedRectangle(cornerRadius: 10)
@@ -121,7 +114,7 @@ struct MyPlaceView: View {
                     }
                 }) {
                     Image(systemName: "xmark")
-                        .font(.system(size: 21, weight: .bold))
+                        .font(.system(size: 14, weight: .bold))
                     
                 }
             }
@@ -186,6 +179,21 @@ struct MyPlaceView: View {
 }
 
 extension MyPlaceView {
+    @ViewBuilder
+    func navigator<T: View>(list: PlaceList?, label: T) -> some View {
+        switch list {
+        case nil:
+            label
+        default:
+            NavigationLink(
+                destination: LazyView {
+                    PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list!, listManager: listManager), selection: $selection)
+                        .environmentObject(listManager)
+                },
+                label: { label })
+        }
+    }
+    
     var managePlaceList: some View {
         VStack(alignment: .leading, spacing: 15) {
             HStack(spacing: 9) {
@@ -210,14 +218,17 @@ extension MyPlaceView {
             }
             
             Divider()
-            
-            HStack(spacing: 9) {
-                Image(systemName: "mappin")
-                Text("플레이스 편집하기")
-            }
+
+            navigator(list: self.selectedList, label:
+                HStack(spacing: 9) {
+                    Image(systemName: "mappin")
+                    Text("플레이스 편집하기")
+                }
+            )
             .onTapGesture {
-                navigateToDetailView = true
-                bottomSheetPosition = .hidden
+                withAnimation(.spring()) {
+                    bottomSheetPosition = .hidden
+                }
             }
             
             Divider()

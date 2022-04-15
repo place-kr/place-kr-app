@@ -29,7 +29,10 @@ struct NewNameAlertView: View {
                             action: {})
             HStack {
                 Spacer()
-                Button(action: { action() }) {
+                Button(action: {
+                    action()
+                    clicked = true
+                }) {
                     Text("입력완료")
                 }
                 .disabled(clicked)

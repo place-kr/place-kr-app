@@ -36,8 +36,7 @@ struct LightCardView: View {
             // 프로필 이미지
             WebImage(url: imageUrl)
                 .placeholder(content: {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(.gray)
+                    Image("listLogo")
                 })
                 .resizable()
                 .aspectRatio(contentMode: .fill)
