@@ -17,7 +17,7 @@ class RegisterPlaceMainViewModel: ObservableObject {
     func register(name: String, address: String, coord: (String, String), completion: @escaping (Bool)->()) {
         self.progress = .inProcess
         
-        let registerRequest = RegisterRequest(name: name, x: coord.0, y: coord.1, address: address)
+        var registerRequest = RegisterRequest(name: name, x: coord.0, y: coord.1, address: address)
         
         RegisterManager.registerPlace(registerRequest)
             .receive(on: DispatchQueue.main)
@@ -30,6 +30,9 @@ class RegisterPlaceMainViewModel: ObservableObject {
                     completion(false)
                 case .finished:
                     self.progress = .finished
+                    
+                    registerRequest.status = "REQUESTED"
+                    self.requests.insert(registerRequest, at: 0)
                     completion(true)
                 }
                 
