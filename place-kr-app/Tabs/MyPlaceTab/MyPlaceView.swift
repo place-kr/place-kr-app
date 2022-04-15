@@ -18,9 +18,11 @@ struct MyPlaceView: View {
     
     @State var bottomSheetPosition: PlaceListSheetPosition = .hidden
     @State var selectedList: PlaceList?
+    
     @State var showShareSheet = false
     @State var showEditSheet = false
     @State var showNewListAlert = false
+    @State var navigateToDetailView = false
     
     @State var text = ""
     
@@ -52,7 +54,7 @@ struct MyPlaceView: View {
                 }
                 .padding(.top, 20)
 
-                // 플레이스 리스트
+                // MARK: - 플레이스 리스트
                 VStack(spacing: 15) {
                     HStack {
                         Text("총 \(listManager.placeLists.count)개의 플레이스 리스트가 있습니다")
@@ -63,13 +65,14 @@ struct MyPlaceView: View {
                     
                     ScrollView {
                         VStack(spacing: 10) {
-                            // 리스트 카드 뷰
+                            // MARK: -리스트 카드 뷰
                             ForEach(listManager.placeLists, id: \.self) { list in
                                 NavigationLink(
                                     destination: LazyView {
                                         PlaceListDetailView(viewModel: PlaceListDetailViewModel(list: list, listManager: listManager), selection: $selection)
                                             .environmentObject(listManager)
                                     },
+                                    isActive: $navigateToDetailView,
                                     label: {
                                         SimplePlaceCardView(list.name,
                                                             hex: list.color,
@@ -213,7 +216,8 @@ extension MyPlaceView {
                 Text("플레이스 편집하기")
             }
             .onTapGesture {
-                print("edit")
+                navigateToDetailView = true
+                bottomSheetPosition = .hidden
             }
             
             Divider()
