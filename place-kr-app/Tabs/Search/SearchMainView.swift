@@ -41,6 +41,9 @@ struct SearchMainView: View {
         }
         .padding(.horizontal, 20)
         .navigationBarHidden(true)
+        .onTapGesture {
+            endTextEditing() 
+        }
     }
 }
 
@@ -51,8 +54,11 @@ extension SearchMainView {
             Button(action: { self.presentation.wrappedValue.dismiss() }) {
                 Image(systemName: "chevron.left") // TODO: Root 로 pop 할지 이대로 할지 결정
             }
+            .foregroundColor(.black)
             
             SearchBarView($viewModel.searchKeyword, "검색 장소를 입력하세요", bgColor: Color(red: 243/255,  green: 243/255, blue: 243/255)) {
+                // MARK: - Searchbar Action
+                viewModel.saveQuery(viewModel.searchKeyword)
                 doNavigate = true
             }
         }
@@ -64,20 +70,25 @@ extension SearchMainView {
                 Text("내가 찾은 검색어")
                     .font(.system(size: 14))
                 Spacer()
-                Button(action: {}) {
+                Button(action: { viewModel.deleteHistory() }) {
                     Text("삭제하기")
                         .font(.system(size: 12))
                 }
+                .foregroundColor(.black)
             }
             
-            // TODO: 나중에 고쳐져야 함. 히스토리 UserDefault에 저장
+            // MARK: - 검색어 버튼
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(1..<6, id: \.self) { _ in
-                        Button(action: {}) {
-                            Text("일식")
+                    ForEach(viewModel.searchHistory, id: \.self) { query in
+                        Button(action: {
+                            viewModel.searchKeyword = query
+                            doNavigate = true
+                        }) {
+                            Text(query)
                                 .font(.system(size: 11))
                         }
+                        .padding(1)
                         .buttonStyle(RoundedButtonStyle(bgColor: .white, textColor: .black, isStroked: true, width: 50, height: 27))
                     }
                 }
@@ -85,24 +96,24 @@ extension SearchMainView {
         }
     }
     
-    var categories: some View {
-        VStack(alignment: .leading) {
-            Text("카테고리별 플레이스 찾기")
-                .font(.system(size: 14))
-            
-            UIGrid(columns: 2, list: viewModel.categoriesData) { category in
-                Button(action: {}) {
-                    HStack {
-                        Spacer()
-                        Text(category)
-                            .font(.system(size: 12))
-                        Spacer()
-                    }
-                }
-                .buttonStyle(RoundedButtonStyle(bgColor: .gray.opacity(0.3), textColor: .white, isStroked: false, height: 40))
-            }
-        }
-    }
+//    var categories: some View {
+//        VStack(alignment: .leading) {
+//            Text("카테고리별 플레이스 찾기")
+//                .font(.system(size: 14))
+//
+//            UIGrid(columns: 2, list: viewModel.categoriesData) { category in
+//                Button(action: {}) {
+//                    HStack {
+//                        Spacer()
+//                        Text(category)
+//                            .font(.system(size: 12))
+//                        Spacer()
+//                    }
+//                }
+//                .buttonStyle(RoundedButtonStyle(bgColor: .gray.opacity(0.3), textColor: .white, isStroked: false, height: 40))
+//            }
+//        }
+//    }
     
 }
 

@@ -41,7 +41,7 @@ extension SearchFieldView {
                 Button(
                     action: {
                         if !viewModel.searchKeyword.isEmpty {
-                            viewModel.fetchPlaces(viewModel.searchKeyword)
+                            viewModel.fetchPlaces(viewModel.searchKeyword, page: 0)
                         }
                     },
                     label: {

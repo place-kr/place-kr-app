@@ -83,7 +83,7 @@ extension LargePlaceCardView {
             Image("addedCount")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 17, height: 17)
+                .frame(width: 15, height: 15)
             Text("\(viewModel.saves)명이 저장")
                 .font(.system(size: 12))
                 .foregroundColor(.gray)
@@ -96,9 +96,12 @@ extension LargePlaceCardView {
         HStack(alignment: .center, spacing: 6) {
             Group {
                 Image(systemName: "person.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 15, height: 15)
                 Text("포로리님의 플레이스")
+                    .font(.system(size: 12))
             }
-            .font(.system(size: 12))
         }
         .padding(.bottom, 20)
     }

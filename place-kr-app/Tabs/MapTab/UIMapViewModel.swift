@@ -62,7 +62,7 @@ class UIMapViewModel: ObservableObject {
     
     /// 퍼블리셔에 전달할 인자를 결정함
     func fetchPlaces(by keyword: String) {
-        listPlacePublisher(PlaceSearchManager.getPlacesByName(name: keyword)) { isSuccessed in
+        listPlacePublisher(PlaceSearchManager.getPlacesByName(name: keyword, page: 0)) { isSuccessed in
             // Do nothing
         }
     }

@@ -19,12 +19,14 @@ struct SearchResultsView: View {
     @State var navigateToRequest = false
     @State var navigateToRegister = false
     @State var submitted: String = ""   // TODO: 개선할 수 있으면 하자, 변하는 결과를 잡고있다가 넘겨줌
+    
+    @State var page = 0
 
     
     init(keyword: String, _ viewModel: SearchManager = SearchManager()) {
         self.originalKeyword = keyword
         self.viewModel = viewModel
-        self.viewModel.fetchPlaces(keyword)
+        self.viewModel.fetchPlaces(keyword, page: 0)
     }
     
     var body: some View {
@@ -49,29 +51,47 @@ struct SearchResultsView: View {
             }
             
             searchField
-            
+                .padding(.horizontal, 15)
+
             // Bad network 경고 붙이기
             if let places = viewModel.places {
                 if !isFocused && navigateToResult == false {
                     if places.isEmpty {
-                        noResultDescription
-                        Spacer()
-                        
-                        registerPlaceButton
-                        requstPlaceButton
+                        Group {
+                            noResultDescription
+                            Spacer()
+                            
+                            registerPlaceButton
+                            requstPlaceButton
+                        }
+                        .padding(.horizontal, 15)
+
                     } else {
                         HStack {
                             searchResultHolder
                             Spacer()
                         }
-                        
-                        ScrollView {
-                            ForEach(places, id: \.id) { place in
-//                                PlaceCardView(
-//                                    bgColor: Color(red: 246/255, green: 246/255, blue: 246/255),
-//                                    placeInfo: place
-//                                )
-//                                    .frame(height: 100)
+                        .padding(.horizontal, 15)
+
+                        ZStack {
+                            Color.backgroundGray
+                                .edgesIgnoringSafeArea(.all)
+                                                        
+                            ScrollView {
+                                VStack {
+                                    ForEach(places, id: \.id) { place in
+                                        LightCardView(place: place, isFavorite: false)
+                                        .padding(10)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 20)
+                                                .fill(.white)
+                                                .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                                        )
+                                    }
+                                }
+                                .padding(.horizontal, 15)
+                                .padding(.top, 10)
+                                .padding(.bottom, 40)
                             }
                         }
                     }
@@ -86,8 +106,10 @@ struct SearchResultsView: View {
         .onAppear {
             self.viewModel.searchKeyword = originalKeyword
         }
-        .padding(.horizontal, 15)
         .navigationBarHidden(true)
+        .onTapGesture {
+            endTextEditing()
+        }
     }
 }
 
@@ -103,6 +125,7 @@ extension SearchResultsView {
             Button(action: { self.presentation.wrappedValue.dismiss() }) {
                 Image(systemName: "chevron.left") // TODO: Root 로 pop 할지 이대로 할지 결정
             }
+            .foregroundColor(.black)
             
             SearchBarView($viewModel.searchKeyword, "검색 장소를 입력하세요",
                           isFocused: $isFocused,

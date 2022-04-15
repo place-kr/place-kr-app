@@ -15,6 +15,7 @@ class UserInfoManager {
     static let tokenKey = "token"
     static let loginKey = "login"
     static let registeredKey = "registered"
+    static let searchHistoryKey = "searchHistory"
     
     /// 유저 정보를 저장함. 애플은 나중에 이메일을 알려주지 않으므로 잘 저장해놓아야 함.
     static func saveAppleUserInfo(_ info: AppleUserData) {
@@ -77,6 +78,23 @@ class UserInfoManager {
         print("Registered")
     }
     
+    /// 검색기록 디스크에 저장
+    static func saveSearchHistory(_ str: String) {
+        if let history = self.searchHistory {
+            // 키 있을 때
+            let newValue = Array(Set(history + [str]))
+            UserDefaults.standard.set(newValue, forKey: UserInfoManager.searchHistoryKey)
+        } else {
+            // 키 없을 때
+            UserDefaults.standard.set([str], forKey: UserInfoManager.searchHistoryKey)
+        }
+    }
+    
+    /// 검색기록 삭제
+    static func deleteSearchHistory() {
+        UserDefaults.standard.set([], forKey: UserInfoManager.searchHistoryKey)
+    }
+    
     /// 인증에 사용되는 유저 토큰(수정)
     static var userToken: String? {
         let token = UserDefaults.standard.string(forKey: UserInfoManager.tokenKey)
@@ -94,6 +112,12 @@ class UserInfoManager {
     static var isRegistered: Bool? {
         let loginStatus = UserDefaults.standard.object(forKey: UserInfoManager.registeredKey) as? Bool
         return loginStatus != nil
+    }
+    
+    /// 저장기록 확인
+    static var searchHistory: [String]? {
+        let history = UserDefaults.standard.object(forKey: UserInfoManager.searchHistoryKey) as? [String]
+        return history
     }
 }
 

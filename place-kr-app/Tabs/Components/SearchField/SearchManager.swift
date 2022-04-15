@@ -13,7 +13,9 @@ import Combine
 class SearchManager: ObservableObject {
     @Published var places: [PlaceInfo]?   // 장소 정보 저장된 리스트
     @Published var searchKeyword = ""
+    
     private var subscriptions = Set<AnyCancellable>()
+    private var nextUrl: String = ""
     
     func reset() {
         places = [PlaceInfo]()
@@ -21,8 +23,9 @@ class SearchManager: ObservableObject {
     }
     
     /// API 서버에 장소 키워드 전달 후 관련 정보를 받아옵니다.
-    func fetchPlaces(_ keyword: String) {
-        PlaceSearchManager.getPlacesByName(name: keyword)
+    func fetchPlaces(_ keyword: String, page: Int) {
+        PlaceSearchManager.getPlacesByName(name: keyword, page: page)
+            .receive(on: DispatchQueue.main)
             .map { $0.results.map{ PlaceInfo(document: $0) }} 
             .sink(receiveCompletion: { response in
                 switch response {
@@ -36,8 +39,7 @@ class SearchManager: ObservableObject {
                 DispatchQueue.main.async {
                     self.searchKeyword = keyword
                     self.places = result
-                    print(self.searchKeyword)
-                    print(self.places as Any)
+//                    self.nextUrl = result.next
                 }
             })
             .store(in: &subscriptions)

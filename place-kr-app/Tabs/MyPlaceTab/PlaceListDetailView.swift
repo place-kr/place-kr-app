@@ -164,7 +164,7 @@ extension PlaceListDetailView {
                 Spacer()
                 Text("+ 플레이스 추가하기")
                     .font(.basic.normal15)
-                    .padding()
+                    .padding(1)
                 Spacer()
             }
         }

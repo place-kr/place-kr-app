@@ -78,17 +78,21 @@ class PlaceSearchManager {
     }
     
     /// Place 이름을 기반으로 주변 정보를 받아옵니다.(자체 서버)
-    static func getPlacesByName(name: String) -> AnyPublisher<PlaceResponse, Error> {
+    static func getPlacesByName(name: String, page: Int) -> AnyPublisher<PlaceResponse, Error> {
         // Fetch my user token from UserDefault
         let token = UserInfoManager.userToken
         guard let token = token else {
             return Fail(error: PlaceApiError.fetch).eraseToAnyPublisher()
         }
 
-        // TODO: 이거 검색 우선순위 어떻게..?
-        let session = URLSession.shared // TODO: 쿼리부분 수정요청
-        guard let url = URL(string: "")
-        else {
+        var components = URLComponents(string: "https://dev.place.tk/api/v1/places/search")
+        let limit = URLQueryItem(name: "limit", value: "10")
+        let offset = URLQueryItem(name: "offset", value: String(page * 10))
+        let query = URLQueryItem(name: "query", value: name)
+        
+        components?.queryItems = [limit, offset, query]
+        
+        guard let url = components?.url else {
             return Fail(error: PlaceApiError.url).eraseToAnyPublisher()
         }
         
@@ -99,7 +103,7 @@ class PlaceSearchManager {
         
 
         let decoder = JSONDecoder()
-        return session.dataTaskPublisher(for: request)
+        return URLSession.shared.dataTaskPublisher(for: request)
             .tryMap() { data, response in
                 guard let httpResponse = response as? HTTPURLResponse else {
                     print("Response error: \(response)")
@@ -132,7 +136,7 @@ class PlaceSearchManager {
 
         // Make URLSession.datapublisher which requests informations from the server
         let session = URLSession.shared // TODO: 쿼리부분 수정요청
-        guard let url = URL(string: "https://dev.place.tk/api/v1/places/search?query=\("_T_")&south_west_x=\(bounds.bottomleadingY)&south_west_y=\(bounds.bottomleadingX)&north_east_x=\(bounds.toptrailingY)&north_east_y=\(bounds.toptrailingX)")
+        guard let url = URL(string: "https://dev.place.tk/api/v1/places/search?south_west_x=\(bounds.bottomleadingY)&south_west_y=\(bounds.bottomleadingX)&north_east_x=\(bounds.toptrailingY)&north_east_y=\(bounds.toptrailingX)")
         else {
             return Fail(error: PlaceApiError.url).eraseToAnyPublisher()
         }
