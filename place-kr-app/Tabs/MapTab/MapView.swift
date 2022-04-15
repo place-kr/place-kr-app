@@ -36,31 +36,6 @@ struct MapView: View {
             UIMapView(viewModel: mapViewModel)
                 .edgesIgnoringSafeArea(.vertical)
             
-            VStack {
-                Spacer()
-                
-                if mapViewModel.mapNeedsReload {
-                    /// 맵 리로드 버튼
-                    Button(action: {
-                        // 보이는 범위 안의 플레이스 페칭, 마커 생성, 마커 그리기
-                        mapViewModel.fetchPlacesAndDrawMarkers(in: mapViewModel.currentBounds) { info in
-                            markerAction(id: info.id)
-                        }
-                        withAnimation(springAnimation) {
-                            mapViewModel.mapNeedsReload = false
-                        }
-                    }) {
-                        Image(systemName: "arrow.clockwise.circle.fill")
-                            .resizable()
-                            .frame(width: 35, height: 35)
-                            .foregroundColor(.black)
-                            .shadow(radius: 5)
-                    }
-                    .transition(.move(edge: .bottom))
-                }
-            }
-            .padding(.bottom, 15)
-            .zIndex(1)
             
             VStack(spacing: 10) {
                 /// 검색창
@@ -83,6 +58,27 @@ struct MapView: View {
                         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
                     
                     Spacer()
+                    
+                    if mapViewModel.mapNeedsReload {
+                        /// 맵 리로드 버튼
+                        Button(action: {
+                            // 보이는 범위 안의 플레이스 페칭, 마커 생성, 마커 그리기
+                            mapViewModel.fetchPlacesAndDrawMarkers(in: mapViewModel.currentBounds) { info in
+                                markerAction(id: info.id)
+                            }
+                            withAnimation(springAnimation) {
+                                mapViewModel.mapNeedsReload = false
+                            }
+                        }) {
+                            Image(systemName: "arrow.clockwise.circle.fill")
+                                .resizable()
+                                .frame(width: 35, height: 35)
+                                .foregroundColor(.black)
+                                .shadow(radius: 5)
+                        }
+                        .transition(.opacity)
+                        .zIndex(1)
+                    }
                 }
                 .padding(.horizontal, 15)
                 

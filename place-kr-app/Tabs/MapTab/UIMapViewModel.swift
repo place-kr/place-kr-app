@@ -93,7 +93,7 @@ class UIMapViewModel: ObservableObject {
                         let nCoord = NMGLatLng(lat:coord.lat, lng: coord.lon)
                         let cameraUpdate = NMFCameraUpdate(scrollTo: nCoord)
                         cameraUpdate.animation = .easeOut
-                        cameraUpdate.animationDuration = 0.5
+                        cameraUpdate.animationDuration = 0.3
                         self.view.mapView.moveCamera(cameraUpdate)
                                     
                         withAnimation {
