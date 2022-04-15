@@ -55,6 +55,8 @@ class AppleLoginViewModel: ObservableObject {
                     
                     // 성공
                     completionHandler(.success(userInfo))
+                    // 시스템에서 로그인 처리
+                    UserInfoManager.login()
                 }
                 break
             }

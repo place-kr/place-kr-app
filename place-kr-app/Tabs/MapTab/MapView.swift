@@ -206,11 +206,11 @@ extension MapView {
                         self.listSheetPosition = .middle
                     }
                 }) {
-                    Image(systemName: "star.fill")
+                    Image("placeNotAdded")
                         .foregroundColor(.gray)
                 }
                 Button(action: {}) {
-                    Image(systemName: "square.and.arrow.up.fill")
+                    Image(systemName: "share")
                         .foregroundColor(.gray)
                 }
             }

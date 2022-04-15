@@ -86,7 +86,6 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
         
         // 모든 error
         func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
-            print("SS")
             print("[NaverVCRepresentable] \(error as Any)")
             print("error = \(error.localizedDescription)")
         }

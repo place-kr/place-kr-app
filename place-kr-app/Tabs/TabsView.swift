@@ -68,7 +68,7 @@ struct TabsView: View {
             .onAppear() {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     withAnimation(.easeInOut(duration: 0.2)) {
-                        self.showNewNameAlert = true
+                        self.showNewNameAlert = (UserInfoManager.isRegistered == false)
                     }
                 }
                 UITabBar.appearance().backgroundColor = .white

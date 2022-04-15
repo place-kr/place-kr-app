@@ -94,19 +94,11 @@ extension OnboardingViewModel {
 
 struct OnboardingView: View {
     @ObservedObject var viewModel = OnboardingViewModel()
-    @State var showProgressView = false
-    @Binding var isClicked: Bool
+    @State var isSubmitted = false
+    @Binding var show: Bool
     
     var body: some View {
         ZStack {
-            if showProgressView {
-                Group {
-                    Color.black.opacity(0.1)
-                    ProgressView(style: UIActivityIndicatorView.Style.medium)
-                }
-                .zIndex(1)
-            }
-            
             VStack {
                 header
                     .padding(.horizontal, 13)
@@ -116,17 +108,15 @@ struct OnboardingView: View {
                     .padding(.bottom, 47)
                 
                 Button(action: {
+                    show = false
                     // TODO: 어딘가에 제출하기
-                    isClicked = false
-                    showProgressView = true
                     let selected = viewModel.submitSelectedImage()
-                    print(selected.count)
                 }) {
                     Text("시작하기")
                         .foregroundColor(.white)
                 }
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 52))
-                .disabled(viewModel.selectionCount == 0)
+                .disabled(viewModel.selectionCount == 0 || isSubmitted)
                 .transition(.opacity)
                 .animation(.easeInOut)
             }
@@ -204,6 +194,6 @@ private func checkable(_ wrapper: OnboardingViewModel.ImageWrapper,
 
 struct OnboardingView_Previews: PreviewProvider {
     static var previews: some View {
-        OnboardingView(isClicked: .constant(true))
+        OnboardingView(show: .constant(true))
     }
 }
