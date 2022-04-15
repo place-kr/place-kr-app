@@ -56,6 +56,7 @@ struct RequestCardView: View {
                 Text(status)
                     .font(.basic.bold12)
                     .foregroundColor(requestColor)
+                    .padding(.trailing, 10)
             }
             
         }

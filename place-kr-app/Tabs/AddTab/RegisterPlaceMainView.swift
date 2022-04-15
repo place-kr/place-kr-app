@@ -72,7 +72,7 @@ struct RegisterPlaceMainView: View {
     @State var navigateToRegister = false
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             // 네비게이트 대상
             Navigators
             
@@ -81,27 +81,52 @@ struct RegisterPlaceMainView: View {
                 .padding(.horizontal, 15)
 
             CustomDivider()
+                .padding(.bottom, 8.5)
             
-            Group {
-                if viewModel.requests.isEmpty {
-                    EmptyCaseView
-                    
-                    RegisterButton
-                        .padding(.bottom, 20)
-                } else {
-                    ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading) {
-                            ForEach(viewModel.requests) { request in
-                                RequestCardView(place: request)
+            HStack {
+                Text("\(viewModel.requests.count)건의 등록요청이 있습니다")
+                    .font(.basic.normal14)
+                    .foregroundColor(.gray)
+                    .padding(.vertical, 8)
+                
+                Spacer()
+            }
+            .padding(.horizontal, 15)
+            
+            // MARK: - 리퀘스트 리스트
+            ZStack {
+                Color.backgroundGray
+                
+                Group {
+                    if viewModel.requests.isEmpty {
+                        EmptyCaseView
+                        
+                        RegisterButton
+                            .padding(.bottom, 20)
+                    } else {
+                        ScrollView(showsIndicators: false) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                ForEach(viewModel.requests) { request in
+                                    RequestCardView(place: request)
+                                        .padding(.horizontal, 10)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .fill(.white)
+                                        )
+                                        .frame(height: 70)
+                                }
+                                
+                                RegisterButton
+                                    .padding(.vertical, 20)
                             }
-                            
-                            RegisterButton
-                                .padding(.bottom, 20)
+                            .padding(.top, 14)
                         }
                     }
                 }
+                .padding(.horizontal, 15)
             }
-            .padding(.horizontal, 15)
+            
+            
         }
         .navigationBarTitle("")
     }

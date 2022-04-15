@@ -27,10 +27,10 @@ struct RegisterRequest: Codable, Identifiable {
         switch self.status {
         case "REQUESTED":
             return "접수중"
-        case "FAILED":
-            return "등록실패"
-        case "SUCCESSED":
+        case "REGISTERED":
             return "등록완료"
+        case "REJECTED":
+            return "등록실패"
         default:
             return "알 수 없음"
         }
