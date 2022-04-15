@@ -19,6 +19,9 @@ extension Font {
         let normal12 = Font.system(size: 12)
         
         /// size: 12, weight: normal
+        let normal10 = Font.system(size: 10)
+        
+        /// size: 12, weight: normal
         let normal14 = Font.system(size: 14)
         
         /// size: 15, weight: normal

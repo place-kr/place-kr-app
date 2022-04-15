@@ -265,11 +265,12 @@ extension MapView {
                             listManager.updateLists()
                         }
                     }) {
-                        HStack {
-                            Image(systemName: "plus")
-                                .foregroundColor(.gray)
-                                .padding(5)
-                                .background(Circle().fill(.gray.opacity(0.3)))
+                        HStack(spacing: 15) {
+                            Image("createList")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 34, height: 34)
+                            
                             Text("새로운 리스트 만들기")
                                 .font(.basic.normal12)
                             
@@ -303,12 +304,18 @@ extension MapView {
                                     }
                                 }
                             }) {
-                                HStack {
+                                HStack(spacing: 15) {
                                     RoundedRectangle(cornerRadius: 5)
-                                        .fill(.gray)
+                                        .fill(colorFrom(hex: list.color).color)
                                         .frame(width: 34, height: 34)
                                     
-                                    Text(list.name)
+                                    VStack(alignment: .leading, spacing: 1) {
+                                        Text(list.name)
+                                            .font(.basic.normal12)
+                                        Text("\(list.count) Places")
+                                            .font(.basic.normal10)
+                                    }
+                                    
                                     
                                     Spacer()
                                 }

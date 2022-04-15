@@ -108,15 +108,17 @@ struct MyPlaceView: View {
                     .padding(.bottom, 13.5)
                 Spacer()
                 Button(action: {
+                    print("SSS")
                     withAnimation(.spring()) {
                         bottomSheetPosition = .hidden
                     }
                 }) {
                     Image(systemName: "xmark")
                         .font(.system(size: 16, weight: .bold))
+                        .frame(width: 32, height: 32)
                 }
             }
-            .padding(.horizontal, 25)
+            .padding(.horizontal, 15)
         },
                      mainContent: {
             managePlaceList
