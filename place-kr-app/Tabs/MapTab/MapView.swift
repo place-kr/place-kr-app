@@ -201,9 +201,10 @@ extension MapView {
         }) {
             Image(systemName: "xmark")
                 .foregroundColor(.black)
-                .font(.system(size: 16))
+                .font(.system(size: 16, weight: .bold))
+                .frame(width: 35, height: 35)
         }
-        .frame(width: 20, height: 20)
+        
     }
     
     /// 액션 버튼

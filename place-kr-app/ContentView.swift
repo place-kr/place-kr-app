@@ -13,16 +13,13 @@ struct ContentView: View {
     @ObservedObject var loginManger = LoginManager()
     
     @State var showOnboarding = (UserInfoManager.isRegistered != true)
-    
-    init() {
-        print("Onboarding", UserInfoManager.isRegistered)
-    }
+    @State var showLogin = (UserInfoManager.isLoggenIn != true)
 
     var body: some View {
 //        TabsView()
         
         // 로그인 안 되어있으면 로그인부터
-        if UserInfoManager.isLoggenIn != true {
+        if showLogin == true && loginManger.status != .success {
             LogInView()
                 .environment(\.window, window)
                 .environmentObject(loginManger)

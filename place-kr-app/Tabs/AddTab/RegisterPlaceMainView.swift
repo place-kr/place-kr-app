@@ -33,6 +33,7 @@ class RegisterPlaceMainViewModel: ObservableObject {
                     
                     registerRequest.status = "REQUESTED"
                     self.requests.insert(registerRequest, at: 0)
+                    self.fetchRequests()
                     completion(true)
                 }
                 
