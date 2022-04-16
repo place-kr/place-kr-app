@@ -51,7 +51,7 @@ struct LogInView: View {
                 
                 VStack(alignment: .leading, spacing: 0) {
                     Text("PLAIST")
-                        .font(.system(size: 40, weight: .bold))
+                        .font(.basic.logo)
                         .padding(.bottom, 14)
                     
                     Text("플레이스트에서 나만의 플레이스를\n 만들고, 즐겨보세요!")

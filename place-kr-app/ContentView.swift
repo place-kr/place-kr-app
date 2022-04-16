@@ -28,6 +28,7 @@ struct ContentView: View {
                 OnboardingView(show: $showOnboarding)
             } else {
                 TabsView()
+                    .environmentObject(loginManger)
             }
         }
     }

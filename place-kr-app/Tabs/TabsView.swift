@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TabsView: View {
+    @EnvironmentObject var loginManager: LoginManager
     @ObservedObject var listManager = ListManager()
     // TODO: 나중에 고칠 것 둘
     @State var showNewNameAlert = false
@@ -59,6 +60,7 @@ struct TabsView: View {
                         }
                     }
                     .tag(Tab.profile)
+                    .environmentObject(loginManager)
 
             }
             .accentColor(.black)

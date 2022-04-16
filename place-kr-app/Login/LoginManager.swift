@@ -91,13 +91,13 @@ class LoginManager: ObservableObject {
     }
 
     init() {
-        self.status = .waiting
+        self.status = .notLoggedIn
     }
 }
 
 extension LoginManager {
     enum Status {
-        case waiting
+        case notLoggedIn
         case fail
         case success
         case inProgress

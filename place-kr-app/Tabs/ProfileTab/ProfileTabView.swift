@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct ProfileTabView: View {
+    @EnvironmentObject var loginManager: LoginManager
+    
+    @State var showLogoutAlert = false
+    
     var body: some View {
-        NavigationView {
+        VStack {
             List {
                 NavigationLink(destination: {}) {
                     Text("공지사항")
@@ -20,13 +24,20 @@ struct ProfileTabView: View {
                 NavigationLink(destination: {}) {
                     Text("개인정보 변경")
                 }
-                NavigationLink(destination: {}) {
+                
+                Button(action: { showLogoutAlert = true }) {
                     Text("로그아웃")
+                }
+                .alert(isPresented: $showLogoutAlert) {
+                    Alert(title: Text("로그아웃 하시겠어요?"), primaryButton: .default(Text("Ok"), action: {
+                        UserInfoManager.logout()
+                        loginManager.status = .notLoggedIn
+                    }), secondaryButton: .cancel())
                 }
             }
             .environment(\.defaultMinListRowHeight, 70)
             .listStyle(PlainListStyle())
-            .navigationBarTitle("마이플레이스", displayMode: .inline)
+            
             .navigationBarItems(
                 trailing:
                     NavigationLink(destination: {}) {
@@ -34,6 +45,8 @@ struct ProfileTabView: View {
                     }
             )
         }
+        .navigationBarHidden(true)
+
     }
 }
 

@@ -41,6 +41,9 @@ extension Font {
         
         /// size: 21, weight: bold
         let bold21 = Font.custom("NotoSansKR-Bold", size: 21)
+        
+        /// size: 21, weight: bold
+        let logo = Font.custom("NotoSansKR-Black", size: 40)
     }
     
     static let basic = Basic()
