@@ -68,7 +68,7 @@ class UserInfoManager {
         print("Logged in")
     }
     
-    static func logout(_ token: String) {
+    static func logout() {
         UserDefaults.standard.set(false, forKey: UserInfoManager.loginKey)
         print("Logged out")
     }

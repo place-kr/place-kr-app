@@ -10,37 +10,37 @@ import SwiftUI
 extension Font {
     struct Basic {
         /// size: 11, weight: light
-        let light11 = Font.system(size: 11)
+        let light11 = Font.custom("NotoSansKR-Light", size: 11)
         
         /// size: 14, weight: light
-        let light14 = Font.system(size: 14)
+        let light14 = Font.custom("NotoSansKR-Light", size: 14)
                 
-        /// size: 12, weight: normal
-        let normal12 = Font.system(size: 12)
+        /// size: 10, weight: normal
+        let normal10 = Font.custom("NotoSansKR-Medium", size: 10)
         
         /// size: 12, weight: normal
-        let normal10 = Font.system(size: 10)
+        let normal12 = Font.custom("NotoSansKR-Medium", size: 12)
         
-        /// size: 12, weight: normal
-        let normal14 = Font.system(size: 14)
+        /// size: 14, weight: normal
+        let normal14 = Font.custom("NotoSansKR-Medium", size: 14)
         
         /// size: 15, weight: normal
-        let normal15 = Font.custom("ArialHebrew", size: 15)
+        let normal15 = Font.custom("NotoSansKR-Medium", size: 15)
         
         /// size: 12, weight: bold
-        let bold12 = Font.custom("Arial-BoldMT", size: 12)
+        let bold12 = Font.custom("NotoSansKR-Bold", size: 12)
 
         /// size: 14, weight: bold
-        let bold14 = Font.custom("Arial-BoldMT", size: 14)
+        let bold14 = Font.custom("NotoSansKR-Bold", size: 14)
         
         /// size: 17, weight: bold
-        let bold17 = Font.system(size: 17, weight: .bold)
-        
-        /// size: 21, weight: bold
-        let bold21 = Font.system(size: 21, weight: .bold)
+        let bold17 = Font.custom("NotoSansKR-Bold", size: 17)
         
         /// size: 20, weight: bold
-        let bold20 = Font.custom("Arial-BoldMT", size: 20)
+        let bold20 = Font.custom("NotoSansKR-Bold", size: 20)
+        
+        /// size: 21, weight: bold
+        let bold21 = Font.custom("NotoSansKR-Bold", size: 21)
     }
     
     static let basic = Basic()

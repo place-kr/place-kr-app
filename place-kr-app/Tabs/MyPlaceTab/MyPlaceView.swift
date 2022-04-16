@@ -87,6 +87,7 @@ struct MyPlaceView: View {
                                 .foregroundColor(.black)
                             }
                         }
+                        .padding(.top, 10)
                         .padding(.horizontal, 15)
                         .padding(.bottom, 30)
                     }

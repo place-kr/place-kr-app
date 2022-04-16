@@ -160,7 +160,7 @@ extension PlaceListDetailView {
                 presentationMode.wrappedValue.dismiss()
             }
         }) {
-            HStack {
+            HStack(alignment: .center) {
                 Spacer()
                 Text("+ 플레이스 추가하기")
                     .font(.basic.normal15)
