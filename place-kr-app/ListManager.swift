@@ -352,7 +352,9 @@ class ListManager: ObservableObject {
             }
             
             DispatchQueue.main.async {
-                self.placeLists.remove(at: Int(index))
+                _ = withAnimation(.spring()) {
+                    self.placeLists.remove(at: Int(index))
+                }
                 
                 if let completionHandler = completionHandler {
                     completionHandler(true)

@@ -19,7 +19,7 @@ struct ContentView: View {
 //        TabsView()
         
         // 로그인 안 되어있으면 로그인부터
-        if showLogin == true && loginManger.status != .success {
+        if loginManger.status != .loggedIn {
             LogInView()
                 .environment(\.window, window)
                 .environmentObject(loginManger)

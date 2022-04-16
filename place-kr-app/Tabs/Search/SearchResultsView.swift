@@ -16,16 +16,18 @@ struct SearchResultsView: View {
 
     @State var isFocused = false
     @State var navigateToResult = false
-    @State var navigateToRequest = false
     @State var navigateToRegister = false
     @State var submitted: String = ""   // TODO: 개선할 수 있으면 하자, 변하는 결과를 잡고있다가 넘겨줌
     
     @State var page = 0
+    @Binding var selection: TabsView.Tab
 
     
-    init(keyword: String, _ viewModel: SearchManager = SearchManager()) {
+    init(keyword: String, selection: Binding<TabsView.Tab>, _ viewModel: SearchManager = SearchManager()) {
         self.originalKeyword = keyword
         self.viewModel = viewModel
+        self._selection = selection
+
         self.viewModel.fetchPlaces(keyword, page: 0)
     }
     
@@ -33,14 +35,8 @@ struct SearchResultsView: View {
         VStack {
             /// Navigate용 빈 뷰
             // 검색 결과로 go(result)
-            NavigationLink(destination: LazyView { SearchResultsView(keyword: submitted) },
+            NavigationLink(destination: LazyView { SearchResultsView(keyword: submitted, selection: $selection) },
                            isActive: $navigateToResult) {
-                EmptyView()
-            }
-            
-            // 플레이스 요청으로 go(request)
-            NavigationLink(destination: LazyView { RequestPlaceView() },
-                           isActive: $navigateToRequest) {
                 EmptyView()
             }
             
@@ -62,7 +58,7 @@ struct SearchResultsView: View {
                             Spacer()
                             
                             registerPlaceButton
-                            requstPlaceButton
+                                .padding(.bottom, 25)
                         }
                         .padding(.horizontal, 15)
 
@@ -161,35 +157,29 @@ extension SearchResultsView {
         }
     }
     
-    var requstPlaceButton: some View {
-        Button(action: { navigateToRequest = true }) {
+    var registerPlaceButton: some View {
+        Button(action: {
+            self.selection = .register
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                NavigationUtil.popToRootView()
+            }
+            
+        }) {
             HStack {
                 Spacer()
-                Text("플레이스 직접 등록하기")
+                Text("플레이스 등록하기")
                     .font(.system(size: 14))
                 Spacer()
             }
         }
         .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 50))
     }
-    
-    var registerPlaceButton: some View {
-        Button(action: { navigateToRegister = true }) {
-              HStack {
-                  Spacer()
-                  Text("플레이스 등록 요청하기")
-                      .font(.system(size: 14))
-                  Spacer()
-              }
-          }
-          .buttonStyle(RoundedButtonStyle(bgColor: .white, textColor: .black, isStroked: true, height: 50))
-    }
-    
 }
 
 struct SearchResultsView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchResultsView(keyword: "")
+        SearchResultsView(keyword: "", selection: .constant(.map))
     }
 }
 

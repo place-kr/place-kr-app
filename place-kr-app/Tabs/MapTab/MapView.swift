@@ -14,6 +14,8 @@ struct MapView: View {
     @StateObject var placeInfoManager = PlaceInfoManager()
     @EnvironmentObject var listManager: ListManager
     
+    @Binding var selection: TabsView.Tab
+    
     /// 현재 활성화된 시트의 종류를 저장, 리턴함
     @State var activeSheet: ActiveSheet = .placeInfo
     @State var bottomSheetPosition: SheetPosition = .hidden
@@ -28,7 +30,7 @@ struct MapView: View {
     var body: some View {
         
         ZStack {
-            NavigationLink(destination: LazyView { SearchMainView() }, isActive: $navigateToSearch) {
+            NavigationLink(destination: LazyView { SearchMainView(selection: $selection) }, isActive: $navigateToSearch) {
                     EmptyView()
                 }
             
@@ -50,17 +52,19 @@ struct MapView: View {
                 }
                 
                 /// 검색창 및 Sheet view 버튼 + Sheet pop 용 빈 뷰
-                HStack {
-                    EntirePlaceButton
-                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                    
-                    MyPlaceButton
-                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                    
-                    Spacer()
+                ZStack(alignment: .center) {
+                    HStack {
+                        EntirePlaceButton
+                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                        
+                        MyPlaceButton
+                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                        
+                        Spacer()
+                    }
                     
                     if mapViewModel.mapNeedsReload {
-                        /// 맵 리로드 버튼
+                        // MARK: 맵 리로드 버튼
                         Button(action: {
                             // 보이는 범위 안의 플레이스 페칭, 마커 생성, 마커 그리기
                             mapViewModel.fetchPlacesAndDrawMarkers(in: mapViewModel.currentBounds) { info in
@@ -73,7 +77,7 @@ struct MapView: View {
                             Image(systemName: "arrow.clockwise.circle.fill")
                                 .resizable()
                                 .frame(width: 35, height: 35)
-                                .foregroundColor(.black)
+                                .foregroundColor(.blue)
                                 .shadow(radius: 5)
                         }
                         .transition(.opacity)
@@ -86,6 +90,8 @@ struct MapView: View {
             }
             .zIndex(1)
         }
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
         .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
                      options: [
                         .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
@@ -340,6 +346,6 @@ extension MapView {
 
 struct MapView_Previews: PreviewProvider {
     static var previews: some View {
-        MapView()
+        MapView(selection: .constant(.map))
     }
 }

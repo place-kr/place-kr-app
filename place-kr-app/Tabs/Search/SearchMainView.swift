@@ -12,12 +12,17 @@ import SwiftUI
 struct SearchMainView: View {
     @Environment(\.presentationMode) var presentation
     @ObservedObject var viewModel = SearchMainViewModel()
+    
+    @Binding var selection: TabsView.Tab
     @State var doNavigate = false
     
     var body: some View {
         VStack {
             /// Navgation용 빈 뷰. 검색 결과 뷰로 navigate.
-            NavigationLink(destination: LazyView { SearchResultsView(keyword: viewModel.searchKeyword) }, 
+            NavigationLink(destination: LazyView {
+                SearchResultsView(keyword: viewModel.searchKeyword, selection: $selection)
+                    .environmentObject(viewModel)
+            },
                            isActive: $doNavigate) {
                 EmptyView()
             }
@@ -119,6 +124,6 @@ extension SearchMainView {
 
 struct AddTabView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchMainView()
+        SearchMainView(selection: .constant(.map))
     }
 }

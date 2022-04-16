@@ -19,7 +19,7 @@ struct TabsView: View {
     var body: some View {
         NavigationView {
             TabView(selection: $selection) {
-                MapView()
+                MapView(selection: $selection)
                     .environmentObject(listManager)
                     .tabItem {
                         VStack {
@@ -27,6 +27,7 @@ struct TabsView: View {
                             Text("Home")
                         }
                     }
+                    .navigationBarTitle("")
                     .navigationBarHidden(true)
                     .tag(Tab.map)
 
@@ -38,6 +39,7 @@ struct TabsView: View {
                             Text("My place")
                         }
                     }
+                    .navigationBarTitle("")
                     .navigationBarHidden(true)
                     .tag(Tab.myPlace)
 
@@ -49,6 +51,7 @@ struct TabsView: View {
                             Text("Add")
                         }
                     }
+                    .navigationBarTitle("")
                     .navigationBarHidden(true)
                     .tag(Tab.register)
                 
@@ -59,10 +62,13 @@ struct TabsView: View {
                             Text("Profile")
                         }
                     }
-                    .tag(Tab.profile)
                     .environmentObject(loginManager)
+                    .navigationBarTitle("")
+                    .navigationBarHidden(true)
+                    .tag(Tab.profile)
 
             }
+            .navigationBarHidden(true)
             .accentColor(.black)
             .showAlert(show: $showNewNameAlert, alert: NewNameAlertView(name: $name, action: {
                 withAnimation(.easeInOut(duration: 0.2)) { self.showNewNameAlert = false }

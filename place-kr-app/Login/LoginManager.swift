@@ -9,7 +9,12 @@ import Foundation
 
 class LoginManager: ObservableObject {
     typealias AppleUserInfo = UserInfoManager.AppleUserInfo
-    @Published var status: Status
+    @Published var status: Status = .notLoggedIn
+    
+    func logout() {
+        UserInfoManager.logout()
+        self.status = .notLoggedIn
+    }
     
     /// API 서버에 네이버 소셜로그인에서 받은 토큰을 주고 앱에서 쓸 유저 토큰을 받아오는 동작을 하는 루틴입니다.
     func socialAuthResultHandler(_ result: Result<NaverUserInfo, NaverLoginError>) {
@@ -36,13 +41,14 @@ class LoginManager: ObservableObject {
                     print(error)
                     break
                 case .success(let result):
-                    DispatchQueue.main.async {
-                        self.status = .success
-                    }
-                    
                     /// UserDefault에 토큰 저장
                     UserInfoManager.saveUserToken(result.token)
                     UserInfoManager.login()
+                    
+                    DispatchQueue.main.async {
+                        self.status = .loggedIn
+                    }
+                    
                     break
                 }
             }
@@ -76,14 +82,15 @@ class LoginManager: ObservableObject {
                     print(error)
                     break
                 case .success(let result):
-                    DispatchQueue.main.async {
-                        self.status = .success
-                    }
-                    
                     /// UserDefault에 토큰 저장
                     UserInfoManager.saveUserToken(result.token)
                     UserInfoManager.login()
                     print("Successfully post apple login request")
+                    
+                    DispatchQueue.main.async {
+                        self.status = .loggedIn
+                    }
+                        
                     break
                 }
             }
@@ -91,7 +98,8 @@ class LoginManager: ObservableObject {
     }
 
     init() {
-        self.status = .notLoggedIn
+        guard let status = UserInfoManager.isLoggenIn else { return }
+        self.status = status == true ? .loggedIn : .notLoggedIn
     }
 }
 
@@ -99,7 +107,7 @@ extension LoginManager {
     enum Status {
         case notLoggedIn
         case fail
-        case success
+        case loggedIn
         case inProgress
     }
 }

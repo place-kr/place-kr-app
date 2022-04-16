@@ -82,7 +82,7 @@ struct PlaceListDetailView: View {
                             } else {
                                 ForEach(viewModel.places, id: \.id) { wrapper in
                                     let place = wrapper.placeInfo
-                                    // 카드 뷰
+                                    // MARK: - 카드 뷰
                                     LightCardView(place: place, isFavorite: true, starAction: {
                                         guard let index = viewModel.places.firstIndex(of: wrapper) else { return }
                                         var updatedPlaces = viewModel.places
@@ -95,7 +95,9 @@ struct PlaceListDetailView: View {
                                                 switch result {
                                                 case true:
                                                     viewModel.progress = .finished
-                                                    viewModel.places.remove(at: index)
+                                                    _ = withAnimation(.spring()) {
+                                                        viewModel.places.remove(at: index)
+                                                    }
                                                     return
                                                 case false:
                                                     viewModel.progress = .failed

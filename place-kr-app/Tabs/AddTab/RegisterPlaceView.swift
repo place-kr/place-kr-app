@@ -140,7 +140,7 @@ extension RegisterPlaceView {
         Button(action: {
             viewModel.register(name: self.placeName, address: self.address, coord: self.coord) { result in
                 if result == true {
-                    presentation.wrappedValue.dismiss()
+                    NavigationUtil.popToRootView() 
                 } else {
                     print("Error") // TODO: 고치기
                 }

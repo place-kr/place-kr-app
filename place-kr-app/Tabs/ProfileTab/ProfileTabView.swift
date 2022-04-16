@@ -14,6 +14,12 @@ struct ProfileTabView: View {
     
     var body: some View {
         VStack {
+            PageHeader(title: "마이페이지")
+                .padding(.vertical, 17)
+            
+//            CustomDivider()
+//                .padding(.bottom, 7)
+            
             List {
                 NavigationLink(destination: {}) {
                     Text("공지사항")
@@ -30,14 +36,14 @@ struct ProfileTabView: View {
                 }
                 .alert(isPresented: $showLogoutAlert) {
                     Alert(title: Text("로그아웃 하시겠어요?"), primaryButton: .default(Text("Ok"), action: {
-                        UserInfoManager.logout()
-                        loginManager.status = .notLoggedIn
+                        loginManager.logout()
                     }), secondaryButton: .cancel())
                 }
             }
+            .navigationBarHidden(true)
+            .navigationBarTitle("")
             .environment(\.defaultMinListRowHeight, 70)
-            .listStyle(PlainListStyle())
-            
+            .listStyle(.plain)
             .navigationBarItems(
                 trailing:
                     NavigationLink(destination: {}) {
@@ -45,8 +51,6 @@ struct ProfileTabView: View {
                     }
             )
         }
-        .navigationBarHidden(true)
-
     }
 }
 
