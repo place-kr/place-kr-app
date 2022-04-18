@@ -200,6 +200,18 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		9B01B13D280D902C0028551B /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				9B35BA4E27CDFC430013C1EA /* LoginManager.swift */,
+				9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */,
+				9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */,
+				9B0ADB2A28080F2800E934FC /* RegisterManager.swift */,
+				9B5D5B4927F33AEF00B81831 /* ListManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		9B0ADB232807C6CB00E934FC /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -242,8 +254,7 @@
 		9B20A65A2796F42A0029CA0E /* place-kr-app */ = {
 			isa = PBXGroup;
 			children = (
-				9B0ADB2A28080F2800E934FC /* RegisterManager.swift */,
-				9B5D5B4927F33AEF00B81831 /* ListManager.swift */,
+				9B01B13D280D902C0028551B /* Managers */,
 				9B6AADC1280A3EF6009CA58A /* Fonts */,
 				9BEDED2927A26B7400EE560C /* Util */,
 				9B4A02D627A6AC2D0037D05F /* Support Files */,
@@ -262,8 +273,6 @@
 		9B22944B27990018000805F0 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */,
-				9B35BA4E27CDFC430013C1EA /* LoginManager.swift */,
 				9B84668327982E5D00066F04 /* Naver Login */,
 				9B846687279852C300066F04 /* Apple Login */,
 				9BF582C8279B8AF90068805E /* LogInView.swift */,
@@ -322,7 +331,6 @@
 		9B4A02D527A6AC1E0037D05F /* MapTab */ = {
 			isa = PBXGroup;
 			children = (
-				9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */,
 				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
 				9B5D5B4D27F3459900B81831 /* RegisterNewListAlertView.swift */,
 				9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */,

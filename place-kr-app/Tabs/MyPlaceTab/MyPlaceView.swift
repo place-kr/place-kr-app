@@ -22,6 +22,7 @@ struct MyPlaceView: View {
     @State var showShareSheet = false
     @State var showEditSheet = false
     @State var showNewListAlert = false
+    @State var showDeleteAlert = false
     
     @State var text = ""
     
@@ -213,7 +214,9 @@ extension MyPlaceView {
             Divider()
             
             Button(action: {
-                showEditSheet = true
+                withAnimation(.spring()) {
+                    showEditSheet = true
+                }
             }) {
                 HStack(spacing: 9) {
                     Image(systemName: "pencil")
@@ -236,28 +239,33 @@ extension MyPlaceView {
             
             // 플레이스 삭제하기
             Button(action: {
-                guard let selectedList = self.selectedList else { return }
-                viewModel.progress = .inProcess
-                
-                listManager.deletePlaceList(id: selectedList.identifier) { result in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case true:
-                            bottomSheetPosition = .hidden
-                            viewModel.progress = .finished
-                            return
-                        case false:
-                            viewModel.progress = .failed
-                            return
-                        }
-                    }
-                }
+                self.showDeleteAlert = true
             }) {
                 HStack(spacing: 9) {
                     Image(systemName: "trash")
                     Text("삭제하기")
                     Spacer()
                 }
+            }
+            .alert(isPresented: $showDeleteAlert) {
+                Alert(title: Text("리스트를 삭제하시겠어요?"), primaryButton: .cancel(), secondaryButton: .default(Text("Ok"), action: {
+                    guard let selectedList = self.selectedList else { return }
+                    viewModel.progress = .inProcess
+                    
+                    listManager.deletePlaceList(id: selectedList.identifier) { result in
+                        DispatchQueue.main.async {
+                            switch result {
+                            case true:
+                                bottomSheetPosition = .hidden
+                                viewModel.progress = .finished
+                                return
+                            case false:
+                                viewModel.progress = .failed
+                                return
+                            }
+                        }
+                    }
+                }))
             }
         }
         .font(.system(size: 14))

@@ -8,21 +8,121 @@
 import SwiftUI
 import SwiftUIPager
 
+struct ReviewBody: Encodable {
+    let reviewer: String
+    let content: String
+}
+
+struct ReviewResponse: Decodable {
+    let count: Int
+    let next: String?
+    let previous: String?
+    let results: [Review]
+      
+    struct Review: Decodable, Identifiable {
+        let id: String
+        let reviewer: Reviewer
+        let content: String
+        let date_created: Date
+        
+        enum CodingKeys: String, CodingKey {
+            case reviewer, content, date_created
+            case id = "identifier"
+        }
+        
+        struct Reviewer: Decodable {
+            let identifier: String
+            let nickname: String
+        }
+    }
+}
+
 class PlaceDetailViewModel: ObservableObject {
+    typealias Review = ReviewResponse.Review
+    
     @Published var placeInfo: PlaceInfo
+    @Published var progress: Progress = .ready
     
     @Published var images: [Image] = [Image("dog"), Image("dog"), Image("dog")]
-    @Published var messeages: [String] = [
-        "아주 훌륭합니다",
-        "매일매일 가고 싶은 곳",
-        "플레이스에서 발견한 보물같은 맛집 매일가요",
-        "아주 아주아주아주 좋아요",
-        "아주 훌륭합니다",
-        "아주 훌륭합니다"
-    ]
+    @Published var reviews = [Review]()
+    
+    func getReviews(id: String) {
+        guard var request = PlaceSearchManager.authorizedRequest(url: "https://dev.place.tk/api/v1/places/\(id)/reviews") else {
+            self.progress = .failed
+            return
+        }
+        
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                
+                if let error = error {
+                    self.progress = .failedWithError(error: error)
+                }
+                
+                if let response = response as? HTTPURLResponse {
+                    print(response)
+                    switch response.statusCode {
+                    case (200..<300):
+                        self.progress = .finished
+                    default:
+                        self.progress = .failed
+                    }
+                }
+                
+                if let data = data {
+                    if let decoded = try? JSONDecoder().decode(ReviewResponse.self, from: data)  {
+                        let reviews = decoded.results
+                        self.reviews = reviews
+                    }
+                }
+            }
+        }
+        .resume()
+    }
+    
+    func postReview(id: String , comment: String) {
+        guard var request = PlaceSearchManager.authorizedRequest(url: "https://dev.place.tk/api/v1/places/\(id)/reviews") else {
+            self.progress = .failed
+            return
+        }
+                
+        let body = ReviewBody(reviewer: "Mock user", content: comment)
+        guard let encoded = try? JSONEncoder().encode(body) else {
+            self.progress = .failed
+            return
+        }
+        
+        request.httpBody = encoded
+        request.httpMethod = "POST"
+        
+        URLSession.shared.dataTask(with: request) { _, response, error in
+            self.progress = .inProcess
+            
+            if let error = error {
+                self.progress = .failedWithError(error: error)
+                return
+            }
+            
+            if let response = response as? HTTPURLResponse {
+                print(response)
+                switch response.statusCode {
+                case (200..<300):
+                    self.progress = .finished
+                default:
+                    self.progress = .failed
+                }
+            }
+        }
+        .resume()
+    }
     
     init(info placeInfo: PlaceInfo) {
         self.placeInfo = placeInfo
+        print("!@#!@#", placeInfo.id)
+        self.getReviews(id: placeInfo.id)
     }
 }
 
@@ -132,16 +232,15 @@ extension PlaceDetailView {
                 .padding(.bottom, 5)
             
             HStack {
-                // TODO: 이미지 수정
-                Image(systemName: "mappin")
-                Text("서울 서초구 서초대로")
+                Image("infoAddress")
+                Text(placeInfo.address)
                 Spacer()
             }
             .font(.basic.light14)
             
             HStack {
                 Image(systemName: "phone.fill")
-                Text("02-1234-5678")
+                Text(placeInfo.phone)
                 Spacer()
             }
             .font(.basic.light14)
@@ -162,42 +261,58 @@ extension PlaceDetailView {
                 .padding(.bottom, 5)
                 
                 Spacer()
-                
-                Button(action: { showEntireComments = true }) {
-                    Text("전체보기")
-
-                }
-                .foregroundColor(.black)
-                .font(.basic.normal12)
             }
             .padding(.bottom, 12)
             
-            ForEach(0..<min(3, viewModel.messeages.count), id: \.self) { idx in
-                let message = viewModel.messeages[idx]
-                Text(message)
-                    .font(.basic.light14)
+            if viewModel.reviews.isEmpty {
+                HStack {
+                    Spacer()
+                    Text("리뷰를 남긴 사람이 없습니다.\n직접 리뷰를 남겨보세요!\n-임시로 만들었는데 디자인 수정 사항 말씀해주세요-")
+                        .multilineTextAlignment(.center)
+                        .font(.basic.normal14)
+                        .foregroundColor(.gray.opacity(0.5))
+                    Spacer()
+                }
+            } else {
+                ForEach(viewModel.reviews) { review in
+                    VStack {
+                        Text(review.content)
+                            .font(.basic.normal14)
+                        
+                        HStack {
+                            Text(review.reviewer.nickname)
+                                .font(.basic.normal12)
+                        }
+                        
+                    }
                     .padding(.vertical, 9)
                     .padding(.trailing, 12)
                     .padding(.leading, 17)
                     .background(
                         RoundedCorner(radius: 14,
                                       corners: [.topLeft, .topRight, .bottomRight])
-                            .fill(Color.backgroundGray)
+                        .fill(Color.backgroundGray)
                     )
+                }
             }
         }
         .padding(.horizontal, 21)
         .padding(.vertical, 21)
         .frame(maxWidth: .infinity)
         .background(
-            RoundedRectangle(cornerRadius: 12)                        .fill(Color.white))
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white))
     }
     
     var InteractionButtons: some View {
         HStack(spacing: 25) {
             Button(action: {}) {
                 HStack(spacing: 9) {
-                    StarButtonShape(15, fgColor: .gray, bgColor: .gray.opacity(0.3))
+                    Image("placeAdded")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 27, height: 27)
+                    
                     Text("123")
                         .font(.basic.normal12)
                         .foregroundColor(.black)
@@ -206,7 +321,11 @@ extension PlaceDetailView {
             
             Button(action: {}) {
                 HStack(spacing: 9) {
-                    StarButtonShape(15, fgColor: .gray, bgColor: .gray.opacity(0.3))
+                    Image("share")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 27, height: 27)
+                    
                     Text("공유하기")
                         .font(.basic.normal12)
                         .foregroundColor(.black)
@@ -223,7 +342,7 @@ extension PlaceDetailView {
             ForEach(texts, id: \.self) { text in
                 Button(action: {}, label: {
                     Text(text)
-                        .font(.basic.light11)
+                        .font(.basic.normal12)
                         .padding(.vertical, 8)
                         .padding(.horizontal, 8)
                 })

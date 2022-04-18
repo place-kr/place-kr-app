@@ -32,7 +32,10 @@ class PlaceSearchManager {
             queryItems.append(page)
         }
         
-        components.queryItems = queryItems
+        if !queryItems.isEmpty {
+            components.queryItems = queryItems
+        }
+        
         var request = URLRequest(url: components.url!)
         request.httpMethod = "GET"
         request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")

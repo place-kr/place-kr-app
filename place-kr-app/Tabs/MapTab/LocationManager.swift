@@ -66,6 +66,7 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        self.currentCoord = location.coordinate
+        // 현위치 업데이트 
+//        self.currentCoord = location.coordinate
     }
 }
