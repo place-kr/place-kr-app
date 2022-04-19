@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 
+/// 자체 플레이스트 리스트를 페치하는 역할을 합니다.
 class PlaceSearchManager {
     static func authorizedRequest(url: String, name: String? = nil, page: Int? = nil) -> URLRequest? {
         // Fetch my user token from UserDefault
