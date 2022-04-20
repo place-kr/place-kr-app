@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftUIPager
 
 struct ReviewBody: Encodable {
-    let reviewer: String
     let content: String
 }
 
@@ -74,12 +73,23 @@ class PlaceDetailViewModel: ObservableObject {
     @Published var images: [Image] = [Image("dog"), Image("dog"), Image("dog")]
     @Published var reviews = [Review]()
     
-    func getReviews(id: String) {
-        guard var request = PlaceSearchManager.authorizedRequest(url: "https://dev.place.tk/api/v1/places/\(id)/reviews") else {
+    var nextPage: URL?
+    
+    func getReviews(id: String, nextUrl: URL? = nil, refresh: Bool = false) {
+        self.progress = .inProcess
+        
+        var request: URLRequest? = nil
+        if let url = nextUrl {
+            request = PlaceSearchManager.authorizedRequest(url: "https" + String(Array(url.absoluteString)[4...]))
+        } else {
+            request = PlaceSearchManager.authorizedRequest(url: "https://dev.place.tk/api/v1/places/\(id)/reviews?limit=5")
+        }
+        
+        guard var request = request else {
             self.progress = .failed
             return
         }
-        
+
         request.httpMethod = "GET"
         
         URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
@@ -107,7 +117,17 @@ class PlaceDetailViewModel: ObservableObject {
                 if let decoded = try? JSONDecoder().decode(ReviewResponse.self, from: data) {
                     DispatchQueue.main.async {
                         let reviews = decoded.results
-                        self.reviews = reviews
+                        if refresh {
+                            self.reviews = reviews
+                        } else {
+                            self.reviews.append(contentsOf: reviews)
+                        }
+                        
+                        if let nextPageString = decoded.next {
+                            guard let url = URL(string: nextPageString) else { return }
+                            self.nextPage = url
+                        }
+                        
                     }
                 }
             }
@@ -116,28 +136,26 @@ class PlaceDetailViewModel: ObservableObject {
     }
     
     func postReview(id: String , comment: String, completion: @escaping (Bool) -> Void) {
+        self.progress = .inProcess
+
         guard var request = PlaceSearchManager.authorizedRequest(url: "https://dev.place.tk/api/v1/places/\(id)/reviews") else {
             self.progress = .failed
             completion(false)
             return
         }
                 
-        let body = ReviewBody(reviewer: "Mock user", content: comment)
+        let body = ReviewBody(content: comment)
         guard let encoded = try? JSONEncoder().encode(body) else {
             self.progress = .failed
             completion(false)
             return
         }
         
-        print(body)
-        
         request.httpBody = encoded
         request.httpMethod = "POST"
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
-                self.progress = .inProcess
-                
                 if let error = error {
                     self.progress = .failedWithError(error: error)
                     completion(false)
@@ -145,7 +163,6 @@ class PlaceDetailViewModel: ObservableObject {
                 }
                 
                 if let response = response as? HTTPURLResponse {
-                    print(response)
                     switch response.statusCode {
                     case (200..<300):
                         self.progress = .finished
@@ -233,22 +250,17 @@ struct PlaceDetailView: View {
                 }
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .overlay(
-                    Group{ if viewModel.progress == .inProcess {
-                        ProgressView(style: .medium)
-                    }}
-                )
-                
             }
             
         }
         .showAlert(show: $showAddComment, alert: CommentAlertView(
+            // MARK: - 입력완료 버튼
             text: $commentText,
             action: {
                 viewModel.postReview(id: self.viewModel.placeInfo.id, comment: self.commentText) { result in
                     switch result {
                     case true:
-                        self.viewModel.getReviews(id: placeInfo.id)
+                        self.viewModel.getReviews(id: placeInfo.id, refresh: true)
                         self.showAddComment = false
                         break
                     case false:
@@ -305,13 +317,19 @@ extension PlaceDetailView {
             
             HStack {
                 Image("infoAddress")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 12, height: 16)
+                
                 Text(placeInfo.address)
                 Spacer()
             }
-            .font(.basic.normal14)
             
             HStack {
                 Image(systemName: "phone.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 12, height: 12)
                 Text(placeInfo.phone)
                 Spacer()
             }
@@ -338,12 +356,20 @@ extension PlaceDetailView {
             
             if viewModel.reviews.isEmpty {
                 HStack {
-                    Spacer()
-                    Text("리뷰를 남긴 사람이 없습니다.\n직접 리뷰를 남겨보세요!\n-임시로 만들었는데 디자인 수정 사항 말씀해주세요-")
-                        .multilineTextAlignment(.center)
-                        .font(.basic.normal14)
-                        .foregroundColor(.gray.opacity(0.5))
-                    Spacer()
+                    if viewModel.progress == .inProcess {
+                        HStack {
+                            Spacer()
+                            ProgressView(style: .medium)
+                            Spacer()
+                        }
+                    } else {
+                        Spacer()
+                        Text("리뷰를 남긴 사람이 없습니다.\n직접 리뷰를 남겨보세요!\n-임시로 만들었는데 디자인 수정 사항 말씀해주세요-")
+                            .multilineTextAlignment(.center)
+                            .font(.basic.normal14)
+                            .foregroundColor(.gray.opacity(0.5))
+                        Spacer()
+                    }
                 }
             } else {
                 ForEach(viewModel.reviews) { review in
@@ -369,6 +395,26 @@ extension PlaceDetailView {
                         .fill(Color.backgroundGray)
                     )
                 }
+                
+                HStack {
+                    Spacer()
+                    if viewModel.progress == .inProcess {
+                        ProgressView(style: .medium)
+                    }
+                    
+                    if let nextPageUrl = viewModel.nextPage {
+                        Button(action: {
+                            viewModel.getReviews(id: viewModel.placeInfo.id,
+                                                 nextUrl: nextPageUrl)
+                            viewModel.nextPage = nil
+                        }) {
+                            Text("+ 더 보기")
+                        }
+                        .foregroundColor(.gray.opacity(0.5))
+                    }
+                    Spacer()
+                }
+                .padding(.vertical, 8)
             }
         }
         .padding(.horizontal, 21)
@@ -388,7 +434,7 @@ extension PlaceDetailView {
                         .scaledToFit()
                         .frame(width: 27, height: 27)
                     
-                    Text("123")
+                    Text("\(viewModel.placeInfo.saves)")
                         .font(.basic.normal12)
                         .foregroundColor(.black)
                 }
