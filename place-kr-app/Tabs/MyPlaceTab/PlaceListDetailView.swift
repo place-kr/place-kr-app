@@ -65,7 +65,7 @@ struct PlaceListDetailView: View {
                 
                 if viewModel.progress == .inProcess {
                     // 진행상황 표시
-                    ProgressView(style: .medium)
+                    CustomProgressView
                 } else {
                     ScrollView {
                         // 플레이스 리스트

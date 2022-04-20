@@ -92,7 +92,7 @@ struct MapView: View {
                      ]
                      , content: {
             if placeInfoManager.placeInfo == nil {
-                ProgressView(style: UIActivityIndicatorView.Style.medium)
+                CustomProgressView
             } else {
                 SheetView(active: activeSheet)
             }
@@ -270,7 +270,6 @@ extension MapView {
                                 }
                                 
                                 if list.places.contains(selectedPlaceId) {
-                                    print("Already exists")
                                     self.alertCase = .duplicatePlace
                                     self.showError = true
                                     return
@@ -285,6 +284,8 @@ extension MapView {
                                         break
                                     case false:
                                         print("Network: Already exists")
+                                        self.alertCase = .duplicatePlace
+                                        self.showError = true
                                         break
                                     }
                                 }

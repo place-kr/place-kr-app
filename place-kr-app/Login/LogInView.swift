@@ -83,7 +83,7 @@ struct LogInView: View {
             }
             
             if loginManager.status == .inProgress {
-                ProgressView(style: UIActivityIndicatorView.Style.medium)
+                CustomProgressView
             }
         }
         

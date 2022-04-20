@@ -94,7 +94,7 @@ struct SearchResultsView: View {
                 }
             } else {
                 Spacer()
-                ProgressView(style: .large)
+                CustomProgressView
             }
             
             Spacer()

@@ -31,7 +31,7 @@ struct MyPlaceView: View {
     var body: some View {
         ZStack {
             if viewModel.progress == .inProcess {
-                ProgressView(style: .medium)
+                CustomProgressView
                     .zIndex(1)
             }
             

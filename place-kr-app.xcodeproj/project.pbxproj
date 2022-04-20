@@ -79,6 +79,7 @@
 		9BA3BF33280FDEAE00E49044 /* CommonSystemAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA3BF32280FDEAE00E49044 /* CommonSystemAlert.swift */; };
 		9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */; };
 		9BA965D327FC370900C05D42 /* LightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA965D227FC370900C05D42 /* LightCardView.swift */; };
+		9BAD802A2810131300B2FFB1 /* ripple.gif in Resources */ = {isa = PBXBuildFile; fileRef = 9BAD80292810131200B2FFB1 /* ripple.gif */; };
 		9BB8E67027DB6DB400E07AD0 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 9BB8E66F27DB6DB400E07AD0 /* BottomSheet */; };
 		9BB8E67327DB6DEB00E07AD0 /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = 9BB8E67227DB6DEB00E07AD0 /* SwiftUIPager */; };
 		9BC0E42027FC3BB700306CCA /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 9BC0E41F27FC3BB700306CCA /* SDWebImageSwiftUI */; };
@@ -168,6 +169,7 @@
 		9BA3BF32280FDEAE00E49044 /* CommonSystemAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSystemAlert.swift; sourceTree = "<group>"; };
 		9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginViewModel.swift; sourceTree = "<group>"; };
 		9BA965D227FC370900C05D42 /* LightCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightCardView.swift; sourceTree = "<group>"; };
+		9BAD80292810131200B2FFB1 /* ripple.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ripple.gif; sourceTree = "<group>"; };
 		9BCC370027D70A6E00E88F72 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		9BE91FB028031843000DE8C9 /* CommentAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAlertView.swift; sourceTree = "<group>"; };
 		9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extensions.swift"; sourceTree = "<group>"; };
@@ -259,8 +261,8 @@
 		9B20A65A2796F42A0029CA0E /* place-kr-app */ = {
 			isa = PBXGroup;
 			children = (
+				9BAD8025281011B700B2FFB1 /* Assets */,
 				9B01B13D280D902C0028551B /* Managers */,
-				9B6AADC1280A3EF6009CA58A /* Fonts */,
 				9BEDED2927A26B7400EE560C /* Util */,
 				9B4A02D627A6AC2D0037D05F /* Support Files */,
 				9B22944B27990018000805F0 /* Login */,
@@ -471,6 +473,15 @@
 			path = Notification;
 			sourceTree = "<group>";
 		};
+		9BAD8025281011B700B2FFB1 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				9BAD80292810131200B2FFB1 /* ripple.gif */,
+				9B6AADC1280A3EF6009CA58A /* Fonts */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		9BEDED2927A26B7400EE560C /* Util */ = {
 			isa = PBXGroup;
 			children = (
@@ -581,6 +592,7 @@
 				9B20A6682796F42B0029CA0E /* LaunchScreen.storyboard in Resources */,
 				9B6AADCC280A3F1D009CA58A /* NotoSansKR-Light.otf in Resources */,
 				9B6AADC8280A3F1D009CA58A /* NotoSansKR-Black.otf in Resources */,
+				9BAD802A2810131300B2FFB1 /* ripple.gif in Resources */,
 				9B20A6652796F42B0029CA0E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

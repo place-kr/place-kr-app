@@ -96,7 +96,7 @@ struct SearchKakaoPlaceView: View {
                 }
                 .overlay(
                     Group { if viewModel.progress == .inProcess {
-                        ProgressView(style: .medium)
+                        CustomProgressView
                     }}
                 )
                 .padding(.bottom, 40)

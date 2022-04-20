@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftUIPager
+import SDWebImageSwiftUI
 
 struct ReviewBody: Encodable {
     let content: String
@@ -207,8 +208,16 @@ struct PlaceDetailView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 7) {
+        VStack(spacing: 0) {
+            PageHeader(title: "플레이스 정보", leading: Image(systemName: "chevron.left")) {
+                presentation.wrappedValue.dismiss()
+            }
+            .padding(.vertical, 17)
+            .padding(.horizontal, 15)
+            
+            CustomDivider()
+            
+            ScrollView {
                 VStack {
                     Pager(page: page, data: viewModel.images.indices, id: \.self) {
                         viewModel.images[$0]
@@ -242,16 +251,17 @@ struct PlaceDetailView: View {
                         .padding(.top, 12)
                     
                     Comments
-
+                    
                     Spacer()
                     
                     LeaveCommentButton
                     Spacer()
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color("grayBackground").edgesIgnoringSafeArea(.bottom))
+                
             }
-            
         }
         .showAlert(show: $showAddComment, alert: CommentAlertView(
             // MARK: - 입력완료 버튼
@@ -279,16 +289,9 @@ struct PlaceDetailView: View {
         .alert(isPresented: $showWarning) {
             Alert(title: Text("알 수 없는 오류 발생"), message: Text("잠시 후 다시 시도해주세요."))
         }
-        .background(Color("grayBackground").edgesIgnoringSafeArea(.bottom))        .navigationBarTitle("플레이스 정보", displayMode: .inline)
-        .navigationBarItems(leading:
-                                Button(action: { self.presentation.wrappedValue.dismiss() },
-                                       label: { Image(systemName: "chevron") }),
-                            trailing:
-                                HStack {
-                                    Button(action: {}) { Image(systemName: "star.fill" )}
-                                    Button(action: {}) { Image(systemName: "square.and.arrow.up") }
-                                }
-        )
+        .navigationBarTitle("")
+        .navigationBarHidden(true)
+
     }
 }
 
@@ -359,7 +362,7 @@ extension PlaceDetailView {
                     if viewModel.progress == .inProcess {
                         HStack {
                             Spacer()
-                            ProgressView(style: .medium)
+                            CustomProgressView
                             Spacer()
                         }
                     } else {

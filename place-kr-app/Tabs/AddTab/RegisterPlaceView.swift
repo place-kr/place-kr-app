@@ -51,7 +51,7 @@ struct RegisterPlaceView: View {
                 .frame(height: UIScreen.main.bounds.height - 150)
                 .padding(.horizontal, 15)
                 .overlay(
-                    Group{ if viewModel.progress == .inProcess { ProgressView(style: .medium) }}
+                    Group{ if viewModel.progress == .inProcess { CustomProgressView }}
                 )
             }
         }
