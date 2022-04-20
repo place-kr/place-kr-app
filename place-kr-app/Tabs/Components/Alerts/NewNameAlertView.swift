@@ -38,7 +38,7 @@ struct NewNameAlertView: View {
                 Button(action: {
                     action()
                     clicked = true
-                    UserInfoManager.register()
+                    UserInfoManager.registerStatus(true)
                 }) {
                     Text("입력완료")
                 }

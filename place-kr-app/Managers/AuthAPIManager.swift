@@ -7,14 +7,15 @@
 
 import Foundation
 
-protocol PostBody: Codable {}
+protocol PostRequest: Encodable {}
+
 
 class AuthAPIManager {
     typealias Response = AuthAPIManager.PostReponse
     
     /// 바디를 실어서 API서버에 토큰을 요청하는 루틴입니다. Naver, Apple 로그인 상관 없음.
     /// 리턴은 없고 컴플리션으로 Result 객체를 전달합니다.
-    static func sendPostRequest<T: PostBody>(to url: URL, body: T, then handler: @escaping (Result<Response, Error>) -> Void) {
+    static func sendPostRequest<T: PostRequest>(to url: URL, body: T, then handler: @escaping (Result<Response, Error>) -> Void) {
         let completionHandler = handler
         let session = URLSession.shared
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData)
@@ -65,9 +66,37 @@ class AuthAPIManager {
         }
         task.resume()
     }
+    
+    /// 닉네임 서버에 등록
+    static func updateUserData(nickname: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard var request = authorizedRequest(method: "PATCH", api: "/me") else {
+            return
+        }
+        
+        let body = UserDataPostRequest(nickname: nickname, categories: ["1", "2"])
+        guard let encoded = try? JSONEncoder().encode(body) else {
+            return
+        }
+        
+        request.httpBody = encoded
+        URLSession.shared.dataTask(with: request) { _, response, _ in
+            if let response = response as? HTTPURLResponse, !((200...300).contains(response.statusCode)) {
+                print(response as Any)
+                print("Error in response. May be a network error.")
+                completion(.failure(FetchError.invalidResponse))
+            }
+            
+            completion(.success(()))
+        }
+    }
 }
 
 extension AuthAPIManager {
+    private struct UserDataPostRequest: Encodable {
+        let nickname: String
+        let categories: [String]
+    }
+    
     enum FetchError: Error {
         case parsing
         case expiredToken
@@ -88,7 +117,7 @@ extension AuthAPIManager {
         }
     }
 
-    struct NaverBody: Codable, PostBody {
+    struct NaverBody: Codable, PostRequest {
         let identifier: String
         let email: String
         let accessToken: String
@@ -100,7 +129,7 @@ extension AuthAPIManager {
         }
     }
     
-    struct AppleBody: Codable, PostBody {
+    struct AppleBody: Codable, PostRequest {
         let identifier: String
         let email: String
         let idToken: String
@@ -114,5 +143,11 @@ extension AuthAPIManager {
     
     struct PostReponse: Codable {
         let token: String
+        let isRegistered: Bool
+        
+        enum CodingKeys: String, CodingKey {
+            case token
+            case isRegistered = "is_onboarding_required"
+        }
     }
 }

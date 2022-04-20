@@ -43,6 +43,7 @@ class UserInfoManager {
         }
     }
     
+    /// 애플 유저 인포메이션을 로드
     static func loadUserInfo() -> AppleUserInfo? {
         let decoder = PropertyListDecoder()
         var userInfo: AppleUserInfo?
@@ -58,23 +59,27 @@ class UserInfoManager {
         return userInfo
     }
     
+    /// 유저 토큰을 유저 디폴트에 저장
     static func saveUserToken(_ token: String) {
         UserDefaults.standard.set(token, forKey: tokenKey)
         print("Token is successfully saved: \(token)")
     }
     
+    /// 로그인 - 유저 디폴트 값 변경
     static func login() {
         UserDefaults.standard.set(true, forKey: UserInfoManager.loginKey)
         print("Logged in")
     }
     
+    /// 로그아웃 - 유저 디폴트 값 변경
     static func logout() {
         UserDefaults.standard.set(false, forKey: UserInfoManager.loginKey)
         print("Logged out")
     }
     
-    static func register() {
-        UserDefaults.standard.set(true, forKey: UserInfoManager.registeredKey)
+    /// 온보딩 여부 저장
+    static func registerStatus(_ result: Bool) {
+        UserDefaults.standard.set(result, forKey: UserInfoManager.registeredKey)
         print("Registered")
     }
     
@@ -108,7 +113,7 @@ class UserInfoManager {
         return loginStatus
     }
     
-    /// 등록된 유저인지 확인
+    /// 등록된 유저(온보딩 완료)인지 확인
     static var isRegistered: Bool? {
         let loginStatus = UserDefaults.standard.object(forKey: UserInfoManager.registeredKey) as? Bool
         return loginStatus != nil

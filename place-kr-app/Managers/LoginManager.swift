@@ -10,6 +10,7 @@ import Foundation
 class LoginManager: ObservableObject {
     typealias AppleUserInfo = UserInfoManager.AppleUserInfo
     @Published var status: Status = .notLoggedIn
+    @Published var isRegistered = false
     
     func logout() {
         UserInfoManager.logout()
@@ -41,11 +42,15 @@ class LoginManager: ObservableObject {
                     print(error)
                     break
                 case .success(let result):
+                    print("Registered: \(result.isRegistered)")
+                    
                     /// UserDefault에 토큰 저장
                     UserInfoManager.saveUserToken(result.token)
+                    UserInfoManager.registerStatus(result.isRegistered)
                     UserInfoManager.login()
                     
                     DispatchQueue.main.async {
+                        self.isRegistered = result.isRegistered
                         self.status = .loggedIn
                     }
                     
@@ -56,7 +61,8 @@ class LoginManager: ObservableObject {
     }
     
     
-    /// API 서버에 애플 소셜로그인에서 받은 토큰을 주고 앱에서 쓸 유저 토큰을 받아오는 동작을 하는 루틴입니다.
+    /// API 서버에 애플 소셜로그인에서 받은 토큰을 주고
+    /// 앱에서 쓸 유저 토큰을 받아오는 루틴입니다.
     func socialAuthResultHandler(_ result: Result<AppleUserInfo, AppleLoginError>) {
         switch result {
         case .failure(let error):
@@ -72,7 +78,9 @@ class LoginManager: ObservableObject {
                 idToken: userInfo.idToken
             )
 
-            AuthAPIManager.sendPostRequest(to: url, body: body) { result in
+            // 토큰 전달
+            AuthAPIManager.sendPostRequest(to: url, body: body) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .failure(let error):
                     print("[LoginManager] Login failed: \(error)")
@@ -84,10 +92,12 @@ class LoginManager: ObservableObject {
                 case .success(let result):
                     /// UserDefault에 토큰 저장
                     UserInfoManager.saveUserToken(result.token)
+                    UserInfoManager.registerStatus(result.isRegistered)
                     UserInfoManager.login()
                     print("Successfully post apple login request")
                     
                     DispatchQueue.main.async {
+                        self.isRegistered = result.isRegistered
                         self.status = .loggedIn
                     }
                         
@@ -100,6 +110,9 @@ class LoginManager: ObservableObject {
     init() {
         guard let status = UserInfoManager.isLoggenIn else { return }
         self.status = status == true ? .loggedIn : .notLoggedIn
+        
+        guard let isRegistered = UserInfoManager.isRegistered else { return }
+        self.isRegistered = isRegistered
     }
 }
 

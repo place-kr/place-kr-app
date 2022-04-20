@@ -75,6 +75,8 @@
 		9B9D77C527D7455300326BB5 /* PlaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */; };
 		9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */; };
 		9BA012A727D8D1500080F245 /* PlaceInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */; };
+		9BA3BF31280FDB7B00E49044 /* AuthorizedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA3BF30280FDB7A00E49044 /* AuthorizedRequest.swift */; };
+		9BA3BF33280FDEAE00E49044 /* CommonSystemAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA3BF32280FDEAE00E49044 /* CommonSystemAlert.swift */; };
 		9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */; };
 		9BA965D327FC370900C05D42 /* LightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA965D227FC370900C05D42 /* LightCardView.swift */; };
 		9BB8E67027DB6DB400E07AD0 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 9BB8E66F27DB6DB400E07AD0 /* BottomSheet */; };
@@ -162,6 +164,8 @@
 		9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailView.swift; sourceTree = "<group>"; };
 		9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoManager.swift; sourceTree = "<group>"; };
+		9BA3BF30280FDB7A00E49044 /* AuthorizedRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizedRequest.swift; sourceTree = "<group>"; };
+		9BA3BF32280FDEAE00E49044 /* CommonSystemAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonSystemAlert.swift; sourceTree = "<group>"; };
 		9BA7886E27A23F67002A0CB8 /* NaverLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverLoginViewModel.swift; sourceTree = "<group>"; };
 		9BA965D227FC370900C05D42 /* LightCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightCardView.swift; sourceTree = "<group>"; };
 		9BCC370027D70A6E00E88F72 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
@@ -208,6 +212,7 @@
 				9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */,
 				9B0ADB2A28080F2800E934FC /* RegisterManager.swift */,
 				9B5D5B4927F33AEF00B81831 /* ListManager.swift */,
+				9BA3BF30280FDB7A00E49044 /* AuthorizedRequest.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -423,6 +428,7 @@
 				9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */,
 				9BE91FB028031843000DE8C9 /* CommentAlertView.swift */,
 				9B0ADB1B2806E35A00E934FC /* EditListNameAlertView.swift */,
+				9BA3BF32280FDEAE00E49044 /* CommonSystemAlert.swift */,
 			);
 			path = Alerts;
 			sourceTree = "<group>";
@@ -628,6 +634,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BA3BF33280FDEAE00E49044 /* CommonSystemAlert.swift in Sources */,
 				9B0ADB1E2806F1D600E934FC /* Progress.swift in Sources */,
 				9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */,
 				9B6C0D2927C89C0400376373 /* RegisterPlaceView.swift in Sources */,
@@ -683,6 +690,7 @@
 				9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */,
 				9B5FD61527C519ED004B60E6 /* SearchMainView.swift in Sources */,
 				9BA7886F27A23F67002A0CB8 /* NaverLoginViewModel.swift in Sources */,
+				9BA3BF31280FDB7B00E49044 /* AuthorizedRequest.swift in Sources */,
 				9B0ADB292807F22000E934FC /* SearchKakaoPlaceView.swift in Sources */,
 				9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */,
 				9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */,

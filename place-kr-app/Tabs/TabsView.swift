@@ -10,8 +10,9 @@ import SwiftUI
 struct TabsView: View {
     @EnvironmentObject var loginManager: LoginManager
     @ObservedObject var listManager = ListManager()
-    // TODO: 나중에 고칠 것 둘
+    
     @State var showNewNameAlert = false
+    @State var showWarning = false
     @State var name = ""
     
     @State var selection: Tab = .map
@@ -71,7 +72,19 @@ struct TabsView: View {
             .navigationBarHidden(true)
             .accentColor(.black)
             .showAlert(show: $showNewNameAlert, alert: NewNameAlertView(name: $name, action: {
-                withAnimation(.easeInOut(duration: 0.2)) { self.showNewNameAlert = false }
+                // MARK: - 닉네임 변경 팝업
+                AuthAPIManager.updateUserData(nickname: name) { result in
+                    switch result {
+                    case .success(()):
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            self.showNewNameAlert = false
+                        }
+                        break
+                    case .failure:
+                        self.showWarning = true
+                    }
+                    
+                }
             }))
             .onAppear() {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -80,6 +93,9 @@ struct TabsView: View {
                     }
                 }
                 UITabBar.appearance().backgroundColor = .white
+            }
+            .alert(isPresented: $showWarning) {
+                basicSystemAlert
             }
         }
     }

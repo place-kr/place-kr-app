@@ -45,8 +45,9 @@ class AppleLoginViewModel: ObservableObject {
                     completionHandler(.success(userInfo))
                     // TODO: 서버에 뉴비 등록
                 } else {
+                    print(userData)
                     /// 기존 등록 사용자의 경우 Identifier만 제공
-                    print("Already registered.") // TODO: 중복 등록?
+                    print("Already registered.")
                     guard let userInfo = UserInfoManager.loadUserInfo() else {
                         print("[AppleLoginViewModel] Error while fetching user data from UserDefault. The problem might have occurred during saving routine")
                         completionHandler(.failure(.fetch))

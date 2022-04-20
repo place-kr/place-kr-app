@@ -11,20 +11,17 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.window) var window: UIWindow?
     @ObservedObject var loginManger = LoginManager()
+ 
+    @State var showOnboarding = UserInfoManager.isRegistered ?? true
     
-    @State var showOnboarding = (UserInfoManager.isRegistered != true)
-    @State var showLogin = (UserInfoManager.isLoggenIn != true)
-
     var body: some View {
-//        TabsView()
-        
         // 로그인 안 되어있으면 로그인부터
         if loginManger.status != .loggedIn {
             LogInView()
                 .environment(\.window, window)
                 .environmentObject(loginManger)
         } else {
-            if showOnboarding == true {
+            if loginManger.isRegistered == false {
                 OnboardingView(show: $showOnboarding)
             } else {
                 TabsView()
