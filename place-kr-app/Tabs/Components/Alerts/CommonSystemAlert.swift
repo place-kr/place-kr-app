@@ -8,3 +8,7 @@
 import SwiftUI
 
 let basicSystemAlert = Alert(title: Text("알 수 없는 오류 발생"), message: Text("잠시 후 다시 시도해주세요."))
+
+func basicSystemAlert(title: String, content: String) -> Alert {
+    Alert(title: Text(title), message: Text(content))
+}

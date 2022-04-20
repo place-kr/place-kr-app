@@ -25,7 +25,9 @@ struct MapView: View {
     
     @State var navigateToRegisterNewListView = false
     @State var navigateToSearch = false
+    
     @State var showError = false
+    @State var alertCase: AlertCase = .error
     
     var body: some View {
         
@@ -53,16 +55,6 @@ struct MapView: View {
                 
                 /// 검색창 및 Sheet view 버튼 + Sheet pop 용 빈 뷰
                 ZStack(alignment: .center) {
-                    HStack {
-                        EntirePlaceButton
-                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                        
-                        MyPlaceButton
-                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                        
-                        Spacer()
-                    }
-                    
                     if mapViewModel.mapNeedsReload {
                         // MARK: 맵 리로드 버튼
                         Button(action: {
@@ -123,18 +115,28 @@ struct MapView: View {
             case true:
                 self.navigateToRegisterNewListView = false
             case false:
+                self.alertCase = .error
                 self.showError = true
             }
         }))
         .alert(isPresented: self.$showError) {
-            Alert(title: Text("오류 발생"), message: Text("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요."), dismissButton: .default(Text("Close")))
+            switch alertCase {
+            case .error:
+                return basicSystemAlert
+            case .duplicatePlace:
+                return basicSystemAlert(title: "오류!", content: "이미 저장된 플레이스입니다")
+            }
         }
     }
 }
 
 extension MapView {
     enum ActiveSheet {
-        case myPlace, entire, placeInfo, favoriteList
+        case placeInfo, favoriteList
+    }
+    
+    enum AlertCase {
+        case error, duplicatePlace
     }
     
     func markerAction(id: String) {
@@ -151,10 +153,6 @@ extension MapView {
     @ViewBuilder
     func SheetView(active: ActiveSheet) -> some View {
         switch active {
-        case .myPlace:
-            Text("My place")
-        case .entire:
-            Text("전체")
         case .placeInfo:
             if let placeInfo = placeInfoManager.placeInfo {
                 VStack(alignment: .leading) {
@@ -232,35 +230,6 @@ extension MapView {
         }
     }
     
-    var EntirePlaceButton: some View {
-        func doShowSheet() {
-            withAnimation(springAnimation) {
-                bottomSheetPosition = .bottom
-            }
-        }
-        
-        return Button(action: { doShowSheet() }) {
-            Text("전체")
-        }
-        .buttonStyle(CapsuledButtonStyle())
-        .background(Capsule().fill(activeSheet == .entire ? .gray : .white))
-    }
-    
-    var MyPlaceButton: some View {
-        func doShowSheet() {
-            withAnimation(springAnimation) {
-                activeSheet = .myPlace
-                bottomSheetPosition = .bottom
-            }
-        }
-        
-        return Button(action: { doShowSheet() }) {
-            Text("My")
-        }
-        .buttonStyle(CapsuledButtonStyle())
-        .background(Capsule().fill(activeSheet == .myPlace ? .gray : .white))
-    }
-    
     var AddingListSheetView: some View {
             VStack(alignment: .leading, spacing: 15) {
                 HStack {
@@ -302,6 +271,8 @@ extension MapView {
                                 
                                 if list.places.contains(selectedPlaceId) {
                                     print("Already exists")
+                                    self.alertCase = .duplicatePlace
+                                    self.showError = true
                                     return
                                 }
                                 
