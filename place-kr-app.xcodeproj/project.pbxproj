@@ -380,8 +380,8 @@
 		9B5FD61327C519DE004B60E6 /* AddTab */ = {
 			isa = PBXGroup;
 			children = (
-				9B6C0D2827C89C0400376373 /* RegisterPlaceView.swift */,
 				9B0ADB262807C73800E934FC /* RegisterPlaceMainView.swift */,
+				9B6C0D2827C89C0400376373 /* RegisterPlaceView.swift */,
 				9B0ADB282807F22000E934FC /* SearchKakaoPlaceView.swift */,
 			);
 			path = AddTab;

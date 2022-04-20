@@ -69,16 +69,11 @@ class AuthAPIManager {
     
     /// 닉네임 서버에 등록
     static func updateUserData(nickname: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        guard var request = authorizedRequest(method: "PATCH", api: "/me") else {
-            return
-        }
-        
         let body = UserDataPostRequest(nickname: nickname, categories: ["1", "2"])
-        guard let encoded = try? JSONEncoder().encode(body) else {
+        guard let request = authorizedRequest(method: "PATCH", api: "/me", body: body) else {
             return
         }
         
-        request.httpBody = encoded
         URLSession.shared.dataTask(with: request) { _, response, _ in
             if let response = response as? HTTPURLResponse, !((200...300).contains(response.statusCode)) {
                 print(response as Any)

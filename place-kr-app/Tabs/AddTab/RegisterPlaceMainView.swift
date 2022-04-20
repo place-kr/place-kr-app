@@ -103,10 +103,14 @@ struct RegisterPlaceMainView: View {
                 
                 Group {
                     if viewModel.requests.isEmpty {
-                        EmptyCaseView
-                        
-                        RegisterButton
-                            .padding(.bottom, 20)
+                        VStack {
+                            EmptyCaseView
+                            
+                            Spacer()
+                            
+                            RegisterButton
+                                .padding(.bottom, 20)
+                        }
                     } else {
                         ScrollView(showsIndicators: false) {
                             VStack(alignment: .leading, spacing: 10) {
