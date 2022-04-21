@@ -149,7 +149,7 @@ class ListManager: ObservableObject {
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode
             else {
-                print("Error: \(response)")
+                print("Error: \(response as Any)")
                 if let completionHandler = completionHandler {
                     completionHandler(false)
                 }
@@ -291,7 +291,7 @@ class ListManager: ObservableObject {
             body.color = hex
         }
         
-        guard let request = authorizedRequest(method: "PATCH", api: "me/lists/\(id)", body: body) else {
+        guard let request = authorizedRequest(method: "PATCH", api: "/me/lists/\(id)", body: body) else {
             if let completionHandler = completionHandler {
                 completionHandler(false)
             }

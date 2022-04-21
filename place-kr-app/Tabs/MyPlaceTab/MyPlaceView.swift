@@ -23,6 +23,7 @@ struct MyPlaceView: View {
     @State var showEditSheet = false
     @State var showNewListAlert = false
     @State var showDeleteAlert = false
+    @State var showWarning = false
     
     @State var text = ""
     
@@ -127,7 +128,7 @@ struct MyPlaceView: View {
                 .padding(.horizontal, 28)
         })
         .showAlert(show: $showNewListAlert, alert: RegisterNewListAlertView(submitAction: {
-            // 새로운 리스트 등록
+            // MARK: - 새로운 리스트 등록
             // 닫기버튼 누른 후
             viewModel.progress = .finished
             withAnimation(.spring()) {
@@ -138,21 +139,23 @@ struct MyPlaceView: View {
             DispatchQueue.main.async {
                 switch result {
                 case true:
-                    withAnimation(.spring()) {
-                        showNewListAlert = false
-                    }
                     bottomSheetPosition = .hidden
                     viewModel.progress = .finished
-                    return
+                    break
                 case false:
                     viewModel.progress = .failed
-                    return
+                    self.showWarning = true
+                    break
+                }
+                
+                withAnimation(.spring()) {
+                    showNewListAlert = false
                 }
             }
         }).environmentObject(listManager)
         )
         .showAlert(show: $showEditSheet, alert: EditListNameAlertView(name: $text, action: {
-            // 리스트 이름만 편집 팝업
+            // MARK: - 리스트 이름만 편집 팝업
             guard let selectedList = self.selectedList else { return }
             viewModel.progress = .inProcess
             
@@ -160,21 +163,26 @@ struct MyPlaceView: View {
                 DispatchQueue.main.async {
                     switch result {
                     case true:
-                        withAnimation(.spring()) {
-                            showEditSheet = false
-                        }
                         bottomSheetPosition = .hidden
                         self.text = ""
                         viewModel.progress = .finished
-                        return
+                        break
                     case false:
                         self.text = ""
                         viewModel.progress = .failed
-                        return
+                        self.showWarning = true
+                        break
+                    }
+                    
+                    withAnimation(.spring()) {
+                        showEditSheet = false
                     }
                 }
             }
         }))
+        .alert(isPresented: $showWarning) {
+            basicSystemAlert(title: "네트워크 오류 발생", content: "잠시 후 다시 시도해주세요")
+        }
         .navigationBarTitle("") //this must be empty
         .navigationBarHidden(true)
     }
