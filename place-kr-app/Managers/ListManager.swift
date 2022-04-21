@@ -94,74 +94,14 @@ class ListManager: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private let baseUrl = URL(string: "https://dev.place.tk/api/v1")!
     
-    /// [바디 있음] 공통적으로 사용되는 리퀘스트(토큰 실어서 보내기 등)
-    private func authroizedRequest<T: Encodable>(with components: String,
-                                                 method: String,
-                                                 queryItem: String? = nil,
-                                                 body: T,
-                                                 completionHandler: ((Bool) -> ())? = nil) -> URLRequest? {
-        var url = baseUrl.appendingPathComponent(components)
-        guard let token = UserInfoManager.userToken else {
-            if let completionHandler = completionHandler {
-                completionHandler(false)
-            }
-            return nil
-        }
-        
-        if let _ = queryItem {
-            var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
-            let queryItem = URLQueryItem(name: "add_place_identifier", value: queryItem)
-            urlComponents?.queryItems = [queryItem]
-            url = (urlComponents?.url)!
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
-        
-        if let encoded = try? JSONEncoder().encode(body) {
-            print("HERE", body, encoded)
-            if let completionHandler = completionHandler {
-                completionHandler(false)
-            }
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = encoded
-        }
-        return request
-    }
-    
-    /// [바디 없음] 공통적으로 사용되는 리퀘스트(토큰 실어서 보내기 등)
-    private func authroizedRequest(with components: String,
-                                   method: String,
-                                   queryItem: String? = nil,
-                                   completionHandler: ((Bool) -> ())? = nil) -> URLRequest? {
-        var url = baseUrl.appendingPathComponent(components)
-        guard let token = UserInfoManager.userToken else {
-            if let completionHandler = completionHandler {
-                completionHandler(false)
-            }
-            return nil
-        }
-        
-        if let _ = queryItem {
-            var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
-            let queryItem = URLQueryItem(name: "add_place_identifier", value: queryItem)
-            urlComponents?.queryItems = [queryItem]
-            url = (urlComponents?.url)!
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
-        
-        return request
-    }
-    
     /// 리스트에 플레이스 1개 더하기
     func addOnePlaceToList(listID: String, placeID: String, completionHandler: ((Bool) -> ())? = nil) {
-        guard let request = authroizedRequest(with: "/me/lists/\(listID)",
-                                              method: "PATCH",
-                                              queryItem: placeID) else {
+        let queryItems = [
+            URLQueryItem(name: "add_place_identifier", value: "\(placeID)")
+        ]
+        
+        guard let request = authorizedRequest(method: "PATCH", api: "/me/lists/\(listID)", queryItems: queryItems) else {
+            
             if let completionHandler = completionHandler {
                 completionHandler(false)
             }
@@ -169,25 +109,16 @@ class ListManager: ObservableObject {
             return
         }
         
-        
-        let session = URLSession.shared
-        session.dataTask(with: request) { _, response, error in
+        URLSession.shared.dataTask(with: request) { _, response, _ in
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode
             else {
                 print("Place list response error: \(response as Any)")
-                switch (response as! HTTPURLResponse).statusCode {
-                case (400...499):
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
-                default:
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
+                
+                if let completionHandler = completionHandler {
+                    completionHandler(false)
                 }
+                return
             }
             
             if let completionHandler = completionHandler {
@@ -205,9 +136,7 @@ class ListManager: ObservableObject {
     func editPlacesList(listID: String, placeIDs: [String], completionHandler: ((Bool) -> ())? = nil) {
         let body = ListBody(places: placeIDs)
         
-        guard let request = authroizedRequest(with: "/me/lists/\(listID)",
-                                              method: "PATCH",
-                                              body: body) else {
+        guard let request = authorizedRequest(method: "PATCH", api: "/me/lists/\(listID)", body: body) else {
             if let completionHandler = completionHandler {
                 completionHandler(false)
             }
@@ -220,30 +149,15 @@ class ListManager: ObservableObject {
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode
             else {
-                print("Place list response error: \(response as Any)")
-                switch (response as! HTTPURLResponse).statusCode {
-                case (400...499):
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    
-                    if let data = data, let body = try? JSONDecoder().decode(ErrorBody.self, from: data) {
-                        print(body)
-                    }
-                    
-                    return
-                default:
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
+                print("Error: \(response)")
+                if let completionHandler = completionHandler {
+                    completionHandler(false)
                 }
+                return
             }
-            
             
             if let completionHandler = completionHandler {
                 completionHandler(true)
-                print("TRUE")
             }
         }
         .resume()
@@ -285,13 +199,14 @@ class ListManager: ObservableObject {
     
     /// 새로운 플레이스 추가. 컴플리션으로 성공 여부 받을 수 있음.
     func addPlaceList(body: PlaceListPostBody, completionHandler: ((Bool) -> ())? = nil) {
-        guard let request = authroizedRequest(with: "/me/lists", method: "POST", body: body) else {
+        guard let request = authorizedRequest(method: "POST", api: "/me/lists", body: body) else {
             if let completionHandler = completionHandler {
                 completionHandler(false)
             }
             print("Place list url error")
             return
         }
+
         let session = URLSession.shared
         
         session.dataTask(with: request) { [weak self] _, response, error in
@@ -300,18 +215,11 @@ class ListManager: ObservableObject {
                   200..<300 ~= httpResponse.statusCode
             else {
                 print("Place list response error: \(response as Any)")
-                switch (response as! HTTPURLResponse).statusCode {
-                case (400...499):
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
-                default:
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
+                
+                if let completionHandler = completionHandler {
+                    completionHandler(false)
                 }
+                return
             }
             
             
@@ -326,30 +234,24 @@ class ListManager: ObservableObject {
     
     /// 플레이스 리스트 삭제
     func deletePlaceList(id: String, completionHandler: ((Bool) -> ())? = nil) {
-        guard let request = authroizedRequest(with: "/me/lists/\(id)", method: "DELETE") else {
+        guard let request = authorizedRequest(method: "DELETE", api: "/me/lists/\(id)") else {
             if let completionHandler = completionHandler {
                 completionHandler(false)
             }
             return
         }
-        let session = URLSession.shared
         
-        session.dataTask(with: request) { [weak self] _, response, error in
+        URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
             guard let self = self else { return }
             guard let httpResponse = response as? HTTPURLResponse,
-                  200..<300 ~= httpResponse.statusCode else {
-                switch (response as! HTTPURLResponse).statusCode {
-                case (400...499):
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
-                default:
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
+                  200..<300 ~= httpResponse.statusCode
+            else {
+                print("Place list response error: \(response as Any)")
+                
+                if let completionHandler = completionHandler {
+                    completionHandler(false)
                 }
+                return
             }
             
             guard let index = (self.placeLists.firstIndex{ $0.identifier == id }) else {
@@ -360,10 +262,10 @@ class ListManager: ObservableObject {
                 _ = withAnimation(.spring()) {
                     self.placeLists.remove(at: Int(index))
                 }
-                
-                if let completionHandler = completionHandler {
-                    completionHandler(true)
-                }
+            }
+            
+            if let completionHandler = completionHandler {
+                completionHandler(true)
             }
         }
         .resume()
@@ -389,30 +291,24 @@ class ListManager: ObservableObject {
             body.color = hex
         }
         
-        guard let request = authroizedRequest(with: "me/lists/\(id)", method: "PATCH", body: body) else {
+        guard let request = authorizedRequest(method: "PATCH", api: "me/lists/\(id)", body: body) else {
             if let completionHandler = completionHandler {
                 completionHandler(false)
             }
             return
         }
-        let session = URLSession.shared
         
-        session.dataTask(with: request) { [weak self] _, response, error in
+        URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
             guard let self = self else { return }
             guard let httpResponse = response as? HTTPURLResponse,
-                  200..<300 ~= httpResponse.statusCode else {
-                switch (response as! HTTPURLResponse).statusCode {
-                case (400...499):
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
-                default:
-                    if let completionHandler = completionHandler {
-                        completionHandler(false)
-                    }
-                    return
+                  200..<300 ~= httpResponse.statusCode
+            else {
+                print("Place list response error: \(response as Any)")
+                
+                if let completionHandler = completionHandler {
+                    completionHandler(false)
                 }
+                return
             }
             
             DispatchQueue.main.async {
@@ -423,12 +319,10 @@ class ListManager: ObservableObject {
                 if let hex = hex {
                     self.placeLists[index].color = hex
                 }
-                
-                if let completionHandler = completionHandler {
-                    completionHandler(true)
-                }
-                
-//                self.updateLists()
+            }
+            
+            if let completionHandler = completionHandler {
+                completionHandler(true)
             }
         }
         .resume()
