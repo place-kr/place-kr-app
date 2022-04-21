@@ -46,3 +46,26 @@ func authorizedRequest<T: Encodable>(method: String, api: String, body: T) -> UR
     
     return request
 }
+
+func authorizedRequest(method: String, api: String, queryItems: [URLQueryItem]) -> URLRequest? {
+    guard var urlComponent = URLComponents(string: "https://dev.place.tk/api/v1/" + api) else {
+        return nil
+    }
+    
+    urlComponent.queryItems = queryItems
+
+    guard let token = UserInfoManager.userToken else {
+        return nil
+    }
+    
+    guard let url = urlComponent.url else {
+        return nil
+    }
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = method
+    request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    return request
+}

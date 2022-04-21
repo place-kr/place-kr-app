@@ -102,7 +102,6 @@ struct SearchKakaoPlaceView: View {
                 .padding(.bottom, 40)
             }
                 
-            
             Spacer()
         }
         .padding(.top, 17)

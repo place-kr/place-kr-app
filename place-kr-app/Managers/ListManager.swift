@@ -90,6 +90,7 @@ struct ErrorBody: Decodable {
 class ListManager: ObservableObject {
     @Published var placeLists: [PlaceList]
     
+    private var nextPageUrl: URL? = nil
     private var subscriptions = Set<AnyCancellable>()
     private let baseUrl = URL(string: "https://dev.place.tk/api/v1")!
     
@@ -250,13 +251,17 @@ class ListManager: ObservableObject {
     }
 
     /// 플레이스 리스트 받아오기. 퍼블리셔 타입.
-    private func getPlaceLists() -> AnyPublisher<[PlaceList], Error> {
-        guard let request = authroizedRequest(with: "/me/lists", method: "GET") else {
+    private func getPlaceLists(page: Int) -> AnyPublisher<[PlaceList], Error> {
+        let queryItems = [
+            URLQueryItem(name: "limit", value: "15"),
+            URLQueryItem(name: "offset", value: "\(page)")
+        ]
+        
+        guard let request = authorizedRequest(method: "GET", api: "/me/lists", queryItems: queryItems) else {
             return Fail(error: HTTPError.url).eraseToAnyPublisher()
         }
-        let session = URLSession.shared
         
-        return session.dataTaskPublisher(for: request)
+        return URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { data, response -> Data in
                 guard let httpResponse = response as? HTTPURLResponse,
                       200..<300 ~= httpResponse.statusCode else {
@@ -431,8 +436,9 @@ class ListManager: ObservableObject {
     }
     
     /// 퍼블리셔로 리스트 업데이트 하는 루틴
-    func updateLists() {
-        self.getPlaceLists()
+    /// 페이지는 1페이지로 초기화
+    func updateLists(page: Int = 1) {
+        self.getPlaceLists(page: page)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { result in
                 switch result {
@@ -440,10 +446,15 @@ class ListManager: ObservableObject {
                     print("[updateLists] Place list fetched")
                 case .failure(let error):
                     print("Error while fetching place lists: \(error)")
-                
                 }
+                
+                self.subscriptions.removeAll()
             }, receiveValue: { data in
-                self.placeLists = data
+                if page == 1 {
+                    self.placeLists = data
+                } else {
+                    self.placeLists.append(contentsOf: data)
+                }
             })
             .store(in: &subscriptions)
     }

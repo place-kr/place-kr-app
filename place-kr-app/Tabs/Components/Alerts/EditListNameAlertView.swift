@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EditListNameAlertView: View {
+    @State var clicked = false
     @Binding var name: String
     let action: () -> Void
     
@@ -28,10 +29,13 @@ struct EditListNameAlertView: View {
                             action: {})
             HStack {
                 Spacer()
-                Button(action: { action() }) {
+                Button(action: {
+                    action()
+                    clicked = true
+                }) {
                     Text("입력완료")
                 }
-                .disabled(name.isEmpty)
+                .disabled(name.isEmpty || clicked)
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)
