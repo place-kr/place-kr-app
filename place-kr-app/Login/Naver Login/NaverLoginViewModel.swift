@@ -9,18 +9,7 @@ import Foundation
 import NaverThirdPartyLogin
 
 class NaverLoginButtonViewModel: ObservableObject {
-//    let vc: NaverVCRepresentable
-//    
-//    func requestLogin() {
-//        
-//    }
-//    
-//    init() {
-//        vc = NaverVCRepresentable { result in
-//            print(result)
-//        }
-
-//    }
+    
 }
 
 extension NaverLoginButtonViewModel {

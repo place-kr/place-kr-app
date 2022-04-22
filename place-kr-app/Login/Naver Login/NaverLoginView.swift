@@ -2,13 +2,14 @@ import SwiftUI
 import CoreData
 
 struct NaverLoginButtonView: View {
-//    @State var showNaverLogin = false
+    @State var showNaverLogin = false
     @ObservedObject var viewModel = NaverLoginButtonViewModel()
     @EnvironmentObject var loginManager: LoginManager
 
     var body: some View {
         Button(action: {
-            showNaverLogin = true
+//            showNaverLogin = true
+//            print(showNaverLogin)
             NaverVCRepresentable.loginInstance?.requestThirdPartyLogin()
 //            loginManager.status = .inProgress
         }) {
@@ -28,8 +29,10 @@ struct NaverLoginButtonView: View {
 //                .fill(Color("naver")))
         .foregroundColor(.white)
         
-        NaverLoginView
-            .frame(width: 0, height: 0)
+//        if showNaverLogin {
+            NaverLoginView
+                .frame(width: 0, height: 0)
+//        }
     }
 }
 
@@ -37,6 +40,7 @@ extension NaverLoginButtonView {
     /// Login modal view
     var NaverLoginView: some View {
         NaverVCRepresentable { result in
+            print("@@@", result)
             loginManager.socialAuthResultHandler(result)
         }
     }

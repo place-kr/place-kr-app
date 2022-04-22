@@ -58,8 +58,9 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
             super.init()
             vc.delegate = self
             
-            NaverVCRepresentable.loginInstance?.delegate = self
             NaverVCRepresentable.loginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
+            NaverVCRepresentable.loginInstance?.delegate = self
+//            NaverVCRepresentable.loginInstance?.requestThirdPartyLogin()
         }
         
 
