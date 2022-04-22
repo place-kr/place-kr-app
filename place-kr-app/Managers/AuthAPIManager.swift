@@ -33,6 +33,7 @@ class AuthAPIManager {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // Peek into request body
+        print(request, body)
         let task = session.uploadTask(with: request, from: encodedBody) { data, response, error in
             if let error = error {
                 print("Error while uploading")
@@ -43,7 +44,14 @@ class AuthAPIManager {
             if let response = response as? HTTPURLResponse, !((200...300).contains(response.statusCode)) {
                 print(response as Any)
                 print("Error in response. May be a network error.")
+                
+                guard let data = data, let decoded = try? JSONDecoder().decode(ErrorBody.self, from: data) else {
+                    return
+                }
+                print(decoded)
+                
                 completionHandler(.failure(FetchError.invalidResponse))
+                return
                 // Peek into response if error occurs
             }
             
@@ -129,12 +137,12 @@ extension AuthAPIManager {
     
     struct AppleBody: Codable, PostRequest {
         let identifier: String
-        let email: String
+//        let email: String
         let idToken: String
         
         enum CodingKeys : String, CodingKey{
             case identifier
-            case email
+//            case email
             case idToken = "identity_token"
         }
     }

@@ -12,6 +12,8 @@ import AuthenticationServices
 struct AppleLogInView: View {
     @EnvironmentObject var loginManger: LoginManager
     @ObservedObject var viewModel: AppleLoginViewModel
+    @State var showWarning = false
+    @State var warningContent = ""
 
     init(viewModel: AppleLoginViewModel) {
         self.viewModel = viewModel
@@ -19,10 +21,19 @@ struct AppleLogInView: View {
     
     var body: some View {
         SignInWithApple()
+            .alert(isPresented: $showWarning) {
+                basicSystemAlert(title: "오류!", content: self.warningContent)
+            }
             .onTapGesture {
                 loginManger.status = .inProgress
                 viewModel.showAppleLogin { result in
-                    loginManger.socialAuthResultHandler(result)
+                    switch result {
+                    case .success(_):
+                        loginManger.socialAuthResultHandler(result)
+                    case .failure(let error):
+                        showWarning = true
+                        warningContent = error.description
+                    }
                 }
             }
     }

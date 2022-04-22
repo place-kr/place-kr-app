@@ -129,8 +129,8 @@ class UserInfoManager {
 extension UserInfoManager {
     struct AppleUserInfo: Codable {
         let id: String
-        let email: String
-        let name: String
+        let email: String?
+        let name: String?
         let idToken: String
         let authCode: String
     }

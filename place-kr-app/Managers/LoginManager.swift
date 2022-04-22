@@ -69,12 +69,12 @@ class LoginManager: ObservableObject {
             print("[LoginManager] Login failed: \(error)")
             self.status = .fail
         case .success(let userInfo):
-            print("Successfully get token from OAuth server. Email:\(userInfo.email), Token:\(userInfo.authCode)")
+            print("Successfully get token from Apple server. Token:\(userInfo.authCode)")
             
             let url = URL(string: "https://dev.place.tk/api/v1/auth/apple")!
             let body = AuthAPIManager.AppleBody(
                 identifier: userInfo.id,
-                email: userInfo.email,
+//                email: userInfo.email,
                 idToken: userInfo.idToken
             )
 

@@ -48,11 +48,13 @@ class AppleLoginViewModel: ObservableObject {
                     print(userData)
                     /// 기존 등록 사용자의 경우 Identifier만 제공
                     print("Already registered.")
-                    guard let userInfo = UserInfoManager.loadUserInfo() else {
-                        print("[AppleLoginViewModel] Error while fetching user data from UserDefault. The problem might have occurred during saving routine")
-                        completionHandler(.failure(.fetch))
-                        return
-                    }
+//                    guard let userInfo = UserInfoManager.loadUserInfo() else {
+//                        print("[AppleLoginViewModel] Error while fetching user data from UserDefault. The problem might have occurred during saving routine")
+//                        completionHandler(.failure(.fetch))
+//                        return
+//                    }
+                    
+                    let userInfo = AppleUserInfo(id: userData.identifier, email: nil, name: nil, idToken: userData.identityToken!, authCode: userData.authCode!)
                     
                     // 성공
                     completionHandler(.success(userInfo))
