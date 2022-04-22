@@ -90,7 +90,7 @@ struct ErrorBody: Decodable {
 class ListManager: ObservableObject {
     @Published var placeLists: [PlaceList]
     
-    private var nextPageUrl: URL? = nil
+    private var nextPage: Int? = nil
     private var subscriptions = Set<AnyCancellable>()
     private let baseUrl = URL(string: "https://dev.place.tk/api/v1")!
     
@@ -242,6 +242,7 @@ class ListManager: ObservableObject {
         }
         
         URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
+            print(response)
             guard let self = self else { return }
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode

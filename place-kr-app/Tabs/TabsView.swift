@@ -71,7 +71,7 @@ struct TabsView: View {
             }
             .navigationBarHidden(true)
             .accentColor(.black)
-            .showAlert(show: $showNewNameAlert, alert: NewNameAlertView(name: $name, action: {
+            .showAlert(show: $showNewNameAlert, tapToDismiss: false, alert: NewNameAlertView(name: $name, action: {
                 // MARK: - 닉네임 변경 팝업
                 AuthAPIManager.updateUserData(nickname: name) { result in
                     switch result {
@@ -82,12 +82,14 @@ struct TabsView: View {
                         break
                     case .failure:
                         self.showWarning = true
+                        break
                     }
-                    
                 }
             }))
             .onAppear() {
+                // MARK: 닉네임 체크
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    print("@@", UserInfoManager.isRegistered)
                     withAnimation(.easeInOut(duration: 0.2)) {
                         self.showNewNameAlert = (UserInfoManager.isRegistered == false)
                     }

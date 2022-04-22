@@ -80,7 +80,7 @@ class UserInfoManager {
     /// 온보딩 여부 저장
     static func registerStatus(_ result: Bool) {
         UserDefaults.standard.set(result, forKey: UserInfoManager.registeredKey)
-        print("Registered")
+        print("@@ Registered: \(result)")
     }
     
     /// 검색기록 디스크에 저장
@@ -114,9 +114,9 @@ class UserInfoManager {
     }
     
     /// 등록된 유저(온보딩 완료)인지 확인
-    static var isRegistered: Bool? {
-        let loginStatus = UserDefaults.standard.object(forKey: UserInfoManager.registeredKey) as? Bool
-        return loginStatus != nil
+    static var isRegistered: Bool {
+        let status = UserDefaults.standard.object(forKey: UserInfoManager.registeredKey) as? Bool
+        return status == true
     }
     
     /// 저장기록 확인

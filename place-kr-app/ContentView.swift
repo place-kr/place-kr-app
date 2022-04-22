@@ -21,12 +21,11 @@ struct ContentView: View {
                 .environment(\.window, window)
                 .environmentObject(loginManger)
         } else {
-            if loginManger.isRegistered == false {
-                OnboardingView(show: $showOnboarding)
-            } else {
-                TabsView()
-                    .environmentObject(loginManger)
-            }
+//            if loginManger.isRegistered == false {
+//                OnboardingView(show: $showOnboarding)
+//            } else {
+            TabsView()
+                .environmentObject(loginManger)
         }
     }
 }

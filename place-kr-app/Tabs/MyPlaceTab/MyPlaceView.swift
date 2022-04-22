@@ -26,6 +26,7 @@ struct MyPlaceView: View {
     @State var showWarning = false
     
     @State var text = ""
+    @State var position: CGFloat = 0
     
     @Binding var selection: TabsView.Tab
 
@@ -63,10 +64,14 @@ struct MyPlaceView: View {
                     }
                     .padding(.horizontal, 15)
                     
-                    ScrollView {
+                    Button(action: { listManager.updateLists(page: 2) }) {
+                        Text("추가하기(mock)")
+                    }
+                    
+                    TrackableScrollView(position: self.$position) {
                         VStack(spacing: 10) {
                             // MARK: -리스트 카드 뷰
-                            ForEach(listManager.placeLists, id: \.self) { list in
+                            ForEach(listManager.placeLists, id: \.identifier) { list in
                                 navigator(list: list, label:
                                             SimplePlaceCardView(list.name,
                                                                 hex: list.color,
@@ -183,6 +188,26 @@ struct MyPlaceView: View {
         .alert(isPresented: $showWarning) {
             basicSystemAlert(title: "네트워크 오류 발생", content: "잠시 후 다시 시도해주세요")
         }
+        .alert(isPresented: $showDeleteAlert) {
+            Alert(title: Text("리스트를 삭제하시겠어요?"), primaryButton: .cancel(), secondaryButton: .default(Text("Ok"), action: {
+                guard let selectedList = self.selectedList else { return }
+                viewModel.progress = .inProcess
+                
+                listManager.deletePlaceList(id: selectedList.identifier) { result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case true:
+                            bottomSheetPosition = .hidden
+                            viewModel.progress = .finished
+                            return
+                        case false:
+                            viewModel.progress = .failed
+                            return
+                        }
+                    }
+                }
+            }))
+        }
         .navigationBarTitle("") //this must be empty
         .navigationBarHidden(true)
     }
@@ -247,6 +272,7 @@ extension MyPlaceView {
             
             // 플레이스 삭제하기
             Button(action: {
+                print(showDeleteAlert)
                 self.showDeleteAlert = true
             }) {
                 HStack(spacing: 9) {
@@ -254,26 +280,6 @@ extension MyPlaceView {
                     Text("삭제하기")
                     Spacer()
                 }
-            }
-            .alert(isPresented: $showDeleteAlert) {
-                Alert(title: Text("리스트를 삭제하시겠어요?"), primaryButton: .cancel(), secondaryButton: .default(Text("Ok"), action: {
-                    guard let selectedList = self.selectedList else { return }
-                    viewModel.progress = .inProcess
-                    
-                    listManager.deletePlaceList(id: selectedList.identifier) { result in
-                        DispatchQueue.main.async {
-                            switch result {
-                            case true:
-                                bottomSheetPosition = .hidden
-                                viewModel.progress = .finished
-                                return
-                            case false:
-                                viewModel.progress = .failed
-                                return
-                            }
-                        }
-                    }
-                }))
             }
         }
         .font(.system(size: 14))

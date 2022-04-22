@@ -38,11 +38,10 @@ struct NewNameAlertView: View {
                 Button(action: {
                     action()
                     clicked = true
-                    UserInfoManager.registerStatus(true)
                 }) {
                     Text("입력완료")
                 }
-                .disabled(clicked)
+                .disabled(clicked || name.isEmpty)
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)

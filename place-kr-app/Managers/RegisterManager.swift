@@ -91,7 +91,6 @@ class RegisterManager: ObservableObject {
         
         return URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { data, response in
-                print(response)
                 guard let httpResponse = response as? HTTPURLResponse,
                       200..<300 ~= httpResponse.statusCode
                 else {

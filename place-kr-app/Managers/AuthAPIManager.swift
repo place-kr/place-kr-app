@@ -61,7 +61,7 @@ class AuthAPIManager {
                 return
             }
             
-            print("Successed to get token from API server: \(decodedResponse.token)")
+            print("Successed to get token from API server: \(decodedResponse.token), register required?: \(decodedResponse.isRegisterRequired)")
             completionHandler(.success(decodedResponse))
         }
         task.resume()
@@ -69,7 +69,7 @@ class AuthAPIManager {
     
     /// 닉네임 서버에 등록
     static func updateUserData(nickname: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        let body = UserDataPostRequest(nickname: nickname, categories: ["1", "2"])
+        let body = UserDataPostRequest(nickname: nickname, categories: [])
         guard let request = authorizedRequest(method: "PATCH", api: "/me", body: body) else {
             return
         }
@@ -79,10 +79,13 @@ class AuthAPIManager {
                 print(response as Any)
                 print("Error in response. May be a network error.")
                 completion(.failure(FetchError.invalidResponse))
+                return
             }
             
+            UserInfoManager.registerStatus(true)
             completion(.success(()))
         }
+        .resume()
     }
 }
 
@@ -138,11 +141,11 @@ extension AuthAPIManager {
     
     struct PostReponse: Codable {
         let token: String
-        let isRegistered: Bool
+        let isRegisterRequired: Bool
         
         enum CodingKeys: String, CodingKey {
             case token
-            case isRegistered = "is_onboarding_required"
+            case isRegisterRequired = "is_onboarding_required"
         }
     }
 }

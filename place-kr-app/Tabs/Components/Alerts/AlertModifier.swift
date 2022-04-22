@@ -8,14 +8,15 @@
 import SwiftUI
 
 extension View {
-    func showAlert<V>(show: Binding<Bool>, alert: V) -> some View where V: View {
-        modifier(AlertModifier(alert: alert, show: show))
+    func showAlert<V>(show: Binding<Bool>, tapToDismiss: Bool = true, alert: V) -> some View where V: View {
+        modifier(AlertModifier(alert: alert, tapToDismiss: tapToDismiss, show: show))
 
     }
 }
 
 struct AlertModifier<V>: ViewModifier where V: View {
     var alert: V
+    let tapToDismiss: Bool
     @Binding var show: Bool
     
     func body(content: Content) -> some View {
@@ -23,7 +24,9 @@ struct AlertModifier<V>: ViewModifier where V: View {
             if show {
                 Color.gray.opacity(0.01)
                     .onTapGesture {
-                        self.show = false
+                        if tapToDismiss {
+                            self.show = false
+                        }
                     }
                     .zIndex(0.8)
                 
