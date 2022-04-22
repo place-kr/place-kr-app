@@ -24,9 +24,7 @@ struct ProfileTabView: View {
                 NavigationLink(destination: {}) {
                     Text("공지사항")
                 }
-                NavigationLink(destination: {}) {
-                    Text("내가 추가한 플레이스")
-                }
+                
                 NavigationLink(destination: {}) {
                     Text("개인정보 변경")
                 }
