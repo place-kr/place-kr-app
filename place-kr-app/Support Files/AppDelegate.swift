@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         guard let scheme = url.scheme else { return true }
+        
+        print("@#$@#$", scheme)
 
         if scheme.contains("naverlogin") {
             let result = NaverThirdPartyLoginConnection.getSharedInstance().receiveAccessToken(url)

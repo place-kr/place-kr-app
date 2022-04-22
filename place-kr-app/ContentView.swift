@@ -12,8 +12,6 @@ struct ContentView: View {
     @Environment(\.window) var window: UIWindow?
     @ObservedObject var loginManger = LoginManager()
  
-    @State var showOnboarding = UserInfoManager.isRegistered ?? true
-    
     var body: some View {
         // 로그인 안 되어있으면 로그인부터
         if loginManger.status != .loggedIn {

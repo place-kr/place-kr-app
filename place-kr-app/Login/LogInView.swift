@@ -23,8 +23,6 @@ struct LogInView: View {
             VStack(alignment: .leading, spacing: 0) {
                 Spacer()
                 
-                // TODO: 인디케이터
-                
                 /// 앱 로고 디폴트 이미지
                 HStack {
                     Spacer()
@@ -63,7 +61,6 @@ struct LogInView: View {
                 NaverLoginButtonView()
                     .environmentObject(loginManager)
                 
-                // TODO: 로그인 취소 후 블러 유지되는 문제 해결할 것
                 AppleLogInView(viewModel: AppleLoginViewModel(window: window))
                     .frame(height: 54)
                     .environment(\.window, window)
@@ -81,12 +78,7 @@ struct LogInView: View {
                 .font(.system(size: 12))
                 .foregroundColor(.gray)
             }
-            
-            if loginManager.status == .inProgress {
-                CustomProgressView
-            }
         }
-        
         .padding(.horizontal, 27)
     }
     

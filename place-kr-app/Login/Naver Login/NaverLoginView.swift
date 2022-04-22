@@ -2,13 +2,14 @@ import SwiftUI
 import CoreData
 
 struct NaverLoginButtonView: View {
-    @State var showNaverLogin = false
+//    @State var showNaverLogin = false
     @ObservedObject var viewModel = NaverLoginButtonViewModel()
     @EnvironmentObject var loginManager: LoginManager
 
     var body: some View {
         Button(action: {
             showNaverLogin = true
+            NaverVCRepresentable.loginInstance?.requestThirdPartyLogin()
 //            loginManager.status = .inProgress
         }) {
             HStack {
@@ -27,10 +28,8 @@ struct NaverLoginButtonView: View {
 //                .fill(Color("naver")))
         .foregroundColor(.white)
         
-        if showNaverLogin {
-            NaverLoginView
-                .frame(width: 0, height: 0)
-        }
+        NaverLoginView
+            .frame(width: 0, height: 0)
     }
 }
 
