@@ -16,6 +16,8 @@ struct PlaceListDetailView: View {
     @State var showEditPopup = false
     @State var showWarning = false
     
+    @State var isBottom = false
+    
     @Binding var selection: TabsView.Tab
     
     init(viewModel: PlaceListDetailViewModel, selection: Binding<TabsView.Tab>) {
@@ -67,7 +69,7 @@ struct PlaceListDetailView: View {
                     // 진행상황 표시
                     CustomProgressView
                 } else {
-                    ScrollView {
+                    TrackableScrollView(reachedBottom: self.$isBottom, reachAction: {}) {
                         // 플레이스 리스트
                         VStack(spacing: 7) {
                             if viewModel.places.isEmpty {
@@ -117,6 +119,7 @@ struct PlaceListDetailView: View {
                                 
                                 AdditionButton
                                     .padding(.top, 20)
+                                    .padding(.bottom, 45)
                             }
                         }
                         .padding(.top, 12)
