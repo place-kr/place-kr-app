@@ -262,7 +262,7 @@ extension MapView {
                     }
                     
                     Divider()
-                    ForEach(listManager.placeLists, id: \.self) { list in
+                    ForEach(listManager.placeLists, id: \.identifier) { list in
                             Button(action: {
                                 let listId = list.identifier
                                 guard let selectedPlaceId = placeInfoManager.currentPlaceID else {
