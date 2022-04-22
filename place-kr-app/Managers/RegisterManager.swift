@@ -45,6 +45,8 @@ struct RegisterRequestList: Codable {
 }
 
 class RegisterManager: ObservableObject {
+    @Published var nextPage: String?
+    
     static var authorizedRequest: URLRequest? {
         guard let baseUrl = URL(string: "https://dev.place.tk/api/v1/me/places/register") else {
             return nil

@@ -75,6 +75,8 @@ struct RegisterPlaceMainView: View {
     @ObservedObject var viewModel = RegisterPlaceMainViewModel()
     @State var navigateToRegister = false
     
+    @State var isBottom = false
+    
     var body: some View {
         VStack(spacing: 0) {
             // 네비게이트 대상
@@ -112,7 +114,7 @@ struct RegisterPlaceMainView: View {
                                 .padding(.bottom, 20)
                         }
                     } else {
-                        ScrollView(showsIndicators: false) {
+                        TrackableScrollView(reachedBottom: $isBottom, reachAction: {}) {
                             VStack(alignment: .leading, spacing: 10) {
                                 ForEach(viewModel.requests) { request in
                                     RequestCardView(place: request)

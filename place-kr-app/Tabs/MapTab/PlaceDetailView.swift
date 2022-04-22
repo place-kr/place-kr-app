@@ -259,9 +259,8 @@ struct PlaceDetailView: View {
                 }
                 .padding(.horizontal, 15)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color("grayBackground").edgesIgnoringSafeArea(.bottom))
-                
             }
+            .background(Color("grayBackground").edgesIgnoringSafeArea(.bottom))
         }
         .showAlert(show: $showAddComment, alert: CommentAlertView(
             // MARK: - 입력완료 버튼
