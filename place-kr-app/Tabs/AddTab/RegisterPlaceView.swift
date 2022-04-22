@@ -70,6 +70,7 @@ extension RegisterPlaceView {
             Text("플레이스를 요청해보세요")
                 .font(.basic.bold17)
             Text("플레이스를 등록해주시면 ---님의 이름으로 플레이스가\n추가되며, 등록 내용을 실시간으로 알려드릴게요!")
+                .fixedSize(horizontal: false, vertical: true)
                 .font(.basic.light14)
                 
             // Filler
