@@ -7,6 +7,22 @@
 
 import Foundation
 
+func authorizedRequest(url: URL?) -> URLRequest? {
+    guard let baseUrl = url else {
+        return nil
+    }
+    
+    guard let token = UserInfoManager.userToken else {
+        return nil
+    }
+     
+    var request = URLRequest(url: baseUrl)
+    request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    return request
+}
+
 func authorizedRequest(method: String, api: String) -> URLRequest? {
     guard let baseUrl = URL(string: "https://dev.place.tk/api/v1" + api) else {
         return nil

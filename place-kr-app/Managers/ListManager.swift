@@ -89,8 +89,9 @@ struct ErrorBody: Decodable {
 
 class ListManager: ObservableObject {
     @Published var placeLists: [PlaceList]
+    @Published var placeCount: Int? = nil
+    @Published var nextPage: String? = ""
     
-    private var nextPage: Int? = nil
     private var subscriptions = Set<AnyCancellable>()
     private let baseUrl = URL(string: "https://dev.place.tk/api/v1")!
     
@@ -163,39 +164,6 @@ class ListManager: ObservableObject {
         .resume()
         
     }
-
-    /// 플레이스 리스트 받아오기. 퍼블리셔 타입.
-    private func getPlaceLists(page: Int) -> AnyPublisher<[PlaceList], Error> {
-        let queryItems = [
-            URLQueryItem(name: "limit", value: "15"),
-            URLQueryItem(name: "offset", value: "\(page)")
-        ]
-        
-        guard let request = authorizedRequest(method: "GET", api: "/me/lists", queryItems: queryItems) else {
-            return Fail(error: HTTPError.url).eraseToAnyPublisher()
-        }
-        
-        return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap { data, response -> Data in
-                guard let httpResponse = response as? HTTPURLResponse,
-                      200..<300 ~= httpResponse.statusCode else {
-                    print("Place list error: \(response)")
-                    switch (response as! HTTPURLResponse).statusCode {
-                    case (400...499):
-                        throw HTTPError.response
-                    default:
-                        throw HTTPError.response
-                    }
-                }
-                
-                return data
-            }
-            .tryMap { data in
-                let decoded = try JSONDecoder().decode(PlaceListResponse.self, from: data)
-                return decoded.results
-            }
-            .eraseToAnyPublisher()
-    }
     
     /// 새로운 플레이스 추가. 컴플리션으로 성공 여부 받을 수 있음.
     func addPlaceList(body: PlaceListPostBody, completionHandler: ((Bool) -> ())? = nil) {
@@ -207,9 +175,7 @@ class ListManager: ObservableObject {
             return
         }
 
-        let session = URLSession.shared
-        
-        session.dataTask(with: request) { [weak self] _, response, error in
+        URLSession.shared.dataTask(with: request) { [weak self] data , response, error in
             guard let self = self else { return }
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode
@@ -223,11 +189,19 @@ class ListManager: ObservableObject {
             }
             
             
+            if let data = data, let decoded = try? JSONDecoder().decode(PlaceList.self, from: data) {
+                let listInfo = decoded
+                self.placeLists.append(listInfo)
+            } else {
+                if let completionHandler = completionHandler {
+                    completionHandler(false)
+                }
+                return
+            }
+            
             if let completionHandler = completionHandler {
                 completionHandler(true)
             }
-            
-            self.updateLists()
         }
         .resume()
     }
@@ -242,7 +216,6 @@ class ListManager: ObservableObject {
         }
         
         URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
-            print(response)
             guard let self = self else { return }
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode
@@ -330,26 +303,81 @@ class ListManager: ObservableObject {
         
     }
     
+    /// 플레이스 리스트 받아오기. 퍼블리셔 타입.
+    /// URL 안 주면 1페이지 기본 업데이트
+    private func getPlaceLists(pageUrl: String) -> AnyPublisher<PlaceListResponse, Error> {
+        var request: URLRequest?
+        if pageUrl.isEmpty {
+            let queries = [
+                URLQueryItem(name: "limit", value: "20")
+            ]
+            
+            guard let authRequest = authorizedRequest(method: "GET", api: "/me/lists", queryItems: queries) else {
+                return Fail(error: HTTPError.url).eraseToAnyPublisher()
+            }
+            request = authRequest
+        } else {
+            guard let authRequest = authorizedRequest(url: URL(string: pageUrl)) else {
+                return Fail(error: HTTPError.url).eraseToAnyPublisher()
+            }
+            request = authRequest
+        }
+        
+        return URLSession.shared.dataTaskPublisher(for: request!)
+            .tryMap { data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      200..<300 ~= httpResponse.statusCode else {
+                    print("Place list error: \(response)")
+                    switch (response as! HTTPURLResponse).statusCode {
+                    case (400...499):
+                        throw HTTPError.response
+                    default:
+                        throw HTTPError.response
+                    }
+                }
+                
+                return data
+            }
+            .tryMap { data in
+                let decoded = try JSONDecoder().decode(PlaceListResponse.self, from: data)
+                return decoded
+            }
+            .eraseToAnyPublisher()
+    }
+    
     /// 퍼블리셔로 리스트 업데이트 하는 루틴
     /// 페이지는 1페이지로 초기화
-    func updateLists(page: Int = 1) {
-        self.getPlaceLists(page: page)
+    func updateLists(pageUrl: String = String(), completion: ((Bool) -> ())? = nil) {
+        self.getPlaceLists(pageUrl: pageUrl)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { result in
                 switch result {
                 case .finished:
                     print("[updateLists] Place list fetched")
+                    
+                    if let completion = completion {
+                        completion(true)
+                    }
+                    
                 case .failure(let error):
                     print("Error while fetching place lists: \(error)")
+                    
+                    if let completion = completion {
+                        completion(false)
+                    }
                 }
                 
                 self.subscriptions.removeAll()
             }, receiveValue: { data in
-                if page == 1 {
-                    self.placeLists = data
+                self.nextPage = data.next
+                self.placeCount = data.count
+                
+                if pageUrl.isEmpty {
+                    self.placeLists = data.results
                 } else {
-                    self.placeLists.append(contentsOf: data)
+                    self.placeLists.append(contentsOf: data.results)
                 }
+                
             })
             .store(in: &subscriptions)
     }

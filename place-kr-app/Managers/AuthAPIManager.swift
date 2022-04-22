@@ -137,12 +137,12 @@ extension AuthAPIManager {
     
     struct AppleBody: Codable, PostRequest {
         let identifier: String
-//        let email: String
+        let authorizationCode: String
         let idToken: String
         
         enum CodingKeys : String, CodingKey{
             case identifier
-//            case email
+            case authorizationCode = "authorization_code"
             case idToken = "identity_token"
         }
     }

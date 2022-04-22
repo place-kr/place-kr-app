@@ -26,7 +26,7 @@ struct MyPlaceView: View {
     @State var showWarning = false
     
     @State var text = ""
-    @State var position: CGFloat = 0
+    @State var isBottom: Bool = false
     
     @Binding var selection: TabsView.Tab
 
@@ -58,17 +58,22 @@ struct MyPlaceView: View {
                 // MARK: - 플레이스 리스트
                 VStack(spacing: 15) {
                     HStack {
-                        Text("총 \(listManager.placeLists.count)개의 플레이스 리스트가 있습니다")
+                        Text("총 \(listManager.placeCount ?? 0)개의 플레이스 리스트가 있습니다")
                             .font(.basic.normal12)
                         Spacer()
                     }
                     .padding(.horizontal, 15)
-                    
-                    Button(action: { listManager.updateLists(page: 2) }) {
-                        Text("추가하기(mock)")
-                    }
-                    
-                    TrackableScrollView(position: self.$position) {
+
+                    TrackableScrollView(reachedBottom: self.$isBottom, reachAction: {
+                        if listManager.nextPage != nil {
+                            listManager.updateLists(pageUrl: listManager.nextPage!) {
+                                result in
+                                if result {
+                                    self.isBottom = false
+                                }
+                            }
+                        }
+                    }) {
                         VStack(spacing: 10) {
                             // MARK: -리스트 카드 뷰
                             ForEach(listManager.placeLists, id: \.identifier) { list in
@@ -116,7 +121,6 @@ struct MyPlaceView: View {
                     .padding(.bottom, 13.5)
                 Spacer()
                 Button(action: {
-                    print("SSS")
                     withAnimation(.spring()) {
                         bottomSheetPosition = .hidden
                     }
@@ -156,9 +160,9 @@ struct MyPlaceView: View {
                 withAnimation(.spring()) {
                     showNewListAlert = false
                 }
+//                self.isBottom = false
             }
-        }).environmentObject(listManager)
-        )
+        }).environmentObject(listManager))
         .showAlert(show: $showEditSheet, alert: EditListNameAlertView(name: $text, action: {
             // MARK: - 리스트 이름만 편집 팝업
             guard let selectedList = self.selectedList else { return }

@@ -74,7 +74,7 @@ class LoginManager: ObservableObject {
             let url = URL(string: "https://dev.place.tk/api/v1/auth/apple")!
             let body = AuthAPIManager.AppleBody(
                 identifier: userInfo.id,
-//                email: userInfo.email,
+                authorizationCode: userInfo.authCode,
                 idToken: userInfo.idToken
             )
 
