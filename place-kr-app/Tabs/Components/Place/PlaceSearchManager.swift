@@ -46,9 +46,10 @@ class PlaceSearchManager {
     }
     
     /// Place 이름을 기반으로 주변 정보를 받아옵니다.(Kakao 기반)
-    static func getKakaoPlacesByName(name: String, page: Int) -> AnyPublisher<[KakaoPlaceInfo], Error> {
+    static func getKakaoPlacesByName(name: String, page: Int = 1) -> AnyPublisher<KakaoPlaceResponse, Error> {
         let queryItems = [
             URLQueryItem(name: "query", value: "\(name)"),
+            URLQueryItem(name: "page", value: "\(page)")
         ]
         
         guard let request = place_kr_app.authorizedRequest(method: "GET", api: "/places/kakao", queryItems: queryItems) else {
@@ -75,13 +76,6 @@ class PlaceSearchManager {
                 return data
             }
             .decode(type: KakaoPlaceResponse.self, decoder: JSONDecoder())
-            .map {
-                if $0.meta.isEnd {
-                    return []
-                } else {
-                    return $0.documents.map{ KakaoPlaceInfo(document: $0) }
-                }
-            }
             .eraseToAnyPublisher()
     }
     

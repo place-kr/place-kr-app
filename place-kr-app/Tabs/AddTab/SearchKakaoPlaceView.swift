@@ -13,9 +13,9 @@ class SearchKakaoPlaceViewModel: ObservableObject {
     
     @Published var searchResult = [KakaoPlaceInfo]()
     @Published var progress: Progress = .ready
-    @Published var page = 1
+    @Published var page: Int? = 1
         
-    func search(name: String, page: Int) {
+    func search(name: String, page: Int, completion: @escaping (Bool) -> Void) {
         self.progress = .inProcess
         
         // TODO: Paging
@@ -28,16 +28,29 @@ class SearchKakaoPlaceViewModel: ObservableObject {
                 case .failure(let error) :
                     print(error)
                     self.progress = .failedWithError(error: error)
+                    completion(false)
                 case .finished:
                     print("Fetched")
                     self.progress = .finished
+                    completion(true)
                 }
                 
                 self.subscriptions.removeAll()
             }, receiveValue: { [weak self] value in
                 guard let self = self else { return }
 
-                self.searchResult = value
+                if value.meta.isEnd {
+                    self.page = nil
+                } else {
+                    self.page! += 1
+                }
+                
+                let placeInfos = value.documents.map{ KakaoPlaceInfo(document: $0) }
+                if self.page == 1 {
+                    self.searchResult = placeInfos
+                } else {
+                    self.searchResult.append(contentsOf: placeInfos)
+                }
             })
             .store(in: &subscriptions)
     }
@@ -50,7 +63,9 @@ class SearchKakaoPlaceViewModel: ObservableObject {
 struct SearchKakaoPlaceView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel = SearchKakaoPlaceViewModel()
+    
     @State var text = ""
+    @State var isBottom = false
     
     let completion: (KakaoPlaceInfo) -> Void
     
@@ -65,9 +80,13 @@ struct SearchKakaoPlaceView: View {
                 .foregroundColor(.black)
             }
             .padding(.vertical, 20)
-            
+            .padding(.horizontal, 15)
+
             SearchBarView($text, "키워드로 검색", bgColor: .white, height: 40, isStroked: true) {
-                viewModel.search(name: text, page: viewModel.page)
+                // 돋보기 버튼 클릭 시 액션
+                if let page = viewModel.page {
+                    viewModel.search(name: text, page: page) { _ in }
+                }
             }
             .padding(.top, 10)
             .padding(.horizontal, 15)
@@ -79,17 +98,23 @@ struct SearchKakaoPlaceView: View {
                     .padding(.horizontal, 15)
 
             } else {
-                HStack {
-                    Text("검색 결과")
-                        .font(.basic.bold17)
-                        .padding(.vertical, 10)
-                    Text(viewModel.searchResult.count == 15 ?
-                         "(상위 \(viewModel.searchResult.count)개)" : "(\(viewModel.searchResult.count)개)"
-                    )
-                }
-                .padding(.horizontal, 15)
+                Text("검색 결과")
+                    .font(.basic.bold17)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 15)
                 
-                ScrollView {
+                TrackableScrollView(reachedBottom: $isBottom, reachAction: {
+                    print(viewModel.page)
+
+                    // 바닥 터치 시 액션
+                    if let page = viewModel.page {
+                        viewModel.search(name: text, page: page) { result in
+                            if result {
+                                self.isBottom = false
+                            }
+                        }
+                    }
+                }) {
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(viewModel.searchResult) { result in
                             Divider()
@@ -103,13 +128,13 @@ struct SearchKakaoPlaceView: View {
 
                     }
                     .padding(.horizontal, 15)
+                    .padding(.bottom, 40)
                 }
                 .overlay(
                     Group { if viewModel.progress == .inProcess {
                         CustomProgressView
                     }}
                 )
-                .padding(.bottom, 40)
             }
                 
             Spacer()
