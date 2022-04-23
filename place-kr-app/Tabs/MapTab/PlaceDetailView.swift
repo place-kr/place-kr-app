@@ -209,9 +209,10 @@ struct PlaceDetailView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            PageHeader(title: "플레이스 정보", leading: Image(systemName: "chevron.left")) {
-                presentation.wrappedValue.dismiss()
-            }
+            PageHeader(title: "플레이스 정보",
+                       leading: Image(systemName: "chevron.left"), leadingAction: {presentation.wrappedValue.dismiss() },
+                       firstTrailing: Image("roundedStar"), firstAction: {},
+                       secondeTrailing: Image("shareLine"), secondAction: {})
             .padding(.vertical, 17)
             .padding(.horizontal, 15)
             

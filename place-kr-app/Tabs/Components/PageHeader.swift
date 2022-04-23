@@ -102,3 +102,51 @@ func PageHeader<T: View, S: View>(title: String,
     }
 }
 
+
+@ViewBuilder
+func PageHeader<T: View>(title: String,
+                                  leading: T, leadingAction: (() -> ())? = nil,
+                                  firstTrailing: Image, firstAction: @escaping (() -> ()),
+                                  secondeTrailing: Image, secondAction: @escaping (() -> ())) -> some View {
+    
+    ZStack {
+        HStack(alignment: .center) {
+            Spacer()
+            Text(title)
+                .bold()
+                .font(.system(size: 21))
+            Spacer()
+        }
+        
+        HStack {
+            if let leading = leading, let action = leadingAction {
+                Button(action: action) {
+                    leading
+                        .font(.system(size: 18))
+                        .foregroundColor(.black)
+                }
+            }
+            
+            Spacer()
+            
+            HStack(spacing: 10) {
+                Button(action: firstAction) {
+                    firstTrailing
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.black)
+                }
+                
+                Button(action: secondAction) {
+                    secondeTrailing
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.black)
+                }
+            }
+        }
+    }
+}
+

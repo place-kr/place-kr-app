@@ -40,7 +40,6 @@ extension NaverLoginButtonView {
     /// Login modal view
     var NaverLoginView: some View {
         NaverVCRepresentable { result in
-            print("@@@", result)
             loginManager.socialAuthResultHandler(result)
         }
     }

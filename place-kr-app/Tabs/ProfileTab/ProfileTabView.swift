@@ -17,9 +17,6 @@ struct ProfileTabView: View {
             PageHeader(title: "마이페이지")
                 .padding(.vertical, 17)
             
-//            CustomDivider()
-//                .padding(.bottom, 7)
-            
             List {
                 NavigationLink(destination: {}) {
                     Text("공지사항")
