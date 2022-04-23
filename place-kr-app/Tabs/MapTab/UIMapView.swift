@@ -38,17 +38,7 @@ struct UIMapView: UIViewRepresentable {
             print("@ updateUIView")
         }
         
-//        } else if !places.isEmpty, let firstPlace = places.first {
-//             TODO: 검색 후 상호작용
-//            let place = firstPlace.placeInfo
-//            let coord = NMGLatLng(lat: place.lonlat.lat, lng: place.lonlat.lon)
-//
-//            let cameraUpdate = NMFCameraUpdate(scrollTo: coord)
-//            cameraUpdate.animation = .fly
-//            cameraUpdate.animationDuration = 1
-//
-//            uiView.mapView.moveCamera(cameraUpdate)
-//        }
+        
     }
     
     

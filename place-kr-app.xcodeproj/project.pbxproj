@@ -220,6 +220,7 @@
 				9B5D5B4927F33AEF00B81831 /* ListManager.swift */,
 				9B91641927AF82C3005FAC4A /* UserInfoManager.swift */,
 				9BA3BF30280FDB7A00E49044 /* AuthorizedRequest.swift */,
+				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -345,7 +346,6 @@
 		9B4A02D527A6AC1E0037D05F /* MapTab */ = {
 			isa = PBXGroup;
 			children = (
-				9B6A1F6027B4AAFD00D160DC /* LocationManager.swift */,
 				9B5D5B4D27F3459900B81831 /* RegisterNewListAlertView.swift */,
 				9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,

@@ -11,6 +11,10 @@ struct ProfileTabView: View {
     @EnvironmentObject var loginManager: LoginManager
     
     @State var showLogoutAlert = false
+    @State var showNameAlert = false
+    @State var showWarning = false
+    
+    @State var name = ""
     
     var body: some View {
         VStack {
@@ -22,7 +26,11 @@ struct ProfileTabView: View {
                     Text("공지사항")
                 }
                 
-                NavigationLink(destination: {}) {
+                Button(action: {
+                    withAnimation(.spring()) {
+                        showNameAlert = true
+                    }
+                }) {
                     Text("개인정보 변경")
                 }
                 
@@ -46,6 +54,21 @@ struct ProfileTabView: View {
                     }
             )
         }
+        .showAlert(show: $showNameAlert, alert: NewNameAlertView(name: $name, action: {
+            // MARK: - 닉네임 변경 팝업
+            AuthAPIManager.updateUserData(nickname: name) { result in
+                switch result {
+                case .success(()):
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        self.showNameAlert = false
+                    }
+                    break
+                case .failure:
+                    self.showWarning = true
+                    break
+                }
+            }
+        }))
     }
 }
 
