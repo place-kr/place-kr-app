@@ -218,6 +218,7 @@
 				9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */,
 				9B0ADB2A28080F2800E934FC /* RegisterManager.swift */,
 				9B5D5B4927F33AEF00B81831 /* ListManager.swift */,
+				9B91641927AF82C3005FAC4A /* UserInfoManager.swift */,
 				9BA3BF30280FDB7A00E49044 /* AuthorizedRequest.swift */,
 			);
 			path = Managers;
@@ -495,7 +496,6 @@
 				9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */,
 				9B2BCB0C27D895E800C1C16E /* Color + Extensions.swift */,
 				9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */,
-				9B91641927AF82C3005FAC4A /* UserInfoManager.swift */,
 				9B43E02927C9DB0F0042F9C4 /* DummyData.swift */,
 				9B6AADCE280AD694009CA58A /* RootPresentationMode.swift */,
 			);

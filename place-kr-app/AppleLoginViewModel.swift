@@ -31,34 +31,31 @@ class AppleLoginViewModel: ObservableObject {
                 completionHandler(.failure(.invalidResponse))
                 break
             case .success(let userData):
-                if let _ = userData.email, let _ = userData.name {
-                    /// 신규 등록 사용자의 경우 이메일과 이름을 제공
-                    UserInfoManager.saveAppleUserInfo(userData)
-                    
-                    guard let userInfo = UserInfoManager.loadUserInfo() else {
-                        print("[AppleLoginViewModel] Error while fetching user data from UserDefault. The problem might have occurred during saving routine")
-                        completionHandler(.failure(.fetch))
-                        return
-                    }
-                    
-                    // 성공
-                    completionHandler(.success(userInfo))
-                    // TODO: 서버에 뉴비 등록
-                } else {
-                    print(userData)
-                    /// 기존 등록 사용자의 경우 Identifier만 제공
-                    print("Already registered.")
+                let userInfo = AppleUserInfo(id: userData.identifier, email: nil, name: nil, idToken: userData.identityToken!, authCode: userData.authCode!)
+                
+                completionHandler(.success(userInfo))
+//                if let _ = userData.email, let _ = userData.name {
+//                    /// 신규 등록 사용자의 경우 이메일과 이름을 제공
+//                    UserInfoManager.saveAppleUserInfo(userData)
+//
 //                    guard let userInfo = UserInfoManager.loadUserInfo() else {
 //                        print("[AppleLoginViewModel] Error while fetching user data from UserDefault. The problem might have occurred during saving routine")
 //                        completionHandler(.failure(.fetch))
 //                        return
 //                    }
-                    
-                    let userInfo = AppleUserInfo(id: userData.identifier, email: nil, name: nil, idToken: userData.identityToken!, authCode: userData.authCode!)
-                    
-                    // 성공
-                    completionHandler(.success(userInfo))
-                }
+//
+//                    // 성공
+//                    completionHandler(.success(userInfo))
+//                    // TODO: 서버에 뉴비 등록
+//                } else {
+//                    /// 기존 등록 사용자의 경우 Identifier만 제공
+//                    print("Already registered.")
+//
+//                    let userInfo = AppleUserInfo(id: userData.identifier, email: nil, name: nil, idToken: userData.identityToken!, authCode: userData.authCode!)
+//
+//                    // 성공
+//                    completionHandler(.success(userInfo))
+//                }
                 break
             }
         }
