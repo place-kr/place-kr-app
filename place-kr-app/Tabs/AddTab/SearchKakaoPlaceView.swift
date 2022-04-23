@@ -7,14 +7,13 @@
 
 import SwiftUI
 import Combine
-import SDWebImageSwiftUI
 
 class SearchKakaoPlaceViewModel: ObservableObject {
-    var page = 1
     private var subscriptions = Set<AnyCancellable>()
     
     @Published var searchResult = [KakaoPlaceInfo]()
     @Published var progress: Progress = .ready
+    @Published var page = 1
         
     func search(name: String, page: Int) {
         self.progress = .inProcess
@@ -27,6 +26,7 @@ class SearchKakaoPlaceViewModel: ObservableObject {
                 
                 switch result {
                 case .failure(let error) :
+                    print(error)
                     self.progress = .failedWithError(error: error)
                 case .finished:
                     print("Fetched")
@@ -70,15 +70,24 @@ struct SearchKakaoPlaceView: View {
                 viewModel.search(name: text, page: viewModel.page)
             }
             .padding(.top, 10)
+            .padding(.horizontal, 15)
             
             if viewModel.searchResult.isEmpty {
                 Text("이렇게 검색해보세요")
                     .font(.basic.bold17)
                     .padding(.vertical, 4)
+                    .padding(.horizontal, 15)
+
             } else {
-                Text("검색 결과")
-                    .font(.basic.bold17)
-                    .padding(.vertical, 10)
+                HStack {
+                    Text("검색 결과")
+                        .font(.basic.bold17)
+                        .padding(.vertical, 10)
+                    Text(viewModel.searchResult.count == 15 ?
+                         "(상위 \(viewModel.searchResult.count)개)" : "(\(viewModel.searchResult.count)개)"
+                    )
+                }
+                .padding(.horizontal, 15)
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
@@ -93,6 +102,7 @@ struct SearchKakaoPlaceView: View {
                         }
 
                     }
+                    .padding(.horizontal, 15)
                 }
                 .overlay(
                     Group { if viewModel.progress == .inProcess {
@@ -105,7 +115,6 @@ struct SearchKakaoPlaceView: View {
             Spacer()
         }
         .padding(.top, 17)
-        .padding(.horizontal, 15)
     }
 }
  

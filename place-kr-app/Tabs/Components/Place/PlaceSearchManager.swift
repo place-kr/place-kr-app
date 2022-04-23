@@ -47,7 +47,11 @@ class PlaceSearchManager {
     
     /// Place 이름을 기반으로 주변 정보를 받아옵니다.(Kakao 기반)
     static func getKakaoPlacesByName(name: String, page: Int) -> AnyPublisher<[KakaoPlaceInfo], Error> {
-        guard let request = authorizedRequest(url: "https://dev.place.tk/api/v1/places/kakao", name: name, page: page) else {
+        let queryItems = [
+            URLQueryItem(name: "query", value: "\(name)"),
+        ]
+        
+        guard let request = place_kr_app.authorizedRequest(method: "GET", api: "/places/kakao", queryItems: queryItems) else {
             return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
         }
         

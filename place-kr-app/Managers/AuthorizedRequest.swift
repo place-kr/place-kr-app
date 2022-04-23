@@ -7,7 +7,7 @@
 
 import Foundation
 
-func authorizedRequest(url: URL?) -> URLRequest? {
+public func authorizedRequest(url: URL?) -> URLRequest? {
     guard let baseUrl = url else {
         return nil
     }
@@ -23,7 +23,7 @@ func authorizedRequest(url: URL?) -> URLRequest? {
     return request
 }
 
-func authorizedRequest(method: String, api: String) -> URLRequest? {
+public func authorizedRequest(method: String, api: String) -> URLRequest? {
     guard let baseUrl = URL(string: "https://dev.place.tk/api/v1" + api) else {
         return nil
     }
@@ -41,7 +41,7 @@ func authorizedRequest(method: String, api: String) -> URLRequest? {
     return request
 }
 
-func authorizedRequest<T: Encodable>(method: String, api: String, body: T) -> URLRequest? {
+public func authorizedRequest<T: Encodable>(method: String, api: String, body: T) -> URLRequest? {
     guard let baseUrl = URL(string: "https://dev.place.tk/api/v1" + api) else {
         return nil
     }
@@ -63,7 +63,7 @@ func authorizedRequest<T: Encodable>(method: String, api: String, body: T) -> UR
     return request
 }
 
-func authorizedRequest(method: String, api: String, queryItems: [URLQueryItem]) -> URLRequest? {
+public func authorizedRequest(method: String, api: String, queryItems: [URLQueryItem]) -> URLRequest? {
     guard var urlComponent = URLComponents(string: "https://dev.place.tk/api/v1" + api) else {
         return nil
     }
