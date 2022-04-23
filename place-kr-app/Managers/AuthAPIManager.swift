@@ -91,6 +91,7 @@ class AuthAPIManager {
             }
             
             UserInfoManager.registerStatus(true)
+            UserInfoManager.setUserName(to: nickname)
             completion(.success(()))
         }
         .resume()

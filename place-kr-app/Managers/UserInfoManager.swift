@@ -9,55 +9,56 @@ import Foundation
 
 /// User 데이터를 관리하는 클래스.
 /// 관련된 정보는 UserDefault에 저장됨.
-// TODO: Add Naver user register routine
+/// 나중에 Realm을 고려해볼 것..
 class UserInfoManager {
     static let userInfoKey = "user"
     static let tokenKey = "token"
     static let loginKey = "login"
     static let registeredKey = "registered"
     static let searchHistoryKey = "searchHistory"
+    static let userNameKey = "userName"
     
     /// 유저 정보를 저장함. 애플은 나중에 이메일을 알려주지 않으므로 잘 저장해놓아야 함.
-    static func saveAppleUserInfo(_ info: AppleUserData) {
-        let encoder = PropertyListEncoder()
-        
-        if let email = info.email,
-           let name = info.name,
-           let idToken = info.identityToken,
-           let authCode = info.authCode {
-            let id = info.identifier
-            let userInfo = AppleUserInfo(id: id, email: email, name: name.description, idToken: idToken, authCode: authCode)
-            
-            do {
-                let data = try encoder.encode(userInfo)
-                UserDefaults.standard.set(data, forKey: userInfoKey)
-                print(userInfo, data)
-                print("Successfully saved apple user info")
-            } catch {
-                print("Error while saving apple user info")
-                print(error)
-            }
-        } else {
-            print("Error while saving apple user info")
-            fatalError()
-        }
-    }
-    
-    /// 애플 유저 인포메이션을 로드
-    static func loadUserInfo() -> AppleUserInfo? {
-        let decoder = PropertyListDecoder()
-        var userInfo: AppleUserInfo?
-        do {
-            if let data = UserDefaults.standard.object(forKey: userInfoKey) as? Data {
-                userInfo = try decoder.decode(AppleUserInfo.self, from: data)
-            } else {
-                print("There's no apple user data")
-            }
-        } catch {
-            print(error)
-        }
-        return userInfo
-    }
+//    static func saveAppleUserInfo(_ info: AppleUserData) {
+//        let encoder = PropertyListEncoder()
+//
+//        if let email = info.email,
+//           let name = info.name,
+//           let idToken = info.identityToken,
+//           let authCode = info.authCode {
+//            let id = info.identifier
+//            let userInfo = AppleUserInfo(id: id, email: email, name: name.description, idToken: idToken, authCode: authCode)
+//
+//            do {
+//                let data = try encoder.encode(userInfo)
+//                UserDefaults.standard.set(data, forKey: userInfoKey)
+//                print(userInfo, data)
+//                print("Successfully saved apple user info")
+//            } catch {
+//                print("Error while saving apple user info")
+//                print(error)
+//            }
+//        } else {
+//            print("Error while saving apple user info")
+//            fatalError()
+//        }
+//    }
+//
+//    /// 애플 유저 인포메이션을 로드
+//    static func loadUserInfo() -> AppleUserInfo? {
+//        let decoder = PropertyListDecoder()
+//        var userInfo: AppleUserInfo?
+//        do {
+//            if let data = UserDefaults.standard.object(forKey: userInfoKey) as? Data {
+//                userInfo = try decoder.decode(AppleUserInfo.self, from: data)
+//            } else {
+//                print("There's no apple user data")
+//            }
+//        } catch {
+//            print(error)
+//        }
+//        return userInfo
+//    }
     
     /// 유저 토큰을 유저 디폴트에 저장
     static func saveUserToken(_ token: String) {
@@ -95,6 +96,12 @@ class UserInfoManager {
         }
     }
     
+    /// 저장기록 확인
+    static var searchHistory: [String]? {
+        let history = UserDefaults.standard.object(forKey: UserInfoManager.searchHistoryKey) as? [String]
+        return history
+    }
+    
     /// 검색기록 삭제
     static func deleteSearchHistory() {
         UserDefaults.standard.set([], forKey: UserInfoManager.searchHistoryKey)
@@ -118,11 +125,14 @@ class UserInfoManager {
         let status = UserDefaults.standard.object(forKey: UserInfoManager.registeredKey) as? Bool
         return status == true
     }
+
+    static func setUserName(to name: String) {
+        UserDefaults.standard.set(name, forKey: UserInfoManager.userNameKey)
+    }
     
-    /// 저장기록 확인
-    static var searchHistory: [String]? {
-        let history = UserDefaults.standard.object(forKey: UserInfoManager.searchHistoryKey) as? [String]
-        return history
+    static var userName: String? {
+        let name = UserDefaults.standard.object(forKey: UserInfoManager.userNameKey) as? String
+        return name
     }
 }
 
