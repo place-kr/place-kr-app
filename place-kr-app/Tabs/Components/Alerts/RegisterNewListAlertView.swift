@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import Combine
 
 struct RegisterNewListAlertView: View {
     @EnvironmentObject var viewModel: ListManager
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    
     @State var name = ""
+    @State var emoji = ""
+    @State var showEmojiKeyboard: Bool? = false
+    
     @State var selectedColor: ListColor?
     @State var clicked = false
     
@@ -41,13 +46,23 @@ struct RegisterNewListAlertView: View {
                 .padding(.bottom, 15)
             
             // 리스트 명 입력 텍스트필드
+            EmojiSelector(text: $emoji, isResponder: $showEmojiKeyboard, keyboard: .default)
+                .opacity(0.01)
+                .frame(width: 0, height: 0)
+                .onReceive(Just(emoji)) { value in
+                    guard let emoji = value.last else { return }
+                    self.emoji = String(emoji).onlyEmoji()
+                }
+            
             ThemedTextField($name, "리스트명을 입력해주세요",
                             bgColor: .gray.opacity(0.3),
                             isStroked: false,
                             position: .trailing,
-                            buttonName: "photo",
+                            buttonImage: Image("emojiSelector") ,
                             buttonColor: .gray.opacity(0.5),
-                            action: {})
+                            action: {
+                showEmojiKeyboard = true
+            })
             .padding(.bottom, 14)
             
             // 컬러 선택
@@ -61,6 +76,7 @@ struct RegisterNewListAlertView: View {
                         let color = colorName.color
                         ZStack {
                             Circle().fill(color)
+                            Text(emoji)
                             if selectedColor == colorName {
                                 Circle().stroke(lineWidth: 1.5)
                             }
@@ -82,6 +98,7 @@ struct RegisterNewListAlertView: View {
                         let color = colorName.color
                         ZStack {
                             Circle().fill(color)
+                            Text(emoji)
                             if selectedColor == colorName {
                                 Circle().stroke(lineWidth: 1.5)
                             }                        }

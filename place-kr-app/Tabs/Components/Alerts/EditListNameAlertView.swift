@@ -20,11 +20,12 @@ struct EditListNameAlertView: View {
             Text("변경할 리스트 이름을 입력해주세요")
                 .font(.basic.light14)
                 .padding(.bottom, 15)
+            
             ThemedTextField($name, "변경할 리스트 명",
                             bgColor: .gray.opacity(0.3),
                             isStroked: false,
                             position: .trailing,
-                            buttonName: "",
+                            buttonImage: Image(""),
                             buttonColor: .gray.opacity(0.5),
                             action: {})
             HStack {

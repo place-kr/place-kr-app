@@ -72,6 +72,8 @@
 		9B91641627AE6065005FAC4A /* AppleLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641527AE6065005FAC4A /* AppleLoginViewModel.swift */; };
 		9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641927AF82C3005FAC4A /* UserInfoManager.swift */; };
 		9B91641C27AF88C0005FAC4A /* AuthAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */; };
+		9B989BC128153BAF00C8D6E4 /* String + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B989BC028153BAF00C8D6E4 /* String + Extensions.swift */; };
+		9B989BC32815409200C8D6E4 /* EmojiSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B989BC22815409200C8D6E4 /* EmojiSelector.swift */; };
 		9B9D77C527D7455300326BB5 /* PlaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */; };
 		9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */; };
 		9BA012A727D8D1500080F245 /* PlaceInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */; };
@@ -165,6 +167,8 @@
 		9B91641527AE6065005FAC4A /* AppleLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginViewModel.swift; sourceTree = "<group>"; };
 		9B91641927AF82C3005FAC4A /* UserInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoManager.swift; sourceTree = "<group>"; };
 		9B91641B27AF88C0005FAC4A /* AuthAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAPIManager.swift; sourceTree = "<group>"; };
+		9B989BC028153BAF00C8D6E4 /* String + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extensions.swift"; sourceTree = "<group>"; };
+		9B989BC22815409200C8D6E4 /* EmojiSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSelector.swift; sourceTree = "<group>"; };
 		9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailView.swift; sourceTree = "<group>"; };
 		9B9FCE4B27B4C80300DCCF9D /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		9BA012A627D8D1500080F245 /* PlaceInfoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInfoManager.swift; sourceTree = "<group>"; };
@@ -348,7 +352,6 @@
 		9B4A02D527A6AC1E0037D05F /* MapTab */ = {
 			isa = PBXGroup;
 			children = (
-				9B5D5B4D27F3459900B81831 /* RegisterNewListAlertView.swift */,
 				9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
 				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
@@ -384,6 +387,7 @@
 				9B51C8C327B0F21300F3B76C /* SearchManager.swift */,
 				9B44BEF927C6217300755AD5 /* SearchBarView.swift */,
 				9B82F64527CF1FA80081A701 /* ThemedTextField.swift */,
+				9B989BC22815409200C8D6E4 /* EmojiSelector.swift */,
 			);
 			path = SearchField;
 			sourceTree = "<group>";
@@ -439,6 +443,7 @@
 				9B82F64327CF1A8F0081A701 /* NewNameAlertView.swift */,
 				9BE91FB028031843000DE8C9 /* CommentAlertView.swift */,
 				9B0ADB1B2806E35A00E934FC /* EditListNameAlertView.swift */,
+				9B5D5B4D27F3459900B81831 /* RegisterNewListAlertView.swift */,
 				9BA3BF32280FDEAE00E49044 /* CommonSystemAlert.swift */,
 			);
 			path = Alerts;
@@ -497,6 +502,7 @@
 				9BCC370027D70A6E00E88F72 /* Animations.swift */,
 				9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */,
 				9B2BCB0C27D895E800C1C16E /* Color + Extensions.swift */,
+				9B989BC028153BAF00C8D6E4 /* String + Extensions.swift */,
 				9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */,
 				9B43E02927C9DB0F0042F9C4 /* DummyData.swift */,
 				9B6AADCE280AD694009CA58A /* RootPresentationMode.swift */,
@@ -691,6 +697,7 @@
 				9B43E02E27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift in Sources */,
 				9B0ADB272807C73800E934FC /* RegisterPlaceMainView.swift in Sources */,
 				9BFBB99F27C743DD002C5F10 /* SearchResultsView.swift in Sources */,
+				9B989BC32815409200C8D6E4 /* EmojiSelector.swift in Sources */,
 				9B846690279856C200066F04 /* EnvironmentKeys.swift in Sources */,
 				9B44BEF627C5E7D600755AD5 /* LargePlaceCardView.swift in Sources */,
 				9B0ADB1A2806E0A000E934FC /* ShareSheet.swift in Sources */,
@@ -706,6 +713,7 @@
 				9B6AADCF280AD695009CA58A /* RootPresentationMode.swift in Sources */,
 				9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */,
 				9BA012A727D8D1500080F245 /* PlaceInfoManager.swift in Sources */,
+				9B989BC128153BAF00C8D6E4 /* String + Extensions.swift in Sources */,
 				9BF582C9279B8AF90068805E /* LogInView.swift in Sources */,
 				9B0ADB1C2806E35A00E934FC /* EditListNameAlertView.swift in Sources */,
 				9B846689279852DA00066F04 /* AppleLoginDelegate.swift in Sources */,

@@ -30,7 +30,7 @@ struct NewNameAlertView: View {
                             bgColor: .gray.opacity(0.3),
                             isStroked: false,
                             position: .trailing,
-                            buttonName: "dice.fill",
+                            buttonImage: Image(systemName: "dice.fill"),
                             buttonColor: .gray.opacity(0.5),
                             action: {})
             HStack {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ThemedTextField: View {
+struct ThemedTextField<V: View>: View {
     @Binding var inputText: String
     @Binding var isFocused: Bool
     
@@ -17,7 +17,7 @@ struct ThemedTextField: View {
     private let isStroked: Bool
     
     private let buttonPosition: ButtonPosition
-    private let buttonName: String
+    private let buttonImage: V
     private let buttonColor: Color
     
     private let action: (() -> Void)
@@ -28,7 +28,7 @@ struct ThemedTextField: View {
         })
             .modifier(
                 TextFieldButton(text: $inputText, buttonPosition: buttonPosition,
-                                buttonName: buttonName, buttonColor: buttonColor, action: action)
+                                buttonImage: buttonImage, buttonColor: buttonColor, action: action)
             )
             .multilineTextAlignment(.leading)
             .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
@@ -44,7 +44,7 @@ struct ThemedTextField: View {
          isStroked: Bool,
          isFocused: Binding<Bool>? = nil,
          position: ButtonPosition,
-         buttonName: String,
+         buttonImage: V,
          buttonColor: Color,
          action: @escaping (() -> Void))
     {
@@ -53,7 +53,7 @@ struct ThemedTextField: View {
         self.isStroked = isStroked
         self.backgroundColor = bgColor
         self.buttonPosition = position
-        self.buttonName = buttonName
+        self.buttonImage = buttonImage
         self.buttonColor = buttonColor
 
         if let isFocused = isFocused {
@@ -84,7 +84,7 @@ struct ThemedTextField: View {
         
         self.action = {}
         self.buttonPosition = .none
-        self.buttonName = ""
+        self.buttonImage = Image(systemName: "person") as! V
         self.buttonColor = .clear
     }
 }
@@ -96,10 +96,10 @@ extension ThemedTextField {
         case none
     }
     
-    private struct TextFieldButton: ViewModifier {
+    private struct TextFieldButton<V: View>: ViewModifier {
         @Binding var text: String
         let buttonPosition: ButtonPosition
-        let buttonName: String
+        let buttonImage: V
         let buttonColor: Color
         let action: () -> Void
         
@@ -124,12 +124,10 @@ extension ThemedTextField {
         var button: some View {
             Button(
                 action: {
-                    if !text.isEmpty {
-                        action()
-                    }
+                    action()
                 },
                 label: {
-                    Image(systemName: buttonName)
+                    buttonImage
                         .foregroundColor(buttonColor)
                 }
             )
