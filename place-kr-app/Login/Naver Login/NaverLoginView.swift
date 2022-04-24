@@ -5,6 +5,9 @@ struct NaverLoginButtonView: View {
     @State var showNaverLogin = false
     @ObservedObject var viewModel = NaverLoginButtonViewModel()
     @EnvironmentObject var loginManager: LoginManager
+    
+    @State var showWarning = false
+    @State var warningContent = ""
 
     var body: some View {
         Button(action: {
@@ -20,6 +23,9 @@ struct NaverLoginButtonView: View {
                     .font(.system(size: 20))
                 Spacer()
             }
+        }
+        .alert(isPresented: $showWarning) {
+            basicSystemAlert(title: "오류 발생", content: warningContent)
         }
         .frame(height: 54)
         .background(
@@ -40,7 +46,13 @@ extension NaverLoginButtonView {
     /// Login modal view
     var NaverLoginView: some View {
         NaverVCRepresentable { result in
-            loginManager.socialAuthResultHandler(result)
+            switch result {
+            case .failure(let error):
+                self.warningContent = error.description + "\n개발진에게 문의 부탁드립니다."
+                self.showWarning = true
+            default:
+                loginManager.socialAuthResultHandler(result)
+            }
         }
     }
 }

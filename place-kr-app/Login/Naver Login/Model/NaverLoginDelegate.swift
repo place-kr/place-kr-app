@@ -8,13 +8,16 @@ import NaverThirdPartyLogin
 enum NaverLoginError: Error, CustomStringConvertible {
     case expiredToken
     case invalidResponse
+    case invalidRequest
     
     var description: String {
         switch self {
         case .expiredToken:
             return "Token is invalid. It could be expired."
         case .invalidResponse:
-            return "Invalid network response."
+            return "잘못된 네트워크 응답."
+        case .invalidRequest:
+            return "잘못된 요청."
         }
     }
 }
@@ -68,15 +71,12 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
         func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
             print("$ Success login")
             getInfo()
-            //            self.callback(getAcessToken())
         }
         
         //  로그인된 상태(로그아웃이나 연동해제 하지않은 상태)에서 로그인 재시도
         func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
             print("$ Retry")
-            //      loginInstance?.accessToken
             getInfo()
-            //            self.callback(getAcessToken())
         }
         
         // 로그아웃
@@ -88,16 +88,8 @@ struct NaverVCRepresentable: UIViewControllerRepresentable {
         func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
             print("$ [NaverVCRepresentable] \(error as Any)")
             print("error = \(error.localizedDescription)")
+            self.callback(.failure(.invalidRequest))
         }
-        
-        func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFinishAuthorizationWithResult receiveType: THIRDPARTYLOGIN_RECEIVE_TYPE) {
-            print("$ [NaverVCRepresentable] \(receiveType as Any)")
-        }
-        
-        func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailAuthorizationWithRecieveType receiveType: THIRDPARTYLOGIN_RECEIVE_TYPE) {
-            print("$ [NaverVCRepresentable] \(receiveType as Any)")
-        }
-        
         
         private func getInfo() {
             guard
