@@ -36,15 +36,19 @@ struct ReviewResponse: Decodable {
             
             let currentComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
             
-
+            // 날짜 -> 텍스트
             if receivedComponents.day! == currentComponents.day &&
                 receivedComponents.month! == currentComponents.month &&
                 receivedComponents.year! == currentComponents.year {
                 return "오늘"
             }
-            else if receivedComponents.month == currentComponents.month &&
+            else if receivedComponents.weekOfYear == currentComponents.weekOfYear &&
                         receivedComponents.year == currentComponents.year {
                 return "이번주"
+            }
+            else if receivedComponents.month == currentComponents.month &&
+                        receivedComponents.year == currentComponents.year {
+                return "이번달"
             }
             else {
                 formatter.dateFormat = "yyyy.MM.dd"
@@ -325,6 +329,7 @@ extension PlaceDetailView {
                     .frame(width: 12, height: 16)
                 
                 Text(placeInfo.address)
+                    .font(.basic.normal14)
                 Spacer()
             }
             
@@ -334,9 +339,9 @@ extension PlaceDetailView {
                     .scaledToFit()
                     .frame(width: 12, height: 12)
                 Text(placeInfo.phone)
+                    .font(.basic.normal14)
                 Spacer()
             }
-            .font(.basic.normal14)
         }
         .padding(.horizontal, 21)
         .padding(.vertical, 21)
@@ -380,6 +385,7 @@ extension PlaceDetailView {
                         Text(review.content)
                             .font(.basic.normal14)
                         
+                        
                         HStack {
                             Text(review.reviewer.nickname)
                                 .font(.basic.normal12)
@@ -387,6 +393,11 @@ extension PlaceDetailView {
                             Text(review.parsedDate)
                                 .font(.basic.normal12)
                                 .foregroundColor(.gray.opacity(0.5))
+                            
+                            // TODO: Update here
+                            if review.reviewer.nickname == UserInfoManager.userName {
+                                EditAndDeleteButtons
+                            }
                         }
                     }
                     .padding(.vertical, 9)
@@ -426,6 +437,23 @@ extension PlaceDetailView {
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.white))
+    }
+    
+    var EditAndDeleteButtons: some View {
+        HStack(spacing: 2.5) {
+            Button(action: {}) {
+                Text("수정")
+            }
+            .font(.basic.bold10)
+            
+            Text("|")
+            
+            Button(action: {}) {
+                Text("삭제")
+            }
+            .font(.basic.bold10)
+        }
+        .foregroundColor(.gray.opacity(0.5))
     }
     
     var InteractionButtons: some View {
