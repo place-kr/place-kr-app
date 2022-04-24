@@ -9,6 +9,22 @@ import Foundation
 import CoreLocation
 import Combine
 
+struct LocationResponse: Decodable {
+    let documents: [Document]
+    
+    struct Document: Decodable {
+        let fullAddress: String
+        let city: String
+        let county: String
+        
+        enum CodingKeys: String, CodingKey {
+            case fullAddress = "address_name"
+            case city = "region_2depth_name"
+            case county = "region_3depth_name"
+        }
+    }
+}
+
 // TODO: Permission handling
 
 /// 현위치를 계산 및 저장하는 클래스입니다. shared 싱글톤 객체를 이용해서 접근할 수 있습니다. 
@@ -16,12 +32,13 @@ class LocationManager: NSObject, ObservableObject {
     private let locationManager = CLLocationManager()
     static let shared = LocationManager()
     
-    @Published var locationName: String?
     @Published var locationStatus: CLAuthorizationStatus?
     @Published var currentCoord = CLLocationCoordinate2D(latitude: CLLocationDegrees(37.578472), longitude: CLLocationDegrees(126.97727))
+    @Published var currentLocationName: String?
 
     override init() {
         super.init()
+        
         DispatchQueue.global(qos: .utility).async {
             self.locationManager.delegate = self
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -66,14 +83,43 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-//        CLGeocoder().reverseGeocodeLocation(location) { placemark, error in
-//                guard let placemark = placemark, error == nil else {
-//                    return
-//                }
-//                print("!$!$", placemark)
-//            }
         
-        // 현위치 업데이트 
-//        self.currentCoord = location.coordinate
+        let queryItem = [
+            URLQueryItem(name: "x", value: "\(location.coordinate.longitude)"),
+            URLQueryItem(name: "y", value: "\(location.coordinate.latitude)")
+        ]
+        
+        guard let request = authorizedRequest(method: "GET", api: "/reverse_geocoding", queryItems: queryItem) else {
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, _ in
+            guard let self = self else { return }
+            
+            if let response = response as? HTTPURLResponse,
+                !((200...300).contains(response.statusCode)) {
+                print("Error in response. May be a network error.\(response as Any)")
+                return
+            }
+            
+            guard let data = data else {
+                return
+            }
+
+            do {
+                let decoded = try JSONDecoder().decode(LocationResponse.self, from: data)
+                let city = decoded.documents.first?.city
+                let county = decoded.documents.first?.county
+                
+                DispatchQueue.main.async {
+                    if let city = city, let county = county {
+                        self.currentLocationName = city + " " + county
+                    }
+                }
+            } catch(let error) {
+                print(error)
+            }
+        }
+        .resume()
     }
 }

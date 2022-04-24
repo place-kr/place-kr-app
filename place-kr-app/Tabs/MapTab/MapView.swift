@@ -12,6 +12,8 @@ import BottomSheet
 struct MapView: View {
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
     @StateObject var placeInfoManager = PlaceInfoManager()
+    @StateObject var locationManager = LocationManager()
+    
     @EnvironmentObject var listManager: ListManager
     
     @Binding var selection: TabsView.Tab
@@ -177,7 +179,15 @@ extension MapView {
         Button(action: { self.navigateToSearch = true }) {
             HStack {
                 Image(systemName: "magnifyingglass")
-                Text("플레이스 검색")
+                Text("현위치:")
+                
+                if let location = locationManager.currentLocationName {
+                    Text(location)
+                        .foregroundColor(.black)
+                } else {
+                    Text("탐색 중...")
+                        .foregroundColor(.gray.opacity(0.5))
+                }
 
                 Spacer()
             }
@@ -187,9 +197,6 @@ extension MapView {
                 .frame(height: 50)
             )
         }
-//        ThemedTextField($searchText, "장소를 입력하세요", bgColor: .white, isStroked: false, isFocused: self.$isFocused, position: .leading, buttonName: "magnifyingglass", buttonColor: .black) {
-//            print("tapped")
-//        }
     }
     
     /// 닫기 버튼
