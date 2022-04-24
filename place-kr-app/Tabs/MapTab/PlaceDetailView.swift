@@ -188,6 +188,46 @@ class PlaceDetailViewModel: ObservableObject {
         .resume()
     }
     
+    func deleteReview(id: String, completion: @escaping (Bool) -> Void) {
+        self.progress = .inProcess
+
+        guard let request = authorizedRequest(method: "DELETE", api: "/me/reviews/\(id)") else {
+            completion(false)
+            return
+        }
+                    
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.progress = .failedWithError(error: error)
+                    completion(false)
+                    return
+                }
+                
+                if let response = response as? HTTPURLResponse {
+                    switch response.statusCode {
+                    case (200..<300):
+                        self.progress = .finished
+                        let index = self.reviews.firstIndex{ $0.id == id }!
+                        self.reviews.remove(at: index)
+                        
+                        completion(true)
+                    default:
+                        self.progress = .failed
+                        
+                        // 에러 바디 확인
+                        if let data = data, let decoded = try? JSONDecoder().decode(ErrorBody.self, from: data)  {
+                            print(decoded)
+                        }
+                        
+                        completion(false)
+                    }
+                }
+            }
+        }
+        .resume()
+    }
+    
     init(info placeInfo: PlaceInfo) {
         self.placeInfo = placeInfo
         self.getReviews(id: placeInfo.id)
@@ -396,7 +436,7 @@ extension PlaceDetailView {
                             
                             // TODO: Update here
                             if review.reviewer.nickname == UserInfoManager.userName {
-                                EditAndDeleteButtons
+                                EditAndDeleteButtons(id: review.id)
                             }
                         }
                     }
@@ -439,8 +479,8 @@ extension PlaceDetailView {
                 .fill(Color.white))
     }
     
-    var EditAndDeleteButtons: some View {
-        HStack(spacing: 2.5) {
+    func EditAndDeleteButtons(id: String) -> some View {
+        return HStack(spacing: 2.5) {
             Button(action: {}) {
                 Text("수정")
             }
@@ -448,7 +488,11 @@ extension PlaceDetailView {
             
             Text("|")
             
-            Button(action: {}) {
+            Button(action: { viewModel.deleteReview(id: id) { result in
+                if result == false {
+                    self.showWarning = true
+                }
+            } }) {
                 Text("삭제")
             }
             .font(.basic.bold10)
