@@ -88,6 +88,7 @@
 		9BD3582C2812B92C006DBD48 /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3582B2812B92C006DBD48 /* ChildSizeReader.swift */; };
 		9BE91FB128031843000DE8C9 /* CommentAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE91FB028031843000DE8C9 /* CommentAlertView.swift */; };
 		9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */; };
+		9BF2612D2814D2FF00C1F853 /* RespondableTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 9BF2612C2814D2FF00C1F853 /* RespondableTextField */; };
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
 		9BF582C9279B8AF90068805E /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C8279B8AF90068805E /* LogInView.swift */; };
 		9BFBB99F27C743DD002C5F10 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBB99E27C743DD002C5F10 /* SearchResultsView.swift */; };
@@ -193,6 +194,7 @@
 			files = (
 				9BC0E42027FC3BB700306CCA /* SDWebImageSwiftUI in Frameworks */,
 				C1E57CCEE0673CDEBD22B5D4 /* Pods_place_kr_app.framework in Frameworks */,
+				9BF2612D2814D2FF00C1F853 /* RespondableTextField in Frameworks */,
 				9BB8E67027DB6DB400E07AD0 /* BottomSheet in Frameworks */,
 				9BB8E67327DB6DEB00E07AD0 /* SwiftUIPager in Frameworks */,
 			);
@@ -542,6 +544,7 @@
 				9BB8E66F27DB6DB400E07AD0 /* BottomSheet */,
 				9BB8E67227DB6DEB00E07AD0 /* SwiftUIPager */,
 				9BC0E41F27FC3BB700306CCA /* SDWebImageSwiftUI */,
+				9BF2612C2814D2FF00C1F853 /* RespondableTextField */,
 			);
 			productName = "place-kr-app";
 			productReference = 9B20A6582796F42A0029CA0E /* place-kr-app.app */;
@@ -575,6 +578,7 @@
 				9BB8E66E27DB6DB400E07AD0 /* XCRemoteSwiftPackageReference "BottomSheet" */,
 				9BB8E67127DB6DEB00E07AD0 /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
 				9BC0E41E27FC3BB700306CCA /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				9BF2612B2814D2FF00C1F853 /* XCRemoteSwiftPackageReference "RespondableTextField" */,
 			);
 			productRefGroup = 9B20A6592796F42A0029CA0E /* Products */;
 			projectDirPath = "";
@@ -972,6 +976,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		9BF2612B2814D2FF00C1F853 /* XCRemoteSwiftPackageReference "RespondableTextField" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aaronLab/RespondableTextField.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -989,6 +1001,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9BC0E41E27FC3BB700306CCA /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		9BF2612C2814D2FF00C1F853 /* RespondableTextField */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9BF2612B2814D2FF00C1F853 /* XCRemoteSwiftPackageReference "RespondableTextField" */;
+			productName = RespondableTextField;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

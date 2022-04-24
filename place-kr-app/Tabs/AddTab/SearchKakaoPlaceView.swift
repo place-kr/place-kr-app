@@ -15,7 +15,9 @@ class SearchKakaoPlaceViewModel: ObservableObject {
     @Published var progress: Progress = .ready
     @Published var page: Int? = 1
         
-    func search(name: String, page: Int, completion: @escaping (Bool) -> Void) {
+    var previousQueryText = String()
+        
+    func search(name: String, page: Int, completion: @escaping (Result<Void, Error>) -> Void) {
         self.progress = .inProcess
         
         // TODO: Paging
@@ -27,47 +29,53 @@ class SearchKakaoPlaceViewModel: ObservableObject {
                 switch result {
                 case .failure(let error) :
                     print(error)
+                    completion(.failure(error))
                     self.progress = .failedWithError(error: error)
-                    completion(false)
                 case .finished:
                     print("Fetched")
+                    completion(.success(()))
                     self.progress = .finished
-                    completion(true)
                 }
                 
                 self.subscriptions.removeAll()
             }, receiveValue: { [weak self] value in
                 guard let self = self else { return }
-
-                if value.meta.isEnd {
-                    self.page = nil
-                } else {
-                    self.page! += 1
-                }
-                
+                                
                 let placeInfos = value.documents.map{ KakaoPlaceInfo(document: $0) }
                 if self.page == 1 {
                     self.searchResult = placeInfos
                 } else {
                     self.searchResult.append(contentsOf: placeInfos)
                 }
+                
+                if value.meta.isEnd {
+                    self.page = nil
+                } else {
+                    self.page! += 1
+                }
             })
             .store(in: &subscriptions)
     }
     
     init() {
-        
     }
 }
 
 struct SearchKakaoPlaceView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel = SearchKakaoPlaceViewModel()
+    @StateObject var viewModel = SearchKakaoPlaceViewModel()
+    private var subscriptions = Set<AnyCancellable>()
     
     @State var text = ""
     @State var isBottom = false
+    @State var isFocused = false
+    @State var showWarning = false
     
     let completion: (KakaoPlaceInfo) -> Void
+    
+    init(completion: @escaping (KakaoPlaceInfo) -> Void) {
+        self.completion = completion
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -81,12 +89,19 @@ struct SearchKakaoPlaceView: View {
             }
             .padding(.vertical, 20)
             .padding(.horizontal, 15)
-
-            SearchBarView($text, "키워드로 검색", bgColor: .white, height: 40, isStroked: true) {
-                // 돋보기 버튼 클릭 시 액션
-                if let page = viewModel.page {
-                    viewModel.search(name: text, page: page) { _ in }
+            
+            SearchBarView($text, "키워드로 검색",
+                          isFocused: self.$isFocused, bgColor: .white,
+                          height: 40, isStroked: true)
+            {
+                if self.viewModel.previousQueryText == text {
+                    return
                 }
+                
+                // 쿼리 리턴 시 액션
+                self.viewModel.page = 1
+                self.viewModel.previousQueryText = text
+                self.viewModel.search(name: text, page: 1) { _ in }
             }
             .padding(.top, 10)
             .padding(.horizontal, 15)
@@ -104,21 +119,26 @@ struct SearchKakaoPlaceView: View {
                     .padding(.horizontal, 15)
                 
                 TrackableScrollView(reachedBottom: $isBottom, reachAction: {
-                    print(viewModel.page)
-
                     // 바닥 터치 시 액션
                     if let page = viewModel.page {
-                        viewModel.search(name: text, page: page) { result in
-                            if result {
-                                self.isBottom = false
+                        viewModel.search(name: viewModel.previousQueryText,
+                                         page: page) { result in
+                            switch result {
+                            case .success(()):
+                                isBottom = true
+                                break
+                            case .failure(_):
+                                showWarning = true
+                                break
                             }
                         }
                     }
                 }) {
                     VStack(alignment: .leading, spacing: 10) {
-                        ForEach(viewModel.searchResult) { result in
+                        ForEach(viewModel.searchResult, id:\.id) { result in
                             Divider()
                                 .padding(.vertical, 5)
+                            
                             RowView(name: result.name, roadAddress: result.roadAddress)
                                 .onTapGesture {
                                     completion(result)
@@ -138,6 +158,12 @@ struct SearchKakaoPlaceView: View {
             }
                 
             Spacer()
+        }
+        .alert(isPresented: $showWarning) {
+            basicSystemAlert
+        }
+        .onTapGesture {
+            endTextEditing()
         }
         .padding(.top, 17)
     }

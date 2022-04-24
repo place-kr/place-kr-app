@@ -12,7 +12,7 @@ struct SearchBarView: View {
     @Binding var isFocused: Bool
     
     private let showButton: Bool
-    private let action: (() -> Void)
+    private let action: () -> Void
     private let backgroundColor: Color
     private let height: CGFloat
     private let isStroked: Bool
@@ -21,14 +21,23 @@ struct SearchBarView: View {
     var body: some View {
         TextField(placeholder, text: $inputText,
                   onEditingChanged: { self.isFocused = $0 },
-                  onCommit: { if !inputText.isEmpty { print("SSSS"); action() }})
-        .modifier(TextFieldSearchButton(text: $inputText, showButton: showButton ,action: action))
+                  onCommit: {
+            if !inputText.isEmpty {
+                print("SS")
+                didPressReturn()
+            }
+        })
+        .modifier(TextFieldSearchButton(text: $inputText, showButton: showButton, action: action))
         .multilineTextAlignment(.leading)
         .frame(minWidth: 200, maxWidth: .infinity, maxHeight: height)
         .padding(.horizontal)
         .background(RoundedRectangle(cornerRadius: 7).stroke(.black.opacity(isStroked ? 1 : 0)))
         .background(backgroundColor)
         .cornerRadius(7)
+    }
+    
+    func didPressReturn() {
+        self.action()
     }
     
     init(_ inputText: Binding<String>,
