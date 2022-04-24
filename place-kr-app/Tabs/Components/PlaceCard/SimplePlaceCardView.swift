@@ -10,14 +10,16 @@ import SwiftUI
 struct SimplePlaceCardView<T: View>: View {
     private let placeName: String
     private let placeColor: Color
+    private let emoji: String
     private let subscripts: String
     private let buttonLabel: T
     private let buttonAction: (() -> Void)?
     private let image: UIImage
     
-    init(_ name: String, hex: String, subscripts: String, image: UIImage, buttonLabel: T, action: (() -> Void)? = nil) {
+    init(_ name: String, hex: String, emoji: String, subscripts: String, image: UIImage, buttonLabel: T, action: (() -> Void)? = nil) {
         self.placeName = name
         self.placeColor = colorFrom(hex: hex).color
+        self.emoji = emoji
         self.subscripts = subscripts
         self.image = image
         self.buttonLabel = buttonLabel
@@ -27,8 +29,11 @@ struct SimplePlaceCardView<T: View>: View {
     var body: some View {
         HStack(spacing: 0) {
             // 프로필 이미지
-            RoundedRectangle(cornerRadius: 10)
-                .fill(self.placeColor)
+            ZStack {
+                self.placeColor
+                Text(emoji)
+            }
+            .cornerRadius(10)
                 .frame(width: 50, height: 50)
             
             // 이름과 설명

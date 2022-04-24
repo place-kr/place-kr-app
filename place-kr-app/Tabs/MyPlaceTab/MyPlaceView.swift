@@ -79,7 +79,7 @@ struct MyPlaceView: View {
                             ForEach(listManager.placeLists, id: \.identifier) { list in
                                 navigator(list: list, label:
                                             SimplePlaceCardView(list.name,
-                                                                hex: list.color,
+                                                                hex: list.color, emoji: list.emoji,
                                                                 subscripts: "\(list.places.count) places",
                                                                 image: UIImage(),
                                                                 buttonLabel: Image(systemName: "ellipsis"),

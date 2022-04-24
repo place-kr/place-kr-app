@@ -13,11 +13,13 @@ struct RegisterNewListAlertView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
     @State var name = ""
-    @State var emoji = ""
+    @State var emoji = String()
     @State var showEmojiKeyboard: Bool? = false
     
     @State var selectedColor: ListColor?
     @State var clicked = false
+    
+    @State var showWarning = false
     
     let colors: [ListColor] = ListColor.allCases
     let submitAction: () -> Void
@@ -43,16 +45,31 @@ struct RegisterNewListAlertView: View {
             
             Text(requestType == .post ? "리스트명을 입력하세요" : "수정하고 싶은 정보를 입력하세요")
                 .font(.basic.light14)
-                .padding(.bottom, 15)
+                .padding(.bottom, showWarning ? 0 : 15)
             
             // 리스트 명 입력 텍스트필드
             EmojiSelector(text: $emoji, isResponder: $showEmojiKeyboard, keyboard: .default)
                 .opacity(0.01)
                 .frame(width: 0, height: 0)
                 .onReceive(Just(emoji)) { value in
+                    // 이모지 리턴
                     guard let emoji = value.last else { return }
+
+                    if !emoji.isEmoji {
+                        self.showWarning = true
+                    } else {
+                        self.showWarning = false
+                    }
+                    
                     self.emoji = String(emoji).onlyEmoji()
+                    endTextEditing()
                 }
+            
+            if showWarning {
+                Text("아이콘은 이모지타입만 설정할 수 있습니다!")
+                    .font(.system(size: 10))
+                    .foregroundColor(.red)
+            }
             
             ThemedTextField($name, "리스트명을 입력해주세요",
                             bgColor: .gray.opacity(0.3),
@@ -61,6 +78,7 @@ struct RegisterNewListAlertView: View {
                             buttonImage: Image("emojiSelector") ,
                             buttonColor: .gray.opacity(0.5),
                             action: {
+                endTextEditing()
                 showEmojiKeyboard = true
             })
             .padding(.bottom, 14)
@@ -121,7 +139,7 @@ struct RegisterNewListAlertView: View {
                     
                     switch requestType {
                     case .post:
-                        let postBody = PlaceListPostBody(name: self.name, icon: "🧮", color: selectedColor?.HEX, places: [String]())
+                        let postBody = PlaceListPostBody(name: self.name, emoji: emoji, color: selectedColor?.HEX, places: [String]())
                         self.viewModel.addPlaceList(body: postBody) { result in
                             completion(result)
                         }
@@ -133,13 +151,16 @@ struct RegisterNewListAlertView: View {
                 }) {
                     Text("입력완료")
                 }
-                .disabled(name.isEmpty || selectedColor == nil || clicked)
+                .disabled(name.isEmpty || selectedColor == nil || clicked || emoji.isEmpty)
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)
                 
                 Spacer()
             }
+        }
+        .onTapGesture {
+            endTextEditing()
         }
         .alertStyle()
     }

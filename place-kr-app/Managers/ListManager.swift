@@ -19,7 +19,7 @@ struct PlaceListResponse: Codable {
 struct PlaceList: Codable, Hashable {
     let identifier: String
     var name: String
-    var icon: String
+    var emoji: String
     var color: String
     var places: [String]
     let count: Int
@@ -34,7 +34,7 @@ struct PlaceList: Codable, Hashable {
     
     enum CodingKeys: String, CodingKey {
         case identifier, name, places
-        case icon = "label_icon"
+        case emoji = "label_icon"
         case color = "label_color"
         case count = "places_count"
     }
@@ -44,13 +44,13 @@ protocol HTTPBody {}
 
 struct PlaceListPostBody: Encodable  {
     var name: String? = nil
-    var icon: String? = nil
+    var emoji: String? = nil
     var color: String? = nil
     let places: [String]
     
     enum CodingKeys: String, CodingKey {
         case name, places
-        case icon = "label_icon"
+        case emoji = "label_icon"
         case color = "label_color"
     }
 }
@@ -255,7 +255,7 @@ class ListManager: ObservableObject {
         }
         
         let list = self.placeLists[index]
-        var body = PlaceListPostBody(name: list.name, icon: list.icon, color: list.color, places: list.places)
+        var body = PlaceListPostBody(name: list.name, emoji: list.emoji, color: list.color, places: list.places)
         
         if let name = name {
             body.name = name

@@ -15,6 +15,7 @@ class PlaceListDetailViewModel: ObservableObject {
     private let listManager: ListManager
     let list: PlaceList
    
+    @Published var emoji: String
     @Published var listColor: String
     @Published var listName: String
     @Published var places = [PlaceInfoWrapper]()
@@ -131,6 +132,7 @@ class PlaceListDetailViewModel: ObservableObject {
         self.listManager = listManager
         self.listName = list.name
         self.listColor = list.color
+        self.emoji = list.emoji
         
         self.resetSelection()
     }

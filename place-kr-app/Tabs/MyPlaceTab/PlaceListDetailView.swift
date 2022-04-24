@@ -40,7 +40,7 @@ struct PlaceListDetailView: View {
             
             // 헤더에 올라가는 리스트 카드 뷰
             Group {
-                SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor,
+                SimplePlaceCardView(viewModel.listName, hex: viewModel.listColor, emoji: viewModel.emoji,
                                     subscripts: "\(viewModel.places.count) places",
                                     image: UIImage(), buttonLabel: Text("Edit"), action:  {
                     withAnimation(.spring()) {
