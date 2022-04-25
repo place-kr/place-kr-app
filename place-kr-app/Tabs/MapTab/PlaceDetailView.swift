@@ -242,7 +242,9 @@ struct PlaceDetailView: View {
     @State var showEntireComments = false
     @State var showAddComment = false
     @State var commentText = ""
-    @State var showWarning = false
+    
+    @State var showAlert = false
+    @State var bodyType: AlertBody = .error
     
     let placeInfo: PlaceInfo
 
@@ -318,7 +320,7 @@ struct PlaceDetailView: View {
                         self.showAddComment = false
                         break
                     case false:
-                        self.showWarning = true
+                        self.showAlert = true
                         self.showAddComment = false
                         break
                     }
@@ -330,8 +332,8 @@ struct PlaceDetailView: View {
                 self.showAddComment = false
             }
         }))
-        .alert(isPresented: $showWarning) {
-            Alert(title: Text("알 수 없는 오류 발생"), message: Text("잠시 후 다시 시도해주세요."))
+        .alert(isPresented: $showAlert) {
+            self.alertBody(self.bodyType)
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)
@@ -340,6 +342,29 @@ struct PlaceDetailView: View {
 }
 
 extension PlaceDetailView {
+    enum AlertBody {
+        case error
+        case deleteConfirm(id: String)
+    }
+    
+    func alertBody(_ case: AlertBody) -> Alert {
+        switch `case` {
+        case .error:
+            return basicSystemAlert
+        case .deleteConfirm(let id):
+            return Alert(title: Text("한줄평을 삭제하시겠어요?"),
+                         primaryButton: .cancel(),
+                         secondaryButton: .default(Text("Ok")) {
+                viewModel.deleteReview(id: id) { result in
+                    if result == false {
+                        showAlert = true
+                        bodyType = .error
+                    }
+                }
+            })
+        }
+    }
+    
     var LeaveCommentButton: some View {
         Button(action: {
             withAnimation(.spring()) {
@@ -394,7 +419,7 @@ extension PlaceDetailView {
     var Comments: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .center) {
-                Text("한줄 평")
+                Text("한줄평")
                     .font(.basic.bold21)
                 .padding(.bottom, 5)
                 
@@ -479,6 +504,7 @@ extension PlaceDetailView {
                 .fill(Color.white))
     }
     
+    // MARK: 삭제 수정 버튼
     func EditAndDeleteButtons(id: String) -> some View {
         return HStack(spacing: 2.5) {
             Button(action: {}) {
@@ -488,11 +514,11 @@ extension PlaceDetailView {
             
             Text("|")
             
-            Button(action: { viewModel.deleteReview(id: id) { result in
-                if result == false {
-                    self.showWarning = true
-                }
-            } }) {
+            Button(action: {
+                // 삭제 확인 얼러트 띄우기
+                showAlert = true
+                bodyType = .deleteConfirm(id: id)
+            }) {
                 Text("삭제")
             }
             .font(.basic.bold10)
