@@ -11,7 +11,7 @@ struct OpenSourcesLicences: View {
     
     let sources = [
         OpenSource(title: "BottomSheet", url: "https://github.com/lucaszischka/BottomSheet", description: "Copyright (c) 2021-2022 Lucas Zischka", license: "MIT License"),
-        OpenSource(title: "SDWebImageSwiftUI", url: "https://github.com/SDWebImage/SDWebImageSwiftU", description: "Copyright (c) 2019 lizhuoli1126@126.com <lizhuoli1126@126.com>", license: "MIT License"),
+        OpenSource(title: "SDWebImageSwiftUI", url: "https://github.com/SDWebImage/SDWebImageSwiftUI", description: "Copyright (c) 2019 lizhuoli1126@126.com <lizhuoli1126@126.com>", license: "MIT License"),
         OpenSource(title: "SwiftUIPager", url: "https://github.com/fermoya/SwiftUIPager", description: "Copyright (c) 2019 fermoya", license: "MIT License")
     ]
     
@@ -22,7 +22,7 @@ struct OpenSourcesLicences: View {
             }
             
             VStack(alignment: .leading) {
-                Text("MIT Licens")
+                Text("MIT License")
                     .font(.basic.bold12)
                     .padding(.bottom, 7)
 
