@@ -8,7 +8,26 @@
 import SwiftUI
 
 class LoginViewModel: ObservableObject {
-    let imageNames = ["mainIcon1", "mainIcon2", "mainIcon3", "mainIcon4", "mainIcon5", "mainIcon6"]
+    struct ImageCell {
+        let id = UUID()
+        let image: Image
+    }
+    
+    let imageNames: [String]
+
+    let imageCells: [ImageCell]
+    
+    init() {
+        self.imageNames = [
+           "mainIcon1", "mainIcon2", "mainIcon3", "mainIcon4", "mainIcon5", "mainIcon6",
+           "mainIcon1", "mainIcon2", "mainIcon3", "mainIcon4", "mainIcon5", "mainIcon6",
+           "mainIcon1", "mainIcon2", "mainIcon3", "mainIcon4", "mainIcon5", "mainIcon6"
+       ]
+        
+        self.imageCells = imageNames.map { name in
+           ImageCell(image: Image(name))
+       }
+    }
 }
 
 // TODO: 자동로그인
@@ -16,7 +35,11 @@ struct LogInView: View {
     @EnvironmentObject var loginManager: LoginManager
     @Environment(\.window) var window: UIWindow?
     
+    @State var moveX: CGFloat = 0
+    let timer = Timer.publish(every: 2, on: .main, in: .common).autoconnect()
+
     @ObservedObject var viewModel = LoginViewModel()
+
     
     var body: some View {
         ZStack {
@@ -35,13 +58,27 @@ struct LogInView: View {
                             .zIndex(1)
                         
                         HStack(spacing: 0) {
-                            ForEach(viewModel.imageNames, id: \.self) { name in
-                                Image(name)
+                            ForEach(viewModel.imageCells, id: \.id) { cell in
+                                cell.image
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 50, height: 50)
                             }
                         }
+                        .frame(width: UIScreen.main.bounds.width-100, height: 60)
+                        .onReceive(timer, perform: { fire in
+                            withAnimation {
+                                moveX -= 50
+                            }
+
+                            if moveX <= -300 {
+                                moveX = 0
+                            }
+                        })
+//                        .contentShape(Rectangle())
+//                        .clipped()
+                        .offset(x: moveX + 20, y: 7)
+                        .transition(.slide)
                     }
                 }
                 
