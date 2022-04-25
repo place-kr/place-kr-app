@@ -34,6 +34,10 @@ struct ProfileTabView: View {
                     Text("개인정보 변경")
                 }
                 
+                NavigationLink(destination: { OpenSourcesLicences() }) {
+                    Text("오픈소스 라이선스")
+                }
+                
                 Button(action: { showLogoutAlert = true }) {
                     Text("로그아웃")
                 }
