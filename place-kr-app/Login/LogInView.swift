@@ -36,7 +36,7 @@ struct LogInView: View {
     @Environment(\.window) var window: UIWindow?
     
     @State var moveX: CGFloat = 0
-    let timer = Timer.publish(every: 2, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     @ObservedObject var viewModel = LoginViewModel()
 

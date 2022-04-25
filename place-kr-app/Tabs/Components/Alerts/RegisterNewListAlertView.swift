@@ -78,8 +78,10 @@ struct RegisterNewListAlertView: View {
                             buttonImage: Image("emojiSelector") ,
                             buttonColor: .gray.opacity(0.5),
                             action: {
-                endTextEditing()
-                showEmojiKeyboard = true
+                DispatchQueue.main.async {
+                    endTextEditing()
+                    showEmojiKeyboard = true
+                }
             })
             .padding(.bottom, 14)
             
