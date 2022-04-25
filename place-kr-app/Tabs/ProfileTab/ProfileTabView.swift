@@ -26,16 +26,16 @@ struct ProfileTabView: View {
                     Text("공지사항")
                 }
                 
+                NavigationLink(destination: { OpenSourcesLicences() }) {
+                    Text("오픈소스 라이선스")
+                }
+                
                 Button(action: {
                     withAnimation(.spring()) {
                         showNameAlert = true
                     }
                 }) {
                     Text("개인정보 변경")
-                }
-                
-                NavigationLink(destination: { OpenSourcesLicences() }) {
-                    Text("오픈소스 라이선스")
                 }
                 
                 Button(action: { showLogoutAlert = true }) {
