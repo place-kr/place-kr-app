@@ -1,10 +1,14 @@
 import UIKit
 import NaverThirdPartyLogin
+import Firebase
 import NMapsMap
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // MARK: Firebase SDK init
+        FirebaseApp.configure()
         
         // MARK: -네이버맵 SDK 인스턴스 생성
         NMFAuthManager.shared().clientId = "gutse7wfn1"

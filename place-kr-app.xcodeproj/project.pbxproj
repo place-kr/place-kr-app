@@ -25,6 +25,8 @@
 		9B20A6702796F4D80029CA0E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B20A66F2796F4D80029CA0E /* ContentView.swift */; };
 		9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2AB36C27A015B700B30242 /* OnboardingView.swift */; };
 		9B2BCB0D27D895E800C1C16E /* Color + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2BCB0C27D895E800C1C16E /* Color + Extensions.swift */; };
+		9B2DD54128190D9600AD8725 /* FirebaseDynamicLinks in Frameworks */ = {isa = PBXBuildFile; productRef = 9B2DD54028190D9600AD8725 /* FirebaseDynamicLinks */; };
+		9B2DD54328190ED100AD8725 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9B2DD54228190ED100AD8725 /* GoogleService-Info.plist */; };
 		9B35BA4C27CDDA4B0013C1EA /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35BA4B27CDDA4B0013C1EA /* TabsView.swift */; };
 		9B35BA4F27CDFC430013C1EA /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35BA4E27CDFC430013C1EA /* LoginManager.swift */; };
 		9B3DE9A227BE2FAE00DAD9CC /* MyPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */; };
@@ -119,6 +121,7 @@
 		9B20A66F2796F4D80029CA0E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9B2AB36C27A015B700B30242 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		9B2BCB0C27D895E800C1C16E /* Color + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color + Extensions.swift"; sourceTree = "<group>"; };
+		9B2DD54228190ED100AD8725 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9B35BA4B27CDDA4B0013C1EA /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		9B35BA4E27CDFC430013C1EA /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceView.swift; sourceTree = "<group>"; };
@@ -201,6 +204,7 @@
 				C1E57CCEE0673CDEBD22B5D4 /* Pods_place_kr_app.framework in Frameworks */,
 				9BB8E67027DB6DB400E07AD0 /* BottomSheet in Frameworks */,
 				9BB8E67327DB6DEB00E07AD0 /* SwiftUIPager in Frameworks */,
+				9B2DD54128190D9600AD8725 /* FirebaseDynamicLinks in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +286,7 @@
 				9B44BEF427C5D77900755AD5 /* Tabs */,
 				9B20A66F2796F4D80029CA0E /* ContentView.swift */,
 				9B20A6692796F42B0029CA0E /* Info.plist */,
+				9B2DD54228190ED100AD8725 /* GoogleService-Info.plist */,
 				9B84668B2798543F00066F04 /* place-kr-app.entitlements */,
 				9B20A6642796F42B0029CA0E /* Assets.xcassets */,
 				9B20A6662796F42B0029CA0E /* LaunchScreen.storyboard */,
@@ -551,6 +556,7 @@
 				9BB8E66F27DB6DB400E07AD0 /* BottomSheet */,
 				9BB8E67227DB6DEB00E07AD0 /* SwiftUIPager */,
 				9BC0E41F27FC3BB700306CCA /* SDWebImageSwiftUI */,
+				9B2DD54028190D9600AD8725 /* FirebaseDynamicLinks */,
 			);
 			productName = "place-kr-app";
 			productReference = 9B20A6582796F42A0029CA0E /* place-kr-app.app */;
@@ -584,6 +590,7 @@
 				9BB8E66E27DB6DB400E07AD0 /* XCRemoteSwiftPackageReference "BottomSheet" */,
 				9BB8E67127DB6DEB00E07AD0 /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
 				9BC0E41E27FC3BB700306CCA /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				9B2DD53F28190D9600AD8725 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 9B20A6592796F42A0029CA0E /* Products */;
 			projectDirPath = "";
@@ -607,6 +614,7 @@
 				9B20A6682796F42B0029CA0E /* LaunchScreen.storyboard in Resources */,
 				9B6AADCC280A3F1D009CA58A /* NotoSansKR-Light.otf in Resources */,
 				9B6AADC8280A3F1D009CA58A /* NotoSansKR-Black.otf in Resources */,
+				9B2DD54328190ED100AD8725 /* GoogleService-Info.plist in Resources */,
 				9BAD802A2810131300B2FFB1 /* ripple.gif in Resources */,
 				9B20A6652796F42B0029CA0E /* Assets.xcassets in Resources */,
 			);
@@ -881,7 +889,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "place-kr-app/place-kr-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = W6QHM4Y43Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "place-kr-app/Info.plist";
@@ -915,7 +923,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "place-kr-app/place-kr-app.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = W6QHM4Y43Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "place-kr-app/Info.plist";
@@ -964,6 +972,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9B2DD53F28190D9600AD8725 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
 		9BB8E66E27DB6DB400E07AD0 /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/LucasMucGH/BottomSheet";
@@ -991,6 +1007,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9B2DD54028190D9600AD8725 /* FirebaseDynamicLinks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B2DD53F28190D9600AD8725 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDynamicLinks;
+		};
 		9BB8E66F27DB6DB400E07AD0 /* BottomSheet */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9BB8E66E27DB6DB400E07AD0 /* XCRemoteSwiftPackageReference "BottomSheet" */;

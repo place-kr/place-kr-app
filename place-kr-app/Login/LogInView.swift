@@ -89,8 +89,8 @@ struct LogInView: View {
                         .font(.basic.logo)
                         .padding(.bottom, 14)
                     
-                    Text("플레이스트에서 나만의 플레이스를\n 만들고, 즐겨보세요!")
-                        .font(.system(size: 17))
+                    Text("플레이스트에서 나만의 플레이스를\n만들고, 즐겨보세요!")
+                        .font(.basic.normal17)
                 }
                 
                 Spacer()

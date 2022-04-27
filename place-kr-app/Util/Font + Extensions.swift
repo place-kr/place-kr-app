@@ -27,6 +27,9 @@ extension Font {
         /// size: 15, weight: normal
         let normal15 = Font.custom("NotoSansKR-Medium", size: 15)
         
+        /// size: 17, weight: normal
+        let normal17 = Font.custom("NotoSansKR-Medium", size: 17)
+        
         /// size: 10, weight: bold
         let bold10 = Font.custom("NotoSansKR-Bold", size: 10)
         
