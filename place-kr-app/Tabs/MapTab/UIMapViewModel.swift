@@ -127,6 +127,7 @@ class UIMapViewModel: ObservableObject {
         let offset: Double = 1 / 1000
         
         let coord = LocationManager.shared.currentCoord
+        
         self.currentPosition = NMGLatLng(lat: coord.latitude, lng: coord.longitude)
         self.currentBounds = NMGLatLngBounds(
             southWestLat: coord.latitude - offset,

@@ -35,10 +35,7 @@ struct UIMapView: UIViewRepresentable {
         if viewModel.isInCurrentPosition {
             let cameraUpdate = NMFCameraUpdate(scrollTo: viewModel.currentPosition)
             uiView.mapView.moveCamera(cameraUpdate)
-            print("@ updateUIView")
         }
-        
-        
     }
     
     

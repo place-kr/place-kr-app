@@ -43,7 +43,7 @@ class LocationManager: NSObject, ObservableObject {
             self.locationManager.delegate = self
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             self.locationManager.requestWhenInUseAuthorization()
-            self.locationManager.requestLocation()
+            self.locationManager.startUpdatingLocation()
         }
     }
     
@@ -83,7 +83,21 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        self.currentCoord = location.coordinate
+//        //
+//        let city = decoded.documents.first?.city
+//        let county = decoded.documents.first?.county
+//
+//        DispatchQueue.main.async {
+//            if let city = city, let county = county {
+//                self.currentLocationName = city + " " + county
+//            }
+//        }
         
+    }
+    
+    func getLocationDescription(location: CLLocation, completion: @escaping (LocationResponse?) -> ()) {
+        // Network request
         let queryItem = [
             URLQueryItem(name: "x", value: "\(location.coordinate.longitude)"),
             URLQueryItem(name: "y", value: "\(location.coordinate.latitude)")
@@ -94,8 +108,6 @@ extension LocationManager: CLLocationManagerDelegate {
         }
         
         URLSession.shared.dataTask(with: request) { [weak self] data, response, _ in
-            guard let self = self else { return }
-            
             if let response = response as? HTTPURLResponse,
                 !((200...300).contains(response.statusCode)) {
                 print("Error in response. May be a network error.\(response as Any)")
@@ -108,15 +120,9 @@ extension LocationManager: CLLocationManagerDelegate {
 
             do {
                 let decoded = try JSONDecoder().decode(LocationResponse.self, from: data)
-                let city = decoded.documents.first?.city
-                let county = decoded.documents.first?.county
-                
-                DispatchQueue.main.async {
-                    if let city = city, let county = county {
-                        self.currentLocationName = city + " " + county
-                    }
-                }
+                completion(decoded)
             } catch(let error) {
+                completion(nil)
                 print(error)
             }
         }
