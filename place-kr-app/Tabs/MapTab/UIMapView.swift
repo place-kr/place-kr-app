@@ -10,6 +10,7 @@ import NMapsMap
 
 struct UIMapView: UIViewRepresentable {
     @ObservedObject var viewModel: UIMapViewModel
+    private let locationManager = LocationManager.shared
     
     func makeCoordinator() -> Coordinator {
         return Coordinator(viewModel: viewModel)
@@ -32,7 +33,11 @@ struct UIMapView: UIViewRepresentable {
     /// 현재는 웬만하면 카메라 업데이트 용으로만 사용 중
     func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
         // 최초실행 or 현위치로 이동 시 카메라 업데이트
-        if viewModel.isInCurrentPosition {
+        if viewModel.isCurrentPositionRequested, locationManager.isCurrentPosition == true {
+            DispatchQueue.global(qos: .utility).async {
+                locationManager.updateLocationDescription(coord: locationManager.currentCoord)
+            }
+            
             let cameraUpdate = NMFCameraUpdate(scrollTo: viewModel.currentPosition)
             uiView.mapView.moveCamera(cameraUpdate)
         }
@@ -49,7 +54,7 @@ struct UIMapView: UIViewRepresentable {
         func mapView(_ mapView: NMFMapView, cameraDidChangeByReason reason: Int, animated: Bool) {
             //            print("카메라 변경 - reason: \(reason)")
             if reason == NMFMapChangedByGesture {
-                self.viewModel.isInCurrentPosition = false
+                self.viewModel.isCurrentPositionRequested = false
                 withAnimation(springAnimation) {
                     self.viewModel.mapNeedsReload = true
                 }

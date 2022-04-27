@@ -22,11 +22,13 @@ class UIMapViewModel: ObservableObject {
     
     private var subscriptions = Set<AnyCancellable>()
     private var markers = [NMFMarker]()
+    private let locationManager = LocationManager.shared
+    
     var currentBounds: NMGLatLngBounds
     
     @Published var places = [PlaceWrapper]()
     @Published var currentPosition: NMGLatLng
-    @Published var isInCurrentPosition = true
+    @Published var isCurrentPositionRequested = true
     @Published var mapNeedsReload = true
     @Published var selectdMarker = NMFMarker()
     
@@ -126,7 +128,7 @@ class UIMapViewModel: ObservableObject {
         
         let offset: Double = 1 / 1000
         
-        let coord = LocationManager.shared.currentCoord
+        let coord = locationManager.currentCoord
         
         self.currentPosition = NMGLatLng(lat: coord.latitude, lng: coord.longitude)
         self.currentBounds = NMGLatLngBounds(
@@ -136,10 +138,11 @@ class UIMapViewModel: ObservableObject {
             northEastLng: coord.longitude + offset
         )
         
-        LocationManager.shared.$currentCoord
+        locationManager.$currentCoord
             .throttle(for: 1, scheduler: RunLoop.main, latest: true)
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { coord in
+            .sink(receiveValue: { [weak self] coord in
+                guard let self = self else { return }                
                 self.currentPosition = NMGLatLng(lat: coord.latitude, lng: coord.longitude)
             })
             .store(in: &subscriptions)

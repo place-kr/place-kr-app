@@ -7,12 +7,14 @@
 
 import SwiftUI
 import BottomSheet
-
+import Combine
 
 struct MapView: View {
+    private var subscriptions = Set<AnyCancellable>()
+    private var locationManager: LocationManager
+    
     @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
     @StateObject var placeInfoManager = PlaceInfoManager()
-    @StateObject var locationManager = LocationManager()
     
     @EnvironmentObject var listManager: ListManager
     
@@ -30,6 +32,11 @@ struct MapView: View {
     
     @State var showError = false
     @State var alertCase: AlertCase = .error
+    
+    init(selection: Binding<TabsView.Tab>, _ locationManager: LocationManager = LocationManager.shared) {
+        self._selection = selection
+        self.locationManager = locationManager
+    }
     
     var body: some View {
         

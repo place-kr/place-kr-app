@@ -32,8 +32,10 @@ class LocationManager: NSObject, ObservableObject {
     private let locationManager = CLLocationManager()
     static let shared = LocationManager()
     
+    @Published var isCurrentPosition = false
     @Published var locationStatus: CLAuthorizationStatus?
-    @Published var currentCoord = CLLocationCoordinate2D(latitude: CLLocationDegrees(37.578472), longitude: CLLocationDegrees(126.97727))
+    @Published var currentCoord = CLLocationCoordinate2D(latitude: CLLocationDegrees(37.578472),
+                                                         longitude: CLLocationDegrees(126.97727))
     @Published var currentLocationName: String?
 
     override init() {
@@ -82,32 +84,25 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        // 현위치 업데이트
         guard let location = locations.last else { return }
         self.currentCoord = location.coordinate
-//        //
-//        let city = decoded.documents.first?.city
-//        let county = decoded.documents.first?.county
-//
-//        DispatchQueue.main.async {
-//            if let city = city, let county = county {
-//                self.currentLocationName = city + " " + county
-//            }
-//        }
-        
+        self.isCurrentPosition = true
     }
     
-    func getLocationDescription(location: CLLocation, completion: @escaping (LocationResponse?) -> ()) {
+    func getLocationDescription(coord: CLLocationCoordinate2D, completion: @escaping (LocationResponse?) -> ()) {
         // Network request
         let queryItem = [
-            URLQueryItem(name: "x", value: "\(location.coordinate.longitude)"),
-            URLQueryItem(name: "y", value: "\(location.coordinate.latitude)")
+            URLQueryItem(name: "x", value: "\(coord.longitude)"),
+            URLQueryItem(name: "y", value: "\(coord.latitude)")
         ]
         
         guard let request = authorizedRequest(method: "GET", api: "/reverse_geocoding", queryItems: queryItem) else {
             return
         }
         
-        URLSession.shared.dataTask(with: request) { [weak self] data, response, _ in
+        URLSession.shared.dataTask(with: request) { data, response, _ in
+            print("Get location called")
             if let response = response as? HTTPURLResponse,
                 !((200...300).contains(response.statusCode)) {
                 print("Error in response. May be a network error.\(response as Any)")
@@ -127,5 +122,21 @@ extension LocationManager: CLLocationManagerDelegate {
             }
         }
         .resume()
+    }
+    
+    func updateLocationDescription(coord: CLLocationCoordinate2D) {
+        getLocationDescription(coord: coord) { [weak self] response in
+            guard let self = self else { return }
+            guard let response = response else { return }
+            
+            let city = response.documents.first?.city
+            let county = response.documents.first?.county
+
+            DispatchQueue.main.async {
+                if let city = city, let county = county {
+                    self.currentLocationName = city + " " + county
+                }
+            }
+        }
     }
 }
