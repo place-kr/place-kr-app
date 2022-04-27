@@ -33,13 +33,14 @@ struct UIMapView: UIViewRepresentable {
     /// 현재는 웬만하면 카메라 업데이트 용으로만 사용 중
     func updateUIView(_ uiView: NMFNaverMapView, context: Context) {
         // 최초실행 or 현위치로 이동 시 카메라 업데이트
-        if viewModel.isCurrentPositionRequested, locationManager.isCurrentPosition == true {
+        if viewModel.isCurrentPositionRequested && locationManager.isCurrentPosition == true {
             DispatchQueue.global(qos: .utility).async {
                 locationManager.updateLocationDescription(coord: locationManager.currentCoord)
             }
             
             let cameraUpdate = NMFCameraUpdate(scrollTo: viewModel.currentPosition)
             uiView.mapView.moveCamera(cameraUpdate)
+            viewModel.isCurrentPositionRequested = false
         }
     }
     

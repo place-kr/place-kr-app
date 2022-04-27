@@ -13,7 +13,7 @@ struct MapView: View {
     private var subscriptions = Set<AnyCancellable>()
     private var locationManager: LocationManager
     
-    @StateObject var mapViewModel = UIMapViewModel() // TODO: ??? 왜 됨?
+    @StateObject var mapViewModel = UIMapViewModel()
     @StateObject var placeInfoManager = PlaceInfoManager()
     
     @EnvironmentObject var listManager: ListManager
@@ -39,7 +39,6 @@ struct MapView: View {
     }
     
     var body: some View {
-        
         ZStack {
             NavigationLink(destination: LazyView { SearchMainView(selection: $selection) }, isActive: $navigateToSearch) {
                     EmptyView()

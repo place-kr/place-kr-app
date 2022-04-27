@@ -139,10 +139,12 @@ class UIMapViewModel: ObservableObject {
         )
         
         locationManager.$currentCoord
+            .prefix(2)
             .throttle(for: 1, scheduler: RunLoop.main, latest: true)
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] coord in
-                guard let self = self else { return }                
+                guard let self = self else { return }
+                print("SINKED")
                 self.currentPosition = NMGLatLng(lat: coord.latitude, lng: coord.longitude)
             })
             .store(in: &subscriptions)

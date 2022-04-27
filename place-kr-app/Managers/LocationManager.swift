@@ -86,6 +86,8 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // 현위치 업데이트
         guard let location = locations.last else { return }
+        
+        print("Updated")
         self.currentCoord = location.coordinate
         self.isCurrentPosition = true
     }
@@ -125,7 +127,7 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func updateLocationDescription(coord: CLLocationCoordinate2D) {
-        getLocationDescription(coord: coord) { [weak self] response in
+        self.getLocationDescription(coord: coord) { [weak self] response in
             guard let self = self else { return }
             guard let response = response else { return }
             
