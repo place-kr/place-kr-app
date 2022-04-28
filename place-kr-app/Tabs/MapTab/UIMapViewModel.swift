@@ -32,9 +32,9 @@ class UIMapViewModel: ObservableObject {
     @Published var mapNeedsReload = true
     @Published var selectdMarker = NMFMarker()
     
-    func setCurrentLocation() {
-        self.currentPosition = NMGLatLng(from: LocationManager.shared.currentCoord)
-    }
+//    func setCurrentLocation() {
+//        self.currentPosition = NMGLatLng(from: LocationManager.shared.currentCoord)
+//    }
     
     /// 플레이스 정보를 받아올 퍼블리셔를 결정하고 구독함
     private func listPlacePublisher(_ publisher: AnyPublisher<PlaceResponse, Error>,
@@ -129,7 +129,6 @@ class UIMapViewModel: ObservableObject {
         let offset: Double = 1 / 1000
         
         let coord = locationManager.currentCoord
-        
         self.currentPosition = NMGLatLng(lat: coord.latitude, lng: coord.longitude)
         self.currentBounds = NMGLatLngBounds(
             southWestLat: coord.latitude - offset,

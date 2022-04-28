@@ -180,11 +180,65 @@ class PlaceDetailViewModel: ObservableObject {
         .resume()
     }
     
-    /// id: Place id, comment: 수정할 코멘트
+    /// id: Place id, comment: 새 코멘트
     func postReview(id: String, comment: String, completion: @escaping (Bool) -> Void) {
         self.progress = .inProcess
 
-        guard let request = authorizedRequest(method: "PUT", api: "/me/places/\(id)/review") else {
+        let body = ["content" : comment]
+        guard let encoded = try? JSONEncoder().encode(body) else {
+            completion(false)
+            return
+        }
+        
+        guard let request = authorizedRequest(method: "POST", api: "/me/places/\(id)/review", body: encoded) else {
+            completion(false)
+            return
+        }
+                    
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.progress = .failedWithError(error: error)
+                    completion(false)
+                    return
+                }
+                
+                if let response = response as? HTTPURLResponse {
+                    switch response.statusCode {
+                    case (200..<300):
+                        self.progress = .finished
+                        let index = self.reviews.firstIndex{ $0.id == id }!
+                        self.reviews.remove(at: index)
+                        
+                        completion(true)
+                    default:
+                        print(response)
+                        self.progress = .failed
+                        
+                        // 에러 바디 확인
+                        if let data = data, let decoded = try? JSONDecoder().decode(ErrorBody.self, from: data)  {
+                            print(decoded)
+                        }
+                        
+                        completion(false)
+                    }
+                }
+            }
+        }
+        .resume()
+    }
+    
+    /// id: Place id, comment: 수정할 코멘트
+    func editReview(id: String, comment: String, completion: @escaping (Bool) -> Void) {
+        self.progress = .inProcess
+
+        let body = ["content" : comment]
+        guard let encoded = try? JSONEncoder().encode(body) else {
+            completion(false)
+            return
+        }
+        
+        guard let request = authorizedRequest(method: "PUT", api: "/me/places/\(id)/review", body: encoded) else {
             completion(false)
             return
         }
@@ -220,7 +274,6 @@ class PlaceDetailViewModel: ObservableObject {
         }
         .resume()
     }
-
     
     init(info placeInfo: PlaceInfo) {
         self.placeInfo = placeInfo

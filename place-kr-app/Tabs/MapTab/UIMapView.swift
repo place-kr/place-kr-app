@@ -37,8 +37,9 @@ struct UIMapView: UIViewRepresentable {
             DispatchQueue.global(qos: .utility).async {
                 locationManager.updateLocationDescription(coord: locationManager.currentCoord)
             }
-            
-            let cameraUpdate = NMFCameraUpdate(scrollTo: viewModel.currentPosition)
+                    
+            let coord = locationManager.currentCoord
+            let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: coord.latitude, lng: coord.longitude))
             uiView.mapView.moveCamera(cameraUpdate)
             viewModel.isCurrentPositionRequested = false
         }

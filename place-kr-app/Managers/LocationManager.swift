@@ -43,15 +43,11 @@ class LocationManager: NSObject, ObservableObject {
         
         DispatchQueue.global(qos: .utility).async {
             self.locationManager.delegate = self
-            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             self.locationManager.requestWhenInUseAuthorization()
             self.locationManager.startUpdatingLocation()
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            self.locationManager.distanceFilter = 20.0 // 20.0 meters
         }
-    }
-    
-    /// 현위치로 상태를 변경합니다. 모종의 이유로 현위치가 변했을 때 수동으로 조정합니다.
-    func setCurrentLocation() {
-        locationManager.requestLocation()
     }
     
     var statusString: String {
