@@ -339,7 +339,6 @@
 			isa = PBXGroup;
 			children = (
 				9B35BA4B27CDDA4B0013C1EA /* TabsView.swift */,
-				9B0ADB232807C6CB00E934FC /* Search */,
 				9B35BA4D27CDDA570013C1EA /* Components */,
 				9B4A02D527A6AC1E0037D05F /* MapTab */,
 				9B3DE9A027BE2E3000DAD9CC /* MyPlaceTab */,
@@ -352,11 +351,12 @@
 		9B4A02D527A6AC1E0037D05F /* MapTab */ = {
 			isa = PBXGroup;
 			children = (
+				9B9FCE4927B4C7E000DCCF9D /* Notification */,
+				9B0ADB232807C6CB00E934FC /* Search */,
 				9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
 				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
 				9B82F64A27D079150081A701 /* UIMapViewModel.swift */,
-				9B9FCE4927B4C7E000DCCF9D /* Notification */,
 			);
 			path = MapTab;
 			sourceTree = "<group>";

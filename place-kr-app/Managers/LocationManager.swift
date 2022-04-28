@@ -88,8 +88,10 @@ extension LocationManager: CLLocationManagerDelegate {
         guard let location = locations.last else { return }
         
         print("Updated")
-        self.currentCoord = location.coordinate
-        self.isCurrentPosition = true
+        DispatchQueue.main.async {
+            self.currentCoord = location.coordinate
+            self.isCurrentPosition = true
+        }
     }
     
     func getLocationDescription(coord: CLLocationCoordinate2D, completion: @escaping (LocationResponse?) -> ()) {

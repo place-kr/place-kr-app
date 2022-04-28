@@ -139,59 +139,11 @@ class PlaceDetailViewModel: ObservableObject {
         }
         .resume()
     }
-    
-    func postReview(id: String , comment: String, completion: @escaping (Bool) -> Void) {
-        self.progress = .inProcess
-
-        guard var request = PlaceSearchManager.authorizedRequest(url: "https://dev.place.tk/api/v1/places/\(id)/reviews") else {
-            self.progress = .failed
-            completion(false)
-            return
-        }
-                
-        let body = ReviewBody(content: comment)
-        guard let encoded = try? JSONEncoder().encode(body) else {
-            self.progress = .failed
-            completion(false)
-            return
-        }
-        
-        request.httpBody = encoded
-        request.httpMethod = "POST"
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.progress = .failedWithError(error: error)
-                    completion(false)
-                    return
-                }
-                
-                if let response = response as? HTTPURLResponse {
-                    switch response.statusCode {
-                    case (200..<300):
-                        self.progress = .finished
-                        completion(true)
-                    default:
-                        self.progress = .failed
-                        
-                        // 에러 바디 확인
-                        if let data = data, let decoded = try? JSONDecoder().decode(ErrorBody.self, from: data)  {
-                            print(decoded)
-                        }
-                        
-                        completion(false)
-                    }
-                }
-            }
-        }
-        .resume()
-    }
-    
+    /// id: Place id
     func deleteReview(id: String, completion: @escaping (Bool) -> Void) {
         self.progress = .inProcess
 
-        guard let request = authorizedRequest(method: "DELETE", api: "/me/reviews/\(id)") else {
+        guard let request = authorizedRequest(method: "DELETE", api: "/me/places/\(id)/review") else {
             completion(false)
             return
         }
@@ -227,6 +179,48 @@ class PlaceDetailViewModel: ObservableObject {
         }
         .resume()
     }
+    
+    /// id: Place id, comment: 수정할 코멘트
+    func postReview(id: String, comment: String, completion: @escaping (Bool) -> Void) {
+        self.progress = .inProcess
+
+        guard let request = authorizedRequest(method: "PUT", api: "/me/places/\(id)/review") else {
+            completion(false)
+            return
+        }
+                    
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.progress = .failedWithError(error: error)
+                    completion(false)
+                    return
+                }
+                
+                if let response = response as? HTTPURLResponse {
+                    switch response.statusCode {
+                    case (200..<300):
+                        self.progress = .finished
+                        let index = self.reviews.firstIndex{ $0.id == id }!
+                        self.reviews.remove(at: index)
+                        
+                        completion(true)
+                    default:
+                        self.progress = .failed
+                        
+                        // 에러 바디 확인
+                        if let data = data, let decoded = try? JSONDecoder().decode(ErrorBody.self, from: data)  {
+                            print(decoded)
+                        }
+                        
+                        completion(false)
+                    }
+                }
+            }
+        }
+        .resume()
+    }
+
     
     init(info placeInfo: PlaceInfo) {
         self.placeInfo = placeInfo
