@@ -41,7 +41,8 @@ public func authorizedRequest(method: String, api: String) -> URLRequest? {
     return request
 }
 
-public func authorizedRequest<T: Encodable>(method: String, api: String, body: T) -> URLRequest? {
+    /// DO NOT ENCODE BODY
+public func authorizedRequest<T: Encodable>(method: String, api: String, body: T) -> URLRequest?  {
     guard let baseUrl = URL(string: "https://dev.place.tk/api/v1" + api) else {
         return nil
     }
