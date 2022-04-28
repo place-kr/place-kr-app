@@ -56,6 +56,8 @@ struct TextView: UIViewRepresentable {
 struct CommentAlertView: View {
     @Binding var text: String
     @State var clicked = false
+    
+    var isEdit: Bool
     let action: () -> Void
     
     var body: some View {
@@ -63,7 +65,7 @@ struct CommentAlertView: View {
             Text("플레이스 한줄 평")
                 .font(.basic.bold21)
                 .padding(.top, 40)
-            Text("플레이스를 방문하셨나요? 평가를 남겨보세요")
+            Text(isEdit ? "새로운 리뷰를 남겨보세요" : "플레이스를 방문하셨나요? 평가를 남겨보세요")
                 .font(.basic.light14)
                 .padding(.bottom, 15)
             

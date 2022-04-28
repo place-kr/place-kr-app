@@ -247,13 +247,8 @@ class PlaceDetailViewModel: ObservableObject {
     func editReview(id: String, comment: String, completion: @escaping (Bool) -> Void) {
         self.progress = .inProcess
 
-        let body = ["content" : comment]
-        guard let encoded = try? JSONEncoder().encode(body) else {
-            completion(false)
-            return
-        }
-        
-        guard let request = authorizedRequest(method: "PUT", api: "/me/places/\(id)/review", body: encoded) else {
+        let body = ReviewBody(content: comment)
+        guard let request = authorizedRequest(method: "PUT", api: "/me/places/\(id)/review", body: body) else {
             completion(false)
             return
         }
@@ -283,7 +278,8 @@ class PlaceDetailViewModel: ObservableObject {
                         self.progress = .failed
                         
                         // 에러 바디 확인
-                        if let data = data, let decoded = try? JSONDecoder().decode(ErrorBody.self, from: data)  {
+                        if let data = data, let decoded = try? JSONDecoder().decode(ReviewErrorBody.self, from: data)  {
+                            print(String(decoding: data, as: UTF8.self))
                             print(decoded)
                         }
                         
@@ -312,6 +308,7 @@ struct PlaceDetailView: View {
     
     @State var showAlert = false
     @State var bodyType: AlertBody = .error
+    @State var commentBodyType: CommentAlertBody = .new
     
     let placeInfo: PlaceInfo
 
@@ -376,38 +373,9 @@ struct PlaceDetailView: View {
             }
             .background(Color("grayBackground").edgesIgnoringSafeArea(.bottom))
         }
-        .showAlert(show: $showAddComment, alert: CommentAlertView(
-            // MARK: - 입력완료 버튼
-            text: $commentText,
-            action: {
-                viewModel.postReview(id: self.viewModel.placeInfo.id, comment: self.commentText) {
-                    result in
-                    // MARK: - 에러 패턴매칭
-                    switch result {
-                    case .success(()):
-                        self.viewModel.getReviews(id: placeInfo.id, refresh: true)
-                        break
-                    case .failure(let error):
-                        switch error {
-                        case URLError.cancelled:
-                            print("Duplicate")
-                            self.bodyType = .duplicate
-                            self.showAlert = true
-                            break
-                        default:
-                            self.bodyType = .error
-                            self.showAlert = true
-                            break
-                        }
-                        self.commentText = ""
-                    }
-                }
-            withAnimation(.spring()) {
-                self.showAddComment = false
-            }
-        }))
+        .showAlert(show: $showAddComment, alert: makeAlertBody(self.commentBodyType))
         .alert(isPresented: $showAlert) {
-            self.alertBody(self.bodyType)
+            self.makeAlertBody(self.bodyType)
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)
@@ -422,7 +390,12 @@ extension PlaceDetailView {
         case duplicate
     }
     
-    func alertBody(_ case: AlertBody) -> Alert {
+    enum CommentAlertBody {
+        case new
+        case edit
+    }
+    
+    func makeAlertBody(_ case: AlertBody) -> Alert {
         switch `case` {
         case .error:
             return basicSystemAlert
@@ -442,11 +415,72 @@ extension PlaceDetailView {
         }
     }
     
+    func makeAlertBody(_ case: CommentAlertBody) -> some View {
+        switch `case` {
+        case .new:
+            return CommentAlertView(
+                // MARK: - 입력완료 버튼
+                text: $commentText,
+                isEdit: false, action: {
+                    viewModel.postReview(id: self.viewModel.placeInfo.id, comment: self.commentText) {
+                        result in
+                        // MARK: - 에러 패턴매칭
+                        switch result {
+                        case .success(()):
+                            self.viewModel.getReviews(id: placeInfo.id, refresh: true)
+                            break
+                        case .failure(let error):
+                            switch error {
+                            case URLError.cancelled:
+                                print("Duplicate")
+                                self.bodyType = .duplicate
+                                self.showAlert = true
+                                break
+                            default:
+                                self.bodyType = .error
+                                self.showAlert = true
+                                break
+                            }
+                            self.commentText = ""
+                        }
+                    }
+                    withAnimation(.spring()) {
+                        self.showAddComment = false
+                    }
+                })
+        case .edit:
+            return CommentAlertView(
+                // MARK: - 입력완료 버튼
+                text: $commentText, isEdit: true,
+                action: {
+                    viewModel.editReview(id: self.viewModel.placeInfo.id, comment: self.commentText) {
+                        result in
+                        // MARK: - 에러 패턴매칭
+                        switch result {
+                        case true:
+                            self.viewModel.getReviews(id: placeInfo.id, refresh: true)
+                            break
+                        case false:
+                            self.bodyType = .error
+                            self.showAlert = true
+                            break
+                        }
+                        
+                        self.commentText = ""
+                    }
+                withAnimation(.spring()) {
+                    self.showAddComment = false
+                }
+            })
+        }
+    }
+    
     var LeaveCommentButton: some View {
         Button(action: {
             withAnimation(.spring()) {
                 self.showAddComment = true
             }
+            self.commentBodyType = .new
         }) {
             HStack {
                 Spacer()
@@ -584,12 +618,17 @@ extension PlaceDetailView {
     // MARK: 삭제 수정 버튼
     func EditAndDeleteButtons(id: String) -> some View {
         return HStack(spacing: 2.5) {
-            Button(action: {}) {
+            Button(action: {
+                withAnimation(.spring()) {
+                    showAddComment = true
+                }
+                self.commentBodyType = .edit
+            }) {
                 Text("수정")
             }
             .font(.basic.bold10)
             
-            Text("|")
+            Text("ㅣ")
             
             Button(action: {
                 // 삭제 확인 얼러트 띄우기
