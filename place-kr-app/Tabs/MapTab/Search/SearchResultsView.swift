@@ -91,11 +91,15 @@ struct SearchResultsView: View {
                             }
                         }
                     }
+                } else {
+                    // 여기에 안 넣고 그냥 넣으면 배경이 말려올라감
+                    Spacer()
                 }
             } else {
                 Spacer()
                 CustomProgressView
             }
+            
         }
         .onAppear {
             self.viewModel.searchKeyword = originalKeyword
