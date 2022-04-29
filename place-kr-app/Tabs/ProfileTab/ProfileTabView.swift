@@ -26,6 +26,10 @@ struct ProfileTabView: View {
                     Text("공지사항")
                 }
                 
+                NavigationLink(destination: { Text("\(UserInfoManager.userName ?? "")") }) {
+                    Text("나의 정보")
+                }
+                
                 NavigationLink(destination: { OpenSourcesLicences() }) {
                     Text("오픈소스 라이선스")
                 }

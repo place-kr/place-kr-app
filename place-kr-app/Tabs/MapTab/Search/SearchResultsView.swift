@@ -96,8 +96,6 @@ struct SearchResultsView: View {
                 Spacer()
                 CustomProgressView
             }
-            
-            Spacer()
         }
         .onAppear {
             self.viewModel.searchKeyword = originalKeyword
@@ -146,7 +144,7 @@ extension SearchResultsView {
                 .resizable()
                 .foregroundColor(.gray.opacity(0.3))
                 .frame(width: 40, height: 40)
-            Spacer()
+                .padding(.bottom, 80)
             
             Text("찾으시는 플레이스가 없습니다")
                 .font(.system(size: 17, weight: .bold))

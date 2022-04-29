@@ -11,6 +11,10 @@ import SDWebImageSwiftUI
 
 struct ReviewBody: Encodable {
     let content: String
+    
+    enum CodingKeys: String, CodingKey {
+        case content = "content"
+    }
 }
 
 struct ReviewResponse: Decodable {
@@ -69,6 +73,15 @@ struct ReviewResponse: Decodable {
     }
 }
 
+struct ReviewErrorBody: Decodable {
+    let message: String
+    let details: Detail
+    
+    struct Detail: Decodable {
+        let ALREADY_REVIEWED: String?
+    }
+}
+
 class PlaceDetailViewModel: ObservableObject {
     typealias Review = ReviewResponse.Review
     
@@ -80,6 +93,7 @@ class PlaceDetailViewModel: ObservableObject {
     
     var nextPage: URL?
     
+    /// id: Place ID
     func getReviews(id: String, nextUrl: URL? = nil, refresh: Bool = false) {
         self.progress = .inProcess
         
@@ -139,26 +153,20 @@ class PlaceDetailViewModel: ObservableObject {
         }
         .resume()
     }
-    
-    func postReview(id: String , comment: String, completion: @escaping (Bool) -> Void) {
+    /// id: Place id
+    func deleteReview(id: String, completion: @escaping (Bool) -> Void) {
         self.progress = .inProcess
 
-        guard var request = PlaceSearchManager.authorizedRequest(url: "https://dev.place.tk/api/v1/places/\(id)/reviews") else {
-            self.progress = .failed
-            completion(false)
-            return
-        }
-                
-        let body = ReviewBody(content: comment)
-        guard let encoded = try? JSONEncoder().encode(body) else {
-            self.progress = .failed
+        guard let request = authorizedRequest(method: "DELETE", api: "/me/places/\(id)/review") else {
             completion(false)
             return
         }
         
-        request.httpBody = encoded
-        request.httpMethod = "POST"
-        
+        guard let userName = UserInfoManager.userName else {
+            completion(false)
+            return
+        }
+                    
         URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
@@ -171,6 +179,9 @@ class PlaceDetailViewModel: ObservableObject {
                     switch response.statusCode {
                     case (200..<300):
                         self.progress = .finished
+                        let index = self.reviews.firstIndex{ $0.reviewer.nickname == userName }! // TODO: Change to ID later
+                        self.reviews.remove(at: index)
+                        
                         completion(true)
                     default:
                         self.progress = .failed
@@ -188,10 +199,61 @@ class PlaceDetailViewModel: ObservableObject {
         .resume()
     }
     
-    func deleteReview(id: String, completion: @escaping (Bool) -> Void) {
+    /// id: Place id, comment: 새 코멘트
+    func postReview(id: String, comment: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        self.progress = .inProcess
+        
+        guard let request = authorizedRequest(method: "POST", api: "/me/places/\(id)/review", body: ReviewBody(content: comment)) else {
+            completion(.failure(URLError(.badURL)))
+            return
+        }
+                    
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.progress = .failedWithError(error: error)
+                    completion(.failure(URLError(.unknown)))
+                    return
+                }
+                
+                if let response = response as? HTTPURLResponse {
+                    switch response.statusCode {
+                    case (200..<300):
+                        self.progress = .finished
+                        completion(.success(()))
+                    default:
+                        print(response)
+                        self.progress = .failed
+                        
+                        // 에러 바디 확인
+                        if let data = data,
+                            let decoded = try? JSONDecoder().decode(ReviewErrorBody.self, from: data) {
+                            print(String(decoding: data, as: UTF8.self))
+                            if decoded.details.ALREADY_REVIEWED != nil {
+                                completion(.failure(URLError(.cancelled)))
+                                return
+                            }
+                        }
+                        
+                        completion(.failure(URLError(.unknown)))
+                    }
+                }
+            }
+        }
+        .resume()
+    }
+    
+    /// id: Place id, comment: 수정할 코멘트
+    func editReview(id: String, comment: String, completion: @escaping (Bool) -> Void) {
         self.progress = .inProcess
 
-        guard let request = authorizedRequest(method: "DELETE", api: "/me/reviews/\(id)") else {
+        let body = ReviewBody(content: comment)
+        guard let request = authorizedRequest(method: "PUT", api: "/me/places/\(id)/review", body: body) else {
+            completion(false)
+            return
+        }
+        
+        guard let userName = UserInfoManager.userName else {
             completion(false)
             return
         }
@@ -208,7 +270,7 @@ class PlaceDetailViewModel: ObservableObject {
                     switch response.statusCode {
                     case (200..<300):
                         self.progress = .finished
-                        let index = self.reviews.firstIndex{ $0.id == id }!
+                        let index = self.reviews.firstIndex{ $0.reviewer.nickname == userName }! // TODO: Change to ID later
                         self.reviews.remove(at: index)
                         
                         completion(true)
@@ -216,7 +278,8 @@ class PlaceDetailViewModel: ObservableObject {
                         self.progress = .failed
                         
                         // 에러 바디 확인
-                        if let data = data, let decoded = try? JSONDecoder().decode(ErrorBody.self, from: data)  {
+                        if let data = data, let decoded = try? JSONDecoder().decode(ReviewErrorBody.self, from: data)  {
+                            print(String(decoding: data, as: UTF8.self))
                             print(decoded)
                         }
                         
@@ -245,6 +308,7 @@ struct PlaceDetailView: View {
     
     @State var showAlert = false
     @State var bodyType: AlertBody = .error
+    @State var commentBodyType: CommentAlertBody = .new
     
     let placeInfo: PlaceInfo
 
@@ -309,31 +373,9 @@ struct PlaceDetailView: View {
             }
             .background(Color("grayBackground").edgesIgnoringSafeArea(.bottom))
         }
-        .showAlert(show: $showAddComment, alert: CommentAlertView(
-            // MARK: - 입력완료 버튼
-            text: $commentText,
-            action: {
-                viewModel.postReview(id: self.viewModel.placeInfo.id, comment: self.commentText) { result in
-                    switch result {
-                    case true:
-                        self.viewModel.getReviews(id: placeInfo.id, refresh: true)
-                        self.showAddComment = false
-                        break
-                    case false:
-                        self.showAlert = true
-                        self.showAddComment = false
-                        break
-                    }
-                    
-                    self.commentText = ""
-                }
-            
-            withAnimation(.spring()) {
-                self.showAddComment = false
-            }
-        }))
+        .showAlert(show: $showAddComment, alert: makeAlertBody(self.commentBodyType))
         .alert(isPresented: $showAlert) {
-            self.alertBody(self.bodyType)
+            self.makeAlertBody(self.bodyType)
         }
         .navigationBarTitle("")
         .navigationBarHidden(true)
@@ -345,9 +387,15 @@ extension PlaceDetailView {
     enum AlertBody {
         case error
         case deleteConfirm(id: String)
+        case duplicate
     }
     
-    func alertBody(_ case: AlertBody) -> Alert {
+    enum CommentAlertBody {
+        case new
+        case edit
+    }
+    
+    func makeAlertBody(_ case: AlertBody) -> Alert {
         switch `case` {
         case .error:
             return basicSystemAlert
@@ -357,9 +405,71 @@ extension PlaceDetailView {
                          secondaryButton: .default(Text("Ok")) {
                 viewModel.deleteReview(id: id) { result in
                     if result == false {
-                        showAlert = true
                         bodyType = .error
+                        showAlert = true
                     }
+                }
+            })
+        case .duplicate:
+            return basicSystemAlert(title: "이미 작성된 리뷰가 존재합니다", content: "리뷰를 다시 작성하려면 수정하기를 이용해주세요")
+        }
+    }
+    
+    func makeAlertBody(_ case: CommentAlertBody) -> some View {
+        switch `case` {
+        case .new:
+            return CommentAlertView(
+                // MARK: - 입력완료 버튼
+                text: $commentText,
+                isEdit: false, action: {
+                    viewModel.postReview(id: self.viewModel.placeInfo.id, comment: self.commentText) {
+                        result in
+                        // MARK: - 에러 패턴매칭
+                        switch result {
+                        case .success(()):
+                            self.viewModel.getReviews(id: placeInfo.id, refresh: true)
+                            break
+                        case .failure(let error):
+                            switch error {
+                            case URLError.cancelled:
+                                print("Duplicate")
+                                self.bodyType = .duplicate
+                                self.showAlert = true
+                                break
+                            default:
+                                self.bodyType = .error
+                                self.showAlert = true
+                                break
+                            }
+                            self.commentText = ""
+                        }
+                    }
+                    withAnimation(.spring()) {
+                        self.showAddComment = false
+                    }
+                })
+        case .edit:
+            return CommentAlertView(
+                // MARK: - 입력완료 버튼
+                text: $commentText, isEdit: true,
+                action: {
+                    viewModel.editReview(id: self.viewModel.placeInfo.id, comment: self.commentText) {
+                        result in
+                        // MARK: - 에러 패턴매칭
+                        switch result {
+                        case true:
+                            self.viewModel.getReviews(id: placeInfo.id, refresh: true)
+                            break
+                        case false:
+                            self.bodyType = .error
+                            self.showAlert = true
+                            break
+                        }
+                        
+                        self.commentText = ""
+                    }
+                withAnimation(.spring()) {
+                    self.showAddComment = false
                 }
             })
         }
@@ -370,6 +480,7 @@ extension PlaceDetailView {
             withAnimation(.spring()) {
                 self.showAddComment = true
             }
+            self.commentBodyType = .new
         }) {
             HStack {
                 Spacer()
@@ -461,7 +572,7 @@ extension PlaceDetailView {
                             
                             // TODO: Update here
                             if review.reviewer.nickname == UserInfoManager.userName {
-                                EditAndDeleteButtons(id: review.id)
+                                EditAndDeleteButtons(id: self.viewModel.placeInfo.id)
                             }
                         }
                     }
@@ -507,17 +618,22 @@ extension PlaceDetailView {
     // MARK: 삭제 수정 버튼
     func EditAndDeleteButtons(id: String) -> some View {
         return HStack(spacing: 2.5) {
-            Button(action: {}) {
+            Button(action: {
+                withAnimation(.spring()) {
+                    showAddComment = true
+                }
+                self.commentBodyType = .edit
+            }) {
                 Text("수정")
             }
             .font(.basic.bold10)
             
-            Text("|")
+            Text("ㅣ")
             
             Button(action: {
                 // 삭제 확인 얼러트 띄우기
-                showAlert = true
                 bodyType = .deleteConfirm(id: id)
+                showAlert = true
             }) {
                 Text("삭제")
             }

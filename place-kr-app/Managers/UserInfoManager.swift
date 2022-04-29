@@ -18,48 +18,6 @@ class UserInfoManager {
     static let searchHistoryKey = "searchHistory"
     static let userNameKey = "userName"
     
-    /// 유저 정보를 저장함. 애플은 나중에 이메일을 알려주지 않으므로 잘 저장해놓아야 함.
-//    static func saveAppleUserInfo(_ info: AppleUserData) {
-//        let encoder = PropertyListEncoder()
-//
-//        if let email = info.email,
-//           let name = info.name,
-//           let idToken = info.identityToken,
-//           let authCode = info.authCode {
-//            let id = info.identifier
-//            let userInfo = AppleUserInfo(id: id, email: email, name: name.description, idToken: idToken, authCode: authCode)
-//
-//            do {
-//                let data = try encoder.encode(userInfo)
-//                UserDefaults.standard.set(data, forKey: userInfoKey)
-//                print(userInfo, data)
-//                print("Successfully saved apple user info")
-//            } catch {
-//                print("Error while saving apple user info")
-//                print(error)
-//            }
-//        } else {
-//            print("Error while saving apple user info")
-//            fatalError()
-//        }
-//    }
-//
-//    /// 애플 유저 인포메이션을 로드
-//    static func loadUserInfo() -> AppleUserInfo? {
-//        let decoder = PropertyListDecoder()
-//        var userInfo: AppleUserInfo?
-//        do {
-//            if let data = UserDefaults.standard.object(forKey: userInfoKey) as? Data {
-//                userInfo = try decoder.decode(AppleUserInfo.self, from: data)
-//            } else {
-//                print("There's no apple user data")
-//            }
-//        } catch {
-//            print(error)
-//        }
-//        return userInfo
-//    }
-    
     /// 유저 토큰을 유저 디폴트에 저장
     static func saveUserToken(_ token: String) {
         UserDefaults.standard.set(token, forKey: tokenKey)
@@ -130,9 +88,42 @@ class UserInfoManager {
         UserDefaults.standard.set(name, forKey: UserInfoManager.userNameKey)
     }
     
+    /// 유저 닉네임
+    /// 항상 최신의 상태로 업데이트 되어야 함
     static var userName: String? {
         let name = UserDefaults.standard.object(forKey: UserInfoManager.userNameKey) as? String
         return name
+    }
+    
+    // return User
+    static func fetchUserInfoFromServer(completion: @escaping (User?) -> ()) {
+        guard let request = authorizedRequest(method: "GET", api: "/me") else {
+            completion(nil)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, _ in
+            print("User info fetched")
+            
+            guard let response = response as? HTTPURLResponse, let data = data else {
+                completion(nil)
+                return
+            }
+
+            if !(200..<300 ~= response.statusCode) {
+                print(response.statusCode, String(decoding: data, as: UTF8.self))
+                completion(nil)
+                return
+            } else {
+                guard let decoded = try? JSONDecoder().decode(User.self, from: data) else {
+                    completion(nil)
+                    return
+                }
+                
+                completion(decoded)
+            }
+        }
+        .resume()
     }
 }
 
@@ -144,4 +135,10 @@ extension UserInfoManager {
         let idToken: String
         let authCode: String
     }
+}
+
+struct User: Codable {
+    let identifier: String
+    let email: String
+    let nickname: String
 }

@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// 유저의 로그인, 상태에 대해 관리하는 클래스
+/// 스태틱 사용하지 않으며 최상위에서 환경오브젝트로 작동
 class LoginManager: ObservableObject {
     typealias AppleUserInfo = UserInfoManager.AppleUserInfo
     @Published var status: Status = .notLoggedIn
@@ -110,6 +112,16 @@ class LoginManager: ObservableObject {
         guard let status = UserInfoManager.isLoggenIn else { return }
         self.status = status == true ? .loggedIn : .notLoggedIn
         self.isRegistered = UserInfoManager.isRegistered
+        
+        // TODO: Refactor this
+        UserInfoManager.fetchUserInfoFromServer { user in
+            guard let user = user else {
+                print("Something wrong while fetching user")
+                return
+            }
+            
+            UserInfoManager.setUserName(to: user.nickname)
+        }
     }
 }
 
