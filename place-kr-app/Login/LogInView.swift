@@ -97,7 +97,7 @@ struct LogInView: View {
                 
                 NaverLoginButtonView()
                     .environmentObject(loginManager)
-                    .padding(.bottom, 14)
+                    .padding(.bottom, 10)
 
                 AppleLogInView(viewModel: AppleLoginViewModel(window: window))
                     .frame(height: 54)

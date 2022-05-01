@@ -74,11 +74,24 @@ struct MapView: View {
                                 mapViewModel.mapNeedsReload = false
                             }
                         }) {
-                            Image(systemName: "arrow.clockwise.circle.fill")
-                                .resizable()
-                                .frame(width: 35, height: 35)
-                                .foregroundColor(.blue)
-                                .shadow(radius: 5)
+                            // MARK: 버튼 디자인
+                            HStack {
+                                Image(systemName: "arrow.clockwise")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .font(Font.title.weight(.bold))
+                                    .frame(width: 14, height: 14)
+                                    .foregroundColor(.gray.opacity(0.7))
+                                Text("플레이스 불러오기")
+                                    .foregroundColor(.black)
+                                    .font(.basic.normal14)
+                            }
+                            .padding(.vertical, 7)
+                            .padding(.horizontal, 10)
+                            .background(
+                                Capsule().fill(.white)
+                                    .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: 0)
+                            )
                         }
                         .transition(.opacity)
                         .zIndex(1)
