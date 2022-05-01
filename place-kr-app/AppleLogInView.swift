@@ -20,22 +20,55 @@ struct AppleLogInView: View {
     }
     
     var body: some View {
-        SignInWithApple()
-            .alert(isPresented: $showWarning) {
-                basicSystemAlert(title: "오류!", content: self.warningContent)
-            }
-            .onTapGesture {
-                loginManger.status = .inProgress
-                viewModel.showAppleLogin { result in
-                    switch result {
-                    case .success(_):
-                        loginManger.socialAuthResultHandler(result)
-                    case .failure(let error):
-                        showWarning = true
-                        warningContent = error.description
-                    }
+        Button(action: {
+            loginManger.status = .inProgress
+            viewModel.showAppleLogin { result in
+                switch result {
+                case .success(_):
+                    loginManger.socialAuthResultHandler(result)
+                case .failure(let error):
+                    showWarning = true
+                    warningContent = error.description
                 }
             }
+        }) {
+            HStack {
+                Spacer()
+                Image("apple")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 15, height: 15)
+                Text("Apple로 시작하기")
+                    .font(.basic.normal15)
+                Spacer()
+            }
+        }
+        .alert(isPresented: $showWarning) {
+            basicSystemAlert(title: "오류!", content: self.warningContent)
+        }
+        .frame(height: 54)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.black)
+        )
+        .foregroundColor(.white)
+        
+//        SignInWithApple()
+//            .alert(isPresented: $showWarning) {
+//                basicSystemAlert(title: "오류!", content: self.warningContent)
+//            }
+//            .onTapGesture {
+//                loginManger.status = .inProgress
+//                viewModel.showAppleLogin { result in
+//                    switch result {
+//                    case .success(_):
+//                        loginManger.socialAuthResultHandler(result)
+//                    case .failure(let error):
+//                        showWarning = true
+//                        warningContent = error.description
+//                    }
+//                }
+//            }
     }
 }
 

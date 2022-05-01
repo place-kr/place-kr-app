@@ -97,12 +97,12 @@ struct LogInView: View {
                 
                 NaverLoginButtonView()
                     .environmentObject(loginManager)
-                
+                    .padding(.bottom, 14)
+
                 AppleLogInView(viewModel: AppleLoginViewModel(window: window))
                     .frame(height: 54)
                     .environment(\.window, window)
                     .environmentObject(loginManager)
-                    .padding(.top, 14)
                     .padding(.bottom, 60)
                 
                 ZStack {

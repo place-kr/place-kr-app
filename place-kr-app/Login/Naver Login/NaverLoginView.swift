@@ -19,8 +19,11 @@ struct NaverLoginButtonView: View {
             HStack {
                 Spacer()
                 Image("naver")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 15, height: 15)
                 Text("Naver로 시작하기")
-                    .font(.system(size: 20))
+                    .font(.basic.normal15)
                 Spacer()
             }
         }
@@ -29,8 +32,8 @@ struct NaverLoginButtonView: View {
         }
         .frame(height: 54)
         .background(
-            RoundedRectangle(cornerRadius: 5)
-                .fill(.black)
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.naver)
         )
 //                .fill(Color("naver")))
         .foregroundColor(.white)
