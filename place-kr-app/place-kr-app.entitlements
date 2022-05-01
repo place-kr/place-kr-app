@@ -6,5 +6,10 @@
 	<array>
 		<string>Default</string>
 	</array>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:plaist.page.link</string>
+		<string>webcredentials:plaist.page.link</string>
+	</array>
 </dict>
 </plist>
