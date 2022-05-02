@@ -242,7 +242,7 @@ extension MyPlaceView {
                 }
             }) {
                 HStack(spacing: 9) {
-                    Image(systemName: "square")
+                    Image("editShare")
                     Text("공유하기")
                     Spacer()
                 }
@@ -256,7 +256,7 @@ extension MyPlaceView {
                 }
             }) {
                 HStack(spacing: 9) {
-                    Image(systemName: "pencil")
+                    Image("editName")
                     Text("리스트명 변경하기")
                     Spacer()
                 }
@@ -266,7 +266,7 @@ extension MyPlaceView {
 
             navigator(list: self.selectedList, label:
                 HStack(spacing: 9) {
-                    Image(systemName: "mappin")
+                    Image("editPlace")
                     Text("플레이스 편집하기")
                 Spacer()
                 }
@@ -280,7 +280,7 @@ extension MyPlaceView {
                 self.showDeleteAlert = true
             }) {
                 HStack(spacing: 9) {
-                    Image(systemName: "trash")
+                    Image("editDelete")
                     Text("삭제하기")
                     Spacer()
                 }
