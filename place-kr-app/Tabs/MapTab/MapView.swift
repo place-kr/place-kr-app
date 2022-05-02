@@ -48,7 +48,6 @@ struct MapView: View {
             UIMapView(viewModel: mapViewModel)
                 .edgesIgnoringSafeArea(.vertical)
             
-            
             VStack(spacing: 10) {
                 /// 검색창
                 HStack(spacing: 11) {
@@ -100,6 +99,22 @@ struct MapView: View {
                 .padding(.horizontal, 15)
                 
                 Spacer()
+                
+                HStack {
+                    Spacer()
+                    
+                    //MARK: - 현위치 버튼
+                    Button(action: { mapViewModel.isCurrentPositionRequested = true }) {
+                        Image(systemName: "scope")
+                            .font(Font.body.weight(.bold))
+                            .foregroundColor(.black)
+                            .padding(10)
+                            .background(Circle().fill(.white)
+                                .shadow(color: .gray.opacity(0.5),
+                                        radius: 10, x: 0, y: 0))
+                    }
+                    .padding(17)
+                }
             }
             .zIndex(1)
         }
