@@ -67,5 +67,11 @@ struct RequestCardView: View {
         self.address = place.address
         self.status = place.parsedStatus
    }
+    
+    init(name: String, address: String) {
+        self.name = name
+        self.address = address
+        self.status = ""
+    }
 }
 

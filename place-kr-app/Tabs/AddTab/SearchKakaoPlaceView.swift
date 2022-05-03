@@ -13,6 +13,7 @@ class SearchKakaoPlaceViewModel: ObservableObject {
     
     @Published var searchResult = [KakaoPlaceInfo]()
     @Published var progress: Progress = .ready
+    @Published var isResultEmpty = false
     @Published var page: Int? = 1
         
     var previousQueryText = String()
@@ -40,6 +41,12 @@ class SearchKakaoPlaceViewModel: ObservableObject {
                 self.subscriptions.removeAll()
             }, receiveValue: { [weak self] value in
                 guard let self = self else { return }
+                
+                if value.documents.isEmpty {
+                    self.isResultEmpty = true
+                } else {
+                    self.isResultEmpty = false
+                }
                                 
                 let placeInfos = value.documents.map{ KakaoPlaceInfo(document: $0) }
                 if self.page == 1 {
@@ -78,41 +85,48 @@ struct SearchKakaoPlaceView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Spacer()
+                Image(systemName: "chevron.left")
+                    .foregroundColor(.black)
                 
-                Button(action: { presentationMode.wrappedValue.dismiss() }) {
-                    Text("닫기")
+                SearchBarView($text, "검색 장소를 입력하세요",
+                              isFocused: self.$isFocused, bgColor: Color(red: 243/255,  green: 243/255, blue: 243/255),
+                              height: 48)
+                {
+                    if self.viewModel.previousQueryText == text {
+                        return
+                    }
+                    
+                    // 쿼리 리턴 시 액션
+                    self.viewModel.page = 1
+                    self.viewModel.previousQueryText = text
+                    self.viewModel.search(name: text, page: 1) { _ in }
                 }
-                .foregroundColor(.black)
-            }
-            .padding(.vertical, 20)
-            .padding(.horizontal, 15)
-            
-            SearchBarView($text, "키워드로 검색",
-                          isFocused: self.$isFocused, bgColor: .white,
-                          height: 40, isStroked: true)
-            {
-                if self.viewModel.previousQueryText == text {
-                    return
-                }
-                
-                // 쿼리 리턴 시 액션
-                self.viewModel.page = 1
-                self.viewModel.previousQueryText = text
-                self.viewModel.search(name: text, page: 1) { _ in }
             }
             .padding(.top, 10)
             .padding(.horizontal, 15)
             
-            if viewModel.searchResult.isEmpty {
-                Text("이렇게 검색해보세요")
+            if viewModel.searchResult.isEmpty && viewModel.isResultEmpty == false {
+                Text("등록하고 싶은 플레이스를 검색해보세요")
                     .font(.basic.bold17)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 15)
+                
+                Text("지도를 통해 주소를 겁색합니다")
+                    .font(.basic.normal14)
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 15)
 
-            } else {
+                Text("예) 서욽특별시 강남구 23길 2")
+                    .font(.basic.bold14)
+                    .padding(.top, 5)
+                    .padding(.horizontal, 15)
+            }
+            else if viewModel.isResultEmpty {
+                Text("검색 결과가 없습니다.")
+            }
+            else {
                 Text("검색 결과")
                     .font(.basic.bold17)
                     .padding(.vertical, 10)
@@ -139,7 +153,7 @@ struct SearchKakaoPlaceView: View {
                             Divider()
                                 .padding(.vertical, 5)
                             
-                            RowView(name: result.name, roadAddress: result.roadAddress)
+                            RequestCardView(name: result.name, address: result.roadAddress)
                                 .onTapGesture {
                                     completion(result)
                                     presentationMode.wrappedValue.dismiss()
