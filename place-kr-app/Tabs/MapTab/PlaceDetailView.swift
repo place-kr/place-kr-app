@@ -24,7 +24,7 @@ struct ReviewResponse: Decodable {
     let results: [Review]
       
     struct Review: Decodable, Identifiable {
-        let id: String
+        let id = UUID()
         let reviewer: Reviewer
         let content: String
         let date: String
@@ -63,7 +63,6 @@ struct ReviewResponse: Decodable {
         enum CodingKeys: String, CodingKey {
             case reviewer, content
             case date = "date_created"
-            case id = "identifier"
         }
         
         struct Reviewer: Decodable {
@@ -127,15 +126,20 @@ class PlaceDetailViewModel: ObservableObject {
                     case (200..<300):
                         self.progress = .finished
                     default:
+                        print(response)
                         self.progress = .failed
                     }
                 }
             }
             
             if let data = data {
-                if let decoded = try? JSONDecoder().decode(ReviewResponse.self, from: data) {
+                do {
+                    let decoded = try JSONDecoder().decode(ReviewResponse.self, from: data)
+                    print(decoded)
+                    
                     DispatchQueue.main.async {
                         let reviews = decoded.results
+                        
                         if refresh {
                             self.reviews = reviews
                         } else {
@@ -147,6 +151,12 @@ class PlaceDetailViewModel: ObservableObject {
                             self.nextPage = url
                         }
                         
+                        self.progress = .finished
+                    }
+                } catch(let error) {
+                    print(error)
+                    DispatchQueue.main.async {
+                        self.progress = .failed
                     }
                 }
             }

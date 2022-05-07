@@ -22,7 +22,6 @@ struct MyPlaceView: View {
     @State var showShareSheet = false
     @State var showEditSheet = false
     @State var showNewListAlert = false
-    @State var showDeleteAlert = false
     @State var showWarning = false
     
     @State var alertCase: AlertCase = .error

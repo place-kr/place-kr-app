@@ -85,30 +85,7 @@ struct PlaceListDetailView: View {
                                 ForEach(viewModel.places, id: \.id) { wrapper in
                                     let place = wrapper.placeInfo
                                     // MARK: - 카드 뷰
-                                    LightCardView(place: place, isFavorite: true, starAction: {
-                                        guard let index = viewModel.places.firstIndex(of: wrapper) else { return }
-                                        var updatedPlaces = viewModel.places
-                                        updatedPlaces.remove(at: index)
-                                        let ids = updatedPlaces.map{ $0.placeInfo.id }
-                                        
-                                        listManager.editPlacesList(listID: viewModel.list.identifier,
-                                                                   placeIDs: ids) { result in
-                                            DispatchQueue.main.async {
-                                                switch result {
-                                                case true:
-                                                    viewModel.progress = .finished
-                                                    _ = withAnimation(.spring()) {
-                                                        viewModel.places.remove(at: index)
-                                                    }
-                                                    return
-                                                case false:
-                                                    viewModel.progress = .failed
-                                                    showWarning = true
-                                                    return
-                                                }
-                                            }
-                                        }
-                                    })
+                                    LightCardView(place: place, isFavorite: true, starAction: {})
                                     .padding(10)
                                     .background(
                                         RoundedRectangle(cornerRadius: 20)
