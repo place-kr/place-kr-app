@@ -306,7 +306,7 @@ struct PlaceDetailView: View {
     @State var showAddComment = false
     @State var commentText = ""
     
-    @State var showAlert = false
+    @State var showWarning = false
     @State var bodyType: AlertBody = .error
     @State var commentBodyType: CommentAlertBody = .new
     
@@ -322,7 +322,10 @@ struct PlaceDetailView: View {
             PageHeader(title: "플레이스 정보",
                        leading: Image(systemName: "chevron.left"), leadingAction: {presentation.wrappedValue.dismiss() },
                        firstTrailing: Image("roundedStar"), firstAction: {},
-                       secondeTrailing: Image("shareLine"), secondAction: {})
+                       secondeTrailing: Image("shareLine"), secondAction: {
+                bodyType = .notImplemented
+                showWarning = true
+            })
             .padding(.vertical, 17)
             .padding(.horizontal, 15)
             
@@ -374,7 +377,7 @@ struct PlaceDetailView: View {
             .background(Color("grayBackground").edgesIgnoringSafeArea(.bottom))
         }
         .showAlert(show: $showAddComment, alert: makeAlertBody(self.commentBodyType))
-        .alert(isPresented: $showAlert) {
+        .alert(isPresented: $showWarning) {
             self.makeAlertBody(self.bodyType)
         }
         .navigationBarTitle("")
@@ -387,6 +390,7 @@ extension PlaceDetailView {
     enum AlertBody {
         case error
         case deleteConfirm(id: String)
+        case notImplemented
         case duplicate
     }
     
@@ -406,10 +410,12 @@ extension PlaceDetailView {
                 viewModel.deleteReview(id: id) { result in
                     if result == false {
                         bodyType = .error
-                        showAlert = true
+                        showWarning = true
                     }
                 }
             })
+        case .notImplemented:
+            return basicSystemAlert(title: "해당 기능은 곧 추가될 예정입니다. 조금만 기다려주세요!", content: "")
         case .duplicate:
             return basicSystemAlert(title: "이미 작성된 리뷰가 존재합니다", content: "리뷰를 다시 작성하려면 수정하기를 이용해주세요")
         }
@@ -434,11 +440,11 @@ extension PlaceDetailView {
                             case URLError.cancelled:
                                 print("Duplicate")
                                 self.bodyType = .duplicate
-                                self.showAlert = true
+                                self.showWarning = true
                                 break
                             default:
                                 self.bodyType = .error
-                                self.showAlert = true
+                                self.showWarning = true
                                 break
                             }
                             self.commentText = ""
@@ -462,7 +468,7 @@ extension PlaceDetailView {
                             break
                         case false:
                             self.bodyType = .error
-                            self.showAlert = true
+                            self.showWarning = true
                             break
                         }
                         
@@ -548,7 +554,7 @@ extension PlaceDetailView {
                         }
                     } else {
                         Spacer()
-                        Text("리뷰를 남긴 사람이 없습니다.\n직접 리뷰를 남겨보세요!\n-임시로 만들었는데 디자인 수정 사항 말씀해주세요-")
+                        Text("리뷰를 남긴 사람이 없습니다.\n직접 리뷰를 남겨보세요!")
                             .multilineTextAlignment(.center)
                             .font(.basic.normal14)
                             .foregroundColor(.gray.opacity(0.5))
@@ -633,7 +639,7 @@ extension PlaceDetailView {
             Button(action: {
                 // 삭제 확인 얼러트 띄우기
                 bodyType = .deleteConfirm(id: id)
-                showAlert = true
+                showWarning = true
             }) {
                 Text("삭제")
             }
@@ -657,7 +663,10 @@ extension PlaceDetailView {
                 }
             }
             
-            Button(action: {}) {
+            Button(action: {
+                bodyType = .notImplemented
+                showWarning = true
+            }) {
                 HStack(spacing: 9) {
                     Image("share")
                         .resizable()

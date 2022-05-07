@@ -25,6 +25,8 @@ struct MyPlaceView: View {
     @State var showDeleteAlert = false
     @State var showWarning = false
     
+    @State var alertCase: AlertCase = .error
+    
     @State var text = ""
     @State var isBottom: Bool = false
     
@@ -153,6 +155,7 @@ struct MyPlaceView: View {
                     break
                 case false:
                     viewModel.progress = .failed
+                    self.alertCase = .error
                     self.showWarning = true
                     break
                 }
@@ -179,6 +182,7 @@ struct MyPlaceView: View {
                     case false:
                         self.text = ""
                         viewModel.progress = .failed
+                        self.alertCase = .error
                         self.showWarning = true
                         break
                     }
@@ -190,27 +194,31 @@ struct MyPlaceView: View {
             }
         }))
         .alert(isPresented: $showWarning) {
-            basicSystemAlert(title: "네트워크 오류 발생", content: "잠시 후 다시 시도해주세요")
-        }
-        .alert(isPresented: $showDeleteAlert) {
-            Alert(title: Text("리스트를 삭제하시겠어요?"), primaryButton: .cancel(), secondaryButton: .default(Text("Ok"), action: {
-                guard let selectedList = self.selectedList else { return }
-                viewModel.progress = .inProcess
-                
-                listManager.deletePlaceList(id: selectedList.identifier) { result in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case true:
-                            bottomSheetPosition = .hidden
-                            viewModel.progress = .finished
-                            return
-                        case false:
-                            viewModel.progress = .failed
-                            return
+            switch alertCase {
+            case .error:
+                return basicSystemAlert(title: "네트워크 오류 발생", content: "잠시 후 다시 시도해주세요")
+            case .notImplemented:
+                return basicSystemAlert(title: "해당 기능은 곧 추가될 예정입니다. 조금만 기다려주세요!", content: "")
+            case .delete:
+                return Alert(title: Text("리스트를 삭제하시겠어요?"), primaryButton: .cancel(), secondaryButton: .default(Text("Ok"), action: {
+                    guard let selectedList = self.selectedList else { return }
+                    viewModel.progress = .inProcess
+                    
+                    listManager.deletePlaceList(id: selectedList.identifier) { result in
+                        DispatchQueue.main.async {
+                            switch result {
+                            case true:
+                                bottomSheetPosition = .hidden
+                                viewModel.progress = .finished
+                                return
+                            case false:
+                                viewModel.progress = .failed
+                                return
+                            }
                         }
                     }
-                }
-            }))
+                }))
+            }
         }
         .navigationBarTitle("") //this must be empty
         .navigationBarHidden(true)
@@ -236,10 +244,12 @@ extension MyPlaceView {
     var managePlaceList: some View {
         VStack(alignment: .leading, spacing: 15) {
             Button(action: {
-                showShareSheet = true
-                withAnimation(.spring()) {
-                    bottomSheetPosition = .hidden
-                }
+                self.alertCase = .notImplemented
+                showWarning = true
+//                showShareSshowdeleteheet = true
+//                withAnimation(.spring()) {
+//                    bottomSheetPosition = .hidden
+//                }
             }) {
                 HStack(spacing: 9) {
                     Image("editShare")
@@ -276,8 +286,8 @@ extension MyPlaceView {
             
             // 플레이스 삭제하기
             Button(action: {
-                print(showDeleteAlert)
-                self.showDeleteAlert = true
+                self.alertCase = .delete
+                self.showWarning = true
             }) {
                 HStack(spacing: 9) {
                     Image("editDelete")
@@ -290,6 +300,12 @@ extension MyPlaceView {
         .sheet(isPresented: $showShareSheet) {
             ShareSheet(activityItems: ["Hello world"])
         }
+    }
+}
+
+extension MyPlaceView {
+    enum AlertCase {
+        case error, delete, notImplemented
     }
 }
 

@@ -30,7 +30,7 @@ struct MapView: View {
     @State var navigateToRegisterNewListView = false
     @State var navigateToSearch = false
     
-    @State var showError = false
+    @State var showWarning = false
     @State var alertCase: AlertCase = .error
     
     init(selection: Binding<TabsView.Tab>, _ locationManager: LocationManager = LocationManager.shared) {
@@ -152,15 +152,17 @@ struct MapView: View {
                 self.navigateToRegisterNewListView = false
             case false:
                 self.alertCase = .error
-                self.showError = true
+                self.showWarning = true
             }
         }))
-        .alert(isPresented: self.$showError) {
+        .alert(isPresented: self.$showWarning) {
             switch alertCase {
             case .error:
                 return basicSystemAlert
             case .duplicatePlace:
                 return basicSystemAlert(title: "오류!", content: "이미 저장된 플레이스입니다")
+            case .notImplemented:
+                return basicSystemAlert(title: "해당 기능은 곧 추가될 예정입니다. 조금만 기다려주세요!", content: "")
             }
         }
     }
@@ -172,7 +174,7 @@ extension MapView {
     }
     
     enum AlertCase {
-        case error, duplicatePlace
+        case error, duplicatePlace, notImplemented
     }
     
     func markerAction(id: String) {
@@ -262,7 +264,10 @@ extension MapView {
                     Image("placeNotAdded")
                         .foregroundColor(.gray)
                 }
-                Button(action: {}) {
+                Button(action: {
+                    alertCase = .notImplemented
+                    showWarning = true
+                }) {
                     Image("share")
                         .foregroundColor(.gray)
                 }
@@ -312,7 +317,7 @@ extension MapView {
                                 
                                 if list.places.contains(selectedPlaceId) {
                                     self.alertCase = .duplicatePlace
-                                    self.showError = true
+                                    self.showWarning = true
                                     return
                                 }
                                 
@@ -326,7 +331,7 @@ extension MapView {
                                     case false:
                                         print("Network: Already exists")
                                         self.alertCase = .duplicatePlace
-                                        self.showError = true
+                                        self.showWarning = true
                                         break
                                     }
                                 }
