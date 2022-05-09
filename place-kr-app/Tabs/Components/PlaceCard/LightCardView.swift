@@ -57,7 +57,7 @@ struct LightCardView: View {
                 HStack(spacing : 4) {
                     Image(systemName: "person.fill")
                     Text(subscripts)
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.basic.normal12)
                 }
                 Spacer()
                 

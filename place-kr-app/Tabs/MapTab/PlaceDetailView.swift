@@ -342,7 +342,7 @@ struct PlaceDetailView: View {
             CustomDivider()
             
             ScrollView {
-                VStack {
+                VStack(spacing: 0) {
                     Pager(page: page, data: viewModel.images.indices, id: \.self) {
                         viewModel.images[$0]
                             .resizable()
@@ -354,19 +354,26 @@ struct PlaceDetailView: View {
                     .frame(height: 270)
                     .padding(.bottom, 21)
                     
+                    // 플레이스 이름
                     Text(placeInfo.name)
                         .font(.basic.bold21)
+                        .padding(.bottom, 8)
                     
+                    // 기여자
                     HStack(spacing: 6) {
-                        Image(systemName: "person.fill")
+                        Image("contributorBlack")
                         Text("포로리님의 플레이스")
                     }
                     .font(.basic.normal12)
+                    .padding(.bottom, 8)
                     
+                    // 카테고리 캡슐
+                    // TODO: 수정
                     Categories
+                        .padding(.bottom, 20)
                     
                     InteractionButtons
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 17)
                 }
                 .background(Color.white)
                 
@@ -505,14 +512,14 @@ extension PlaceDetailView {
                 Spacer()
             }
         }
-        .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, height: 52))
+        .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, cornerRadius: 10, height: 52))
     }
     
     var PlaceInformations: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: 1) {
             Text("플레이스 정보")
                 .font(.basic.bold21)
-                .padding(.bottom, 5)
+                .padding(.bottom, 11)
             
             HStack {
                 Image("infoAddress")
@@ -524,6 +531,7 @@ extension PlaceDetailView {
                     .font(.basic.normal14)
                 Spacer()
             }
+            .padding(.bottom, 7)
             
             HStack {
                 Image(systemName: "phone.fill")
@@ -568,6 +576,7 @@ extension PlaceDetailView {
                             .multilineTextAlignment(.center)
                             .font(.basic.normal14)
                             .foregroundColor(.gray.opacity(0.5))
+                            .padding(.bottom, 20)
                         Spacer()
                     }
                 }
@@ -700,7 +709,7 @@ extension PlaceDetailView {
                 Button(action: {}, label: {
                     Text(text)
                         .font(.basic.normal12)
-                        .padding(.vertical, 8)
+                        .padding(.vertical, 4)
                         .padding(.horizontal, 8)
                 })
                     .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: false, height: 20))

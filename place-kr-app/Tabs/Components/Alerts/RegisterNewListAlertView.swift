@@ -27,7 +27,7 @@ struct RegisterNewListAlertView: View {
     let completion: (Bool) -> Void
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Spacer()
                 
@@ -35,16 +35,17 @@ struct RegisterNewListAlertView: View {
                     Image(systemName: "xmark")
                 }
                 .foregroundColor(.black)
-                .font(.system(size: 20))
+                .font(.basic.normal20)
             }
             .padding(.top, 20)
             
             // 헤더
             Text(requestType == .post ? "리스트 만들기" : "리스트 수정하기")
                 .font(.basic.bold21)
+                .padding(.bottom, 4)
             
             Text(requestType == .post ? "리스트명을 입력하세요" : "수정하고 싶은 정보를 입력하세요")
-                .font(.basic.light14)
+                .font(.basic.normal14)
                 .padding(.bottom, showWarning ? 0 : 15)
             
             // 리스트 명 입력 텍스트필드
@@ -67,7 +68,7 @@ struct RegisterNewListAlertView: View {
             
             if showWarning {
                 Text("아이콘은 이모지타입만 설정할 수 있습니다!")
-                    .font(.system(size: 10))
+                    .font(.basic.normal10)
                     .foregroundColor(.red)
             }
             
@@ -88,6 +89,7 @@ struct RegisterNewListAlertView: View {
             // 컬러 선택
             Text("리스트 컬러를 선택하세요")
                 .padding(.bottom, 14)
+                .font(.basic.normal14)
             VStack(spacing: 12) {
                 HStack {
                     Spacer()
@@ -154,7 +156,7 @@ struct RegisterNewListAlertView: View {
                     Text("입력완료")
                 }
                 .disabled(name.isEmpty || selectedColor == nil || clicked || emoji.isEmpty)
-                .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
+                .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, cornerRadius: 20,  isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)
                 

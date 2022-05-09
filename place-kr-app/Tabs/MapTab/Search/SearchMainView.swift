@@ -73,11 +73,11 @@ extension SearchMainView {
         VStack(alignment: .leading) {
             HStack {
                 Text("내가 찾은 검색어")
-                    .font(.system(size: 14))
+                    .font(.basic.normal14)
                 Spacer()
                 Button(action: { viewModel.deleteHistory() }) {
                     Text("삭제하기")
-                        .font(.system(size: 12))
+                        .font(.basic.normal12)
                 }
                 .foregroundColor(.black)
             }
@@ -91,7 +91,7 @@ extension SearchMainView {
                             doNavigate = true
                         }) {
                             Text(query)
-                                .font(.system(size: 11))
+                                .font(.basic.normal(11))
                         }
                         .padding(1)
                         .buttonStyle(RoundedButtonStyle(bgColor: .white, textColor: .black, isStroked: true, width: 50, height: 27))

@@ -17,7 +17,7 @@ struct EncapsulateModifier: ViewModifier {
     func body(content: Content) -> some View {
         if mode == .dark {
             content
-                .font(.system(size: 11, weight: .bold))
+                .font(.basic.bold11)
                 .padding(.vertical, 4)
                 .padding(.horizontal, 9)
                 .background(
@@ -27,7 +27,7 @@ struct EncapsulateModifier: ViewModifier {
                 .foregroundColor(.white)
         } else {
             content
-                .font(.system(size: 11, weight: .bold))
+                .font(.basic.bold11)
                 .padding(.vertical, 4)
                 .padding(.horizontal, 9)
                 .background(
@@ -69,11 +69,11 @@ struct RoundedButtonStyle: ButtonStyle {
 
     var bgColor: Color
     var textColor: Color
+    var cornerRadius: CGFloat = 5
     var isStroked: Bool?
     var isSpanned: Bool?
     var width: CGFloat?
     var height: CGFloat
-    let shape = RoundedRectangle(cornerRadius: 4)
     
     var calculatedWidth: CGFloat? {
         if let isSpanned = isSpanned, isSpanned == true {
@@ -92,10 +92,10 @@ struct RoundedButtonStyle: ButtonStyle {
             .foregroundColor(textColor)
             .frame(minWidth: width, maxWidth: calculatedWidth, minHeight: height)
             .background(
-                shape.fill(bgColor)
+                RoundedRectangle(cornerRadius: self.cornerRadius).fill(bgColor)
             )
             .overlay(
-                shape.stroke(.black.opacity(isStroked ?? false ? 1 : 0), lineWidth: 1)
+                RoundedRectangle(cornerRadius: self.cornerRadius).stroke(.black.opacity(isStroked ?? false ? 1 : 0), lineWidth: 1)
             )
             .opacity(configuration.isPressed ? 0.5 : 1)
             .opacity(!isEnabled ? 0.3 : 1)
@@ -106,7 +106,7 @@ struct CapsuledButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
             .foregroundColor(Color.black)
-            .font(.system(size: 14))
+            .font(.basic.normal14)
             .frame(width: 52, height: 34)
     }
 }
@@ -117,7 +117,7 @@ struct CircleButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .font(.system(size: !isSmall ? 16 : 12))
+            .font(!isSmall ? .basic.normal15 : .basic.normal12)
             .frame(width: !isSmall ? 27 : 17, height: !isSmall ? 27 : 17)
             .background(Circle()
                             .fill(bgColor)

@@ -117,7 +117,7 @@ struct MyPlaceView: View {
                      headerContent: {
             HStack {
                 Text("플레이스 리스트 관리")
-                    .font(.system(size: 21, weight: .bold))
+                    .font(.basic.bold21)
                     .padding(.top, 20)
                     .padding(.bottom, 13.5)
                 Spacer()
@@ -127,7 +127,7 @@ struct MyPlaceView: View {
                     }
                 }) {
                     Image(systemName: "xmark")
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.basic.bold(16))
                         .frame(width: 32, height: 32)
                 }
             }
@@ -250,9 +250,9 @@ extension MyPlaceView {
 //                    bottomSheetPosition = .hidden
 //                }
             }) {
-                HStack(spacing: 9) {
+                HStack(spacing: 12) {
                     Image("editShare")
-                    Text("공유하기")
+                    Text("플레이스 공유하기")
                     Spacer()
                 }
             }
@@ -264,7 +264,7 @@ extension MyPlaceView {
                     showEditSheet = true
                 }
             }) {
-                HStack(spacing: 9) {
+                HStack(spacing: 12) {
                     Image("editName")
                     Text("리스트명 변경하기")
                     Spacer()
@@ -274,7 +274,7 @@ extension MyPlaceView {
             Divider()
 
             navigator(list: self.selectedList, label:
-                HStack(spacing: 9) {
+                HStack(spacing: 12) {
                     Image("editPlace")
                     Text("플레이스 편집하기")
                 Spacer()
@@ -288,14 +288,14 @@ extension MyPlaceView {
                 self.alertCase = .delete
                 self.showWarning = true
             }) {
-                HStack(spacing: 9) {
+                HStack(spacing: 12) {
                     Image("editDelete")
                     Text("삭제하기")
                     Spacer()
                 }
             }
         }
-        .font(.system(size: 14))
+        .font(.basic.normal14)
         .sheet(isPresented: $showShareSheet) {
             ShareSheet(activityItems: ["Hello world"])
         }

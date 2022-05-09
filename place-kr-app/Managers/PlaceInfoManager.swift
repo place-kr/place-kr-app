@@ -18,9 +18,8 @@ class PlaceInfoManager: ObservableObject {
     func fetchInfo(id placeID: String) {
         PlaceSearchManager.getPlacesByIdentifier(placeID)
             .receive(on: DispatchQueue.main)
-            .map({ PlaceInfo(document: $0) })
+            .map({ x -> PlaceInfo in print(x); return PlaceInfo(document: x) })
             .sink(receiveCompletion: { result in
-                print(result)
                 switch result {
                 case .failure(let error):
                     print("Error happend: \(error)")

@@ -196,7 +196,7 @@ extension MapView {
                 VStack(alignment: .leading) {
                     HStack {
                         Text(placeInfo.name)
-                            .font(.system(size: 20, weight: .bold))
+                            .font(.basic.bold20)
                         Spacer()
                         InteractivButtons
                     }
@@ -228,6 +228,7 @@ extension MapView {
                 Spacer()
             }
             .padding(.horizontal)
+            .font(.basic.normal17)
             .background(RoundedRectangle(cornerRadius: 7)
                 .fill(.white)
                 .frame(height: 50)
@@ -244,7 +245,7 @@ extension MapView {
         }) {
             Image(systemName: "xmark")
                 .foregroundColor(.black)
-                .font(.system(size: 16, weight: .bold))
+                .font(.basic.bold(16))
                 .frame(width: 35, height: 35)
         }
         
@@ -280,7 +281,7 @@ extension MapView {
             VStack(alignment: .leading, spacing: 15) {
                 HStack {
                     Text("리스트를 선택해주세요")
-                        .font(.system(size: 21, weight: .bold))
+                        .font(.basic.bold21)
                     Spacer()
                     CloseButton
                 }
@@ -337,9 +338,13 @@ extension MapView {
                                 }
                             }) {
                                 HStack(spacing: 15) {
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .fill(colorFrom(hex: list.color).color)
+                                    Text(list.emoji)
+                                        .font(.basic.bold14)
                                         .frame(width: 34, height: 34)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 5)
+                                                .fill(colorFrom(hex: list.color).color)
+                                        )
                                     
                                     VStack(alignment: .leading, spacing: 1) {
                                         Text(list.name)

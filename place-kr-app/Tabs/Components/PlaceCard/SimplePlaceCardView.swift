@@ -39,9 +39,9 @@ struct SimplePlaceCardView<T: View>: View {
             // 이름과 설명
             VStack(alignment: .leading) {
                 Text(placeName)
-                    .font(.system(size: 14, weight: .bold))
+                    .font(.basic.bold14)
                 Text(subscripts)
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.basic.normal12)
             }
             .padding(.leading, 14)
             

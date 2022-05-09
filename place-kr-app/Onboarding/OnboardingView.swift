@@ -131,7 +131,7 @@ extension OnboardingView {
         HStack {
             VStack(alignment: .leading, spacing: 7) {
                 Text("어떤 장소를 찾고 계신가요?")
-                    .font(.system(size: 24, weight: .bold))
+                    .font(.basic.bold20)
                 Text("가고싶은 플레이스를 저희에게 알려주세요")
                     .font(.system(size: 14))
             }

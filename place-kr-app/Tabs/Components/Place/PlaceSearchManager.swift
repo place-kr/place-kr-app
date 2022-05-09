@@ -242,7 +242,6 @@ class PlaceSearchManager {
         request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let decoder = JSONDecoder()
         return session.dataTaskPublisher(for: request)
             .tryMap() { data, response in
                 guard let httpResponse = response as? HTTPURLResponse else {
@@ -260,11 +259,9 @@ class PlaceSearchManager {
                     throw PlaceApiError.data
                 }
                 
-                
-                
                 return data
             }
-            .decode(type: MultiplePlaceResponse.self, decoder: decoder)
+            .decode(type: MultiplePlaceResponse.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
 

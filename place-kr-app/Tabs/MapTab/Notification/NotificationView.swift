@@ -11,7 +11,7 @@ struct NotificationView: View {
     var body: some View {
         Button(action: {}) {
             Image(systemName: "bell")
-                .font(.system(size: 20, weight: .bold))
+                .font(.basic.bold20)
                 .frame(width: 50, height: 50)
                 .foregroundColor(.black)
                 .background(Circle().fill(.white))

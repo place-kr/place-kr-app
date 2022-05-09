@@ -14,8 +14,7 @@ func PageHeader(title: String) -> some View  {
         HStack(alignment: .center) {
             Spacer()
             Text(title)
-                .bold()
-                .font(.system(size: 21))
+                .font(.basic.bold21)
             Spacer()
         }
     }
@@ -28,12 +27,11 @@ func PageHeader<T: View>(title: String, leading: T, leadingAction: @escaping (()
         HStack(alignment: .center) {
             Spacer()
             Text(title)
-                .bold()
-                .font(.system(size: 21))
+                .font(.basic.bold21)
             Spacer()
         }
         HStack {
-            Button(action: leadingAction) {
+            Button(action: leadingAction) { // 폰트 고치지 마라
                 leading
                     .font(.system(size: 18))
                     .foregroundColor(.black)
@@ -51,8 +49,7 @@ func PageHeader<T: View>(title: String, trailing: T, trailingAction: @escaping (
         HStack(alignment: .center) {
             Spacer()
             Text(title)
-                .bold()
-                .font(.system(size: 21))
+                .font(.basic.bold21)
             Spacer()
         }
         HStack {
@@ -60,7 +57,7 @@ func PageHeader<T: View>(title: String, trailing: T, trailingAction: @escaping (
 
             Button(action: trailingAction) {
                 trailing
-                    .font(.system(size: 14))
+                    .font(.basic.normal14)
                     .foregroundColor(.black)
             }
         }
@@ -76,8 +73,7 @@ func PageHeader<T: View, S: View>(title: String,
         HStack(alignment: .center) {
             Spacer()
             Text(title)
-                .bold()
-                .font(.system(size: 21))
+                .font(.basic.bold21)
             Spacer()
         }
         HStack {
@@ -94,7 +90,7 @@ func PageHeader<T: View, S: View>(title: String,
             if let trailing = trailing, let action = trailingAction {
                 Button(action: action) {
                     trailing
-                        .font(.system(size: 14))
+                        .font(.basic.normal14)
                         .foregroundColor(.black)
                 }
             }
@@ -113,8 +109,7 @@ func PageHeader<T: View>(title: String,
         HStack(alignment: .center) {
             Spacer()
             Text(title)
-                .bold()
-                .font(.system(size: 21))
+                .font(.basic.bold21)
             Spacer()
         }
         

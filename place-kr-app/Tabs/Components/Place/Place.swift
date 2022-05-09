@@ -233,7 +233,7 @@ struct OnePlaceResponse: Codable, PlaceInformation {
     enum CodingKeys: String, CodingKey {
         case identifier, name, phone, address, x, y, category
 //        case isFavorite = "saved_in_my_lists"
-        case thumbnailUrl = "thumnail_url"
+        case thumbnailUrl = "thumbnail_url"
         case saves = "saves_count"
     }
 }

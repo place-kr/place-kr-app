@@ -114,7 +114,7 @@ struct SearchResultsView: View {
 extension SearchResultsView {
     var searchResultHolder: some View {
         Text("'\(originalKeyword)'에 대한 검색결과입니다")
-            .font(.system(size: 14))
+            .font(.basic.normal14)
     }
     
     var searchField: some View {
@@ -151,11 +151,11 @@ extension SearchResultsView {
                 .padding(.bottom, 80)
             
             Text("찾으시는 플레이스가 없습니다")
-                .font(.system(size: 17, weight: .bold))
+                .font(.basic.bold17)
                 .padding(.bottom, 15)
             Text("'\(originalKeyword)'에 대한 검색 결과가 없습니다.\n아래 버튼을 통해 직접 플레이스를 등록하시거나.\n저희에게 플레이스 등록 요청을 해주세요.")
                 .multilineTextAlignment(.center)
-                .font(.system(size: 14))
+                .font(.basic.normal14)
         }
     }
     
@@ -171,11 +171,11 @@ extension SearchResultsView {
             HStack {
                 Spacer()
                 Text("플레이스 등록하기")
-                    .font(.system(size: 14))
+                    .font(.basic.normal14)
                 Spacer()
             }
         }
-        .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, height: 50))
+        .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white,  cornerRadius: 10,  isStroked: false, height: 50))
     }
 }
 

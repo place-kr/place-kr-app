@@ -33,13 +33,13 @@ struct PlaceCardView: View {
                     HStack(alignment: .bottom, spacing: 0) {
                         Text("\(title)") // TODO: FIXFIXFIX
                             .bold()
-                            .font(.system(size: 24))
+                            .font(.basic.normal(24))
                             .padding(.trailing, 6)
                         Group {
                             Image(systemName: "star.fill")
                             Text("3명이 저장")
                         }
-                        .font(.system(size: 12))
+                        .font(.basic.normal12)
                         .foregroundColor(.gray)
                         
                         Spacer()
@@ -57,7 +57,7 @@ struct PlaceCardView: View {
                             Image(systemName: "person.fill")
                             Text("포로리님의 플레이스")
                         }
-                        .font(.system(size: 12))
+                        .font(.basic.normal12)
                     }
                     .padding(.bottom, 20)
                     

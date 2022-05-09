@@ -90,7 +90,7 @@ struct LogInView: View {
                         .padding(.bottom, 14)
                     
                     Text("플레이스트에서 나만의 플레이스를\n 만들고, 즐겨보세요!")
-                        .font(.system(size: 17))
+                        .font(.basic.normal17)
                 }
                 
                 Spacer()
@@ -112,7 +112,7 @@ struct LogInView: View {
                 .onTapGesture {
                     UIApplication.shared.open(URL(string: "https://www.naver.com")!)
                 }
-                .font(.system(size: 12))
+                .font(.basic.normal12)
                 .foregroundColor(.gray)
             }
         }

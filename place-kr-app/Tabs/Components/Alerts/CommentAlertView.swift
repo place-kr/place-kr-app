@@ -78,7 +78,7 @@ struct CommentAlertView: View {
                     Text("입력완료")
                 }
                 .disabled(clicked || text.isEmpty)
-                .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, width: 147, height: 40))
+                .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, cornerRadius: 20,  isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)
                 

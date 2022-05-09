@@ -153,7 +153,7 @@ extension RegisterPlaceMainView {
         Button(action: { navigateToRegister = true }) {
             Text("플레이스 등록하기")
         }
-        .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isSpanned: true, height: 52))
+        .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white,  cornerRadius: 10, isSpanned: true, height: 52))
     }
     
     var EmptyCaseView: some View {

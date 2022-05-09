@@ -107,7 +107,7 @@ extension RegisterPlaceView {
                 HStack {
                     Image(systemName: "magnifyingglass")
                     Text("플레이스 검색하기")
-                        .font(.system(size: 14))
+                        .font(.basic.normal14)
                 }
             }
             .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 40))
@@ -148,7 +148,7 @@ extension RegisterPlaceView {
             }
         }) {
             Text("플레이스 등록 요청하기")
-                .font(.system(size: 14))
+                .font(.basic.normal14)
         }
         .disabled(placeName.isEmpty || address.isEmpty || restAddress.isEmpty)
         .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 52))
