@@ -9,13 +9,12 @@ import SwiftUI
 
 struct NotificationView: View {
     var body: some View {
-        Button(action: {}) {
-            Image(systemName: "bell")
-                .font(.basic.bold20)
-                .frame(width: 50, height: 50)
-                .foregroundColor(.black)
-                .background(Circle().fill(.white))
-        }
+        Image(systemName: "bell")
+            .font(.basic.bold20)
+            .frame(width: 50, height: 50)
+            .foregroundColor(.black)
+            .background(Circle().fill(.white))
+        
     }
 }
 
