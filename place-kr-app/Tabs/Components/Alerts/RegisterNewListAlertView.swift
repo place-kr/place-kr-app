@@ -155,7 +155,7 @@ struct RegisterNewListAlertView: View {
                 }) {
                     Text("입력완료")
                 }
-                .disabled(name.isEmpty || selectedColor == nil || clicked || emoji.isEmpty)
+                .disabled(name.isEmpty || selectedColor == nil || clicked)
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, cornerRadius: 20,  isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)

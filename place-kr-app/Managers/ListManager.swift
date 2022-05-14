@@ -176,7 +176,6 @@ class ListManager: ObservableObject {
         }
 
         URLSession.shared.dataTask(with: request) { [weak self] data , response, error in
-            guard let self = self else { return }
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode
             else {
@@ -190,8 +189,6 @@ class ListManager: ObservableObject {
             
             
             if let data = data, let decoded = try? JSONDecoder().decode(PlaceList.self, from: data) {
-                let listInfo = decoded
-                self.placeLists.append(listInfo)
             } else {
                 if let completionHandler = completionHandler {
                     completionHandler(false)

@@ -150,6 +150,7 @@ class PlaceSearchManager {
         
         let decoder = JSONDecoder()
         return session.dataTaskPublisher(for: request)
+            .timeout(10, scheduler: RunLoop.main, customError: { URLError(.timedOut) })
             .tryMap() { data, response in
                 guard let httpResponse = response as? HTTPURLResponse else {
                     print("Response error: \(response)")
@@ -165,7 +166,7 @@ class PlaceSearchManager {
                     print("Data error: \(data)")
                     throw PlaceApiError.data
                 }
-                
+            
                 return data
             }
             .decode(type: PlaceResponse.self, decoder: decoder)

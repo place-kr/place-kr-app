@@ -33,6 +33,8 @@ struct MapView: View {
     @State var showWarning = false
     @State var alertCase: AlertCase = .error
     
+    @State var isListHitBottom = false
+    
     init(selection: Binding<TabsView.Tab>, _ locationManager: LocationManager = LocationManager.shared) {
         self._selection = selection
         self.locationManager = locationManager
@@ -41,8 +43,8 @@ struct MapView: View {
     var body: some View {
         ZStack {
             NavigationLink(destination: LazyView { SearchMainView(selection: $selection) }, isActive: $navigateToSearch) {
-                    EmptyView()
-                }
+                EmptyView()
+            }
             
             /// 네이버 맵
             UIMapView(viewModel: mapViewModel)
@@ -55,9 +57,11 @@ struct MapView: View {
                         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
                         .padding(.leading, 15)
                     
-                    NotificationView()
-                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-                        .padding(.trailing, 15)
+                    NavigationLink(destination: Text("Alarm")) {
+                        NotificationView()
+                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
+                            .padding(.trailing, 15)
+                    }
                 }
                 
                 /// 검색창 및 Sheet view 버튼 + Sheet pop 용 빈 뷰
@@ -177,12 +181,14 @@ extension MapView {
         case error, duplicatePlace, notImplemented
     }
     
+    /// Marker 탭할 때 실행되는 메소드
     func markerAction(id: String) {
         self.placeInfoManager.placeInfo = nil
         self.placeInfoManager.currentPlaceID = id
         self.placeInfoManager.fetchInfo(id: id)
         
-        withAnimation(springAnimation) {
+        withAnimation(.spring()) {
+            self.listSheetPosition = .hidden
             self.bottomSheetPosition = .bottom
             self.activeSheet = .placeInfo
         }
@@ -224,7 +230,7 @@ extension MapView {
                     Text("탐색 중...")
                         .foregroundColor(.gray.opacity(0.5))
                 }
-
+                
                 Spacer()
             }
             .padding(.horizontal)
@@ -278,17 +284,27 @@ extension MapView {
     }
     
     var AddingListSheetView: some View {
-            VStack(alignment: .leading, spacing: 15) {
-                HStack {
-                    Text("리스트를 선택해주세요")
-                        .font(.basic.bold21)
-                    Spacer()
-                    CloseButton
+        VStack(alignment: .leading, spacing: 15) {
+            HStack {
+                Text("리스트를 선택해주세요")
+                    .font(.basic.bold21)
+                Spacer()
+                CloseButton
+            }
+            
+            Divider()
+            
+            TrackableScrollView(reachedBottom: $isListHitBottom, reachAction: {
+                if listManager.nextPage != nil {
+                    listManager.updateLists(pageUrl: listManager.nextPage!) {
+                        result in
+                        if result {
+                            self.isListHitBottom = false
+                        }
+                    }
                 }
-                
-                Divider()
-                
-                ScrollView(showsIndicators: false) {
+            }) {
+                VStack {
                     Button(action: {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             self.navigateToRegisterNewListView = true
@@ -310,60 +326,61 @@ extension MapView {
                     
                     Divider()
                     ForEach(listManager.placeLists, id: \.identifier) { list in
-                            Button(action: {
-                                let listId = list.identifier
-                                guard let selectedPlaceId = placeInfoManager.currentPlaceID else {
-                                    return
-                                }
-                                
-                                if list.places.contains(selectedPlaceId) {
+                        Button(action: {
+                            let listId = list.identifier
+                            guard let selectedPlaceId = placeInfoManager.currentPlaceID else {
+                                return
+                            }
+                            
+                            if list.places.contains(selectedPlaceId) {
+                                self.alertCase = .duplicatePlace
+                                self.showWarning = true
+                                return
+                            }
+                            
+                            listManager.addOnePlaceToList(listID: listId, placeID: selectedPlaceId) { result in
+                                switch result {
+                                case true:
+                                    withAnimation(.spring()) {
+                                        listSheetPosition = .hidden
+                                    }
+                                    break
+                                case false:
+                                    print("Network: Already exists")
                                     self.alertCase = .duplicatePlace
                                     self.showWarning = true
-                                    return
-                                }
-                                
-                                listManager.addOnePlaceToList(listID: listId, placeID: selectedPlaceId) { result in
-                                    switch result {
-                                    case true:
-                                        withAnimation(.spring()) {
-                                            listSheetPosition = .hidden
-                                        }
-                                        break
-                                    case false:
-                                        print("Network: Already exists")
-                                        self.alertCase = .duplicatePlace
-                                        self.showWarning = true
-                                        break
-                                    }
-                                }
-                            }) {
-                                HStack(spacing: 15) {
-                                    Text(list.emoji)
-                                        .font(.basic.bold14)
-                                        .frame(width: 34, height: 34)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 5)
-                                                .fill(colorFrom(hex: list.color).color)
-                                        )
-                                    
-                                    VStack(alignment: .leading, spacing: 1) {
-                                        Text(list.name)
-                                            .font(.basic.normal12)
-                                        Text("\(list.count) Places")
-                                            .font(.basic.normal10)
-                                    }
-                                    
-                                    
-                                    Spacer()
+                                    break
                                 }
                             }
-                            Divider()
+                        }) {
+                            HStack(spacing: 15) {
+                                Text(list.emoji)
+                                    .font(.basic.bold14)
+                                    .frame(width: 34, height: 34)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .fill(colorFrom(hex: list.color).color)
+                                    )
+                                
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text(list.name)
+                                        .font(.basic.normal12)
+                                    Text("\(list.count) Places")
+                                        .font(.basic.normal10)
+                                }
+                                
+                                
+                                Spacer()
+                            }
                         }
+                        Divider()
+                    }
                 }
-                Spacer()
             }
-            .padding(.horizontal, 28)
-            .padding(.top, 10)
+            Spacer()
+        }
+        .padding(.horizontal, 28)
+        .padding(.top, 10)
     }
 }
 

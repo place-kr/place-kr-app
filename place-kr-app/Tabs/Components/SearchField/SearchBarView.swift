@@ -23,7 +23,7 @@ struct SearchBarView: View {
                   onEditingChanged: { self.isFocused = $0 },
                   onCommit: {
             if !inputText.isEmpty {
-                print("SS")
+                print(inputText)
                 didPressReturn()
             }
         })

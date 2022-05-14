@@ -129,6 +129,7 @@ extension SearchResultsView {
                           isFocused: $isFocused,
                           bgColor: Color(red: 243/255, green: 243/255, blue: 243/255))
             {
+                print(viewModel.searchKeyword, self.originalKeyword)
                 if viewModel.searchKeyword == self.originalKeyword {
                     withAnimation(.easeInOut) {
                         isFocused = false
