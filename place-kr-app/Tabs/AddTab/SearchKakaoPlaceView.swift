@@ -104,75 +104,97 @@ struct SearchKakaoPlaceView: View {
                     self.viewModel.search(name: text, page: 1) { _ in }
                 }
             }
+            .background(Color.white)
             .padding(.top, 10)
             .padding(.horizontal, 15)
             
-            if viewModel.searchResult.isEmpty && viewModel.isResultEmpty == false {
-                Text("등록하고 싶은 플레이스를 검색해보세요")
-                    .font(.basic.bold17)
-                    .padding(.vertical, 4)
-                    .padding(.horizontal, 15)
-                
-                Text("지도를 통해 주소를 겁색합니다")
-                    .font(.basic.normal14)
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, 15)
+            Divider()
+                .padding(.top, 10)
+            
+            // 결과 표시
+            Group {
+                if viewModel.searchResult.isEmpty && viewModel.isResultEmpty == false {
+                    Text("등록하고 싶은 플레이스를 검색해보세요")
+                        .font(.basic.bold17)
+                        .padding(.top, 30)
+                        .padding(.horizontal, 20)
 
-                Text("예) 서욽특별시 강남구 23길 2")
-                    .font(.basic.bold14)
-                    .padding(.top, 5)
-                    .padding(.horizontal, 15)
-            }
-            else if viewModel.isResultEmpty {
-                Text("검색 결과가 없습니다.")
-            }
-            else {
-                Text("검색 결과")
-                    .font(.basic.bold17)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 15)
-                
-                TrackableScrollView(reachedBottom: $isBottom, reachAction: {
-                    // 바닥 터치 시 액션
-                    if let page = viewModel.page {
-                        viewModel.search(name: viewModel.previousQueryText,
-                                         page: page) { result in
-                            switch result {
-                            case .success(()):
-                                isBottom = true
-                                break
-                            case .failure(_):
-                                showWarning = true
-                                break
-                            }
-                        }
-                    }
-                }) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        ForEach(viewModel.searchResult, id:\.id) { result in
-                            Divider()
-                                .padding(.vertical, 5)
-                            
-                            RequestCardView(name: result.name, address: result.roadAddress)
-                                .onTapGesture {
-                                    completion(result)
-                                    presentationMode.wrappedValue.dismiss()
-                                }
-                        }
+                    Text("지도를 통해 주소를 겁색합니다")
+                        .font(.basic.regular14)
+                        .padding(.top, 10)
+                        .padding(.horizontal, 20)
 
-                    }
-                    .padding(.horizontal, 15)
-                    .padding(.bottom, 40)
+                    Text("예) 서욽특별시 강남구 23길 2")
+                        .font(.basic.normal14)
+                        .padding(.top, 20)
+                        .padding(.horizontal, 20)
                 }
-                .overlay(
-                    Group { if viewModel.progress == .inProcess {
-                        CustomProgressView
-                    }}
-                )
+                else if viewModel.isResultEmpty {
+                    Text("검색 결과가 없습니다. 올바른 주소를 입력해주세요")
+                        .font(.basic.normal14)
+                        .padding(.top, 16)
+                        .padding(.horizontal, 20)
+                    
+                    backgroundFiller
+                        .padding(.top, 8)
+                }
+                else {
+                    Text("검색 결과")
+                        .font(.basic.normal14)
+                        .padding(.top, 16)
+                        .padding(.bottom, 8)
+                        .padding(.horizontal, 20)
+                    
+                    ZStack {
+                        Color.backgroundGray
+                            .edgesIgnoringSafeArea(.all)
+                        
+                        TrackableScrollView(reachedBottom: $isBottom, reachAction: {
+                            // 바닥 터치 시 액션
+                            if let page = viewModel.page {
+                                viewModel.search(name: viewModel.previousQueryText,
+                                                 page: page) { result in
+                                    switch result {
+                                    case .success(()):
+                                        isBottom = true
+                                        break
+                                    case .failure(_):
+                                        showWarning = true
+                                        break
+                                    }
+                                }
+                            }
+                        }) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                ForEach(viewModel.searchResult, id:\.id) { result in
+                                    RequestCardView(name: result.name, address: result.roadAddress)
+                                        .frame(height: 70)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 15)
+                                                .fill(Color.white)
+                                        )
+                                        .onTapGesture {
+                                            completion(result)
+                                            presentationMode.wrappedValue.dismiss()
+                                        }
+                                }
+                            }
+                            .padding(.top, 14)
+                            .padding(.bottom, 40)
+                            .padding(.horizontal, 20)
+                        }
+                        .overlay(
+                            Group { if viewModel.progress == .inProcess {
+                                CustomProgressView
+                            }}
+                        )
+                    }
+                }
             }
-                
+            
             Spacer()
         }
+        .edgesIgnoringSafeArea(.all)
         .alert(isPresented: $showWarning) {
             basicSystemAlert
         }
@@ -184,24 +206,16 @@ struct SearchKakaoPlaceView: View {
 }
  
 extension SearchKakaoPlaceView {
-    struct RowView: View {
-        let name: String
-        let roadAddress: String
-        
-        var body: some View {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text("상호명")
-                        .bold()
-                        .encapsulate(mode: .dark)
-                    Text(name)
-                }
-                HStack {
-                    Text("주소")
-                        .encapsulate(mode: .dark)
-                    Text(roadAddress)
-                }
+    var backgroundFiller: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Text("Filler for background")
+                    .opacity(0)
             }
+            Spacer()
         }
+        .edgesIgnoringSafeArea(.all)
+        .background(Color.backgroundGray)
     }
 }

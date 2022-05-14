@@ -32,7 +32,7 @@ struct RequestCardView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 50, height: 50)
-                .padding(.trailing, 10)
+                .padding(.horizontal, 10)
             
             // 이름과 설명
             VStack(alignment: .leading, spacing: 2) {

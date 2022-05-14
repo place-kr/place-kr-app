@@ -14,6 +14,8 @@ extension Font {
         
         /// size: 14, weight: light
         let light14 = Font.custom("NotoSansKR-Light", size: 14)
+        
+        let regular14 = Font.custom("NotoSansKR-Regular", size: 14)
                 
         /// size: 10, weight: normal
         let normal10 = Font.custom("NotoSansKR-Medium", size: 10)
