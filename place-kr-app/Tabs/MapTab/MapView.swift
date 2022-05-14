@@ -179,7 +179,7 @@ struct MapView: View {
             case .error:
                 return basicSystemAlert
             case .duplicatePlace:
-                return basicSystemAlert(title: "오류!", content: "이미 저장된 플레이스입니다")
+                return basicSystemAlert(title: "이미 저장된 플레이스", content: "이미 저장된 플레이스입니다. 다른 장소를 추가해주세요!")
             case .notImplemented:
                 return basicSystemAlert(title: "해당 기능은 곧 추가될 예정입니다. 조금만 기다려주세요!", content: "")
             }
