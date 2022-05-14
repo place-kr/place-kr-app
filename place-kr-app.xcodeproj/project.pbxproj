@@ -29,6 +29,7 @@
 		9B35BA4F27CDFC430013C1EA /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35BA4E27CDFC430013C1EA /* LoginManager.swift */; };
 		9B3DE9A227BE2FAE00DAD9CC /* MyPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */; };
 		9B3DE9A427BE337D00DAD9CC /* Font + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */; };
+		9B42422A282F76E000667E83 /* Navigation + Exension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B424229282F76E000667E83 /* Navigation + Exension.swift */; };
 		9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02727C9C9AA0042F9C4 /* PlaceListDetailView.swift */; };
 		9B43E02A27C9DB0F0042F9C4 /* DummyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02927C9DB0F0042F9C4 /* DummyData.swift */; };
 		9B43E02C27C9EE410042F9C4 /* SimplePlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */; };
@@ -124,6 +125,7 @@
 		9B35BA4E27CDFC430013C1EA /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceView.swift; sourceTree = "<group>"; };
 		9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font + Extensions.swift"; sourceTree = "<group>"; };
+		9B424229282F76E000667E83 /* Navigation + Exension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Navigation + Exension.swift"; sourceTree = "<group>"; };
 		9B43E02727C9C9AA0042F9C4 /* PlaceListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListDetailView.swift; sourceTree = "<group>"; };
 		9B43E02927C9DB0F0042F9C4 /* DummyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyData.swift; sourceTree = "<group>"; };
 		9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePlaceCardView.swift; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 				9BCC370027D70A6E00E88F72 /* Animations.swift */,
 				9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */,
 				9B2BCB0C27D895E800C1C16E /* Color + Extensions.swift */,
+				9B424229282F76E000667E83 /* Navigation + Exension.swift */,
 				9B989BC028153BAF00C8D6E4 /* String + Extensions.swift */,
 				9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */,
 				9B43E02927C9DB0F0042F9C4 /* DummyData.swift */,
@@ -715,6 +718,7 @@
 				9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */,
 				9B6AADCF280AD695009CA58A /* RootPresentationMode.swift in Sources */,
 				9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */,
+				9B42422A282F76E000667E83 /* Navigation + Exension.swift in Sources */,
 				9BA012A727D8D1500080F245 /* PlaceInfoManager.swift in Sources */,
 				9B989BC128153BAF00C8D6E4 /* String + Extensions.swift in Sources */,
 				9BF582C9279B8AF90068805E /* LogInView.swift in Sources */,
