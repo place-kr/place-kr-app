@@ -32,6 +32,7 @@ struct MapView: View {
     
     @State var showWarning = false
     @State var alertCase: AlertCase = .error
+    @State var showCompleted = false
     
     @State var isListHitBottom = false
     
@@ -104,10 +105,24 @@ struct MapView: View {
                 
                 Spacer()
                 
+                // 리스트 등록완료 토스트
                 HStack {
                     Spacer()
                     
-                    //MARK: - 현위치 버튼
+                    if showCompleted {
+                        ToastAlert(text: "리스트 등록 성공")
+                            .shadow(color: .gray.opacity(0.5),
+                                radius: 10, x: 0, y: 0)
+                            .transition(.opacity)
+                    }
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    Spacer()
+                    
+                    // 현위치 버튼
                     Button(action: { mapViewModel.isCurrentPositionRequested = true }) {
                         Image(systemName: "scope")
                             .font(Font.body.weight(.bold))
@@ -343,7 +358,16 @@ extension MapView {
                                 case true:
                                     withAnimation(.spring()) {
                                         listSheetPosition = .hidden
+                                        showCompleted = true
                                     }
+                                    
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        withAnimation(.spring()) {
+                                            showCompleted = false
+                                        }
+                                    }
+                                    
                                     break
                                 case false:
                                     print("Network: Already exists")
