@@ -85,7 +85,11 @@ struct PlaceListDetailView: View {
                                 ForEach(viewModel.places, id: \.id) { wrapper in
                                     let place = wrapper.placeInfo
                                     // MARK: - 카드 뷰
-                                    LightCardView(place: place, isFavorite: true, starAction: {})
+                                    LightCardView(place: place, isFavorite: true, starAction: {
+                                        viewModel.toggleOneSelection(wrapper.id)
+                                        print(viewModel.selectionCount)
+                                        viewModel.deleteSelected()
+                                    })
                                     .padding(10)
                                     .background(
                                         RoundedRectangle(cornerRadius: 20)

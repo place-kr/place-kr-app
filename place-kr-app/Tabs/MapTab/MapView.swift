@@ -323,7 +323,6 @@ extension MapView {
                     Button(action: {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             self.navigateToRegisterNewListView = true
-                            listManager.updateLists()
                         }
                     }) {
                         HStack(spacing: 15) {

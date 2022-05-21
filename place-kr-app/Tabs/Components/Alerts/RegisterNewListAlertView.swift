@@ -146,6 +146,7 @@ struct RegisterNewListAlertView: View {
                         let postBody = PlaceListPostBody(name: self.name, emoji: emoji, color: selectedColor?.HEX, places: [String]())
                         self.viewModel.addPlaceList(body: postBody) { result in
                             completion(result)
+                            self.viewModel.updateLists()
                         }
                     case .patch(let id):
                         self.viewModel.editListComponent(id: id, name: name, hex: selectedColor?.HEX) { result in

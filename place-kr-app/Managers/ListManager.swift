@@ -175,21 +175,12 @@ class ListManager: ObservableObject {
             return
         }
 
-        URLSession.shared.dataTask(with: request) { [weak self] data , response, error in
+        URLSession.shared.dataTask(with: request) { data , response, error in
             guard let httpResponse = response as? HTTPURLResponse,
                   200..<300 ~= httpResponse.statusCode
             else {
                 print("Place list response error: \(response as Any)")
                 
-                if let completionHandler = completionHandler {
-                    completionHandler(false)
-                }
-                return
-            }
-            
-            
-            if let data = data, let decoded = try? JSONDecoder().decode(PlaceList.self, from: data) {
-            } else {
                 if let completionHandler = completionHandler {
                     completionHandler(false)
                 }
@@ -343,7 +334,7 @@ class ListManager: ObservableObject {
     }
     
     /// 퍼블리셔로 리스트 업데이트 하는 루틴
-    /// 페이지는 1페이지로 초기화
+    // ???: 빈 url 시 페이지 기록 초기화 하는 것으로 합의? -> 안됨 첫페이지랑 구분이 안 감
     func updateLists(pageUrl: String = String(), completion: ((Bool) -> ())? = nil) {
         self.getPlaceLists(pageUrl: pageUrl)
             .receive(on: DispatchQueue.main)
@@ -369,12 +360,11 @@ class ListManager: ObservableObject {
                 self.nextPage = data.next
                 self.placeCount = data.count
                 
-                if pageUrl.isEmpty {
+                if pageUrl.isEmpty { // 첫 페이지를 요청
                     self.placeLists = data.results
                 } else {
                     self.placeLists.append(contentsOf: data.results)
                 }
-                
             })
             .store(in: &subscriptions)
     }

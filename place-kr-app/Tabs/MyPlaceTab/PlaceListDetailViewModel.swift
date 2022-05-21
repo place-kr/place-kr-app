@@ -88,6 +88,7 @@ class PlaceListDetailViewModel: ObservableObject {
                 case true:
                     // 성공하면 플레이스 갈아치우기
                     self.placeDict = selected
+                    self.places = Array(selected.values)
                     self.selectionCount = 0
                     break
                 case false:

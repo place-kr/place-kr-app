@@ -66,6 +66,7 @@ struct MyPlaceView: View {
                     .padding(.horizontal, 15)
 
                     TrackableScrollView(reachedBottom: self.$isBottom, reachAction: {
+                        
                         if listManager.nextPage != nil {
                             listManager.updateLists(pageUrl: listManager.nextPage!) {
                                 result in
