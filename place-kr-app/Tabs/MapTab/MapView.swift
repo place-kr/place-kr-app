@@ -33,6 +33,7 @@ struct MapView: View {
     @State var showWarning = false
     @State var alertCase: AlertCase = .error
     @State var showCompleted = false
+    @State var toastMessage = ToastMessage.placeAdded
     
     @State var isListHitBottom = false
     
@@ -108,14 +109,12 @@ struct MapView: View {
                 // 리스트 등록완료 토스트
                 HStack {
                     Spacer()
-                    
                     if showCompleted {
-                        ToastAlert(text: "리스트 등록 성공")
+                        ToastAlert(text: self.toastMessage.rawValue)
                             .shadow(color: .gray.opacity(0.5),
                                 radius: 10, x: 0, y: 0)
                             .transition(.opacity)
                     }
-                    
                     Spacer()
                 }
                 
@@ -309,7 +308,8 @@ extension MapView {
             
             Divider()
             
-            TrackableScrollView(reachedBottom: $isListHitBottom, reachAction: {
+            TrackableScrollView(reachedBottom: $isListHitBottom,
+                                reachAction: {
                 if listManager.nextPage != nil {
                     listManager.updateLists(pageUrl: listManager.nextPage!) {
                         result in
@@ -346,35 +346,40 @@ extension MapView {
                                 return
                             }
                             
-                            if list.places.contains(selectedPlaceId) {
-                                self.alertCase = .duplicatePlace
-                                self.showWarning = true
-                                return
+                            let commonResultHandler: (Bool, ToastMessage) -> () = { result, type in
+                                    switch result {
+                                    case true:
+                                        self.toastMessage = type
+                                        withAnimation(.spring()) {
+                                            listSheetPosition = .hidden
+                                            showCompleted = true
+                                        }
+                                        
+                                        
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                            withAnimation(.spring()) {
+                                                showCompleted = false
+                                            }
+                                        }
+                                    case false:
+                                        self.alertCase = .error
+                                        self.showWarning = true
+                                        break
+                                    }
                             }
                             
-                            listManager.addOnePlaceToList(listID: listId, placeID: selectedPlaceId) { result in
-                                switch result {
-                                case true:
-                                    withAnimation(.spring()) {
-                                        listSheetPosition = .hidden
-                                        showCompleted = true
-                                    }
-                                    
-                                    
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                        withAnimation(.spring()) {
-                                            showCompleted = false
-                                        }
-                                    }
-                                    
-                                    break
-                                case false:
-                                    print("Network: Already exists")
-                                    self.alertCase = .duplicatePlace
-                                    self.showWarning = true
-                                    break
+                            // 이미 존재한다 -> 지우기(원래는 중복 플레이스라는 alert을 띄웠지만..)
+                            if list.places.contains(selectedPlaceId) {
+                                let newPlaces = list.places.filter{ $0 != selectedPlaceId }
+                                listManager.editPlacesList(listID: list.identifier, placeIDs: newPlaces) { result in
+                                    commonResultHandler(result, .placeDeleted)
+                                }
+                            } else {
+                                listManager.addOnePlaceToList(listID: listId, placeID: selectedPlaceId) { result in
+                                    commonResultHandler(result, .placeAdded)
                                 }
                             }
+                            
                         }) {
                             HStack(spacing: 15) {
                                 Text(list.emoji)
@@ -394,6 +399,13 @@ extension MapView {
                                 
                                 
                                 Spacer()
+                                
+                                if let selectedPlaceId = placeInfoManager.currentPlaceID,
+                                   list.places.contains(selectedPlaceId)
+                                {
+                                    Text("✅")
+                                }
+                                
                             }
                         }
                         Divider()
@@ -404,6 +416,13 @@ extension MapView {
         }
         .padding(.horizontal, 28)
         .padding(.top, 10)
+    }
+}
+
+extension MapView {
+    enum ToastMessage: String {
+        case placeAdded = "리스트 등록 성공"
+        case placeDeleted = "리스트 삭제 성공"
     }
 }
 

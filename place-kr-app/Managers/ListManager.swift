@@ -124,7 +124,6 @@ class ListManager: ObservableObject {
             
             if let completionHandler = completionHandler {
                 completionHandler(true)
-                print("TRUE")
             }
             self.updateLists()
         }
@@ -160,6 +159,8 @@ class ListManager: ObservableObject {
             if let completionHandler = completionHandler {
                 completionHandler(true)
             }
+            self.updateLists()
+
         }
         .resume()
         
@@ -234,6 +235,8 @@ class ListManager: ObservableObject {
     }
     
     /// 플레이스 리스트 요소 수정
+    ///
+    /// 플레이스 말고 플레이스 이름, 색 이런 것들 수정
     func editListComponent(id: String, name: String? = nil, hex: String? = nil, completionHandler: ((Bool) -> ())? = nil) {
         guard let index = self.placeLists.firstIndex(where: { $0.identifier == id }) else {
             if let completionHandler = completionHandler {
