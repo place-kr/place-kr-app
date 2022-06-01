@@ -159,8 +159,9 @@ class ListManager: ObservableObject {
             if let completionHandler = completionHandler {
                 completionHandler(true)
             }
+            
+            // success
             self.updateLists()
-
         }
         .resume()
         

@@ -11,12 +11,12 @@ struct ToastAlert: View {
     let text: String
     var body: some View {
         Text(text)
-            .font(.basic.bold14)
+            .font(.basic.normal14)
             .padding(.vertical, 10)
             .padding(.horizontal, 15)
             .foregroundColor(.white)
             .background(
-                Capsule().fill(.black)
+                Capsule().fill(.black.opacity(0.5))
             )
     }
 }

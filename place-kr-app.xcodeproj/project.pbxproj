@@ -29,6 +29,7 @@
 		9B35BA4F27CDFC430013C1EA /* LoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B35BA4E27CDFC430013C1EA /* LoginManager.swift */; };
 		9B3DE9A227BE2FAE00DAD9CC /* MyPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */; };
 		9B3DE9A427BE337D00DAD9CC /* Font + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */; };
+		9B401C13283E465000B6F6D7 /* PlaceDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B401C12283E465000B6F6D7 /* PlaceDetailViewModel.swift */; };
 		9B42422A282F76E000667E83 /* Navigation + Exension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B424229282F76E000667E83 /* Navigation + Exension.swift */; };
 		9B42422C282F7C8B00667E83 /* ToastAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B42422B282F7C8B00667E83 /* ToastAlert.swift */; };
 		9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02727C9C9AA0042F9C4 /* PlaceListDetailView.swift */; };
@@ -126,6 +127,7 @@
 		9B35BA4E27CDFC430013C1EA /* LoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginManager.swift; sourceTree = "<group>"; };
 		9B3DE9A127BE2FAE00DAD9CC /* MyPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceView.swift; sourceTree = "<group>"; };
 		9B3DE9A327BE337D00DAD9CC /* Font + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font + Extensions.swift"; sourceTree = "<group>"; };
+		9B401C12283E465000B6F6D7 /* PlaceDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailViewModel.swift; sourceTree = "<group>"; };
 		9B424229282F76E000667E83 /* Navigation + Exension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Navigation + Exension.swift"; sourceTree = "<group>"; };
 		9B42422B282F7C8B00667E83 /* ToastAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAlert.swift; sourceTree = "<group>"; };
 		9B43E02727C9C9AA0042F9C4 /* PlaceListDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListDetailView.swift; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 				9B9FCE4927B4C7E000DCCF9D /* Notification */,
 				9B0ADB232807C6CB00E934FC /* Search */,
 				9B9D77C427D7455300326BB5 /* PlaceDetailView.swift */,
+				9B401C12283E465000B6F6D7 /* PlaceDetailViewModel.swift */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
 				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
 				9B82F64A27D079150081A701 /* UIMapViewModel.swift */,
@@ -673,6 +676,7 @@
 				9BA3BF33280FDEAE00E49044 /* CommonSystemAlert.swift in Sources */,
 				9B0ADB1E2806F1D600E934FC /* Progress.swift in Sources */,
 				9B51C8BF27B0EB2700F3B76C /* Place.swift in Sources */,
+				9B401C13283E465000B6F6D7 /* PlaceDetailViewModel.swift in Sources */,
 				9B6C0D2927C89C0400376373 /* RegisterPlaceView.swift in Sources */,
 				9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */,
 				9BA965D327FC370900C05D42 /* LightCardView.swift in Sources */,

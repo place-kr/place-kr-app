@@ -421,7 +421,7 @@ extension MapView {
 
 extension MapView {
     enum ToastMessage: String {
-        case placeAdded = "리스트 등록 성공"
+        case placeAdded = "플레이스가 저장되었습니다"
         case placeDeleted = "리스트 삭제 성공"
     }
 }
