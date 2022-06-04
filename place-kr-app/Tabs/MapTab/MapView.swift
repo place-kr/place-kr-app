@@ -397,13 +397,18 @@ extension MapView {
                                         .font(.basic.normal10)
                                 }
                                 
-                                
                                 Spacer()
                                 
                                 if let selectedPlaceId = placeInfoManager.currentPlaceID,
                                    list.places.contains(selectedPlaceId)
                                 {
-                                    Text("✅")
+                                    Image("checked")
+                                        .resizable()
+                                        .frame(width: 21, height: 21)
+                                } else {
+                                    Image("check")
+                                        .resizable()
+                                        .frame(width: 21, height: 21)
                                 }
                                 
                             }
