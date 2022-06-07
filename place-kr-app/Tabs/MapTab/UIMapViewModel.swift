@@ -51,9 +51,11 @@ class UIMapViewModel: ObservableObject {
                 case .finished:
                     print("API Places successfully fetched")
                 }
+                self.subscriptions.removeAll()
             }, receiveValue: { data in
-                // 받은 info를 맵뷰에서 쓰기 위한 래퍼로 치환
+                // 받은 info를 맵뷰에서 쓰기 위한 래퍼로 치환, 로컬에 저장
                 self.places = data.map({ PlaceWrapper($0)})
+                
                 // 컴플리션으로 래퍼 전달
                 completion(.success(self.places))
                 
@@ -78,16 +80,15 @@ class UIMapViewModel: ObservableObject {
             switch(result) {
             case .success(let wrappers):
                 if !self.markers.isEmpty { // 존재하는 마커가 있으면
-                    _ = self.markers.map { $0.mapView = nil } // 비우기
+                    self.markers.forEach { $0.mapView = nil } // 비우기
                 }
+                self.makeMarkersDefault(self.places)
                 
                 self.markers = wrappers.map({ wrapper in // 그리기, 액션 더하기
                     let marker = wrapper.marker
-                    marker.iconImage = self.inactiveMarkerImage
                     
                     // 마커에 터치 액션 부여
                     marker.touchHandler = { (m) -> Bool in
-                        self.makeMarkersDefault(self.markers)
                         self.selectdMarker = marker
                         
                         // 카메라 무빙
@@ -97,9 +98,10 @@ class UIMapViewModel: ObservableObject {
                         cameraUpdate.animation = .easeOut
                         cameraUpdate.animationDuration = 0.3
                         self.view.mapView.moveCamera(cameraUpdate)
-                                    
+                         
+                        // 터치 후 마커 변경
                         withAnimation {
-                            marker.iconImage = self.activeMarkerImage
+                            self.makeMarkersDefault([wrapper])
                         }
                         action(wrapper.placeInfo)
                         return true
@@ -117,9 +119,14 @@ class UIMapViewModel: ObservableObject {
     }
     
     /// 마커 이미지 기본으로 변경
-    func makeMarkersDefault(_ markers: [NMFMarker]) {
-        for marker in markers {
-            marker.iconImage = self.inactiveMarkerImage
+    func makeMarkersDefault(_ wrappers: [PlaceWrapper]) {
+        for wrapper in wrappers {
+            let marker = wrapper.marker
+            if wrapper.placeInfo.isFavorite {
+                marker.iconImage = self.activeMarkerImage
+            } else {
+                marker.iconImage = self.inactiveMarkerImage
+            }
         }
     }
     

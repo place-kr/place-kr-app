@@ -8,13 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9B025B5F27DB6A1000B3271A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9B025B5E27DB6A1000B3271A /* Settings.bundle */; };
-		9B053E0D284741160012EC0F /* PlaceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B053E0C284741160012EC0F /* PlaceAPI.swift */; };
-		9B053E10284746880012EC0F /* AuthApple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B053E0F284746880012EC0F /* AuthApple.swift */; };
-		9B053E122847470B0012EC0F /* NetworkDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B053E112847470B0012EC0F /* NetworkDownloader.swift */; };
-		9B053E14284747990012EC0F /* NetworkUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B053E13284747990012EC0F /* NetworkUploader.swift */; };
-		9B053E162848BFE30012EC0F /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B053E152848BFE30012EC0F /* NetworkError.swift */; };
-		9B053E192848CB840012EC0F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B053E182848CB840012EC0F /* Constants.swift */; };
-		9B053E1C284B6A1F0012EC0F /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B053E1B284B6A1F0012EC0F /* UserInfo.swift */; };
 		9B0ADB1A2806E0A000E934FC /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB192806E09F00E934FC /* ShareSheet.swift */; };
 		9B0ADB1C2806E35A00E934FC /* EditListNameAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB1B2806E35A00E934FC /* EditListNameAlertView.swift */; };
 		9B0ADB1E2806F1D600E934FC /* Progress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0ADB1D2806F1D600E934FC /* Progress.swift */; };
@@ -111,13 +104,6 @@
 
 /* Begin PBXFileReference section */
 		9B025B5E27DB6A1000B3271A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		9B053E0C284741160012EC0F /* PlaceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAPI.swift; sourceTree = "<group>"; };
-		9B053E0F284746880012EC0F /* AuthApple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthApple.swift; sourceTree = "<group>"; };
-		9B053E112847470B0012EC0F /* NetworkDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDownloader.swift; sourceTree = "<group>"; };
-		9B053E13284747990012EC0F /* NetworkUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUploader.swift; sourceTree = "<group>"; };
-		9B053E152848BFE30012EC0F /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
-		9B053E182848CB840012EC0F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		9B053E1B284B6A1F0012EC0F /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		9B0ADB192806E09F00E934FC /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		9B0ADB1B2806E35A00E934FC /* EditListNameAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListNameAlertView.swift; sourceTree = "<group>"; };
 		9B0ADB1D2806F1D600E934FC /* Progress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progress.swift; sourceTree = "<group>"; };
@@ -254,44 +240,6 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		9B053E0B284740320012EC0F /* API related */ = {
-			isa = PBXGroup;
-			children = (
-				9B053E0C284741160012EC0F /* PlaceAPI.swift */,
-				9B053E172848CB2F0012EC0F /* Common */,
-				9B053E0E284746660012EC0F /* auth */,
-				9B053E1A284B69B90012EC0F /* me */,
-			);
-			path = "API related";
-			sourceTree = "<group>";
-		};
-		9B053E0E284746660012EC0F /* auth */ = {
-			isa = PBXGroup;
-			children = (
-				9B053E0F284746880012EC0F /* AuthApple.swift */,
-			);
-			path = auth;
-			sourceTree = "<group>";
-		};
-		9B053E172848CB2F0012EC0F /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				9B053E112847470B0012EC0F /* NetworkDownloader.swift */,
-				9B053E13284747990012EC0F /* NetworkUploader.swift */,
-				9B053E152848BFE30012EC0F /* NetworkError.swift */,
-				9B053E182848CB840012EC0F /* Constants.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		9B053E1A284B69B90012EC0F /* me */ = {
-			isa = PBXGroup;
-			children = (
-				9B053E1B284B6A1F0012EC0F /* UserInfo.swift */,
-			);
-			path = me;
-			sourceTree = "<group>";
-		};
 		9B0ADB232807C6CB00E934FC /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,7 +282,6 @@
 		9B20A65A2796F42A0029CA0E /* place-kr-app */ = {
 			isa = PBXGroup;
 			children = (
-				9B053E0B284740320012EC0F /* API related */,
 				9BAD8025281011B700B2FFB1 /* Assets */,
 				9B01B13D280D902C0028551B /* Managers */,
 				9BEDED2927A26B7400EE560C /* Util */,
@@ -736,7 +683,6 @@
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
 				9BE91FB128031843000DE8C9 /* CommentAlertView.swift in Sources */,
 				9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */,
-				9B053E14284747990012EC0F /* NetworkUploader.swift in Sources */,
 				9B82F64B27D079150081A701 /* UIMapViewModel.swift in Sources */,
 				9B6A1F6127B4AAFD00D160DC /* LocationManager.swift in Sources */,
 				9B9FCE4C27B4C80300DCCF9D /* NotificationView.swift in Sources */,
@@ -761,7 +707,6 @@
 				9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */,
 				9B3DE9A227BE2FAE00DAD9CC /* MyPlaceView.swift in Sources */,
 				9B7D508427CCE8750015ED2C /* ProfileTabView.swift in Sources */,
-				9B053E192848CB840012EC0F /* Constants.swift in Sources */,
 				9B43E02E27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift in Sources */,
 				9B0ADB272807C73800E934FC /* RegisterPlaceMainView.swift in Sources */,
 				9BFBB99F27C743DD002C5F10 /* SearchResultsView.swift in Sources */,
@@ -770,7 +715,6 @@
 				9B44BEF627C5E7D600755AD5 /* LargePlaceCardView.swift in Sources */,
 				9B0ADB1A2806E0A000E934FC /* ShareSheet.swift in Sources */,
 				9B82F64627CF1FA80081A701 /* ThemedTextField.swift in Sources */,
-				9B053E0D284741160012EC0F /* PlaceAPI.swift in Sources */,
 				9B35BA4C27CDDA4B0013C1EA /* TabsView.swift in Sources */,
 				9B9D77C527D7455300326BB5 /* PlaceDetailView.swift in Sources */,
 				9B5D5B5027F3FB8600B81831 /* PageHeader.swift in Sources */,
@@ -784,13 +728,10 @@
 				9B42422A282F76E000667E83 /* Navigation + Exension.swift in Sources */,
 				9BA012A727D8D1500080F245 /* PlaceInfoManager.swift in Sources */,
 				9B989BC128153BAF00C8D6E4 /* String + Extensions.swift in Sources */,
-				9B053E162848BFE30012EC0F /* NetworkError.swift in Sources */,
 				9BF582C9279B8AF90068805E /* LogInView.swift in Sources */,
 				9B0ADB1C2806E35A00E934FC /* EditListNameAlertView.swift in Sources */,
-				9B053E10284746880012EC0F /* AuthApple.swift in Sources */,
 				9B846689279852DA00066F04 /* AppleLoginDelegate.swift in Sources */,
 				9B0ADB202806F2D900E934FC /* CustomProgressView.swift in Sources */,
-				9B053E1C284B6A1F0012EC0F /* UserInfo.swift in Sources */,
 				9B0ADB222807AC1E00E934FC /* CustomDivider.swift in Sources */,
 				9B51C8C427B0F21300F3B76C /* SearchManager.swift in Sources */,
 				9B5FD61527C519ED004B60E6 /* SearchMainView.swift in Sources */,
@@ -798,7 +739,6 @@
 				9BA3BF31280FDB7B00E49044 /* AuthorizedRequest.swift in Sources */,
 				9B0ADB292807F22000E934FC /* SearchKakaoPlaceView.swift in Sources */,
 				9B84668627982E7800066F04 /* NaverLoginView.swift in Sources */,
-				9B053E122847470B0012EC0F /* NetworkDownloader.swift in Sources */,
 				9B2AB36D27A015B700B30242 /* OnboardingView.swift in Sources */,
 				9B0ADB2D2808663A00E934FC /* RequestCardView.swift in Sources */,
 				9B91641627AE6065005FAC4A /* AppleLoginViewModel.swift in Sources */,

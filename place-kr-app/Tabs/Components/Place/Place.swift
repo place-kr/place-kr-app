@@ -84,7 +84,7 @@ protocol PlaceInformation {
     var name: String { get }
     var x: String { get }
     var y: String { get }
-//    var isFavorite: Bool { get }
+    var isFavorite: Bool { get }
     var thumbnailUrl: String? { get }
     var phone: String? { get }
     var address: String? { get }
@@ -188,9 +188,9 @@ struct PlaceInfo {
         return saves
     }
     
-//    var isFavorite: Bool {
-//        return document.isFavorite
-//    }
+    var isFavorite: Bool {
+        return document.isFavorite
+    }
     
     init(document: PlaceResponse.PlacePin) {
         self.document = document
@@ -222,7 +222,8 @@ struct OnePlaceResponse: Codable, PlaceInformation {
     let name: String
     let x: String
     let y: String
-//    let isFavorite: Bool
+    let savedList: [String]
+    let isFavorite: Bool = false
 
     let phone: String?
     let address: String?
@@ -232,7 +233,7 @@ struct OnePlaceResponse: Codable, PlaceInformation {
 
     enum CodingKeys: String, CodingKey {
         case identifier, name, phone, address, x, y, category
-//        case isFavorite = "saved_in_my_lists"
+        case savedList = "saved_in_my_lists"
         case thumbnailUrl = "thumbnail_url"
         case saves = "saves_count"
     }
