@@ -22,7 +22,7 @@ struct ProfileTabView: View {
                 .padding(.vertical, 17)
             
             List {
-                NavigationLink(destination: {}) {
+                NavigationLink(destination: { NoticeView() }) {
                     Text("공지사항")
                 }
                 

@@ -94,6 +94,9 @@
 		9BD3582C2812B92C006DBD48 /* ChildSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3582B2812B92C006DBD48 /* ChildSizeReader.swift */; };
 		9BD7090A28263FBB00679217 /* DeeplinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD7090928263FBB00679217 /* DeeplinkManager.swift */; };
 		9BE91FB128031843000DE8C9 /* CommentAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE91FB028031843000DE8C9 /* CommentAlertView.swift */; };
+		9BE9CEAB2850AD89008FE0DA /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE9CEAA2850AD88008FE0DA /* NoticeView.swift */; };
+		9BE9CEAD2850AF25008FE0DA /* AlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE9CEAC2850AF25008FE0DA /* AlarmView.swift */; };
+		9BE9CEAF2850B0CE008FE0DA /* EmptyHolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE9CEAE2850B0CE008FE0DA /* EmptyHolderView.swift */; };
 		9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */; };
 		9BF582C7279ADDEB0068805E /* NaverUserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C6279ADDEB0068805E /* NaverUserData.swift */; };
 		9BF582C9279B8AF90068805E /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF582C8279B8AF90068805E /* LogInView.swift */; };
@@ -190,6 +193,9 @@
 		9BD3582B2812B92C006DBD48 /* ChildSizeReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSizeReader.swift; sourceTree = "<group>"; };
 		9BD7090928263FBB00679217 /* DeeplinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkManager.swift; sourceTree = "<group>"; };
 		9BE91FB028031843000DE8C9 /* CommentAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAlertView.swift; sourceTree = "<group>"; };
+		9BE9CEAA2850AD88008FE0DA /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
+		9BE9CEAC2850AF25008FE0DA /* AlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmView.swift; sourceTree = "<group>"; };
+		9BE9CEAE2850B0CE008FE0DA /* EmptyHolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyHolderView.swift; sourceTree = "<group>"; };
 		9BEDED2A27A26B8A00EE560C /* View + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View + Extensions.swift"; sourceTree = "<group>"; };
 		9BF582C6279ADDEB0068805E /* NaverUserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NaverUserData.swift; sourceTree = "<group>"; };
 		9BF582C8279B8AF90068805E /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
@@ -349,6 +355,7 @@
 			isa = PBXGroup;
 			children = (
 				9B35BA4B27CDDA4B0013C1EA /* TabsView.swift */,
+				9BE9CEAE2850B0CE008FE0DA /* EmptyHolderView.swift */,
 				9B35BA4D27CDDA570013C1EA /* Components */,
 				9B4A02D527A6AC1E0037D05F /* MapTab */,
 				9B3DE9A027BE2E3000DAD9CC /* MyPlaceTab */,
@@ -367,6 +374,7 @@
 				9B401C12283E465000B6F6D7 /* PlaceDetailViewModel.swift */,
 				9B4A02D727A6B8240037D05F /* MapView.swift */,
 				9B4A02DB27A6BD170037D05F /* UIMapView.swift */,
+				9BE9CEAC2850AF25008FE0DA /* AlarmView.swift */,
 				9B82F64A27D079150081A701 /* UIMapViewModel.swift */,
 			);
 			path = MapTab;
@@ -431,6 +439,7 @@
 			children = (
 				9B7D508327CCE8740015ED2C /* ProfileTabView.swift */,
 				9B989BC428163AF900C8D6E4 /* OpenSourcesLicences.swift */,
+				9BE9CEAA2850AD88008FE0DA /* NoticeView.swift */,
 			);
 			path = ProfileTab;
 			sourceTree = "<group>";
@@ -681,6 +690,7 @@
 				9B0FCE0827D4C1E3003A9CFA /* SheetModifier.swift in Sources */,
 				9BA965D327FC370900C05D42 /* LightCardView.swift in Sources */,
 				9B84668E279854A700066F04 /* AppleLogInView.swift in Sources */,
+				9BE9CEAB2850AD89008FE0DA /* NoticeView.swift in Sources */,
 				9BE91FB128031843000DE8C9 /* CommentAlertView.swift in Sources */,
 				9B43E02827C9C9AA0042F9C4 /* PlaceListDetailView.swift in Sources */,
 				9B82F64B27D079150081A701 /* UIMapViewModel.swift in Sources */,
@@ -690,6 +700,7 @@
 				9B4A02D827A6B8240037D05F /* MapView.swift in Sources */,
 				9B5D5B4E27F3459900B81831 /* RegisterNewListAlertView.swift in Sources */,
 				9BD3582C2812B92C006DBD48 /* ChildSizeReader.swift in Sources */,
+				9BE9CEAF2850B0CE008FE0DA /* EmptyHolderView.swift in Sources */,
 				9B2BCB0D27D895E800C1C16E /* Color + Extensions.swift in Sources */,
 				9B91641A27AF82C3005FAC4A /* UserInfoManager.swift in Sources */,
 				9B989BC528163AF900C8D6E4 /* OpenSourcesLicences.swift in Sources */,
@@ -751,6 +762,7 @@
 				9B20A65E2796F42A0029CA0E /* SceneDelegate.swift in Sources */,
 				9B51C8B927B0D98700F3B76C /* PlaceSearchManager.swift in Sources */,
 				9B42422C282F7C8B00667E83 /* ToastAlert.swift in Sources */,
+				9BE9CEAD2850AF25008FE0DA /* AlarmView.swift in Sources */,
 				9B82F64427CF1A8F0081A701 /* NewNameAlertView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

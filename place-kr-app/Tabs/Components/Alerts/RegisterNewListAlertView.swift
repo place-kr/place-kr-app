@@ -13,7 +13,7 @@ struct RegisterNewListAlertView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
     @State var name = ""
-    @State var emoji = String()
+    @State var emoji = "✨"
     @State var showEmojiKeyboard: Bool? = false
     
     @State var selectedColor: ListColor?
@@ -123,7 +123,8 @@ struct RegisterNewListAlertView: View {
                             Text(emoji)
                             if selectedColor == colorName {
                                 Circle().stroke(lineWidth: 1.5)
-                            }                        }
+                            }
+                        }
                         .frame(width: 50, height: 50)
                         .onTapGesture {
                             self.selectedColor = colorName
@@ -156,7 +157,7 @@ struct RegisterNewListAlertView: View {
                 }) {
                     Text("입력완료")
                 }
-                .disabled(name.isEmpty || selectedColor == nil || clicked)
+                .disabled(name.isEmpty || selectedColor == nil || clicked || emoji.isEmpty)
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, cornerRadius: 20,  isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)
