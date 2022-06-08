@@ -35,8 +35,8 @@ struct RegisterPlaceView: View {
                     headerTexts
                         .padding(.vertical, 30)
                     
-                    searchPlaceName
-                        .padding(.bottom, 20)
+//                    searchPlaceName
+//                        .padding(.bottom, 20)
                     
                     searchAddr
                         .padding(.bottom, 20)
@@ -81,28 +81,19 @@ extension RegisterPlaceView {
     }
     
     // 플레이스 이름 입력 파트
-    var searchPlaceName: some View {
-        VStack(alignment: .leading, spacing:  6) {
-            Text("플레이스명")
-                .font(.basic.light14)
-                .padding(.bottom, 4)
-
-            SearchBarView($placeName, "플레이스 이름을 입력해주세요", bgColor: .white, height: 40, isStroked: true)
-        }
-    }
+//    var searchPlaceName: some View {
+//        VStack(alignment: .leading, spacing:  6) {
+//            Text("플레이스명")
+//                .font(.basic.light14)
+//                .padding(.bottom, 4)
+//
+//            SearchBarView($placeName, "플레이스 이름을 입력해주세요", bgColor: .white, height: 40, isStroked: true)
+//        }
+//    }
     
     // 주소찾기 텍스트 필드 파트
     var searchAddr: some View {
         VStack(alignment: .leading, spacing:  10) {
-            Text("주소")
-                .font(.basic.light14)
-                .padding(.bottom, 4)
-            
-            SearchBarView($address, "주소찾기를 통해 주소를 입력하세요", bgColor: .white, height: 40, isStroked: true)
-                .disabled(true)
-            SearchBarView($restAddress, "나머지 주소를 입력해주세요", bgColor: .white, height: 40, isStroked: true)
-            
-            
             Button(action: { showAddressSearch = true }) {
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -111,6 +102,18 @@ extension RegisterPlaceView {
                 }
             }
             .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 40))
+            .padding(.bottom, 20)
+            
+            
+            Text("주소")
+                .font(.basic.light14)
+                .padding(.bottom, 4)
+            
+            SearchBarView($address, "플레이스 검색을 통해 주소를 입력하세요", bgColor: .white, height: 40, isStroked: true)
+                .disabled(true)
+            SearchBarView($restAddress, "나머지 주소를 입력해주세요", bgColor: .white, height: 40, isStroked: true)
+            
+            
         }
         .sheet(isPresented: $showAddressSearch) {
             addressSearch

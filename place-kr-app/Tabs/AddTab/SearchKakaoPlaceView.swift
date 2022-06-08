@@ -130,13 +130,11 @@ struct SearchKakaoPlaceView: View {
                         .padding(.horizontal, 20)
                 }
                 else if viewModel.isResultEmpty {
-                    Text("검색 결과가 없습니다. 올바른 주소를 입력해주세요")
-                        .font(.basic.normal14)
-                        .padding(.top, 16)
-                        .padding(.horizontal, 20)
-                    
-                    backgroundFiller
-                        .padding(.top, 8)
+                    HStack {
+                        Spacer()
+                        NoResult(query: viewModel.previousQueryText)
+                        Spacer()
+                    }
                 }
                 else {
                     Text("검색 결과")
@@ -206,6 +204,29 @@ struct SearchKakaoPlaceView: View {
 }
  
 extension SearchKakaoPlaceView {
+    struct NoResult: View {
+        let query: String
+        
+        var body: some View {
+            VStack(alignment: .center) {
+                Spacer()
+                Image(systemName: "magnifyingglass")
+                    .resizable()
+                    .foregroundColor(.gray.opacity(0.3))
+                    .frame(width: 40, height: 40)
+                    .padding(.bottom, 80)
+                
+                Text("찾으시는 플레이스가 없습니다")
+                    .font(.basic.bold17)
+                    .padding(.bottom, 15)
+                Text("'\(self.query)'에 대한 검색 결과가 없습니다.\n올바른 주소를 입력해주세요.")
+                    .multilineTextAlignment(.center)
+                    .font(.basic.normal14)
+                Spacer()
+            }
+        }
+    }
+    
     var backgroundFiller: some View {
         VStack {
             HStack {
