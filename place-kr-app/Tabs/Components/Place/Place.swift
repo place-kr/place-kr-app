@@ -88,7 +88,7 @@ protocol PlaceInformation {
     var thumbnailUrl: String? { get }
     var phone: String? { get }
     var address: String? { get }
-    var category: String? { get }
+    var categories: [String]? { get }
     var saves: Int? { get }
 }
 
@@ -96,7 +96,7 @@ extension PlaceInformation {
     var phone: String? { get {nil} }
     var address: String? { get {nil} }
     var thumbnailUrl: String? { get {nil} }
-    var category: String? { get {nil} }
+    var categories: [String]? { get {nil} }
     var saves: Int? { get {nil} }
 }
 
@@ -142,6 +142,7 @@ struct PlaceInfo {
         return document.identifier
     }
     
+    /// 장소 이름
     var name: String {
         return document.name
     }
@@ -174,9 +175,9 @@ struct PlaceInfo {
         return URL(string: imageUrl)
     }
     
-    var category: String {
-        guard let category = document.category else {
-            return "카테고리 없음"
+    var category: [String] {
+        guard let category = document.categories else {
+            return ["카테고리 없음"]
         }
         return category
     }
@@ -228,11 +229,11 @@ struct OnePlaceResponse: Codable, PlaceInformation {
     let phone: String?
     let address: String?
     let thumbnailUrl: String?
-    let category: String?
+    let categories: [String]
     let saves: Int?
 
     enum CodingKeys: String, CodingKey {
-        case identifier, name, phone, address, x, y, category
+        case identifier, name, phone, address, x, y, categories
         case savedList = "saved_in_my_lists"
         case thumbnailUrl = "thumbnail_url"
         case saves = "saves_count"

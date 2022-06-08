@@ -117,12 +117,16 @@ extension LargePlaceCardView {
     /// 카테고리
     var Categories: some View {
         HStack(spacing: 5) {
-            Text("일식")
-                .encapsulate(mode: .dark)
-            Text("아늑해요")
-                .encapsulate(mode: .dark)
-            Text("깔끔해요")
-                .encapsulate(mode: .dark)
+            ForEach(viewModel.placeInfo.category, id: \.self) { content in
+                Text(content)
+                    .encapsulate(mode: .dark)
+            }
+//            Text("일식")
+//                .encapsulate(mode: .dark)
+//            Text("아늑해요")
+//                .encapsulate(mode: .dark)
+//            Text("깔끔해요")
+//                .encapsulate(mode: .dark)
         }
     }
 }

@@ -13,7 +13,7 @@ struct LightCardView: View {
     private let placeName: String
     private let subscripts: String
     private let countsDescription: String
-    private let categories: String // TODO: BE AN ARRAY
+    private let categories: [String] // TODO: BE AN ARRAY
     private let starButtonAction: (() -> Void)?
     private let shareButtonAction: (() -> Void)?
     private let imageUrl: URL?
@@ -63,8 +63,10 @@ struct LightCardView: View {
                 
                 // 카테고리
                 HStack {
-                    Text(categories)
-                        .encapsulate(mode: .light)
+                    ForEach(categories, id: \.self) { category in 
+                        Text(category)
+                            .encapsulate(mode: .light)
+                    }
                 }
             }
             .padding(10)

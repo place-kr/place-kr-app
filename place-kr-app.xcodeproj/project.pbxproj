@@ -37,7 +37,6 @@
 		9B43E02C27C9EE410042F9C4 /* SimplePlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */; };
 		9B43E02E27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B43E02D27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift */; };
 		9B44BEF627C5E7D600755AD5 /* LargePlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */; };
-		9B44BEF827C5E98E00755AD5 /* PlaceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */; };
 		9B44BEFA27C6217300755AD5 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B44BEF927C6217300755AD5 /* SearchBarView.swift */; };
 		9B4A02D827A6B8240037D05F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02D727A6B8240037D05F /* MapView.swift */; };
 		9B4A02DC27A6BD170037D05F /* UIMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4A02DB27A6BD170037D05F /* UIMapView.swift */; };
@@ -138,7 +137,6 @@
 		9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePlaceCardView.swift; sourceTree = "<group>"; };
 		9B43E02D27C9F97A0042F9C4 /* PlaceListDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListDetailViewModel.swift; sourceTree = "<group>"; };
 		9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargePlaceCardView.swift; sourceTree = "<group>"; };
-		9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceCardView.swift; sourceTree = "<group>"; };
 		9B44BEF927C6217300755AD5 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		9B4A02D727A6B8240037D05F /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		9B4A02DB27A6BD170037D05F /* UIMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIMapView.swift; sourceTree = "<group>"; };
@@ -448,7 +446,6 @@
 			isa = PBXGroup;
 			children = (
 				9B44BEF527C5E7D600755AD5 /* LargePlaceCardView.swift */,
-				9B44BEF727C5E98E00755AD5 /* PlaceCardView.swift */,
 				9BA965D227FC370900C05D42 /* LightCardView.swift */,
 				9B0ADB2C2808663A00E934FC /* RequestCardView.swift */,
 				9B43E02B27C9EE410042F9C4 /* SimplePlaceCardView.swift */,
@@ -712,7 +709,6 @@
 				9B51C8C127B0F15200F3B76C /* SearchFieldView.swift in Sources */,
 				9B35BA4F27CDFC430013C1EA /* LoginManager.swift in Sources */,
 				9BAD802C28112EA200B2FFB1 /* TrackableScrollView.swift in Sources */,
-				9B44BEF827C5E98E00755AD5 /* PlaceCardView.swift in Sources */,
 				9B84668027981E0F00066F04 /* NaverLoginAPI.swift in Sources */,
 				9B43E02A27C9DB0F0042F9C4 /* DummyData.swift in Sources */,
 				9BEDED2B27A26B8A00EE560C /* View + Extensions.swift in Sources */,
