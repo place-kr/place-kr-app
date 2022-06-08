@@ -79,7 +79,7 @@ enum ListColor: String, CaseIterable {
 extension Color {
     public static let backgroundGray = Color("grayBackground")
     public static let naver = Color("naver")
-    
+    public static let placeHolderGray = Color("placeHolderGray")
 }
 
 

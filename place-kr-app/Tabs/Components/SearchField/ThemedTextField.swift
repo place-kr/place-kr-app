@@ -23,13 +23,14 @@ struct ThemedTextField<V: View>: View {
     private let action: (() -> Void)
 
     var body: some View {
-        TextField(placeholder, text: $inputText, onEditingChanged: { isFocused in
+        TextField("", text: $inputText, onEditingChanged: { isFocused in
             self.isFocused = isFocused
         })
             .modifier(
                 TextFieldButton(text: $inputText, buttonPosition: buttonPosition,
                                 buttonImage: buttonImage, buttonColor: buttonColor, action: action)
             )
+            .placeholder(placeholder, when: inputText.isEmpty)
             .multilineTextAlignment(.leading)
             .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
             .padding(.horizontal)

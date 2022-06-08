@@ -19,7 +19,7 @@ struct SearchBarView: View {
     private let placeholder: String
     
     var body: some View {
-        TextField(placeholder, text: $inputText,
+        TextField("", text: $inputText,
                   onEditingChanged: { self.isFocused = $0 },
                   onCommit: {
             if !inputText.isEmpty {
@@ -27,6 +27,7 @@ struct SearchBarView: View {
                 didPressReturn()
             }
         })
+        .placeholder(placeholder, when: inputText.isEmpty)
         .modifier(TextFieldSearchButton(text: $inputText, showButton: showButton, action: action))
         .multilineTextAlignment(.leading)
         .frame(minWidth: 200, maxWidth: .infinity, maxHeight: height)
