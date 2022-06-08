@@ -31,14 +31,21 @@ struct EmptyHolderView: View {
                 .multilineTextAlignment(.center)
                 .font(.basic.normal14)
             
+            Spacer()
+            
             if let buttonText = buttonText, let action = action {
                 Button(action: action) {
-                    Text(buttonText)
+                    HStack {
+                        Spacer()
+                        Text(buttonText)
+                            .font(.basic.normal14)
+                        Spacer()
+                    }
                 }
                 .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, height: 52))
+                .padding(.bottom, 20)
+                .padding(.horizontal, 16)
             }
-            
-            Spacer()
         }
     }
 }

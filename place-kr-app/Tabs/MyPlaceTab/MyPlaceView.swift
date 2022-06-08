@@ -57,53 +57,63 @@ struct MyPlaceView: View {
                 .padding(.top, 20)
 
                 // MARK: - 플레이스 리스트
-                VStack(spacing: 15) {
-                    HStack {
-                        Text("총 \(listManager.placeCount ?? 0)개의 플레이스 리스트가 있습니다")
-                            .font(.basic.normal12)
-                        Spacer()
+                if listManager.placeCount ?? 0 == 0 {
+                    EmptyHolderView(title: "아직 플레이스 리스트가 없어요",
+                                    message: "리스트를 만들어서 나만의 플레이스를\n업데이트 해보세요!",
+                                    buttonText: "리스트 만들기") {
+                        withAnimation(.spring()) {
+                            self.showNewListAlert = true
+                        }
                     }
-                    .padding(.horizontal, 15)
+                } else {
+                    VStack(spacing: 15) {
+                        HStack {
+                            Text("총 \(listManager.placeCount ?? 0)개의 플레이스 리스트가 있습니다")
+                                .font(.basic.normal12)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 15)
 
-                    TrackableScrollView(reachedBottom: self.$isBottom, reachAction: {
-                        
-                        if listManager.nextPage != nil {
-                            listManager.updateLists(pageUrl: listManager.nextPage!) {
-                                result in
-                                if result {
-                                    self.isBottom = false
+                        TrackableScrollView(reachedBottom: self.$isBottom, reachAction: {
+                            
+                            if listManager.nextPage != nil {
+                                listManager.updateLists(pageUrl: listManager.nextPage!) {
+                                    result in
+                                    if result {
+                                        self.isBottom = false
+                                    }
                                 }
                             }
-                        }
-                    }) {
-                        VStack(spacing: 10) {
-                            // MARK: -리스트 카드 뷰
-                            ForEach(listManager.placeLists, id: \.identifier) { list in
-                                navigator(list: list, label:
-                                            SimplePlaceCardView(list.name,
-                                                                hex: list.color, emoji: list.emoji,
-                                                                subscripts: "\(list.places.count) places",
-                                                                image: UIImage(),
-                                                                buttonLabel: Image(systemName: "ellipsis"),
-                                                                action: {
-                                                self.selectedList = list
-                                                withAnimation(.spring()) {
-                                                    bottomSheetPosition = .bottom
-                                                }})
-                                            .padding(.horizontal, 12)
-                                )
-                                .frame(height: 70)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(.white)
-                                        .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
-                                )
-                                .foregroundColor(.black)
+                        }) {
+                            VStack(spacing: 10) {
+                                // MARK: -리스트 카드 뷰
+                                ForEach(listManager.placeLists, id: \.identifier) { list in
+                                    navigator(list: list, label:
+                                                SimplePlaceCardView(list.name,
+                                                                    hex: list.color, emoji: list.emoji,
+                                                                    subscripts: "\(list.places.count) places",
+                                                                    image: UIImage(),
+                                                                    buttonLabel: Image(systemName: "ellipsis"),
+                                                                    action: {
+                                                    self.selectedList = list
+                                                    withAnimation(.spring()) {
+                                                        bottomSheetPosition = .bottom
+                                                    }})
+                                                .padding(.horizontal, 12)
+                                    )
+                                    .frame(height: 70)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(.white)
+                                            .shadow(color: .gray.opacity(0.15), radius: 20, y: 2)
+                                    )
+                                    .foregroundColor(.black)
+                                }
                             }
+                            .padding(.top, 10)
+                            .padding(.horizontal, 15)
+                            .padding(.bottom, 30)
                         }
-                        .padding(.top, 10)
-                        .padding(.horizontal, 15)
-                        .padding(.bottom, 30)
                     }
                 }
             }
