@@ -206,14 +206,6 @@ extension MapView {
             self.bottomSheetPosition = .bottom
             self.activeSheet = .placeInfo
         }
-        
-        // 마커 새로고침
-        mapViewModel.fetchPlacesAndDrawMarkers(in: mapViewModel.currentBounds) { info in
-            markerAction(id: info.id)
-        }
-        withAnimation(springAnimation) {
-            mapViewModel.mapNeedsReload = false
-        }
     }
     
     @ViewBuilder
@@ -367,6 +359,14 @@ extension MapView {
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             withAnimation(.spring()) {
                                                 showCompleted = false
+                                            }
+                                                                                        
+                                            // 마커 새로고침
+                                            mapViewModel.fetchPlacesAndDrawMarkers(in: mapViewModel.currentBounds) { info in
+                                                markerAction(id: info.id)
+                                            }
+                                            withAnimation(springAnimation) {
+                                                mapViewModel.mapNeedsReload = false
                                             }
                                         }
                                     case false:
