@@ -12,7 +12,7 @@ struct ThemedTextField<V: View>: View {
     @Binding var isFocused: Bool
     
     private let placeholder: String
-
+    
     private let backgroundColor: Color
     private let isStroked: Bool
     
@@ -21,22 +21,22 @@ struct ThemedTextField<V: View>: View {
     private let buttonColor: Color
     
     private let action: (() -> Void)
-
+    
     var body: some View {
         TextField("", text: $inputText, onEditingChanged: { isFocused in
             self.isFocused = isFocused
         })
-            .modifier(
-                TextFieldButton(text: $inputText, buttonPosition: buttonPosition,
-                                buttonImage: buttonImage, buttonColor: buttonColor, action: action)
-            )
-            .placeholder(placeholder, when: inputText.isEmpty)
-            .multilineTextAlignment(.leading)
-            .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
-            .padding(.horizontal)
-            .background(RoundedRectangle(cornerRadius: 7).stroke(.black.opacity(isStroked ? 1 : 0)))
-            .background(backgroundColor)
-            .cornerRadius(7)
+        .modifier(
+            TextFieldButton(text: $inputText, buttonPosition: buttonPosition,
+                            buttonImage: buttonImage, buttonColor: buttonColor, action: action)
+        )
+        .placeholder(placeholder, when: inputText.isEmpty)
+        .multilineTextAlignment(.leading)
+        .frame(minWidth: 200, maxWidth: .infinity, maxHeight: 50)
+        .padding(.horizontal)
+        .background(RoundedRectangle(cornerRadius: 7).stroke(.black.opacity(isStroked ? 1 : 0)))
+        .background(backgroundColor)
+        .cornerRadius(7)
     }
     
     init(_ inputText: Binding<String>,
