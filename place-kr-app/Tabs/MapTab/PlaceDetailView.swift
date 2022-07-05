@@ -136,7 +136,7 @@ struct PlaceDetailView: View {
                     // 기여자
                     HStack(spacing: 6) {
                         Image("contributorBlack")
-                        Text("포로리님의 플레이스")
+                        Text("\(placeInfo.registrant)님의 플레이스")
                     }
                     .font(.basic.normal12)
                     .padding(.bottom, 8)
