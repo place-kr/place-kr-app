@@ -124,7 +124,7 @@ struct SearchKakaoPlaceView: View {
                         .padding(.top, 10)
                         .padding(.horizontal, 20)
 
-                    Text("예) 서욽특별시 강남구 23길 2")
+                    Text("예) 서울특별시 강남구 23길 2")
                         .font(.basic.normal14)
                         .padding(.top, 20)
                         .padding(.horizontal, 20)
