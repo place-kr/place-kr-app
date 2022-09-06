@@ -106,11 +106,24 @@ struct LogInView: View {
                     .padding(.bottom, 60)
                 
                 ZStack {
-                    // TODO: 링크 연계
                     Text("소셜 로그인을 통해 로그인함으로써 개인정보처리방침¹과 이용약관²에 따라 계정을 연결하는 것에 동의합니다.")
-                }
-                .onTapGesture {
-                    UIApplication.shared.open(URL(string: "https://www.naver.com")!)
+                    HStack {
+                        Spacer()
+                        Rectangle()
+                            .fill(.black.opacity(0.01))
+                            .frame(width: 50, height: 50, alignment: .trailing)
+                            .onTapGesture {
+                                UIApplication.shared.open(URL(string:
+                                                                "https://plaist.notion.site/5255267790ab4813ba22cc92b5498ef7")!)
+                            }
+                        
+                        Rectangle()
+                            .fill(.black.opacity(0.01))
+                            .frame(width: 50, height: 50, alignment: .trailing)
+                            .onTapGesture {
+                                UIApplication.shared.open(URL(string: "https://plaist.notion.site/7f7f8200720a4fadb13ece52ef6fdfea")!)
+                            }
+                    }
                 }
                 .font(.basic.normal12)
                 .foregroundColor(.gray)

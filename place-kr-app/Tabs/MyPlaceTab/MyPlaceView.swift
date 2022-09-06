@@ -120,7 +120,7 @@ struct MyPlaceView: View {
         }
         .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
                      options: [
-                        .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20), .absolutePositionValue,
+                        .animation(springAnimation), .background({AnyView(Color.white)}), .cornerRadius(20), .absolutePositionValue,
                         .noBottomPosition, .swipeToDismiss, .tapToDismiss, .backgroundBlur(effect: .dark),
                             .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
                      ]

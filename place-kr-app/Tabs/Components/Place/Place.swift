@@ -138,6 +138,8 @@ struct PlaceResponse: Codable {
 struct PlaceInfo {
     private let document: PlaceInformation
     
+    var registrant: String = ""
+    
     var id: String {
         return document.identifier
     }
@@ -195,6 +197,7 @@ struct PlaceInfo {
     
     init(document: PlaceResponse.PlacePin) {
         self.document = document
+        self.registrant = document.registrant.nickname
     }
     
     init(document: OnePlaceResponse) {

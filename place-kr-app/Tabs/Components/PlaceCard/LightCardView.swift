@@ -21,7 +21,7 @@ struct LightCardView: View {
     
     init(place: PlaceInfo, isFavorite: Bool, starAction: (() -> Void)? = nil, shareAction: (() -> Void)? = nil) {
         self.placeName = place.name
-        self.subscripts = "ㅇㅇㅇ님의 플레이스"
+        self.subscripts = "님의 플레이스"
         self.countsDescription = "★ \(place.saves)명이 저장"
         self.imageUrl = place.imageUrl
         self.categories = place.category

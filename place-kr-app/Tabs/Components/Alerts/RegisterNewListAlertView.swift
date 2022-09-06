@@ -141,27 +141,30 @@ struct RegisterNewListAlertView: View {
                 Spacer()
                 Button(action: {
                     clicked = true
-                    
-                    switch requestType {
-                    case .post:
-                        let postBody = PlaceListPostBody(name: self.name, emoji: emoji, color: selectedColor?.HEX, places: [String]())
-                        self.viewModel.addPlaceList(body: postBody) { result in
-                            completion(result)
-                            self.viewModel.updateLists()
-                        }
-                    case .patch(let id):
-                        self.viewModel.editListComponent(id: id, name: name, hex: selectedColor?.HEX) { result in
-                            completion(result)
+                    if !(name.isEmpty || selectedColor == nil || clicked) {
+                        // Empty
+                    }
+                    else {
+                        switch requestType {
+                        case .post:
+                            let postBody = PlaceListPostBody(name: self.name, emoji: emoji, color: selectedColor?.HEX, places: [String]())
+                            self.viewModel.addPlaceList(body: postBody) { result in
+                                completion(result)
+                                self.viewModel.updateLists()
+                            }
+                        case .patch(let id):
+                            self.viewModel.editListComponent(id: id, name: name, hex: selectedColor?.HEX) { result in
+                                completion(result)
+                            }
                         }
                     }
                 }) {
                     Text("입력완료")
                 }
-                .disabled(name.isEmpty || selectedColor == nil || clicked || emoji.isEmpty)
-                .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, cornerRadius: 20,  isStroked: false, width: 147, height: 40))
+                .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, cornerRadius: 20,
+                                                isStroked: false, width: 147, height: 40))
                 .padding(.top, 25)
                 .padding(.bottom, 20)
-                
                 Spacer()
             }
         }

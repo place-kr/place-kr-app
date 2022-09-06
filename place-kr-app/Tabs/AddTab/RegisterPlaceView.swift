@@ -41,12 +41,16 @@ struct RegisterPlaceView: View {
                     searchAddr
                         .padding(.bottom, 20)
                     
-                    description
-                    
-                    Spacer()
-                    
-                    registerButton
-                        .padding(.bottom, 15)
+                    if !address.isEmpty {
+                        description
+                        
+                        Spacer()
+                        
+                        registerButton
+                            .padding(.bottom, 15)
+                    } else {
+                        Spacer()
+                    }
                 }
                 .frame(height: UIScreen.main.bounds.height - 150)
                 .padding(.horizontal, 15)
@@ -104,16 +108,15 @@ extension RegisterPlaceView {
             .buttonStyle(RoundedButtonStyle(bgColor: .black, textColor: .white, isStroked: false, isSpanned: true, height: 40))
             .padding(.bottom, 20)
             
-            
-            Text("주소")
-                .font(.basic.light14)
-                .padding(.bottom, 4)
-            
-            SearchBarView($address, "플레이스 검색을 통해 주소를 입력하세요", bgColor: .white, height: 40, isStroked: true)
-                .disabled(true)
-            SearchBarView($restAddress, "나머지 주소를 입력해주세요", bgColor: .white, height: 40, isStroked: true)
-            
-            
+            if !address.isEmpty {
+                Text("주소")
+                    .font(.basic.light14)
+                    .padding(.bottom, 4)
+                
+                SearchBarView($address, "플레이스 검색을 통해 주소를 입력하세요", bgColor: .white, height: 40, isStroked: true)
+                    .disabled(true)
+                SearchBarView($restAddress, "나머지 주소를 입력해주세요", bgColor: .white, height: 40, isStroked: true)
+            }
         }
         .sheet(isPresented: $showAddressSearch) {
             addressSearch

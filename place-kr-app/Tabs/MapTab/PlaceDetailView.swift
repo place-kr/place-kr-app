@@ -136,15 +136,15 @@ struct PlaceDetailView: View {
                     // 기여자
                     HStack(spacing: 6) {
                         Image("contributorBlack")
-                        Text("포로리님의 플레이스")
+                        Text("\(placeInfo.registrant)님의 플레이스")
                     }
                     .font(.basic.normal12)
                     .padding(.bottom, 8)
                     
                     // 카테고리 캡슐
                     // TODO: 수정
-                    Categories
-                        .padding(.bottom, 20)
+//                    Categories
+//                        .padding(.bottom, 20)
                     
                     InteractionButtons
                         .padding(.bottom, 17)
@@ -445,7 +445,7 @@ extension PlaceDetailView {
         HStack(spacing: 25) {
             Button(action: {}) {
                 HStack(spacing: 9) {
-                    Image("placeAdded")
+                    Image(placeInfo.isFavorite ? "placeAdded" : "addedCount")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 27, height: 27)
@@ -475,8 +475,9 @@ extension PlaceDetailView {
     }
     
     var Categories: some View {
+        // !!!: UNCOMMENT WHENENVER
         let texts = ["일식", "깔끔해요", "아늑해요"]
-        
+//        let texts = [""]
         return HStack {
             Spacer()
             ForEach(texts, id: \.self) { text in

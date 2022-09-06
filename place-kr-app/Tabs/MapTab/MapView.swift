@@ -140,7 +140,7 @@ struct MapView: View {
         .navigationBarHidden(true)
         .bottomSheet(bottomSheetPosition: self.$bottomSheetPosition,
                      options: [
-                        .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
+                        .animation(springAnimation), .background({AnyView(Color.white)}), .cornerRadius(20),
                         .noBottomPosition, .swipeToDismiss,
                         .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
                      ]
@@ -153,7 +153,7 @@ struct MapView: View {
         })
         .bottomSheet(bottomSheetPosition: self.$listSheetPosition,
                      options: [
-                        .animation(springAnimation), .background(AnyView(Color.white)), .cornerRadius(20),
+                        .animation(springAnimation), .background({AnyView(Color.white)}), .cornerRadius(20),
                         .noBottomPosition, .swipeToDismiss,
                         .shadow(color: .gray.opacity(0.3), radius: 10, x: 0, y: -5)
                      ]

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 class PlaceDetailViewModel: ObservableObject {
     typealias Review = ReviewResponse.Review
@@ -13,7 +14,7 @@ class PlaceDetailViewModel: ObservableObject {
     @Published var placeInfo: PlaceInfo
     @Published var progress: Progress = .ready
     
-    @Published var images: [Image] = [Image("dog"), Image("dog"), Image("dog")]
+    @Published var images: [WebImage]
     @Published var reviews = [Review]()
     
     var nextPage: URL?
@@ -229,6 +230,10 @@ class PlaceDetailViewModel: ObservableObject {
     
     init(info placeInfo: PlaceInfo) {
         self.placeInfo = placeInfo
+        self.images = [
+            WebImage(url: placeInfo.imageUrl)
+                .placeholder(Image("listLogo"))
+        ]
         self.getReviews(id: placeInfo.id)
     }
 }

@@ -106,7 +106,7 @@ extension LargePlaceCardView {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 15, height: 15)
-                Text("포로리님의 플레이스")
+                Text("\(viewModel.placeInfo.registrant)님의 플레이스")
                     .font(.basic.normal12)
                     .foregroundColor(.gray)
             }
